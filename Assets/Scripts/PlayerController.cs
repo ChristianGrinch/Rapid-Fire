@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
     private float speed = 5;
+    private int health = 100;
 
     // Start is called before the first frame update
     void Start()
@@ -55,5 +56,10 @@ public class PlayerController : MonoBehaviour
         playerRb.AddForce(Vector3.forward * speed * verticalInput, ForceMode.Impulse);
         playerRb.AddForce(Vector3.right * speed * horizontalInput, ForceMode.Impulse);
         //Debug.Log(playerRb.velocity);
+    }
+
+    void HealthSystem()
+    {
+
     }
 }

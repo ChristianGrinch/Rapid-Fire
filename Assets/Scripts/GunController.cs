@@ -26,7 +26,7 @@ public class GunController : MonoBehaviour
             yRotation += 360;
         }
 
-        Debug.Log(yRotation);
+        //Debug.Log(yRotation);
         //Debug.Log(transform.rotation);
 
         if (Input.GetMouseButtonDown(0))
