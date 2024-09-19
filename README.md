@@ -50,7 +50,7 @@ The gameplay is similar to a mobile game where you spin in circles, shoot zombie
 | **#2** | Player can move around, with the camera following them. Player can collide with outer walls so they don’t fall off the map. | 09/25 |
 | **#3** | Player holds a gun and shoots bullets with colliders. Player has 3 lives. No UI. Restart the game when all lives are lost. | 10/02 |
 | **#4** | Enemies randomly move and can be shot and killed, with SFX and GFX. Enemies damage the player on contact. After killing X enemies, the next wave begins. | 10/16 |
-| **#5** | Actual enemy movement. Enemies drop ammo that can be collected, and UI tracks ammo. The player has unlimited shooting but a limited ammo count. | 10/22 |
+| **#5** | Actual enemy movement. Enemies drop ammo that can be collected, and UI tracks ammo. The player has unlimited shooting but a limited ammo count. Waves. | 10/22 |
 
 ### Backlog
 - Polish everything
