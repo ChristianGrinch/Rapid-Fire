@@ -20,6 +20,10 @@ public class PlayerController : MonoBehaviour
 
         Vector3 currentRotation = transform.rotation.eulerAngles;
 
+    }
+
+    private void FixedUpdate()
+    {
         // From HERE -----
 
         // Get mouse position in screen space
@@ -42,7 +46,6 @@ public class PlayerController : MonoBehaviour
 
         // To HERE is NOT MY CODE!! -----
     }
-
     // Moves player based on WASD/Arrow keys input
     void MovePlayer()
     {
