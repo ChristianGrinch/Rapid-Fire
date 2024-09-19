@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     {
         MovePlayer();
 
+        Sprinting();
+
         Vector3 currentRotation = transform.rotation.eulerAngles;
 
     }
@@ -61,5 +63,17 @@ public class PlayerController : MonoBehaviour
     void HealthSystem()
     {
 
+    }
+
+    void Sprinting()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            speed = 7;
+        } else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            speed = 5;
+        }
+        Debug.Log(speed);
     }
 }
