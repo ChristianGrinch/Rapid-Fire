@@ -74,6 +74,6 @@ public class PlayerController : MonoBehaviour
         {
             speed = 5;
         }
-        Debug.Log(speed);
+        //Debug.Log(speed);
     }
 }
