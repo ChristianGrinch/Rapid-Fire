@@ -7,18 +7,21 @@ public class ShootBullet : MonoBehaviour
 
     private int speed = 1; // Speed of the bullet --IMPLIMENTED
     private int range = 50; // How far the bullet can travel from its initial location before it despawns --IMPLIMENTED
+    private int damage = 10; // damage of bullet obv
 
     public GameObject[] enemy;
 
     private Vector3 spawnPos;
     private Vector3 currentPos;
     private Rigidbody bulletRb;
+    private HealthSystem healthScript;
 
     // Start is called before the first frame update
     void Start()
     {
         spawnPos = transform.position;
         bulletRb = GetComponent<Rigidbody>();
+        healthScript = GetComponent<HealthSystem>();
     }
 
     // Update is called once per frame
@@ -35,6 +38,7 @@ public class ShootBullet : MonoBehaviour
             //transform.Translate(Vector3.up * speed * Time.deltaTime);
             bulletRb.AddRelativeForce(Vector3.up * speed, ForceMode.Impulse);
         }
+        Debug.Log("current enemy health: " + healthScript.health + " SHOOTBULLET");
     }
 
     void OutOfBounds()
@@ -48,6 +52,7 @@ public class ShootBullet : MonoBehaviour
         {
             Destroy(gameObject);
             //Debug.Log("collision detected");
+            healthScript.health =- damage;
         }
         //Debug.Log("function ran, no tag though");
     }
