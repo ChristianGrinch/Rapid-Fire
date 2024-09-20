@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speed = 7;
+            speed = 6;
         } else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             speed = 5;
