@@ -10,18 +10,18 @@ public class ShootBullet : MonoBehaviour
     private int damage = 10; // damage of bullet obv
 
     public GameObject[] enemy;
+    public HealthSystem healthScript;
 
     private Vector3 spawnPos;
     private Vector3 currentPos;
     private Rigidbody bulletRb;
-    private HealthSystem healthScript;
 
     // Start is called before the first frame update
     void Start()
     {
         spawnPos = transform.position;
         bulletRb = GetComponent<Rigidbody>();
-        healthScript = GetComponent<HealthSystem>();
+        //healthScript = GetComponent<HealthSystem>();
     }
 
     // Update is called once per frame
@@ -39,11 +39,6 @@ public class ShootBullet : MonoBehaviour
             bulletRb.AddRelativeForce(Vector3.up * speed, ForceMode.Impulse);
         }
         Debug.Log("current enemy health: " + healthScript.health + " SHOOTBULLET");
-    }
-
-    void OutOfBounds()
-    {
-        // write code to kill bullet out of bounds
     }
 
     private void OnCollisionEnter(Collision collision)
