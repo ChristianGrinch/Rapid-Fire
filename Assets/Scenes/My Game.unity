@@ -155,11 +155,6 @@ Transform:
   - {fileID: 1981385159}
   m_Father: {fileID: 504888119}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!1 &263459087 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6500272849176821696, guid: bc93f41b1fcce1941aa00fd4e16aa9b8, type: 3}
-  m_PrefabInstance: {fileID: 6878930383899754239}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &263459091 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1091646320774533654, guid: bc93f41b1fcce1941aa00fd4e16aa9b8, type: 3}
@@ -808,11 +803,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 7521591830871287964, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
   player: {fileID: 883152918}
---- !u!1 &885563589 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3962172432451420208, guid: 403c55a11ad960c48a952cbf22b38405, type: 3}
-  m_PrefabInstance: {fileID: 2957207316330790978}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &885563593 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5659955720784735614, guid: 403c55a11ad960c48a952cbf22b38405, type: 3}
@@ -1169,11 +1159,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 504888119}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1429932666 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4596501652107912729, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
-  m_PrefabInstance: {fileID: 415654712502395823}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1429932670 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1700559198619050387, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
@@ -1184,7 +1169,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2648815451167948361, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
   m_PrefabInstance: {fileID: 415654712502395823}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1429932666}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: afc113c9f8f01e749aeac20e13bc1ba1, type: 3}
@@ -1895,25 +1880,13 @@ PrefabInstance:
       propertyPath: healthScript
       value: 
       objectReference: {fileID: 1429932671}
-    - target: {fileID: 3981960141557994653, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
-      propertyPath: enemy.Array.data[0]
-      value: 
-      objectReference: {fileID: 1429932666}
-    - target: {fileID: 3981960141557994653, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
-      propertyPath: enemy.Array.data[1]
-      value: 
-      objectReference: {fileID: 885563589}
-    - target: {fileID: 3981960141557994653, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
-      propertyPath: enemy.Array.data[2]
-      value: 
-      objectReference: {fileID: 263459087}
     - target: {fileID: 7521591830871287964, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
       propertyPath: m_Name
       value: Bullet
       objectReference: {fileID: 0}
     - target: {fileID: 7807779760977614569, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.147
+      value: 0.172
       objectReference: {fileID: 0}
     - target: {fileID: 7807779760977614569, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
       propertyPath: m_LocalPosition.y
