@@ -9,9 +9,6 @@ public class ShootBullet : MonoBehaviour
     private int range = 50; // How far the bullet can travel from its initial location before it despawns --IMPLIMENTED
     private int damage = 10; // damage of bullet obv
 
-    public GameObject[] enemy;
-    public HealthSystem healthScript;
-
     private Vector3 spawnPos;
     private Vector3 currentPos;
     private Rigidbody bulletRb;
@@ -21,24 +18,20 @@ public class ShootBullet : MonoBehaviour
     {
         spawnPos = transform.position;
         bulletRb = GetComponent<Rigidbody>();
-        //healthScript = GetComponent<HealthSystem>();
     }
 
     // Update is called once per frame
     void Update()
     {
         currentPos = transform.position;
-        //  Debug.Log(Vector3.Distance(currentPos, spawnPos));
         if (Vector3.Distance(currentPos, spawnPos) > range)
         {
             Destroy(gameObject);
         }
         else
         {
-            //transform.Translate(Vector3.up * speed * Time.deltaTime);
             bulletRb.AddRelativeForce(Vector3.up * speed, ForceMode.Impulse);
         }
-        Debug.Log("current enemy health: " + healthScript.health + " SHOOTBULLET");
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -46,9 +39,11 @@ public class ShootBullet : MonoBehaviour
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Wall")
         {
             Destroy(gameObject);
-            //Debug.Log("collision detected");
-            healthScript.health =- damage;
         }
-        //Debug.Log("function ran, no tag though");
+
+        if (collision.gameObject.tag == "Enemy")
+        {
+
+        }
     }
 }

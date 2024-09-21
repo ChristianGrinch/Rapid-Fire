@@ -121,10 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df11931b151a5e44af07022938c3939, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  healthScript: {fileID: 2648815451167948361, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
 --- !u!54 &1306726482063466530
 Rigidbody:
   m_ObjectHideFlags: 0

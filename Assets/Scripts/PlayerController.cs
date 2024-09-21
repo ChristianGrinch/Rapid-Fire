@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
     private float speed = 5;
-    private int health = 100;
+    //private int health = 100;
 
     // Start is called before the first frame update
     void Start()
