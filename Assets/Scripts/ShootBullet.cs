@@ -43,6 +43,17 @@ public class ShootBullet : MonoBehaviour
 
         if (collision.gameObject.tag == "Enemy")
         {
+            HealthSystem enemyHealth = collision.gameObject.GetComponent<HealthSystem>(); // Gets the HealthSystem script from the enemy.
+
+            if(enemyHealth != null) // Makes sure that the line above was able to actually get the HealthSystem script
+            {
+                int modifiedHealth = enemyHealth.health - damage; // Creates a modified health variable, and makes the value equal to the enemy health minus the damage the bullet should do.
+                enemyHealth.UpdateHealth(modifiedHealth); // Calls the function inside of HealthSystem inside the enemy to update the health on the enemy using the modifiedHealth.
+            }
+            else // If it isn't able to get the HealthSystem script, throw an error.
+            {
+                Debug.LogError("couldnt locate healthsystem script on enemy");
+            }
 
         }
     }
