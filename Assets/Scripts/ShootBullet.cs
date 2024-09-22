@@ -5,9 +5,9 @@ using UnityEngine;
 public class ShootBullet : MonoBehaviour
 {
 
-    private int speed = 1; // Speed of the bullet --IMPLIMENTED
+    private int speed = 200; // Speed of the bullet --IMPLIMENTED
     private int range = 50; // How far the bullet can travel from its initial location before it despawns --IMPLIMENTED
-    private int damage = 10; // damage of bullet obv
+    private int damage = 10; // damage of bullet obv --IMPLIMENTED
 
     private Vector3 spawnPos;
     private Vector3 currentPos;
@@ -30,13 +30,13 @@ public class ShootBullet : MonoBehaviour
         }
         else
         {
-            bulletRb.AddRelativeForce(Vector3.up * speed, ForceMode.Impulse);
+            bulletRb.AddRelativeForce(Vector3.up * speed * Time.deltaTime, ForceMode.Impulse);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Wall")
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Powerup")
         {
             Destroy(gameObject);
         }

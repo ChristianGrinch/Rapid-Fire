@@ -10,6 +10,7 @@ public class GunController : MonoBehaviour
     private Vector3 offset = new(0, 0, 1.25f);
     private Rigidbody playerRb;
 
+    public GameObject bulletParent;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,8 @@ public class GunController : MonoBehaviour
         {
             //Debug.Log("it ran");
             Vector3 spawnPosition = player.transform.TransformPoint(offset);
-            Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
+            GameObject instantiatedBullet = Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
+            instantiatedBullet.transform.parent = bulletParent.transform; // Sets parent
         }
 
     }

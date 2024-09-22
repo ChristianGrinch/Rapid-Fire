@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
-    private float speed = 5;
+    private float speed = 80;
     //private int health = 100;
 
     // Start is called before the first frame update
@@ -55,8 +55,8 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         
-        playerRb.AddForce(Vector3.forward * speed * verticalInput, ForceMode.Impulse);
-        playerRb.AddForce(Vector3.right * speed * horizontalInput, ForceMode.Impulse);
+        playerRb.AddForce(speed * Time.deltaTime * verticalInput * Vector3.forward, ForceMode.Impulse);
+        playerRb.AddForce(horizontalInput * speed * Time.deltaTime * Vector3.right, ForceMode.Impulse);
         //Debug.Log(playerRb.velocity);
     }
 
@@ -69,10 +69,10 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            speed = 6;
+            speed = 100;
         } else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speed = 5;
+            speed = 80;
         }
         //Debug.Log(speed);
     }

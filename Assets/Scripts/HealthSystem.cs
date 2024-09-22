@@ -8,6 +8,7 @@ public class HealthSystem : MonoBehaviour
 
     public int health = 100;
 
+
     public void UpdateHealth(int newHealth)
     {
         health = newHealth;
@@ -16,6 +17,7 @@ public class HealthSystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        Debug.Log(health);
+        //Debug.Log(health);
+
     }
 }
