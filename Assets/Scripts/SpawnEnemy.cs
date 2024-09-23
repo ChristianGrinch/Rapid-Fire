@@ -12,17 +12,18 @@ public class SpawnEnemy : MonoBehaviour
 
     private float spawnInterval = 1;
     private float nextSpawnTime = 0;
-    private int enemyLength;
+    private int enemyNumber;
     private int randomEnemy;
 
     public GameObject enemyParent;
+
 
     private void Awake()
     {
         randomXPos = Random.Range(-20, 20);
         randomZPos = Random.Range(-20, 20);
-        enemyLength = enemy.Length;
-        randomEnemy = Random.Range(0, enemyLength);
+        enemyNumber = enemy.Length;
+        randomEnemy = Random.Range(0, enemyNumber);
     }
 
     // Start is called before the first frame update
@@ -35,7 +36,7 @@ public class SpawnEnemy : MonoBehaviour
     void Update()
     {
         randomVector3 = new(randomXPos, 1, randomZPos);
-        randomEnemy = Random.Range(0, enemyLength);
+        randomEnemy = Random.Range(0, enemyNumber);
 
         if (Time.time >= nextSpawnTime)
         {

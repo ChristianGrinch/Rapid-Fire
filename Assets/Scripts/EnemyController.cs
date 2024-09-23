@@ -5,23 +5,36 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
 
-    public int damage = 50;
+    private int damage = 50;
+    private float speed = 10;
+    private float attractRadius = 5;
+    private float timeToFollow = 5;
+    private bool isFollowingPlayer = false;
+
+    private Rigidbody enemyRb;
+    public GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        enemyRb = GetComponent<Rigidbody>();
+        player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (!isFollowingPlayer && Vector3.Distance(player.transform.position, transform.position) < attractRadius)
+        {
+            MoveEnemy();
+        }
+
+        AssignDamage();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
             HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
 
@@ -34,6 +47,51 @@ public class EnemyController : MonoBehaviour
             {
                 Debug.LogError("couldnt locate healthsystem script on player");
             }
+        }
+
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            if (!isFollowingPlayer)
+            {
+                StartCoroutine(MoveForTime(5));
+            }
+            
+        }
+    }
+
+    IEnumerator MoveForTime(float duration)
+    {
+        isFollowingPlayer = true;
+        float timePassed = 0;
+
+        while (timePassed < duration)
+        {
+            // Move the enemy once per frame
+            MoveEnemy();
+            timePassed += Time.deltaTime;
+            yield return null;  // Wait for the next frame
+        }
+        isFollowingPlayer = false;
+    }
+
+    void MoveEnemy()
+    {
+        enemyRb.AddForce(Time.deltaTime * speed * (player.transform.position - transform.position).normalized, ForceMode.Impulse);
+    }
+
+    void AssignDamage()
+    {
+        switch (gameObject.name)
+        {
+            case "Enemy 1":
+                damage = 20;
+                break;
+            case "Enemy 2":
+                damage = 25;
+                break;
+            case "Enemy 3":
+                damage = 50;
+                break;
         }
     }
 }

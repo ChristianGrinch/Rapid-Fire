@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 50
+  player: {fileID: 0}
 --- !u!54 &2073822568736861824
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -129,7 +130,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4596501652107912729}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 1
   m_Drag: 3
   m_AngularDrag: 10
   m_CenterOfMass: {x: 0, y: 0, z: 0}

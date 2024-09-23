@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShootBullet : MonoBehaviour
 {
 
-    private int speed = 200; // Speed of the bullet --IMPLIMENTED
+    private int speed = 1; // Speed of the bullet --IMPLIMENTED
     private int range = 50; // How far the bullet can travel from its initial location before it despawns --IMPLIMENTED
     private int damage = 10; // damage of bullet obv --IMPLIMENTED
 
@@ -24,6 +24,7 @@ public class ShootBullet : MonoBehaviour
     void Update()
     {
         currentPos = transform.position;
+
         if (Vector3.Distance(currentPos, spawnPos) > range)
         {
             Destroy(gameObject);
@@ -36,12 +37,12 @@ public class ShootBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Powerup")
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Powerup"))
         {
             Destroy(gameObject);
         }
 
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             HealthSystem enemyHealth = collision.gameObject.GetComponent<HealthSystem>(); // Gets the HealthSystem script from the enemy.
 
