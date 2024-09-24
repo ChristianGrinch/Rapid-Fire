@@ -25,7 +25,7 @@ public class SpawnEnemy : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		Debug.Log("Current wave: " + currentWave);
+		//Debug.Log("Current wave: " + currentWave);
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
 

@@ -5,9 +5,9 @@ using UnityEngine;
 public class ShootBullet : MonoBehaviour
 {
 
-    private int speed = 1; // Speed of the bullet --IMPLIMENTED
-    private int range = 50; // How far the bullet can travel from its initial location before it despawns --IMPLIMENTED
-    private int damage = 10; // damage of bullet obv --IMPLIMENTED
+    public float speed = 1; // Speed of the bullet --IMPLIMENTED
+    public int range = 50; // How far the bullet can travel from its initial location before it despawns --IMPLIMENTED
+    public int damage = 10; // damage of bullet obv --IMPLIMENTED
 
     private Vector3 spawnPos;
     private Vector3 currentPos;
@@ -46,7 +46,7 @@ public class ShootBullet : MonoBehaviour
         {
             HealthSystem enemyHealth = collision.gameObject.GetComponent<HealthSystem>(); // Gets the HealthSystem script from the enemy.
 
-            if(enemyHealth != null) // Makes sure that the line above was able to actually get the HealthSystem script
+            if (enemyHealth != null) // Makes sure that the line above was able to actually get the HealthSystem script
             {
                 int modifiedHealth = enemyHealth.health - damage; // Creates a modified health variable, and makes the value equal to the enemy health minus the damage the bullet should do.
                 enemyHealth.UpdateHealth(modifiedHealth); // Calls the function inside of HealthSystem inside the enemy to update the health on the enemy using the modifiedHealth.
@@ -57,5 +57,12 @@ public class ShootBullet : MonoBehaviour
             }
 
         }
+    }
+
+    public void UpdateStats(int newDamage, int newRange, float newSpeed)
+    {
+        damage = newDamage;
+        range = newRange;
+        speed = newSpeed;
     }
 }
