@@ -13,6 +13,7 @@ public class GunController : MonoBehaviour
 	public GameObject bulletParent;
 	public GameObject pistol;
 	public GameObject assualtRifle;
+ 	public GameObject[] guns;
 
 	private int currentGun = 1;
 	private float fireRate = 0.1f;
@@ -57,8 +58,8 @@ public class GunController : MonoBehaviour
 		{
 			case 1:
 				{
-					pistol.SetActive(true);
-					assualtRifle.SetActive(false);
+					guns[0].SetActive(true);
+					guns[1].SetActive(false);
 
 					if (Input.GetMouseButtonDown(0))
 					{
@@ -77,8 +78,8 @@ public class GunController : MonoBehaviour
 
 			case 2:
 				{
-					pistol.SetActive(false);
-					assualtRifle.SetActive(true);
+					guns[0].SetActive(false);
+					guns[1].SetActive(true);
 
 					if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
 					{
