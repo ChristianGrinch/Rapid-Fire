@@ -4,49 +4,63 @@ using UnityEngine;
 
 public class SpawnEnemy : MonoBehaviour
 {
-    public GameObject[] enemy;
+	public GameObject[] enemy;
 
-    private float randomXPos;
-    private float randomZPos;
-    private Vector3 randomVector3;
+	private int enemyType;
+	private int randomEnemy;
 
-    private float spawnInterval = 1;
-    private float nextSpawnTime = 0;
-    private int enemyNumber;
-    private int randomEnemy;
+	public GameObject enemyParent;
 
-    public GameObject enemyParent;
+	private GameObject[] enemyCountArray;
+	private int enemyCount = 0;
+	private int currentWave = 1;
 
+	// Start is called before the first frame update
+	void Start()
+	{
+		SpawnEnemyWave(currentWave);
+		InstantiateEnemy();
+	}
 
-    private void Awake()
-    {
-        randomXPos = Random.Range(-20, 20);
-        randomZPos = Random.Range(-20, 20);
-        enemyNumber = enemy.Length;
-        randomEnemy = Random.Range(0, enemyNumber);
-    }
+	// Update is called once per frame
+	void Update()
+	{
+		Debug.Log("Current wave: " + currentWave);
+		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
+		enemyCount = enemyCountArray.Length;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+		if (enemyCount == 0)
+		{
+			currentWave++;
+			SpawnEnemyWave(currentWave);
+			InstantiateEnemy();
+		}
 
-    }
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        randomVector3 = new(randomXPos, 1, randomZPos);
-        randomEnemy = Random.Range(0, enemyNumber);
+	private Vector3 GenerateSpawnPosition()
+	{
+		float randomPosX = Random.Range(-20f, 20f);
+		float randomPosZ = Random.Range(-20f, 20f);
 
-        if (Time.time >= nextSpawnTime)
-        {
-            GameObject instantiatedEnemy = Instantiate(enemy[randomEnemy], randomVector3, Quaternion.Euler(90, 0, 0));
-            instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
+		Vector3 randomPos = new(randomPosX, 1, randomPosZ);
 
-            nextSpawnTime = Time.time + spawnInterval;
+		return randomPos;
+	}
+	 
+	void SpawnEnemyWave(int enemiesToSpawn)
+	{
+		for (int i = 0; i < enemiesToSpawn; i++)
+		{
+			InstantiateEnemy();
+		}
+	}
 
-            randomXPos = Random.Range(-20f, 20f);
-            randomZPos = Random.Range(-20f, 20f);
-        }
-    }
+	void InstantiateEnemy()
+	{
+		enemyType = enemy.Length;
+		randomEnemy = Random.Range(0, enemyType);
+		GameObject instantiatedEnemy = Instantiate(enemy[randomEnemy], GenerateSpawnPosition(), Quaternion.Euler(90, 0, 0));
+		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
+	}
 }

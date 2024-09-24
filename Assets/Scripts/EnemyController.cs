@@ -8,7 +8,7 @@ public class EnemyController : MonoBehaviour
     private int damage = 50;
     private float speed = 10;
     private float attractRadius = 5;
-    private float timeToFollow = 5;
+    //private float timeToFollow = 5;
     private bool isFollowingPlayer = false;
 
     private Rigidbody enemyRb;
