@@ -17,18 +17,27 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MovePlayer();
-
         Sprinting();
-
-        Vector3 currentRotation = transform.rotation.eulerAngles;
-
     }
 
     private void FixedUpdate()
     {
-        // From HERE -----
+        MovePlayer();
+        RotatePlayer();
+    }
+    // Moves player based on WASD/Arrow keys input
+    void MovePlayer()
+    {
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+        
+        playerRb.AddForce(speed * Time.deltaTime * verticalInput * Vector3.forward, ForceMode.Impulse);
+        playerRb.AddForce(horizontalInput * speed * Time.deltaTime * Vector3.right, ForceMode.Impulse);
+        //Debug.Log(playerRb.velocity);
+    }
 
+    void RotatePlayer() // all code in this method was made by chatgpt not me :fade:
+    {
         // Get mouse position in screen space
         Vector3 mouseScreenPosition = Input.mousePosition;
 
@@ -46,23 +55,6 @@ public class PlayerController : MonoBehaviour
         {
             playerRb.rotation = Quaternion.LookRotation(direction);
         }
-
-        // To HERE is NOT MY CODE!! -----
-    }
-    // Moves player based on WASD/Arrow keys input
-    void MovePlayer()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        
-        playerRb.AddForce(speed * Time.deltaTime * verticalInput * Vector3.forward, ForceMode.Impulse);
-        playerRb.AddForce(horizontalInput * speed * Time.deltaTime * Vector3.right, ForceMode.Impulse);
-        //Debug.Log(playerRb.velocity);
-    }
-
-    void HealthSystem()
-    {
-
     }
 
     void Sprinting()

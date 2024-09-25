@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour
     private float attractRadius = 5;
     //private float timeToFollow = 5;
     private bool isFollowingPlayer = false;
+    private bool shouldEnemymove = false; // Exists solely to make sure MoveEnemy is only called in fixed update; Optimization
 
     private Rigidbody enemyRb;
     public GameObject player;
@@ -19,6 +20,7 @@ public class EnemyController : MonoBehaviour
     {
         enemyRb = GetComponent<Rigidbody>();
         player = GameObject.Find("Player");
+        AssignDamage();
     }
 
     // Update is called once per frame
@@ -26,10 +28,16 @@ public class EnemyController : MonoBehaviour
     {
         if (!isFollowingPlayer && Vector3.Distance(player.transform.position, transform.position) < attractRadius)
         {
+            shouldEnemymove = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (shouldEnemymove)
+        {
             MoveEnemy();
         }
-
-        AssignDamage();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -77,6 +85,7 @@ public class EnemyController : MonoBehaviour
     void MoveEnemy()
     {
         enemyRb.AddForce(Time.deltaTime * speed * (player.transform.position - transform.position).normalized, ForceMode.Impulse);
+        shouldEnemymove = false;
     }
 
     void AssignDamage()

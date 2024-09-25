@@ -31,7 +31,11 @@ public class ShootBullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        else
+    }
+
+    private void FixedUpdate()
+    {
+        if (Vector3.Distance(currentPos, spawnPos) <= range)
         {
             bulletRb.AddRelativeForce(Vector3.up * speed * Time.deltaTime, ForceMode.Impulse);
         }

@@ -17,13 +17,6 @@ public class SpawnPowerup : MonoBehaviour
     public GameObject powerupParent;
     public GameObject ammoParent;
 
-
-    private void Awake()
-    {
-        randomXPos = Random.Range(-20, 20);
-        randomZPos = Random.Range(-20, 20);
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -37,15 +30,13 @@ public class SpawnPowerup : MonoBehaviour
 
         if (Time.time >= nextSpawnTime)
         {
+            GenerateRandomPos();
             InstantiateObject(ammo, randomSpawnPos, ammoParent);
-            randomXPos = Random.Range(-20f, 20f);
-            randomZPos = Random.Range(-20f, 20f);
-            randomSpawnPos = new(randomXPos, 1, randomZPos);
+
+            GenerateRandomPos();
             InstantiateObject(powerupHeart, randomSpawnPos, powerupParent);
 
             nextSpawnTime = Time.time + spawnInterval;
-
-
         }
     }
     
@@ -53,5 +44,14 @@ public class SpawnPowerup : MonoBehaviour
     {
         GameObject instantiatedObject = Instantiate(objectToSpawn, randomSpawnPos, Quaternion.Euler(90, 0, 0));
         instantiatedObject.transform.parent = objectParent.transform; // Sets parent
+    }
+
+    Vector3 GenerateRandomPos()
+    {
+        randomXPos = Random.Range(-20f, 20f);
+        randomZPos = Random.Range(-20f, 20f);
+        randomSpawnPos = new(randomXPos, 1, randomZPos);
+
+        return randomSpawnPos;
     }
 }
