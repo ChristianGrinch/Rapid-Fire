@@ -5,15 +5,18 @@ using UnityEngine;
 public class SpawnPowerup : MonoBehaviour
 {
     public GameObject powerupHeart;
+    public GameObject ammo;
 
     private float randomXPos;
     private float randomZPos;
-    private Vector3 randomVector3;
+    private Vector3 randomSpawnPos;
 
-    private float spawnInterval = 10;
+    private float spawnInterval = 30;
     private float nextSpawnTime = 0;
 
     public GameObject powerupParent;
+    public GameObject ammoParent;
+
 
     private void Awake()
     {
@@ -30,17 +33,25 @@ public class SpawnPowerup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        randomVector3 = new(randomXPos, 1, randomZPos);
+        randomSpawnPos = new(randomXPos, 1, randomZPos);
 
         if (Time.time >= nextSpawnTime)
         {
-            GameObject instantiatedPowerup = Instantiate(powerupHeart, randomVector3, Quaternion.Euler(90, 0, 0));
-            instantiatedPowerup.transform.parent = powerupParent.transform; // Sets parent
+            InstantiateObject(ammo, randomSpawnPos, ammoParent);
+            randomXPos = Random.Range(-20f, 20f);
+            randomZPos = Random.Range(-20f, 20f);
+            randomSpawnPos = new(randomXPos, 1, randomZPos);
+            InstantiateObject(powerupHeart, randomSpawnPos, powerupParent);
 
             nextSpawnTime = Time.time + spawnInterval;
 
-            randomXPos = Random.Range(-20f, 20f);
-            randomZPos = Random.Range(-20f, 20f);
+
         }
+    }
+    
+    void InstantiateObject(GameObject objectToSpawn, Vector3 spawnPos, GameObject objectParent)
+    {
+        GameObject instantiatedObject = Instantiate(objectToSpawn, randomSpawnPos, Quaternion.Euler(90, 0, 0));
+        instantiatedObject.transform.parent = objectParent.transform; // Sets parent
     }
 }

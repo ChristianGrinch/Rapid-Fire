@@ -13,6 +13,8 @@ public class ShootBullet : MonoBehaviour
     private Vector3 currentPos;
     private Rigidbody bulletRb;
 
+    public GameObject ammo;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +39,7 @@ public class ShootBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Powerup"))
+        if (collision.gameObject)
         {
             Destroy(gameObject);
         }
@@ -50,6 +52,10 @@ public class ShootBullet : MonoBehaviour
             {
                 int modifiedHealth = enemyHealth.health - damage; // Creates a modified health variable, and makes the value equal to the enemy health minus the damage the bullet should do.
                 enemyHealth.UpdateHealth(modifiedHealth); // Calls the function inside of HealthSystem inside the enemy to update the health on the enemy using the modifiedHealth.
+                if(modifiedHealth <= 0)
+                {
+                    Instantiate(ammo, bulletRb.transform.position, Quaternion.Euler(0,0,0)); // Spawns ammo on enemy death
+                }
             }
             else // If it isn't able to get the HealthSystem script, throw an error.
             {
