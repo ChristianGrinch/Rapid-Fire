@@ -106,13 +106,13 @@ public class GunController : MonoBehaviour
 		}
 
 	}
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.gameObject.CompareTag("Ammo"))
-		{
+        if (other.gameObject.CompareTag("Ammo"))
+        {
             CollectAmmo();
-            Destroy(collision.gameObject);
-		}
+            Destroy(other.gameObject);
+        }
     }
     void CollectAmmo()
 	{
