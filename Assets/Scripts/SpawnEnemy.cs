@@ -15,8 +15,10 @@ public class SpawnEnemy : MonoBehaviour
 	private int enemyCount = 0;
 	public int currentWave = 1;
 
-	// Start is called before the first frame update
-	void Start()
+	private int[] enemyTypeArray = new int[] {4, 0, 0};
+
+    // Start is called before the first frame update
+    void Start()
 	{
 		SpawnEnemyWave(currentWave);
 		InstantiateEnemy();
@@ -34,10 +36,19 @@ public class SpawnEnemy : MonoBehaviour
 			currentWave++;
 			SpawnEnemyWave(currentWave);
 			InstantiateEnemy();
-		}
+            //EnemyTypeToSpawn(); ITLL MAYBE BE HERE. FINISH CODE LATER.
+
+        }
 
 	}
 
+	void EnemyTypeToSpawn()
+	{
+			currentWave++;
+			enemyTypeArray[0] += 1;
+            enemyTypeArray[1] += 1;
+            enemyTypeArray[2] += 1;
+	}
 	private Vector3 GenerateSpawnPosition()
 	{
 		float randomPosX = Random.Range(-20f, 20f);

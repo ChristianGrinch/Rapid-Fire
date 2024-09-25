@@ -17,12 +17,11 @@ public class SpeedPowerup : MonoBehaviour
     {
         // Apply speed boost (do stuff)
         // Example: player.GetComponent<PlayerMovement>().speed *= 2;
-        player.GetComponent<PlayerController>().speed *= 2;
-
+        player.GetComponent<PlayerController>().speed = 150;
         yield return new WaitForSeconds(powerupLength);
 
         // Revert the effect after the powerup duration (do stuff pt2)
         // Example: player.GetComponent<PlayerMovement>().speed /= 2;
-        player.GetComponent<PlayerController>().speed /= 2;
+        player.GetComponent<PlayerController>().speed = 80;
     }
 }

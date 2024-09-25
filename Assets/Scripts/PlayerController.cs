@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Sprinting();
-        //Debug.Log(speed);
+        Debug.Log(speed);
     }
 
     private void FixedUpdate()

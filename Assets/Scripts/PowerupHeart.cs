@@ -7,23 +7,11 @@ public class PowerupHeart : MonoBehaviour
 
     private int healthBoost = 30;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player")
         {
-            Debug.Log("heart got touched by player");
-            HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
+            HealthSystem playerHealth = other.gameObject.GetComponent<HealthSystem>();
 
             if (playerHealth != null)
             {
