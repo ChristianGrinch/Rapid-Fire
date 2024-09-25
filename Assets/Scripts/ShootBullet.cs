@@ -58,7 +58,7 @@ public class ShootBullet : MonoBehaviour
                 enemyHealth.UpdateHealth(modifiedHealth); // Calls the function inside of HealthSystem inside the enemy to update the health on the enemy using the modifiedHealth.
                 if(modifiedHealth <= 0)
                 {
-                    Instantiate(ammo, bulletRb.transform.position, Quaternion.Euler(0,0,0)); // Spawns ammo on enemy death
+                    Instantiate(ammo, bulletRb.transform.position, Quaternion.Euler(90,0,0)); // Spawns ammo on enemy death
                 }
             }
             else // If it isn't able to get the HealthSystem script, throw an error.
