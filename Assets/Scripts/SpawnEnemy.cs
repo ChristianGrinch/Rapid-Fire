@@ -13,7 +13,7 @@ public class SpawnEnemy : MonoBehaviour
 
 	private GameObject[] enemyCountArray;
 	private int enemyCount = 0;
-	private int currentWave = 1;
+	public int currentWave = 1;
 
 	// Start is called before the first frame update
 	void Start()

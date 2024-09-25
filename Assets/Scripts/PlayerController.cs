@@ -5,8 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody playerRb;
-    private float speed = 80;
-    //private int health = 100;
+    public float speed = 80;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +17,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Sprinting();
+        //Debug.Log(speed);
     }
 
     private void FixedUpdate()
@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
         
         playerRb.AddForce(speed * Time.deltaTime * verticalInput * Vector3.forward, ForceMode.Impulse);
         playerRb.AddForce(horizontalInput * speed * Time.deltaTime * Vector3.right, ForceMode.Impulse);
-        //Debug.Log(playerRb.velocity);
     }
 
     void RotatePlayer() // all code in this method was made by chatgpt not me :fade:
@@ -59,13 +58,21 @@ public class PlayerController : MonoBehaviour
 
     void Sprinting()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (speed <= 100)
         {
-            speed = 100;
-        } else if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            speed = 80;
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                speed = 100;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                speed = 80;
+            }
         }
-        //Debug.Log(speed);
+    }
+
+    public void UpdateSpeed(float newSpeed)
+    {
+        speed = newSpeed;
     }
 }

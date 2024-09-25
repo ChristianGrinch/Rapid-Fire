@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class SpawnPowerup : MonoBehaviour
 {
-    public GameObject powerupHeart;
+    public GameObject heartPowerup;
     public GameObject ammo;
+    public GameObject speedPowerup;
 
     private float randomXPos;
     private float randomZPos;
@@ -17,26 +18,38 @@ public class SpawnPowerup : MonoBehaviour
     public GameObject powerupParent;
     public GameObject ammoParent;
 
+    public GameObject spawnManager;
+    private SpawnEnemy spawnEnemy;
+   
+    private int newWave = 1;
+    private int currentWave;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawnEnemy = spawnManager.GetComponent<SpawnEnemy>();
     }
 
     // Update is called once per frame
     void Update()
     {
         randomSpawnPos = new(randomXPos, 1, randomZPos);
+        int currentWave = spawnEnemy.currentWave;
 
-        if (Time.time >= nextSpawnTime)
+        //Debug.Log(currentWave);
+        if (Time.time >= nextSpawnTime || currentWave >= newWave)
         {
             GenerateRandomPos();
             InstantiateObject(ammo, randomSpawnPos, ammoParent);
 
             GenerateRandomPos();
-            InstantiateObject(powerupHeart, randomSpawnPos, powerupParent);
+            InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
+
+            GenerateRandomPos();
+            InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
 
             nextSpawnTime = Time.time + spawnInterval;
+            newWave++;
         }
     }
     
