@@ -11,13 +11,14 @@ public class HealthSystem : MonoBehaviour
 
     public void UpdateHealth(int newHealth)
     {
-        health = newHealth;
+        if(newHealth <= 200)
+        {
+            health = newHealth;
+        }
 
         if (health <= 0)
         {
             Destroy(gameObject);
         }
-        //Debug.Log(health);
-
     }
 }

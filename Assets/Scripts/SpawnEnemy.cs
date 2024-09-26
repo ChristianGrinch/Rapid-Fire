@@ -26,7 +26,6 @@ public class SpawnEnemy : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		//Debug.Log("Current wave: " + currentWave);
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
 
@@ -79,4 +78,19 @@ public class SpawnEnemy : MonoBehaviour
 		GameObject instantiatedEnemy = Instantiate(enemy[type], GenerateSpawnPosition(), Quaternion.Euler(90, 0, 0));
 		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
 	}
+
+    public static SpawnEnemy Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
 }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(AudioSource))]
 
 public class GunController : MonoBehaviour
 {
@@ -12,23 +11,25 @@ public class GunController : MonoBehaviour
 	private Rigidbody playerRb;
 
 	public GameObject bulletParent;
- 	public GameObject[] guns;
+ 	public GameObject[] gunObjects;
 
-	private int currentGun = 1;
-	private float fireRate = 0.1f;
+    public GunType currentGun = GunType.Pistol;
+    private float fireRate = 0.1f;
 	private float nextFireTime = 0f;
     private int[] ammo = new int[] { 20, 40 };  // ammo[0] = pistol ammo, ammo[1] = assault rifle ammo
-    public int pistolAmmo;
-	public int assaultRifleAmmo;
 
     AudioSource audioData;
+
+	public enum GunType
+	{
+		Pistol,
+		AssaultRifle
+	}
 
     // Start is called before the first frame update
     void Start()
 	{
 		playerRb = player.GetComponent <Rigidbody> ();
-        pistolAmmo = ammo[0];
-        assaultRifleAmmo = ammo[1];
 
         audioData = GetComponent<AudioSource>();
     }
@@ -45,10 +46,10 @@ public class GunController : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			currentGun = 1;
+			currentGun = GunType.Pistol;
 		} else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			currentGun = 2;
+			currentGun = GunType.AssaultRifle;
 		}
 	}
 
@@ -58,60 +59,72 @@ public class GunController : MonoBehaviour
         ShootBullet shootBullet = bullet.GetComponent<ShootBullet>();
 
 		float yRotation = playerRb.rotation.eulerAngles.y;
-		if (yRotation < 0)
-		{
-			yRotation += 360;
-		}
+
+		if (yRotation < 0) yRotation += 360;
 
 		switch (currentGun)
 		{
-			case 1:
+			case GunType.Pistol:
 				{
-					guns[0].SetActive(true);
-					guns[1].SetActive(false);
+					gunObjects[0].SetActive(true);
+					gunObjects[1].SetActive(false);
 
-					if (Input.GetMouseButtonDown(0) && AmmoCheck(0))
+					if (Input.GetMouseButtonDown(0) && TryUseAmmo(0))
 					{
                         audioData.Play();
-                        Debug.Log("pistol ammo is: "+ammo[0]);
-						int pistolDamage = 10;
-						int pistolRange = 50;
-						float pistolSpeed = 1f;
-						shootBullet.UpdateStats(pistolDamage, pistolRange, pistolSpeed);
 
-						Vector3 spawnPosition = player.transform.TransformPoint(offset);
-						GameObject instantiatedBullet = Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
-						instantiatedBullet.transform.parent = bulletParent.transform; // Sets parent
-					}
+                        SetBulletStats(shootBullet);
+                        InstantiateBullet(yRotation);
+                    }
 
 					break;
 				}
 
-			case 2:
+			case GunType.AssaultRifle:
 				{
-					guns[0].SetActive(false);
-					guns[1].SetActive(true);
+					gunObjects[0].SetActive(false);
+					gunObjects[1].SetActive(true);
 
-					if (Input.GetMouseButton(0) && Time.time >= nextFireTime && AmmoCheck(1))
+					if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(currentGun))
 					{
                         audioData.Play();
-                        Debug.Log("ar ammo is: " + ammo[1]);
-                        int assaultRifleDamage = 8;
-						int assaultRifleRange = 75;
-						float assaultRifleSpeed = 1.5f;
-						shootBullet.UpdateStats(assaultRifleDamage, assaultRifleRange, assaultRifleSpeed);
 
-						Vector3 spawnPosition = player.transform.TransformPoint(offset);
-						GameObject instantiatedBullet = Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
-						instantiatedBullet.transform.parent = bulletParent.transform; // Sets parent
+						SetBulletStats(shootBullet);
+                        InstantiateBullet(yRotation);
 
-						nextFireTime = Time.time + fireRate;  // Reset next fire time
+                        nextFireTime = Time.time + fireRate;  // Reset next fire time
 					}
 
 					break;
 				}
 		}
 
+	}
+
+	void SetBulletStats(ShootBullet shootBullet)
+	{
+		float bulletSpeed;
+		int bulletDamage;
+		int bulletRange;
+
+		switch (currentGun)
+		{
+			case GunType.Pistol:
+				bulletSpeed = 1f;
+				bulletDamage = 10;
+				bulletRange = 50;
+				break;
+
+			case GunType.AssaultRifle:
+				bulletSpeed = 1.5f;
+				bulletDamage = 8;
+				bulletRange = 75;
+				break;
+			default:
+				return;
+		}
+
+		shootBullet.UpdateStats(bulletDamage, bulletRange, bulletSpeed);
 	}
     private void OnTriggerEnter(Collider other)
     {
@@ -127,11 +140,13 @@ public class GunController : MonoBehaviour
         ammo[1] += 15;
 	}
 
-	bool AmmoCheck(int currentGun)
+	bool TryUseAmmo(GunType gunType)
 	{
-		if (ammo[currentGun] > 0)
+		int gunIndex = (int)gunType;
+
+		if (ammo[gunIndex] > 0)
 		{
-			ammo[currentGun] = ammo[currentGun] - 1;
+			ammo[gunIndex]--;
             return true;
 		}
 		else
@@ -140,4 +155,11 @@ public class GunController : MonoBehaviour
 		}
 
 	}
+
+	void InstantiateBullet(float yRotation)
+	{
+        Vector3 spawnPosition = player.transform.TransformPoint(offset);
+        GameObject instantiatedBullet = Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
+        instantiatedBullet.transform.parent = bulletParent.transform; // Sets parent
+    }
 }
