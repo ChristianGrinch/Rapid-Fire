@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(AudioSource))]
 
 public class GunController : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class GunController : MonoBehaviour
 	public int pistolAmmo;
 	public int assaultRifleAmmo;
 
+    AudioSource audioData;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,8 @@ public class GunController : MonoBehaviour
 		playerRb = player.GetComponent <Rigidbody> ();
         pistolAmmo = ammo[0];
         assaultRifleAmmo = ammo[1];
+
+        audioData = GetComponent<AudioSource>();
     }
 
 	// Update is called once per frame
@@ -50,7 +54,8 @@ public class GunController : MonoBehaviour
 
 	void ShootGun()
 	{
-		ShootBullet shootBullet = bullet.GetComponent<ShootBullet>();
+        
+        ShootBullet shootBullet = bullet.GetComponent<ShootBullet>();
 
 		float yRotation = playerRb.rotation.eulerAngles.y;
 		if (yRotation < 0)
@@ -67,7 +72,8 @@ public class GunController : MonoBehaviour
 
 					if (Input.GetMouseButtonDown(0) && AmmoCheck(0))
 					{
-						Debug.Log("pistol ammo is: "+ammo[0]);
+                        audioData.Play();
+                        Debug.Log("pistol ammo is: "+ammo[0]);
 						int pistolDamage = 10;
 						int pistolRange = 50;
 						float pistolSpeed = 1f;
@@ -88,6 +94,7 @@ public class GunController : MonoBehaviour
 
 					if (Input.GetMouseButton(0) && Time.time >= nextFireTime && AmmoCheck(1))
 					{
+                        audioData.Play();
                         Debug.Log("ar ammo is: " + ammo[1]);
                         int assaultRifleDamage = 8;
 						int assaultRifleRange = 75;

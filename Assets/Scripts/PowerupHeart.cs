@@ -7,6 +7,13 @@ public class PowerupHeart : MonoBehaviour
 
     private int healthBoost = 30;
 
+    public AudioClip powerupCollectSound;
+    AudioSource audioData;
+
+    private void Start()
+    {
+        audioData = GetComponent<AudioSource>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
@@ -17,7 +24,11 @@ public class PowerupHeart : MonoBehaviour
             {
                 int modifiedHealth = playerHealth.health + healthBoost;
                 playerHealth.UpdateHealth(modifiedHealth);
-                Destroy(gameObject);
+
+                audioData.clip = powerupCollectSound;
+                audioData.Play();
+
+                Destroy(gameObject, powerupCollectSound.length);
             }
             else
             {
