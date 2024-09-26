@@ -5,9 +5,9 @@ using UnityEngine;
 public class ShootBullet : MonoBehaviour
 {
 
-    public float speed = 1; // Speed of the bullet --IMPLIMENTED
-    public int range = 50; // How far the bullet can travel from its initial location before it despawns --IMPLIMENTED
-    public int damage = 10; // damage of bullet obv --IMPLIMENTED
+    public float speed = 1;
+    public int range = 50;
+    public int damage = 10;
 
     private Vector3 spawnPos;
     private Vector3 currentPos;

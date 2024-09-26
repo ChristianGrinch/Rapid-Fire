@@ -17,8 +17,8 @@ public class GunController : MonoBehaviour
 	private int currentGun = 1;
 	private float fireRate = 0.1f;
 	private float nextFireTime = 0f;
-    private int[] ammo = new int[] { 20, 40 };
-	public int pistolAmmo;
+    private int[] ammo = new int[] { 20, 40 };  // ammo[0] = pistol ammo, ammo[1] = assault rifle ammo
+    public int pistolAmmo;
 	public int assaultRifleAmmo;
 
     AudioSource audioData;
