@@ -2518,10 +2518,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 504888119}
     m_Modifications:
-    - target: {fileID: 1333659337252366594, guid: dcb2c088f3a99e4468fb99d6e4a9cac0, type: 3}
-      propertyPath: powerupExpireSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 22e49a9bae3cee94da8c93f4138346e3, type: 3}
     - target: {fileID: 5110566718042937477, guid: dcb2c088f3a99e4468fb99d6e4a9cac0, type: 3}
       propertyPath: m_Name
       value: SpeedPowerup
