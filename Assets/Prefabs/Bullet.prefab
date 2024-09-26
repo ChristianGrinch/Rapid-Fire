@@ -149,4 +149,5 @@ MonoBehaviour:
   speed: 1
   range: 50
   damage: 10
+  ammoParent: {fileID: 0}
   ammo: {fileID: 1812258003393764395, guid: c169d57941076614b8d8e5ef41158482, type: 3}

@@ -12,6 +12,7 @@ public class ShootBullet : MonoBehaviour
     private Vector3 spawnPos;
     private Vector3 currentPos;
     private Rigidbody bulletRb;
+    public GameObject ammoParent;
 
     public GameObject ammo;
 
@@ -20,6 +21,7 @@ public class ShootBullet : MonoBehaviour
     {
         spawnPos = transform.position;
         bulletRb = GetComponent<Rigidbody>();
+        ammoParent = GameObject.Find("Ammo Piles");
     }
 
     // Update is called once per frame
@@ -37,7 +39,7 @@ public class ShootBullet : MonoBehaviour
     {
         if (Vector3.Distance(currentPos, spawnPos) <= range)
         {
-            bulletRb.AddRelativeForce(Vector3.up * speed * Time.deltaTime, ForceMode.Impulse);
+            bulletRb.AddRelativeForce(speed * Time.deltaTime * Vector3.up, ForceMode.Impulse);
         }
     }
 
@@ -58,7 +60,9 @@ public class ShootBullet : MonoBehaviour
                 enemyHealth.UpdateHealth(modifiedHealth); // Calls the function inside of HealthSystem inside the enemy to update the health on the enemy using the modifiedHealth.
                 if(modifiedHealth <= 0)
                 {
-                    Instantiate(ammo, bulletRb.transform.position, Quaternion.Euler(90,0,0)); // Spawns ammo on enemy death
+                    
+                    GameObject instantiatedEnemy = Instantiate(ammo, bulletRb.transform.position, Quaternion.Euler(90, 0, 0)); // Spawns ammo on enemy death
+                    instantiatedEnemy.transform.parent = ammoParent.transform; // Sets parent
                 }
             }
             else // If it isn't able to get the HealthSystem script, throw an error.

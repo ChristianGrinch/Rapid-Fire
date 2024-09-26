@@ -7,7 +7,7 @@ public class EnemyController : MonoBehaviour
 
     private int damage = 50;
     private float speed = 10;
-    private float attractRadius = 5;
+    private float attractRadius = 15;
     //private float timeToFollow = 5;
     private bool isFollowingPlayer = false;
     private bool shouldEnemymove = false; // Exists solely to make sure MoveEnemy is only called in fixed update; Optimization
