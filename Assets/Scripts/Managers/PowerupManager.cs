@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnPowerup : MonoBehaviour
+public class PowerupManager : MonoBehaviour
 {
     public GameObject heartPowerup;
     public GameObject ammo;
@@ -17,24 +17,14 @@ public class SpawnPowerup : MonoBehaviour
 
     public GameObject powerupParent;
     public GameObject ammoParent;
-
-    public GameObject spawnManager;
-    private SpawnEnemy spawnEnemy;
    
     private int newWave = 1;
-    private int currentWave;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        spawnEnemy = spawnManager.GetComponent<SpawnEnemy>();
-    }
 
     // Update is called once per frame
     void Update()
     {
         randomSpawnPos = new(randomXPos, 1, randomZPos);
-        int currentWave = spawnEnemy.currentWave;
+        int currentWave = EnemySpawnManager.Instance.currentWave;
 
         //Debug.Log(currentWave);
         if (Time.time >= nextSpawnTime || currentWave >= newWave)

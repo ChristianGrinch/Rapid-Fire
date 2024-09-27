@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnEnemy : MonoBehaviour
+public class EnemySpawnManager : MonoBehaviour
 {
 	public GameObject[] enemy;
 	public GameObject enemyParent;
@@ -27,11 +27,6 @@ public class SpawnEnemy : MonoBehaviour
 		Level2,
 		Level3,
 		Boss1
-	}
-	// Start is called before the first frame update
-	void Start()
-	{
-
 	}
 
 	// Update is called once per frame
@@ -151,7 +146,8 @@ public class SpawnEnemy : MonoBehaviour
 		instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
 	}
 
-	public static SpawnEnemy Instance { get; private set; }
+	// Singleton code -----
+	public static EnemySpawnManager Instance { get; private set; }
 
 	void Awake()
 	{
@@ -165,4 +161,6 @@ public class SpawnEnemy : MonoBehaviour
 		}
 		DontDestroyOnLoad(gameObject);
 	}
+
+    // End singleton code -----
 }

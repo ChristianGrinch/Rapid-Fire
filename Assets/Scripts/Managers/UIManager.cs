@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class UI : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI healthText;
@@ -21,7 +21,7 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        waveText.text = $"Wave {SpawnEnemy.Instance.currentWave}";
+        waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
         healthText.text = $"Health: {healthSystem.health}";
     }
 }
