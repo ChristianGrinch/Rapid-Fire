@@ -64,17 +64,8 @@ public class SpawnEnemy : MonoBehaviour
 	}
 	private Vector3 GenerateSpawnPosition(int type)
 	{
-		if(type != 3)
-		{
-            float randomPosX = Random.Range(-20f, 20f);
-            float randomPosZ = Random.Range(-20f, 20f);
-
-            Vector3 randomPos = new(randomPosX, 1, randomPosZ);
-
-            return randomPos;
-		}
-		else
-		{
+        if (type == 3) // if its a boss:
+        {
             float randomPosX = Random.Range(-20f, 20f);
             float randomPosZ = Random.Range(-20f, 20f);
 
@@ -82,8 +73,17 @@ public class SpawnEnemy : MonoBehaviour
 
             return randomPos;
         }
+        else
+        {
+            float randomPosX = Random.Range(-20f, 20f);
+            float randomPosZ = Random.Range(-20f, 20f);
 
-	}
+            Vector3 randomPos = new(randomPosX, 1, randomPosZ);
+
+            return randomPos;
+        }
+
+    }
 	 
 	void SpawnEnemyWave()
 	{
@@ -108,6 +108,7 @@ public class SpawnEnemy : MonoBehaviour
 	void InstantiateEnemy(int type)
 	{
 		GameObject instantiatedEnemy = Instantiate(enemy[type], GenerateSpawnPosition(type), Quaternion.Euler(90, 0, 0));
+
 		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
         instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
     }

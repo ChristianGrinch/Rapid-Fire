@@ -5,11 +5,10 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
 
-	private int damage = 50;
-	private float speed = 10;
-	private float attractRadius = 15;
-	private bool isFollowingPlayer = false;
-	private bool shouldEnemymove = false; // Exists solely to make sure MoveEnemy is only called in fixed update; Optimization
+	private int damage;
+	private float speed;
+	private float detectionRadius = 15;
+	private bool followingPlayer = false;
 
 	private Rigidbody enemyRb;
 	public GameObject player;
@@ -25,18 +24,10 @@ public class EnemyController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (!isFollowingPlayer && Vector3.Distance(player.transform.position, transform.position) < attractRadius)
+		if (!followingPlayer && Vector3.Distance(player.transform.position, transform.position) < detectionRadius)
 		{
-			shouldEnemymove = true;
-		}
-	}
-
-	private void FixedUpdate()
-	{
-		if (shouldEnemymove)
-		{
-			MoveEnemy();
-		}
+            MoveEnemy();
+        }
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -52,13 +43,13 @@ public class EnemyController : MonoBehaviour
 			}
 			else 
 			{
-				Debug.LogError("couldnt locate healthsystem script on player");
+				Debug.LogError("Unable to locate HealthSystem on player!");
 			}
 		}
 
 		if (collision.gameObject.CompareTag("Bullet"))
 		{
-			if (!isFollowingPlayer)
+			if (!followingPlayer)
 			{
 				StartCoroutine(MoveForTime(5));
 			}
@@ -67,7 +58,7 @@ public class EnemyController : MonoBehaviour
 
 	IEnumerator MoveForTime(float duration)
 	{
-		isFollowingPlayer = true;
+		followingPlayer = true;
 		float timePassed = 0;
 
 		while (timePassed < duration)
@@ -77,13 +68,12 @@ public class EnemyController : MonoBehaviour
 			timePassed += Time.deltaTime;
 			yield return null;  // Wait for the next frame
 		}
-		isFollowingPlayer = false;
+		followingPlayer = false;
 	}
 
 	void MoveEnemy()
 	{
 		enemyRb.AddForce(Time.deltaTime * speed * (player.transform.position - transform.position).normalized, ForceMode.Impulse);
-		shouldEnemymove = false;
 	}
 
 	void AssignDamage()
@@ -92,22 +82,26 @@ public class EnemyController : MonoBehaviour
 		{
 			case "Enemy 1":
 				damage = 20;
+				speed = 12;
 				Debug.Log("assign damage enemy 1");
 				break;
 			case "Enemy 2":
 				damage = 25;
-				Debug.Log("assign damage enemy 2");
+                speed = 10;
+                Debug.Log("assign damage enemy 2");
 				break;
 			case "Enemy 3":
 				damage = 50;
-				Debug.Log("assign damage enemy 3");
+                speed = 10;
+                Debug.Log("assign damage enemy 3");
 				break;
 			case "Boss 1":
 				damage = 90;
-				Debug.Log("assign damage boss 1");
+                speed = 5;
+                Debug.Log("assign damage boss 1");
 				break;
 			default:
-				Debug.LogError("Couldn't locate any enemies by tag and therefor couldn't assign damage.");
+				Debug.LogError("Couldn't locate any enemies by tag.");
 				break;
 		}
 	}
