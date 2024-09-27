@@ -157,6 +157,7 @@ MonoBehaviour:
   - {fileID: 8683618380255166290, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
   - {fileID: 8543954980356892885, guid: fcaa37993dbf15f47a5331e30ba4ac14, type: 3}
   enemyParent: {fileID: 1061023598}
+  player: {fileID: 883152918}
   currentWave: 0
 --- !u!4 &85188899
 Transform:

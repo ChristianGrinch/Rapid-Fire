@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
 
 	private int damage;
 	private float speed;
+	public int exp;
 	private float detectionRadius = 15;
 	private bool followingPlayer = false;
 
@@ -83,23 +84,23 @@ public class EnemyController : MonoBehaviour
 			case "Enemy 1":
 				damage = 20;
 				speed = 12;
-				Debug.Log("assign damage enemy 1");
+				exp = 10;
 				break;
 			case "Enemy 2":
 				damage = 25;
                 speed = 10;
-                Debug.Log("assign damage enemy 2");
+                exp = 15;
 				break;
 			case "Enemy 3":
 				damage = 50;
                 speed = 10;
-                Debug.Log("assign damage enemy 3");
+                exp = 20;
 				break;
 			case "Boss 1":
 				damage = 90;
                 speed = 5;
-                Debug.Log("assign damage boss 1");
-				break;
+                exp = 200;
+                break;
 			default:
 				Debug.LogError("Couldn't locate any enemies by tag.");
 				break;

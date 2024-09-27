@@ -56,7 +56,6 @@ public class SpawnEnemy : MonoBehaviour
 		if (currentWave % 10 == 0)
 		{
 			enemiesToSpawn[EnemyType.Boss1] += 1;
-			return;
 		}
 		else
 		{
@@ -108,23 +107,41 @@ public class SpawnEnemy : MonoBehaviour
 	 
 	void SpawnEnemyWave()
 	{
-		for (int i = 0; i < enemiesToSpawn[EnemyType.Level1]; i++)
-		{
-			InstantiateEnemy(0);
-		}
-		for(int i = 0; i < enemiesToSpawn[EnemyType.Level2]; i++)
-		{
-			InstantiateEnemy(1);
-		}
-		for (int i = 0; i < enemiesToSpawn[EnemyType.Level3]; i++)
-		{
-			InstantiateEnemy(2);
-		}
-		for (int i = 0; i < enemiesToSpawn[EnemyType.Boss1]; i++)
-		{
-			InstantiateEnemy(3);
-		}
-	}
+        switch (currentWave % 10)
+        {
+            case 0:
+                {
+                    for (int i = 0; i < enemiesToSpawn[EnemyType.Boss1]; i++)
+                    {
+                        InstantiateEnemy(3);
+                    }
+                    for (int i = 0; i < enemiesToSpawn[EnemyType.Level1]; i++)
+                    {
+                        InstantiateEnemy(0);
+                    }
+
+                    break;
+                }
+
+            default:
+                {
+                    for (int i = 0; i < enemiesToSpawn[EnemyType.Level1]; i++)
+                    {
+                        InstantiateEnemy(0);
+                    }
+                    for (int i = 0; i < enemiesToSpawn[EnemyType.Level2]; i++)
+                    {
+                        InstantiateEnemy(1);
+                    }
+                    for (int i = 0; i < enemiesToSpawn[EnemyType.Level3]; i++)
+                    {
+                        InstantiateEnemy(2);
+                    }
+
+                    break;
+                }
+        }
+    }
 
 	void InstantiateEnemy(int type)
 	{
