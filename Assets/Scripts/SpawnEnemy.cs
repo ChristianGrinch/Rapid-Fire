@@ -5,12 +5,14 @@ using UnityEngine;
 public class SpawnEnemy : MonoBehaviour
 {
 	public GameObject[] enemy;
-
 	public GameObject enemyParent;
+	public GameObject player;
 
 	private GameObject[] enemyCountArray;
 	private int enemyCount = 0;
 	public int currentWave = 0;
+	private int spawnBufferDistance = 3;
+
 
 	private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
@@ -42,48 +44,67 @@ public class SpawnEnemy : MonoBehaviour
 		{
 			currentWave++;
 
-            NumberOfEnemiesToSpawn();
+			NumberOfEnemiesToSpawn();
 
-            SpawnEnemyWave();
+			SpawnEnemyWave();
 		}
 
 	}
 
 	void NumberOfEnemiesToSpawn()
 	{
-		if (currentWave % 2 == 0)
+		if (currentWave % 10 == 0)
 		{
-            enemiesToSpawn[EnemyType.Boss1] += 1;
-        }
+			enemiesToSpawn[EnemyType.Boss1] += 1;
+			return;
+		}
 		else
 		{
-            enemiesToSpawn[EnemyType.Level1] += 1;
+			enemiesToSpawn[EnemyType.Level1] += 1;
+			enemiesToSpawn[EnemyType.Level2] += 1;
+			enemiesToSpawn[EnemyType.Level3] += 1;
+		}
+		if (currentWave % 2 == 0)
+		{
             enemiesToSpawn[EnemyType.Level2] += 1;
-            enemiesToSpawn[EnemyType.Level3] += 1;
         }
 	}
 	private Vector3 GenerateSpawnPosition(int type)
 	{
-        if (type == 3) // if its a boss:
-        {
-            float randomPosX = Random.Range(-20f, 20f);
-            float randomPosZ = Random.Range(-20f, 20f);
+		if (type == 3) // if its a boss:
+		{
+			float randomPosX = Random.Range(-20f, 20f);
+			float randomPosZ = Random.Range(-20f, 20f);
 
-            Vector3 randomPos = new(randomPosX, 2.5f, randomPosZ);
+			Vector3 randomSpawnPos = new(randomPosX, 2.5f, randomPosZ);
 
-            return randomPos;
-        }
-        else
-        {
-            float randomPosX = Random.Range(-20f, 20f);
-            float randomPosZ = Random.Range(-20f, 20f);
+			while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance)
+			{
+				randomPosX = Random.Range(-20f, 20f);
+				randomPosZ = Random.Range(-20f, 20f);
+                randomSpawnPos = new Vector3(randomPosX, 2.5f, randomPosZ);
+            }
+			return randomSpawnPos;
 
-            Vector3 randomPos = new(randomPosX, 1, randomPosZ);
 
-            return randomPos;
-        }
+		}
+		else
+		{
+			float randomPosX = Random.Range(-20f, 20f);
+			float randomPosZ = Random.Range(-20f, 20f);
 
-    }
+			Vector3 randomSpawnPos = new(randomPosX, 1, randomPosZ);
+
+			while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance)
+			{
+				randomPosX = Random.Range(-20f, 20f);
+				randomPosZ = Random.Range(-20f, 20f);
+                randomSpawnPos = new Vector3(randomPosX, 1, randomPosZ);
+            }
+			return randomSpawnPos;
+		}
+
+	}
 	 
 	void SpawnEnemyWave()
 	{
@@ -99,19 +120,19 @@ public class SpawnEnemy : MonoBehaviour
 		{
 			InstantiateEnemy(2);
 		}
-        for (int i = 0; i < enemiesToSpawn[EnemyType.Boss1]; i++)
-        {
-            InstantiateEnemy(3);
-        }
-    }
+		for (int i = 0; i < enemiesToSpawn[EnemyType.Boss1]; i++)
+		{
+			InstantiateEnemy(3);
+		}
+	}
 
 	void InstantiateEnemy(int type)
 	{
 		GameObject instantiatedEnemy = Instantiate(enemy[type], GenerateSpawnPosition(type), Quaternion.Euler(90, 0, 0));
 
 		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
-        instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
-    }
+		instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
+	}
 
 	public static SpawnEnemy Instance { get; private set; }
 
