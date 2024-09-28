@@ -13,10 +13,6 @@ public class EnemySpawnManager : MonoBehaviour
 	public int currentWave = 0;
 	private int spawnBufferDistance = 3;
 
-	public UIManager UIManager;
-	private bool isGameActive;
-
-
 	private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
 		{ EnemyType.Level1, 4 },
@@ -32,20 +28,13 @@ public class EnemySpawnManager : MonoBehaviour
 		Boss1
 	}
 
-    private void Start()
-	{
-		UIManager = GetComponent<UIManager>();
-
-    }
 	// Update is called once per frame
 	void Update()
 	{
-        isGameActive = UIManager.isGameActive;
 
         enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
-		enemyCount = enemyCountArray.Length;
-		Debug.Log(isGameActive);
-		if (enemyCount == 0 && isGameActive)
+		enemyCount = enemyCountArray.Length;;
+		if (enemyCount == 0 && UIManager.Instance.isGameActive)
 		{
 			currentWave++;
 

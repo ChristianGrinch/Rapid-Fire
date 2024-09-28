@@ -36,19 +36,21 @@ public class PlayerController : MonoBehaviour
 
 	void RotatePlayer() // all code in this method was made by chatgpt not me :fade:
 	{
-		
-		Vector3 mouseScreenPosition = Input.mousePosition; // Get mouse position in screen space
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPosition.x, mouseScreenPosition.y, Camera.main.transform.position.y)); // Convert screen position to world space
-        Vector3 direction = mouseWorldPosition - transform.position; // Calculate the direction from player to mouse cursor
-
-		direction.y = 0; // Lock rotation to only affect the Y-axis (so the player stays upright)
-
-        // Apply rotation to player to face the cursor
-        if (direction.magnitude > 0.1f) // Prevent errors when the direction is too small
+		if (UIManager.Instance.isGameActive)
 		{
-			playerRb.rotation = Quaternion.LookRotation(direction);
-		}
-	}
+			Vector3 mouseScreenPosition = Input.mousePosition; // Get mouse position in screen space
+			Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPosition.x, mouseScreenPosition.y, Camera.main.transform.position.y)); // Convert screen position to world space
+			Vector3 direction = mouseWorldPosition - transform.position; // Calculate the direction from player to mouse cursor
+
+			direction.y = 0; // Lock rotation to only affect the Y-axis (so the player stays upright)
+
+			// Apply rotation to player to face the cursor
+			if (direction.magnitude > 0.1f) // Prevent errors when the direction is too small
+			{
+				playerRb.rotation = Quaternion.LookRotation(direction);
+			}
+        }
+    }
 
 	void Sprinting()
 	{

@@ -25,21 +25,22 @@ public class PowerupManager : MonoBehaviour
     {
         randomSpawnPos = new(randomXPos, 1, randomZPos);
         int currentWave = EnemySpawnManager.Instance.currentWave;
-
-        //Debug.Log(currentWave);
-        if (Time.time >= nextSpawnTime || currentWave >= newWave)
+        if (UIManager.Instance.isGameActive)
         {
-            GenerateRandomPos();
-            InstantiateObject(ammo, randomSpawnPos, ammoParent);
+            if (Time.time >= nextSpawnTime || currentWave >= newWave)
+            {
+                GenerateRandomPos();
+                InstantiateObject(ammo, randomSpawnPos, ammoParent);
 
-            GenerateRandomPos();
-            InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
+                GenerateRandomPos();
+                InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
 
-            GenerateRandomPos();
-            InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
+                GenerateRandomPos();
+                InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
 
-            nextSpawnTime = Time.time + spawnInterval;
-            newWave++;
+                nextSpawnTime = Time.time + spawnInterval;
+                newWave++;
+            }
         }
     }
     

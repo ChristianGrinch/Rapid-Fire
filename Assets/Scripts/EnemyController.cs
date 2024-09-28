@@ -25,7 +25,7 @@ public class EnemyController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (!followingPlayer && Vector3.Distance(player.transform.position, transform.position) < detectionRadius)
+		if (!followingPlayer && Vector3.Distance(player.transform.position, transform.position) < detectionRadius && UIManager.Instance.isGameActive)
 		{
             MoveEnemy();
         }
