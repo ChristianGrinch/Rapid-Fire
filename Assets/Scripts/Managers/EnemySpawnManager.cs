@@ -13,6 +13,9 @@ public class EnemySpawnManager : MonoBehaviour
 	public int currentWave = 0;
 	private int spawnBufferDistance = 3;
 
+	public UIManager UIManager;
+	private bool isGameActive;
+
 
 	private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
@@ -29,13 +32,20 @@ public class EnemySpawnManager : MonoBehaviour
 		Boss1
 	}
 
+    private void Start()
+	{
+		UIManager = GetComponent<UIManager>();
+
+    }
 	// Update is called once per frame
 	void Update()
 	{
-		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
-		enemyCount = enemyCountArray.Length;
+        isGameActive = UIManager.isGameActive;
 
-		if (enemyCount == 0)
+        enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
+		enemyCount = enemyCountArray.Length;
+		Debug.Log(isGameActive);
+		if (enemyCount == 0 && isGameActive)
 		{
 			currentWave++;
 
@@ -159,7 +169,6 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
-		DontDestroyOnLoad(gameObject);
 	}
 
     // End singleton code -----
