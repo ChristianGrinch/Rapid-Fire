@@ -16,12 +16,12 @@ public class HealthSystem : MonoBehaviour
         {
             health = newHealth;
         }
-        else
+        else if (newHealth > maxHealth && gameObject.name == "Player")
         {
             health = maxHealth;
         }
 
-        if(newHealth <= 0) // Makes sure health never goes below 0
+        if (newHealth <= 0) // Makes sure health never goes below 0
         {
             health = 0;
         }

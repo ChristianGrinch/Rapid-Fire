@@ -8,18 +8,23 @@ public class EnemyController : MonoBehaviour
 	private int damage;
 	private float speed;
 	public int exp;
+	private int health;
 	private float detectionRadius = 15;
 	private bool followingPlayer = false;
+	private int difficulty = 1;
 
 	private Rigidbody enemyRb;
-	public GameObject player;
+	private GameObject player;
+	private HealthSystem healthSystem;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		enemyRb = GetComponent<Rigidbody>();
 		player = GameObject.Find("Player");
-		AssignDamage();
+		healthSystem = gameObject.GetComponent<HealthSystem>();
+		AssignStats();
+		healthSystem.health = health;
 	}
 
 	// Update is called once per frame
@@ -27,8 +32,8 @@ public class EnemyController : MonoBehaviour
 	{
 		if (!followingPlayer && Vector3.Distance(player.transform.position, transform.position) < detectionRadius && UIManager.Instance.isGameActive)
 		{
-            MoveEnemy();
-        }
+			MoveEnemy();
+		}
 	}
 
 	private void OnCollisionEnter(Collision collision)
@@ -77,33 +82,43 @@ public class EnemyController : MonoBehaviour
 		enemyRb.AddForce(Time.deltaTime * speed * (player.transform.position - transform.position).normalized, ForceMode.Impulse);
 	}
 
-	void AssignDamage()
+	void AssignStats()
 	{
-		switch (gameObject.name)
+		difficulty = UIManager.Instance.difficulty;
+
+		switch (difficulty)
 		{
-			case "Enemy 1":
-				damage = 20;
-				speed = 12;
-				exp = 10;
+			case 1:
+				SetStats(20, 12, 10, 40, "Enemy 1");
+				SetStats(25, 10, 15, 60, "Enemy 2");
+				SetStats(50, 10, 20, 100, "Enemy 3");
+				SetStats(90, 5, 200, 450, "Boss 1");
 				break;
-			case "Enemy 2":
-				damage = 25;
-                speed = 10;
-                exp = 15;
+			case 2:
+				SetStats(25, 12, 15, 55, "Enemy 1");
+				SetStats(30, 10, 20, 75, "Enemy 2");
+				SetStats(55, 10, 25, 130, "Enemy 3");
+				SetStats(95, 5.5f, 250, 675, "Boss 1");
 				break;
-			case "Enemy 3":
-				damage = 50;
-                speed = 10;
-                exp = 20;
-				break;
-			case "Boss 1":
-				damage = 90;
-                speed = 5;
-                exp = 200;
+			case 3:
+                SetStats(35, 14.5f, 18, 68, "Enemy 1");
+                SetStats(45, 13, 25, 100, "Enemy 2");
+                SetStats(70, 13, 35, 156, "Enemy 3");
+                SetStats(130, 6.5f, 325, 800, "Boss 1");
                 break;
 			default:
-				Debug.LogError("Couldn't locate any enemies by tag.");
+				Debug.LogError("Invalid difficulty level.");
 				break;
+		}
+	}
+	void SetStats(int enemyDamage, float enemySpeed, int enemyExp, int enemyHealth, string enemyName)
+	{
+		if(gameObject.name == enemyName)
+		{
+			damage = enemyDamage;
+			speed = enemySpeed;
+			exp = enemyExp;
+			health = enemyHealth;
 		}
 	}
 }

@@ -21,8 +21,11 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		MovePlayer();
-		RotatePlayer();
+		if (UIManager.Instance.isGameActive)
+		{
+            MovePlayer();
+            RotatePlayer();
+        }
 	}
 	// Moves player based on WASD/Arrow keys input
 	void MovePlayer()

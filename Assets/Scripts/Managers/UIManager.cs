@@ -21,10 +21,13 @@ public class UIManager : MonoBehaviour
     public Button difficultySelectorButton;
 
     public GameObject difficultyScreen;
-    public Button backToTitleScreenButton;
-    public Button easyButton;
-    public Button mediumButton;
-    public Button masterButton;
+
+    public GameObject pauseScreen;
+    public Button toTitleScreenFromPauseMenuButton;
+    public Button quitGameButton;
+
+    public GameObject quitGamePopup;
+
 
     private HealthSystem healthSystem;
     public GameObject player;
@@ -48,15 +51,9 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SwitchToTitle(); 
+
         healthSystem = player.GetComponent<HealthSystem>();
-
-        playButton.onClick.AddListener(StartGame);
-        difficultySelectorButton.onClick.AddListener(SwitchToMenu);
-        backToTitleScreenButton.onClick.AddListener(SwitchToTitle);
-
-        easyButton.onClick.AddListener(() => SetDifficulty(1));
-        mediumButton.onClick.AddListener(() => SetDifficulty(2));
-        masterButton.onClick.AddListener(() => SetDifficulty(3));
     }
 
     // Update is called once per frame
@@ -68,6 +65,13 @@ public class UIManager : MonoBehaviour
         if (healthSystem.health <= 0)
         {
             GameOver();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape) && isGameActive)
+        {
+            PauseGame();
+        } else if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive)
+        {
+            ResumeGame();
         }
     }
 
@@ -87,13 +91,23 @@ public class UIManager : MonoBehaviour
         titleScreen.SetActive(false);
         game.SetActive(true);
         isGameActive = true;
+        Time.timeScale = 1;
     }
     public void PauseGame()
     {
         isGameActive = false;
+        pauseScreen.SetActive(true);
+        Time.timeScale = 0;
     }
 
-    public void SwitchToMenu()
+    public void ResumeGame()
+    {
+        isGameActive = true;
+        pauseScreen.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void OpenDifficultyScreen()
     {
         titleScreen.SetActive(false);
         difficultyScreen.SetActive(true);
@@ -102,11 +116,31 @@ public class UIManager : MonoBehaviour
     {
         titleScreen.SetActive(true);
         difficultyScreen.SetActive(false);
+        pauseScreen.SetActive(false);
     }
 
     public void SetDifficulty(int selectedDifficulty)
     {
         difficulty = selectedDifficulty;
         Debug.Log("Difficulty set to: " + difficulty);
+    }
+    public void OpenPopup()
+    {
+        quitGamePopup.SetActive(true);
+        pauseScreen.SetActive(false);
+    }
+
+    public void ClosePopup()
+    {
+        quitGamePopup.SetActive(false);
+        pauseScreen.SetActive(true);
+    }
+    public void QuitGame()
+    {
+    #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+    #else
+        Application.Quit();
+    #endif
     }
 }
