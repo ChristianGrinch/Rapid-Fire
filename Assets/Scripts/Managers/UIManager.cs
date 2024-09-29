@@ -41,6 +41,7 @@ public class UIManager : MonoBehaviour
 	private HealthSystem healthSystem;
 	private GunController gunController;
 	public GameObject player;
+	public PlayerController playerController;
 
 	public int difficulty = 1;
 	public bool isGameActive = false;
@@ -66,6 +67,7 @@ public class UIManager : MonoBehaviour
 
 		healthSystem = player.GetComponent<HealthSystem>();
 		gunController = player.GetComponent<GunController>();
+		playerController = player.GetComponent<PlayerController>();
 
     }
 
@@ -182,13 +184,36 @@ public class UIManager : MonoBehaviour
 	{
 	#if UNITY_EDITOR
 			UnityEditor.EditorApplication.isPlaying = false;
-	#else
+#else
 		Application.Quit();
-	#endif
+#endif
 	}
 	public void OpenSettings()
 	{
 		settingsScreen.SetActive(true);
 		titleScreen.SetActive(false);
 	}
+
+	public void SavePlayer()
+	{
+		SaveSystem.SavePlayer(playerController);
+	}
+	
+	public void LoadPlayer()
+	{
+		PlayerData data = SaveSystem.LoadPlayer();
+
+		playerController.exp = data.exp;
+        playerController.health = data.health;
+		
+
+		Vector3 position;
+        position.x = data.position[0];
+        position.y = data.position[1];
+        position.z = data.position[2];
+		player.transform.position = position;
+
+		healthSystem.UpdateHealth(data.health);
+		Debug.Log(data.health);
+    }
 }

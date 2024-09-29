@@ -6,17 +6,25 @@ public class PlayerController : MonoBehaviour
 {
 	private Rigidbody playerRb;
 	public float speed = 80;
+	public int exp;
+	public int health;
+
+	private HealthSystem healthSystem;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		playerRb = GetComponent<Rigidbody>();
-	}
+		healthSystem = GetComponent<HealthSystem>();
+        health = healthSystem.health;
+        healthSystem.UpdateHealth(health);
+    }
 
 	// Update is called once per frame
 	void Update()
 	{
 		Sprinting();
+		health = healthSystem.health;
 	}
 
 	private void FixedUpdate()
