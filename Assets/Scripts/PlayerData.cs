@@ -7,12 +7,14 @@ public class PlayerData
 {
     public int exp;
     public int health;
+    public int lives;
     public float[] position;
 
     public PlayerData(PlayerController player)
     {
         exp = player.exp;
         health = player.health;
+        lives = player.lives;
 
         position = new float[3];
         position[0] = player.transform.position.x;

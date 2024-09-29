@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 	public float speed = 80;
 	public int exp;
 	public int health;
+	public int lives;
 
 	private HealthSystem healthSystem;
 
@@ -16,8 +17,6 @@ public class PlayerController : MonoBehaviour
 	{
 		playerRb = GetComponent<Rigidbody>();
 		healthSystem = GetComponent<HealthSystem>();
-        health = healthSystem.health;
-        healthSystem.UpdateHealth(health);
     }
 
 	// Update is called once per frame
@@ -25,6 +24,7 @@ public class PlayerController : MonoBehaviour
 	{
 		Sprinting();
 		health = healthSystem.health;
+		lives = healthSystem.lives;
 	}
 
 	private void FixedUpdate()

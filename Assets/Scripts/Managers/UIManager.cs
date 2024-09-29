@@ -205,6 +205,7 @@ public class UIManager : MonoBehaviour
 
 		playerController.exp = data.exp;
         playerController.health = data.health;
+		playerController.lives = data.lives;
 		
 
 		Vector3 position;
@@ -214,6 +215,6 @@ public class UIManager : MonoBehaviour
 		player.transform.position = position;
 
 		healthSystem.UpdateHealth(data.health);
-		Debug.Log(data.health);
+		healthSystem.UpdateLives(data.lives);
     }
 }
