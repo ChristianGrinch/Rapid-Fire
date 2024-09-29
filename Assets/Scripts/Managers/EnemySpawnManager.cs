@@ -10,6 +10,17 @@ public class EnemySpawnManager : MonoBehaviour
 
 	public GameObject[] enemyCountArray;
 	private int enemyCount = 0;
+
+	List<GameObject> level1Enemies = new();
+	List<GameObject> level2Enemies = new();
+	List<GameObject> level3Enemies = new();
+	List<GameObject> boss1Enemies = new();
+
+	GameObject[] enemyLevel1;
+	GameObject[] enemyLevel2;
+	GameObject[] enemyLevel3;
+	GameObject[] bossLevel1;
+
 	public int currentWave = 0;
 	private int spawnBufferDistance = 3;
 
@@ -28,22 +39,58 @@ public class EnemySpawnManager : MonoBehaviour
 		Boss1
 	}
 
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
 	{
-        enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
-		enemyCount = enemyCountArray.Length;;
+		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
+		enemyCount = enemyCountArray.Length;
 
 		if (enemyCount == 0 && UIManager.Instance.isGameActive)
 		{
 			currentWave++;
 
-            NumberOfEnemiesToSpawn();
+			NumberOfEnemiesToSpawn();
 
 			SpawnEnemyWave();
 		}
 
-	}
+        StartCoroutine(AssignEnemiesToArray());
+    }
+
+	public IEnumerator AssignEnemiesToArray()
+	{
+		yield return null;
+
+		level1Enemies = new();
+		level2Enemies = new();
+		level3Enemies = new();
+		boss1Enemies = new();
+
+        foreach (GameObject enemy in enemyCountArray)
+		{
+			if (enemy.name.Contains("Enemy 1"))
+			{
+				level1Enemies.Add(enemy);
+            }
+			else if (enemy.name.Contains("Enemy 2"))
+			{
+				level2Enemies.Add(enemy);
+            }
+			else if (enemy.name.Contains("Enemy 3"))
+			{
+				level3Enemies.Add(enemy);
+            }
+			else if (enemy.name.Contains("Boss 1"))
+			{
+				boss1Enemies.Add(enemy);
+            }
+		}
+
+		enemyLevel1 = level1Enemies.ToArray();
+		enemyLevel2 = level2Enemies.ToArray();
+		enemyLevel3 = level3Enemies.ToArray();
+		bossLevel1 = boss1Enemies.ToArray();
+    }
 
 	void NumberOfEnemiesToSpawn()
 	{
@@ -51,25 +98,25 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			enemiesToSpawn[EnemyType.Boss1] += 1;
 		}
-        switch (UIManager.Instance.difficulty)
-        {
-            case 1:
-                enemiesToSpawn[EnemyType.Level1] = currentWave + 3;
-                enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
-                enemiesToSpawn[EnemyType.Level3] = currentWave + -2;
-                break;
-            case 2:
-                enemiesToSpawn[EnemyType.Level1] = currentWave + 5;
-                enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
-                enemiesToSpawn[EnemyType.Level3] = currentWave + 0;
-                break;
-            case 3:
-                enemiesToSpawn[EnemyType.Level1] = currentWave + 7;
-                enemiesToSpawn[EnemyType.Level2] = currentWave + 3;
-                enemiesToSpawn[EnemyType.Level3] = currentWave + 2;
-                break;
-        }
-    }
+		switch (UIManager.Instance.difficulty)
+		{
+			case 1:
+				enemiesToSpawn[EnemyType.Level1] = currentWave + 3;
+				enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
+				enemiesToSpawn[EnemyType.Level3] = currentWave + -2;
+				break;
+			case 2:
+				enemiesToSpawn[EnemyType.Level1] = currentWave + 5;
+				enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
+				enemiesToSpawn[EnemyType.Level3] = currentWave + 0;
+				break;
+			case 3:
+				enemiesToSpawn[EnemyType.Level1] = currentWave + 7;
+				enemiesToSpawn[EnemyType.Level2] = currentWave + 3;
+				enemiesToSpawn[EnemyType.Level3] = currentWave + 2;
+				break;
+		}
+	}
 	private Vector3 GenerateSpawnPosition(int type)
 	{
 		if (type == 3) // if its a boss:
@@ -83,8 +130,8 @@ public class EnemySpawnManager : MonoBehaviour
 			{
 				randomPosX = Random.Range(-20f, 20f);
 				randomPosZ = Random.Range(-20f, 20f);
-                randomSpawnPos = new Vector3(randomPosX, 2.5f, randomPosZ);
-            }
+				randomSpawnPos = new Vector3(randomPosX, 2.5f, randomPosZ);
+			}
 			return randomSpawnPos;
 
 
@@ -100,8 +147,8 @@ public class EnemySpawnManager : MonoBehaviour
 			{
 				randomPosX = Random.Range(-20f, 20f);
 				randomPosZ = Random.Range(-20f, 20f);
-                randomSpawnPos = new Vector3(randomPosX, 1, randomPosZ);
-            }
+				randomSpawnPos = new Vector3(randomPosX, 1, randomPosZ);
+			}
 			return randomSpawnPos;
 		}
 
@@ -109,41 +156,43 @@ public class EnemySpawnManager : MonoBehaviour
 	 
 	void SpawnEnemyWave()
 	{
-        switch (currentWave % 10)
-        {
-            case 0:
-                {
-                    for (int i = 0; i < enemiesToSpawn[EnemyType.Boss1]; i++)
-                    {
-                        InstantiateEnemy(3);
-                    }
-                    for (int i = 0; i < enemiesToSpawn[EnemyType.Level1]; i++)
-                    {
-                        InstantiateEnemy(0);
-                    }
+		switch (currentWave % 10)
+		{
+			case 0:
+				{
+					for (int i = 0; i < enemiesToSpawn[EnemyType.Boss1]; i++)
+					{
+						InstantiateEnemy(3);
+					}
+					for (int i = 0; i < enemiesToSpawn[EnemyType.Level1]; i++)
+					{
+						InstantiateEnemy(0);
+					}
 
-                    break;
-                }
+					break;
+				}
 
-            default:
-                {
-                    for (int i = 0; i < enemiesToSpawn[EnemyType.Level1]; i++)
-                    {
-                        InstantiateEnemy(0);
-                    }
-                    for (int i = 0; i < enemiesToSpawn[EnemyType.Level2]; i++)
-                    {
-                        InstantiateEnemy(1);
-                    }
-                    for (int i = 0; i < enemiesToSpawn[EnemyType.Level3]; i++)
-                    {
-                        InstantiateEnemy(2);
-                    }
+			default:
+				{
+					for (int i = 0; i < enemiesToSpawn[EnemyType.Level1]; i++)
+					{
+						InstantiateEnemy(0);
+					}
+					for (int i = 0; i < enemiesToSpawn[EnemyType.Level2]; i++)
+					{
+						InstantiateEnemy(1);
+					}
+					for (int i = 0; i < enemiesToSpawn[EnemyType.Level3]; i++)
+					{
+						InstantiateEnemy(2);
+					}
 
-                    break;
-                }
-        }
-    }
+					break;
+				}
+		}
+
+		StartCoroutine(AssignEnemiesToArray());
+	}
 
 	void InstantiateEnemy(int type)
 	{
@@ -151,7 +200,7 @@ public class EnemySpawnManager : MonoBehaviour
 
 		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
 		instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
-	}
+    }
 
 	// Singleton code -----
 	public static EnemySpawnManager Instance { get; private set; }
@@ -168,5 +217,5 @@ public class EnemySpawnManager : MonoBehaviour
 		}
 	}
 
-    // End singleton code -----
+	// End singleton code -----
 }
