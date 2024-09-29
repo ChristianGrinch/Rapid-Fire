@@ -28,8 +28,8 @@ public class EnemySpawnManager : MonoBehaviour
 		Boss1
 	}
 
-	// Update is called once per frame
-	void Update()
+    // Update is called once per frame
+    void Update()
 	{
 
         enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
@@ -38,11 +38,34 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			currentWave++;
 
-			NumberOfEnemiesToSpawn();
+            DifficultySpawnAdjustment();
+
+            NumberOfEnemiesToSpawn();
 
 			SpawnEnemyWave();
 		}
 
+	}
+
+	void DifficultySpawnAdjustment()
+	{
+		switch (UIManager.Instance.difficulty)
+		{
+			case 1:
+				enemiesToSpawn[EnemyType.Level1] = 4;
+				enemiesToSpawn[EnemyType.Level2] = 2;
+				break;
+			case 2:
+				enemiesToSpawn[EnemyType.Level1] = 6;
+				enemiesToSpawn[EnemyType.Level2] = 2;
+				enemiesToSpawn[EnemyType.Level3] = 1;
+				break;
+			case 3:
+                enemiesToSpawn[EnemyType.Level1] = 8;
+                enemiesToSpawn[EnemyType.Level2] = 4;
+                enemiesToSpawn[EnemyType.Level3] = 3;
+				break;
+        }
 	}
 
 	void NumberOfEnemiesToSpawn()
@@ -51,7 +74,7 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			enemiesToSpawn[EnemyType.Boss1] += 1;
 		}
-		else
+		else if (currentWave > 1)
 		{
 			enemiesToSpawn[EnemyType.Level1] += 1;
 			enemiesToSpawn[EnemyType.Level2] += 1;

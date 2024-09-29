@@ -119,8 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3218da2ce86897347be9f838d845c4a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerupCollectSound: {fileID: 8300000, guid: 22e49a9bae3cee94da8c93f4138346e3, type: 3}
-  powerupExpireSound: {fileID: 8300000, guid: 22e49a9bae3cee94da8c93f4138346e3, type: 3}
+  powerupCollectSound: {fileID: 8300000, guid: 89d076e3b844d334391f0aa21ecfcc6b, type: 3}
+  powerupExpireSound: {fileID: 8300000, guid: f1d1ac2eb1926d348a096dbcb8916702, type: 3}
 --- !u!82 &7511646352864156964
 AudioSource:
   m_ObjectHideFlags: 0

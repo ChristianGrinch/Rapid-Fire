@@ -14,9 +14,10 @@ public class GunController : MonoBehaviour
  	public GameObject[] gunObjects;
 
     public GunType currentGun = GunType.Pistol;
+	public int currentGunInt;
     private float fireRate = 0.1f;
 	private float nextFireTime = 0f;
-    private int[] ammo = new int[] { 20, 40 };  // ammo[0] = pistol ammo, ammo[1] = assault rifle ammo
+    public int[] ammo = new int[] { 20, 40 };  // ammo[0] = pistol ammo, ammo[1] = assault rifle ammo
 
     AudioSource audioData;
 
@@ -50,10 +51,12 @@ public class GunController : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			currentGun = GunType.Pistol;
+			currentGunInt = 0;
 		} else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			currentGun = GunType.AssaultRifle;
-		}
+            currentGunInt = 1;
+        }
 	}
 
 	void ShootGun()

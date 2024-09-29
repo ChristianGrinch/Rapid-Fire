@@ -19,6 +19,7 @@ public class SpeedPowerup : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             audioData.clip = powerupCollectSound;
+            audioData.volume = 0.3f;
             audioData.Play();
             StartCoroutine(ApplySpeedPowerup(other.gameObject));
         }
@@ -36,7 +37,6 @@ public class SpeedPowerup : MonoBehaviour
 
         audioData.clip = powerupExpireSound;
         audioData.volume = 0.3f;
-        audioData.pitch = 0.5f;
         audioData.Play();
 
         // Revert the effect after the powerup duration

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -12,6 +13,8 @@ public class EnemyController : MonoBehaviour
 	private float detectionRadius = 15;
 	private bool followingPlayer = false;
 	private int difficulty = 1;
+	private float damageRate = 0.4f;
+	private bool isDamagingPlayer = false;
 
 	private Rigidbody enemyRb;
 	private GameObject player;
@@ -42,15 +45,15 @@ public class EnemyController : MonoBehaviour
 		{
 			HealthSystem playerHealth = collision.gameObject.GetComponent<HealthSystem>();
 
-			if (playerHealth != null) 
+			if (playerHealth != null && !isDamagingPlayer)
 			{
-				int modifiedHealth = playerHealth.health - damage; 
-				playerHealth.UpdateHealth(modifiedHealth); 
+				StartCoroutine(DamagePlayer(collision, playerHealth));
 			}
-			else 
+			else
 			{
 				Debug.LogError("Unable to locate HealthSystem on player!");
 			}
+				
 		}
 
 		if (collision.gameObject.CompareTag("Bullet"))
@@ -61,6 +64,31 @@ public class EnemyController : MonoBehaviour
 			}
 		}
 	}
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+		{
+			isDamagingPlayer = false;
+			StopAllCoroutines();
+		}
+    }
+
+    IEnumerator DamagePlayer(Collision collision, HealthSystem playerHealth)
+	{
+		isDamagingPlayer = true;
+
+        int initialHealth = playerHealth.health - damage;
+        playerHealth.UpdateHealth(initialHealth);
+
+        while (playerHealth.health > 0)
+		{
+            int modifiedHealth = playerHealth.health - damage;
+            yield return new WaitForSeconds(damageRate);
+            playerHealth.UpdateHealth(modifiedHealth);
+			Debug.Log("running DamagePlayer in if");
+        }
+		isDamagingPlayer = false;
+    }
 
 	IEnumerator MoveForTime(float duration)
 	{
@@ -101,11 +129,11 @@ public class EnemyController : MonoBehaviour
 				SetStats(95, 5.5f, 250, 675, "Boss 1");
 				break;
 			case 3:
-                SetStats(35, 14.5f, 18, 68, "Enemy 1");
-                SetStats(45, 13, 25, 100, "Enemy 2");
-                SetStats(70, 13, 35, 156, "Enemy 3");
-                SetStats(130, 6.5f, 325, 800, "Boss 1");
-                break;
+				SetStats(35, 14.5f, 18, 68, "Enemy 1");
+				SetStats(45, 13, 25, 100, "Enemy 2");
+				SetStats(70, 13, 35, 156, "Enemy 3");
+				SetStats(130, 6.5f, 325, 800, "Boss 1");
+				break;
 			default:
 				Debug.LogError("Invalid difficulty level.");
 				break;
