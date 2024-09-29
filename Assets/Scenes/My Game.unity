@@ -5606,6 +5606,9 @@ MonoBehaviour:
   exp: 0
   health: 0
   lives: 0
+  wave: 0
+  ammo: 
+  gameManager: {fileID: 1306592451}
 --- !u!114 &883152925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8068,6 +8071,7 @@ MonoBehaviour:
   - {fileID: 8543954980356892885, guid: fcaa37993dbf15f47a5331e30ba4ac14, type: 3}
   enemyParent: {fileID: 1061023598}
   player: {fileID: 883152918}
+  enemyCountArray: []
   currentWave: 0
 --- !u!114 &1306592454
 MonoBehaviour:
@@ -8102,8 +8106,10 @@ MonoBehaviour:
   returnToTitleScreenPopup: {fileID: 901707321}
   settingsScreen: {fileID: 1349277525}
   toTitleScreenFromSettingsButton: {fileID: 1600003502}
-  player: {fileID: 883152918}
   playerController: {fileID: 0}
+  enemySpawnManager: {fileID: 0}
+  player: {fileID: 883152918}
+  gameManager: {fileID: 1306592451}
   difficulty: 1
   isGameActive: 0
   didSelectDifficulty: 0

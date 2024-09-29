@@ -8,7 +8,7 @@ public class EnemySpawnManager : MonoBehaviour
 	public GameObject enemyParent;
 	public GameObject player;
 
-	private GameObject[] enemyCountArray;
+	public GameObject[] enemyCountArray;
 	private int enemyCount = 0;
 	public int currentWave = 0;
 	private int spawnBufferDistance = 3;
@@ -31,14 +31,12 @@ public class EnemySpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-
         enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;;
+
 		if (enemyCount == 0 && UIManager.Instance.isGameActive)
 		{
 			currentWave++;
-
-            DifficultySpawnAdjustment();
 
             NumberOfEnemiesToSpawn();
 
@@ -47,44 +45,31 @@ public class EnemySpawnManager : MonoBehaviour
 
 	}
 
-	void DifficultySpawnAdjustment()
-	{
-		switch (UIManager.Instance.difficulty)
-		{
-			case 1:
-				enemiesToSpawn[EnemyType.Level1] = 4;
-				enemiesToSpawn[EnemyType.Level2] = 2;
-				break;
-			case 2:
-				enemiesToSpawn[EnemyType.Level1] = 6;
-				enemiesToSpawn[EnemyType.Level2] = 2;
-				enemiesToSpawn[EnemyType.Level3] = 1;
-				break;
-			case 3:
-                enemiesToSpawn[EnemyType.Level1] = 8;
-                enemiesToSpawn[EnemyType.Level2] = 4;
-                enemiesToSpawn[EnemyType.Level3] = 3;
-				break;
-        }
-	}
-
 	void NumberOfEnemiesToSpawn()
 	{
 		if (currentWave % 10 == 0)
 		{
 			enemiesToSpawn[EnemyType.Boss1] += 1;
 		}
-		else if (currentWave > 1)
-		{
-			enemiesToSpawn[EnemyType.Level1] += 1;
-			enemiesToSpawn[EnemyType.Level2] += 1;
-			enemiesToSpawn[EnemyType.Level3] += 1;
-		}
-		if (currentWave % 2 == 0)
-		{
-            enemiesToSpawn[EnemyType.Level2] += 1;
+        switch (UIManager.Instance.difficulty)
+        {
+            case 1:
+                enemiesToSpawn[EnemyType.Level1] = currentWave + 3;
+                enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
+                enemiesToSpawn[EnemyType.Level3] = currentWave + -2;
+                break;
+            case 2:
+                enemiesToSpawn[EnemyType.Level1] = currentWave + 5;
+                enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
+                enemiesToSpawn[EnemyType.Level3] = currentWave + 0;
+                break;
+            case 3:
+                enemiesToSpawn[EnemyType.Level1] = currentWave + 7;
+                enemiesToSpawn[EnemyType.Level2] = currentWave + 3;
+                enemiesToSpawn[EnemyType.Level3] = currentWave + 2;
+                break;
         }
-	}
+    }
 	private Vector3 GenerateSpawnPosition(int type)
 	{
 		if (type == 3) // if its a boss:

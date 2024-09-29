@@ -3,15 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerData
+public class SaveData
 {
+    // Player Data
     public int exp;
     public int health;
     public int lives;
     public float[] position;
+    public int[] ammo;
 
-    public PlayerData(PlayerController player)
-    {
+    // Game data
+    public int wave;
+
+    public SaveData(PlayerController player)
+    {   // This method doesn't actually save the data, SaveSystem does that.
+        // this just 'assigns' the data to the public data variables for the SaveSystem script to see.
+
+        // Assign player data
         exp = player.exp;
         health = player.health;
         lives = player.lives;
@@ -20,5 +28,10 @@ public class PlayerData
         position[0] = player.transform.position.x;
         position[1] = player.transform.position.y;
         position[2] = player.transform.position.z;
+
+        ammo = player.ammo;
+
+        // Assign game data
+        wave = player.wave;
     }
 }

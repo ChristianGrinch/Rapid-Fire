@@ -9,14 +9,21 @@ public class PlayerController : MonoBehaviour
 	public int exp;
 	public int health;
 	public int lives;
+	public int wave;
+	public int[] ammo;
 
+	public GameObject gameManager;
 	private HealthSystem healthSystem;
+	private EnemySpawnManager enemySpawnManager;
+	private GunController gunController;
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		playerRb = GetComponent<Rigidbody>();
 		healthSystem = GetComponent<HealthSystem>();
+		enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
+		gunController = GetComponent<GunController>();
     }
 
 	// Update is called once per frame
@@ -25,6 +32,8 @@ public class PlayerController : MonoBehaviour
 		Sprinting();
 		health = healthSystem.health;
 		lives = healthSystem.lives;
+		wave = enemySpawnManager.currentWave;
+		ammo = gunController.ammo;
 	}
 
 	private void FixedUpdate()

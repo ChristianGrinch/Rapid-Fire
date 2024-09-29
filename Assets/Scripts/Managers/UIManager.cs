@@ -37,11 +37,14 @@ public class UIManager : MonoBehaviour
 
 	public GameObject settingsScreen;
 	public Button toTitleScreenFromSettingsButton;
+	
 
 	private HealthSystem healthSystem;
 	private GunController gunController;
-	public GameObject player;
-	public PlayerController playerController;
+    public PlayerController playerController;
+	public EnemySpawnManager enemySpawnManager;
+    public GameObject player;
+	public GameObject gameManager;
 
 	public int difficulty = 1;
 	public bool isGameActive = false;
@@ -68,6 +71,7 @@ public class UIManager : MonoBehaviour
 		healthSystem = player.GetComponent<HealthSystem>();
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
+		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
     }
 
@@ -201,20 +205,35 @@ public class UIManager : MonoBehaviour
 	
 	public void LoadPlayer()
 	{
-		PlayerData data = SaveSystem.LoadPlayer();
+		// Load the player data
+		SaveData data = SaveSystem.LoadPlayer();
 
-		playerController.exp = data.exp;
-        playerController.health = data.health;
-		playerController.lives = data.lives;
-		
+		if(data != null)
+		{
+            // Update player data
+            playerController.exp = data.exp;
+            playerController.health = data.health;
+            playerController.lives = data.lives;
+			playerController.wave = data.wave;
+			playerController.ammo = data.ammo;
 
-		Vector3 position;
-        position.x = data.position[0];
-        position.y = data.position[1];
-        position.z = data.position[2];
-		player.transform.position = position;
+            Vector3 position;
+            position.x = data.position[0];
+            position.y = data.position[1];
+            position.z = data.position[2];
+            player.transform.position = position;
 
-		healthSystem.UpdateHealth(data.health);
-		healthSystem.UpdateLives(data.lives);
+            healthSystem.UpdateHealth(data.health);
+            healthSystem.UpdateLives(data.lives);
+
+            // Update game data
+            enemySpawnManager.currentWave = data.wave;
+            gunController.ammo = data.ammo;
+        }
+		else
+		{
+			Debug.LogError("Data is null.");
+		}
+
     }
 }

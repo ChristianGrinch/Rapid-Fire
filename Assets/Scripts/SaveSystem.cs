@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
+
 
 public static class SaveSystem
 {
@@ -10,13 +12,13 @@ public static class SaveSystem
         string path = Application.persistentDataPath + "/player.savefile";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(player);
+        SaveData data = new SaveData(player);
 
         formatter.Serialize(stream, data);
         stream.Close();
     }
 
-    public static PlayerData LoadPlayer()
+    public static SaveData LoadPlayer()
     {
         string path = Application.persistentDataPath + "/player.savefile";
         if (File.Exists(path))
@@ -24,7 +26,7 @@ public static class SaveSystem
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
-            PlayerData data = formatter.Deserialize(stream) as PlayerData;
+            SaveData data = formatter.Deserialize(stream) as SaveData;
             stream.Close();
 
             return data;

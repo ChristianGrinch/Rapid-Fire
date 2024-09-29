@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
 	private int damage;
 	private float speed;
 	public int exp;
-	private int health;
+	public int health;
 	private float detectionRadius = 15;
 	private bool followingPlayer = false;
 	private int difficulty = 1;
