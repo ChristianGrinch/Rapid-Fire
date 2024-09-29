@@ -16,10 +16,10 @@ public class EnemySpawnManager : MonoBehaviour
 	List<GameObject> level3Enemies = new();
 	List<GameObject> boss1Enemies = new();
 
-	GameObject[] enemyLevel1;
-	GameObject[] enemyLevel2;
-	GameObject[] enemyLevel3;
-	GameObject[] bossLevel1;
+    public GameObject[] enemyLevel1;
+    public GameObject[] enemyLevel2;
+    public GameObject[] enemyLevel3;
+    public GameObject[] bossLevel1;
 
 	public int currentWave = 0;
 	private int spawnBufferDistance = 3;
@@ -47,14 +47,22 @@ public class EnemySpawnManager : MonoBehaviour
 
 		if (enemyCount == 0 && UIManager.Instance.isGameActive)
 		{
-			currentWave++;
+			if (UIManager.Instance.playerDidLoad)
+			{
+				SpawnEnemiesOnLoad(UIManager.Instance.enemyLevel1, UIManager.Instance.enemyLevel2, UIManager.Instance.enemyLevel3, UIManager.Instance.bossLevel1);
+				UIManager.Instance.playerDidLoad = false;
+			}
+			else
+			{
+                currentWave++;
 
-			NumberOfEnemiesToSpawn();
+                NumberOfEnemiesToSpawn();
 
-			SpawnEnemyWave();
+                SpawnEnemyWave();
+            }
 		}
 
-        StartCoroutine(AssignEnemiesToArray());
+        StartCoroutine(AssignEnemiesToArray()); // this is INCREDIBLY bad for perfomrance. FIX THIS LATER!!!!
     }
 
 	public IEnumerator AssignEnemiesToArray()
@@ -193,6 +201,26 @@ public class EnemySpawnManager : MonoBehaviour
 
 		StartCoroutine(AssignEnemiesToArray());
 	}
+
+	public void SpawnEnemiesOnLoad(int enemyLevel1, int enemyLevel2, int enemyLevel3, int bossLevel1)
+	{
+        for (int i = 0; i < enemyLevel1; i++)
+        {
+            InstantiateEnemy(0);
+        }
+        for (int i = 0; i < enemyLevel2; i++)
+        {
+            InstantiateEnemy(1);
+        }
+        for (int i = 0; i < enemyLevel3; i++)
+        {
+            InstantiateEnemy(2);
+        }
+        for (int i = 0; i < bossLevel1; i++)
+        {
+            InstantiateEnemy(3);
+        }
+    }
 
 	void InstantiateEnemy(int type)
 	{

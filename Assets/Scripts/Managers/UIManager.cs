@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
@@ -49,8 +50,15 @@ public class UIManager : MonoBehaviour
 	public int difficulty = 1;
 	public bool isGameActive = false;
 	public bool didSelectDifficulty = false;
+	public bool playerDidLoad = false;
 
-	void Awake()
+	public int enemyLevel1;
+	public int enemyLevel2;
+	public int enemyLevel3;
+	public int bossLevel1;
+
+
+    void Awake()
 	{
 		// Singleton pattern implementation
 		if (Instance == null)
@@ -205,6 +213,7 @@ public class UIManager : MonoBehaviour
 	
 	public void LoadPlayer()
 	{
+		playerDidLoad = true;
 		// Load the player data
 		SaveData data = SaveSystem.LoadPlayer();
 
@@ -229,6 +238,11 @@ public class UIManager : MonoBehaviour
             // Update game data
             enemySpawnManager.currentWave = data.wave;
             gunController.ammo = data.ammo;
+
+			enemyLevel1 = data.numberOfEnemies[0];
+            enemyLevel2 = data.numberOfEnemies[1];
+            enemyLevel3 = data.numberOfEnemies[2];
+            bossLevel1 = data.numberOfEnemies[3];
         }
 		else
 		{
