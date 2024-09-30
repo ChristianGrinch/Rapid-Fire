@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
 	public bool isGameActive = false;
 	public bool didSelectDifficulty = false;
 	public bool didPlayerLoadSpawnManager = false;
-	public bool player
+	public bool didPlayerLoadPowerupManager = false;
 
 	public int enemyLevel1;
 	public int enemyLevel2;
@@ -215,8 +215,10 @@ public class UIManager : MonoBehaviour
 	public void LoadPlayer()
 	{
 		didPlayerLoadSpawnManager = true;
-		// Load the player data
-		SaveData data = SaveSystem.LoadPlayer();
+		didPlayerLoadPowerupManager = true;
+
+        // Load the player data
+        SaveData data = SaveSystem.LoadPlayer();
 
 		if(data != null)
 		{
@@ -245,7 +247,9 @@ public class UIManager : MonoBehaviour
             enemyLevel3 = data.numberOfEnemies[2];
             bossLevel1 = data.numberOfEnemies[3];
 
-			PowerupManager.Instance.ammunition[0] = data.numberofPowerups[0];
+			PowerupManager.Instance.ammunition = data.numberofPowerups[0];
+            PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
+            PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
         }
 		else
 		{

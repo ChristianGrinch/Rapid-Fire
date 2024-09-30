@@ -14,82 +14,90 @@ public class PowerupManager : MonoBehaviour
     private Vector3 randomSpawnPos;
 
     private float spawnInterval = 30;
-    private float nextSpawnTime = 0;
+    private float nextSpawnTime = 30;
 
     public GameObject powerupParent;
     public GameObject ammoParent;
    
     private int newWave = 1;
 
-    public List<GameObject> ammunition;
-    public List<GameObject> heartPowerups;
-    public List<GameObject> speedPowerups;
+    public int ammunition;
+    public int heartPowerups;
+    public int speedPowerups;
+
+    public bool isLoading = false;
+    public bool didLoad = false;
 
     // Update is called once per frame
     void Update()
     {
         randomSpawnPos = new(randomXPos, 1, randomZPos);
         int currentWave = EnemySpawnManager.Instance.currentWave;
-        if (UIManager.Instance.isGameActive && UIManager.Instance.didPlayerLoadPowerupManager)
+        if (UIManager.Instance.isGameActive)
         {
-            SpawnPowerupsOnLoad();
-            UIManager.Instance.didPlayerLoadPowerupManager = false;
+            if (UIManager.Instance.didPlayerLoadPowerupManager)
+            {
+                SpawnPowerupsOnLoad();
+                UIManager.Instance.didPlayerLoadPowerupManager = false;
+            }
+            else if(Time.time >= nextSpawnTime|| currentWave > newWave)
+            {
+                GenerateRandomPos();
+                InstantiateObject(ammo, randomSpawnPos, ammoParent);
 
-        } 
-        else if (Time.time >= nextSpawnTime || currentWave >= newWave)
-        {
+                GenerateRandomPos();
+                InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
 
-            GenerateRandomPos();
-            InstantiateObject(ammo, randomSpawnPos, ammoParent);
+                GenerateRandomPos();
+                InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
 
-            GenerateRandomPos();
-            InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
-
-            GenerateRandomPos();
-            InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
-
-            nextSpawnTime = Time.time + spawnInterval;
-            newWave++;
+                nextSpawnTime = Time.time + spawnInterval;
+                newWave++;
+            }
         }
+        Debug.Log("Ammunition count: " + ammunition);
+        Debug.Log("Heart powerup count: " + heartPowerups);
+        Debug.Log("Speed powerup count: " + speedPowerups);
     }
-
 
     public void SpawnPowerupsOnLoad()
     {
-        for (int i = 0; i < ammunition.Count; i++)
+        didLoad = true;
+        isLoading = true;
+
+        for (int i = 0; i < ammunition; i++)
         {
             GenerateRandomPos();
             InstantiateObject(ammo, randomSpawnPos, ammoParent);
         }
-        for (int i = 0; i < heartPowerups.Count; i++)
+        for (int i = 0; i < heartPowerups; i++)
         {
             GenerateRandomPos();
             InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
         }
-        for (int i = 0; i < speedPowerups.Count; i++)
+        for (int i = 0; i < speedPowerups; i++)
         {
             GenerateRandomPos();
             InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
         }
+
+        isLoading = false;
+
     }
 
-    void AssignPowerupsToList(GameObject instantiatedObject, GameObject objectToSpawn)
+    void AssignPowerupsToList(GameObject objectToSpawn)
     {
-        ammunition = new();
-        heartPowerups = new();
-        speedPowerups = new();
-
-        if (objectToSpawn.ToString() == "ammo")
+        if (objectToSpawn.name == "Ammo")
         {
-            ammunition.Add(instantiatedObject);
+            ammunition++;
         }
-        else if (objectToSpawn.ToString() == "heartPowerup")
+        else if (objectToSpawn.name == "Powerup Heart")
         {
-            heartPowerups.Add(instantiatedObject);
-        }
-        else if (objectToSpawn.ToString() == "speedPowerup")
+            heartPowerups++;
+        }   
+        else if (objectToSpawn.name == "SpeedPowerup")
         {
-            speedPowerups.Add(instantiatedObject);
+            speedPowerups++;
         }
     }
 
@@ -97,7 +105,11 @@ public class PowerupManager : MonoBehaviour
     {
         GameObject instantiatedObject = Instantiate(objectToSpawn, randomSpawnPos, Quaternion.Euler(90, 0, 0));
         instantiatedObject.transform.parent = objectParent.transform; // Sets parent
-        AssignPowerupsToList(instantiatedObject, objectToSpawn);
+        instantiatedObject.name = objectToSpawn.name; // Removes (Clone) from name
+        if (isLoading == false)
+        {
+            AssignPowerupsToList(objectToSpawn);
+        }  
     }
 
     Vector3 GenerateRandomPos()

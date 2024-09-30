@@ -28,6 +28,7 @@ public class PowerupHeart : MonoBehaviour
                 audioData.clip = powerupCollectSound;
                 audioData.Play();
 
+                PowerupManager.Instance.heartPowerups--;
                 Destroy(gameObject, powerupCollectSound.length);
             }
             else

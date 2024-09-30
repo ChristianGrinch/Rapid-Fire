@@ -41,8 +41,10 @@ public class SaveData
         numberOfEnemies[2] = EnemySpawnManager.Instance.enemyLevel3.Length;
         numberOfEnemies[3] = EnemySpawnManager.Instance.bossLevel1.Length;
 
-        numberofPowerups[0] = PowerupManager.Instance.ammunition.Count;
-        numberofPowerups[1] = PowerupManager.Instance.heartPowerups.Count;
-        numberofPowerups[2] = PowerupManager.Instance.speedPowerups.Count;
+        numberofPowerups[0] = PowerupManager.Instance.ammunition;
+        numberofPowerups[1] = PowerupManager.Instance.heartPowerups;
+        numberofPowerups[2] = PowerupManager.Instance.speedPowerups;
+
+        Debug.Log(numberofPowerups[0] + numberofPowerups[1] + numberofPowerups[2]);
     }
 }

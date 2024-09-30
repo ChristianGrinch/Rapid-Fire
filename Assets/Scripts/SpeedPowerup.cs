@@ -42,7 +42,7 @@ public class SpeedPowerup : MonoBehaviour
         // Revert the effect after the powerup duration
         player.GetComponent<PlayerController>().speed = 80;
 
-
+        PowerupManager.Instance.speedPowerups--;
         Destroy(gameObject, powerupExpireSound.length);
     }
 }
