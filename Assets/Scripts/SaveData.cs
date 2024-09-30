@@ -14,7 +14,8 @@ public class SaveData
 
     // Game data
     public int wave;
-    public int[] numberOfEnemies = {0,0,0,0};
+    public int[] numberOfEnemies = {0, 0, 0, 0};
+    public int[] numberofPowerups = { 0, 0, 0 };
 
     public SaveData(PlayerController player)
     {   // This method doesn't actually save the data, SaveSystem does that.
@@ -39,5 +40,9 @@ public class SaveData
         numberOfEnemies[1] = EnemySpawnManager.Instance.enemyLevel2.Length;
         numberOfEnemies[2] = EnemySpawnManager.Instance.enemyLevel3.Length;
         numberOfEnemies[3] = EnemySpawnManager.Instance.bossLevel1.Length;
+
+        numberofPowerups[0] = PowerupManager.Instance.ammunition.Count;
+        numberofPowerups[1] = PowerupManager.Instance.heartPowerups.Count;
+        numberofPowerups[2] = PowerupManager.Instance.speedPowerups.Count;
     }
 }
