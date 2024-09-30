@@ -7,8 +7,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
-    public Slider volumeSlider;
-    private float volume = 1;
+    public Slider masterVolumeSlider;
+    private float volume;
     private void Awake()
     {
         if (Instance == null)
@@ -24,8 +24,12 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        volumeSlider.onValueChanged.AddListener(SetVolume);
-        volumeSlider.value = volume;
+        masterVolumeSlider.onValueChanged.AddListener(SetVolume);
+        masterVolumeSlider.value = volume;
+        SetVolume(volume);
+    }
+    private void Update()
+    {
         SetVolume(volume);
     }
 
@@ -36,13 +40,7 @@ public class AudioManager : MonoBehaviour
         AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
         foreach (var audioSource in allAudioSources)
         {
-            audioSource.volume = volume;
+            audioSource.volume = volume * 0.01f;
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

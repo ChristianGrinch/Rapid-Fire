@@ -38,13 +38,23 @@ public class UIManager : MonoBehaviour
 
 	public GameObject settingsScreen;
 	public Button toTitleScreenFromSettingsButton;
-	
+
+	public GameObject audioPanel;
+	public GameObject lowerMasterVolume;
+	public GameObject increaseMasterVolume;
+	public Slider masterVolumeSlider;
+	public TextMeshProUGUI masterVolume;
+
+	public GameObject videoPanel;
+
+	public GameObject savesPanel;
+	public TMP_InputField[] saveNameInputField = new TMP_InputField[3];
 
 	private HealthSystem healthSystem;
 	private GunController gunController;
-    public PlayerController playerController;
-	public EnemySpawnManager enemySpawnManager;
-    public GameObject player;
+	private PlayerController playerController;
+	private EnemySpawnManager enemySpawnManager;
+	public GameObject player;
 	public GameObject gameManager;
 
 	public int difficulty = 1;
@@ -57,6 +67,9 @@ public class UIManager : MonoBehaviour
 	public int enemyLevel2;
 	public int enemyLevel3;
 	public int bossLevel1;
+
+	private string[] saveName = {"Save1", "Save2", "Save3"};
+	public bool[] hasSavedGame = new bool[3];
 
 
     void Awake()
@@ -100,7 +113,8 @@ public class UIManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape) && isGameActive)
 		{
 			PauseGame();
-		} else if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive)
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive && pauseScreen.activeSelf)
 		{
 			ResumeGame();
 		}
@@ -160,10 +174,19 @@ public class UIManager : MonoBehaviour
 	}
 	public void SwitchToTitle()
 	{
-		titleScreen.SetActive(true);
-		difficultyScreen.SetActive(false);
-		pauseScreen.SetActive(false);
-		settingsScreen.SetActive(false);
+		if(Time.timeScale == 1)
+		{
+            titleScreen.SetActive(true);
+            difficultyScreen.SetActive(false);
+            pauseScreen.SetActive(false);
+            settingsScreen.SetActive(false);
+		}
+		else
+		{
+			pauseScreen.SetActive(true);
+			settingsScreen.SetActive(false);
+		}
+
 	}
 
 	public void SetDifficulty(int selectedDifficulty)
@@ -205,20 +228,71 @@ public class UIManager : MonoBehaviour
 	{
 		settingsScreen.SetActive(true);
 		titleScreen.SetActive(false);
+		pauseScreen.SetActive(false);
 	}
 
-	public void SavePlayer()
+	public void OpenAudioPanel()
 	{
-		SaveSystem.SavePlayer(playerController);
+		audioPanel.SetActive(true);
+		videoPanel.SetActive(false);
+		savesPanel.SetActive(false);
+	}
+
+	public void OpenVideoPanel()
+	{
+		audioPanel.SetActive(false);
+		videoPanel.SetActive(true);
+        savesPanel.SetActive(false);
+    }
+
+	public void OpenSavesPanel()
+	{
+		if(Time.timeScale == 1)
+		{
+            audioPanel.SetActive(false);
+            videoPanel.SetActive(false);
+            savesPanel.SetActive(true);
+        }
+    }
+
+	public void DecreaseMasterVolume()
+	{
+		masterVolumeSlider.value--;
+		masterVolume.text = masterVolumeSlider.value.ToString();
+
+    }
+
+    public void IncreaseMasterVolume()
+    {
+        masterVolumeSlider.value++;
+        masterVolume.text = masterVolumeSlider.value.ToString();
+    }
+
+	public void ChangeSaveName(int save)
+	{
+		StartCoroutine(DelayedSaveNameChange(save));
+		hasSavedGame[save - 1] = true;
+	}
+    private IEnumerator DelayedSaveNameChange(int save)
+    {
+        yield return new WaitForEndOfFrame();
+        saveName[save - 1] = saveNameInputField[save - 1].text;
+		saveNameInputField[save - 1].interactable = false;
+    }
+
+    public void SavePlayer(int save)
+	{
+		SaveSystem.SavePlayer(playerController, saveName[save - 1]);
+
 	}
 	
-	public void LoadPlayer()
+	public void LoadPlayer(int save)
 	{
 		didPlayerLoadSpawnManager = true;
 		didPlayerLoadPowerupManager = true;
 
         // Load the player data
-        SaveData data = SaveSystem.LoadPlayer();
+        SaveData data = SaveSystem.LoadPlayer(saveName[save - 1]);
 
 		if(data != null)
 		{
@@ -250,6 +324,21 @@ public class UIManager : MonoBehaviour
 			PowerupManager.Instance.ammunition = data.numberofPowerups[0];
             PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
             PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
+
+			// Update settings data
+			masterVolumeSlider.value = data.masterVolume;
+			masterVolume.text = data.masterVolume.ToString();
+
+			saveNameInputField[0].interactable = data.hasSavedGame[0];
+            saveNameInputField[1].interactable = data.hasSavedGame[1];
+            saveNameInputField[2].interactable = data.hasSavedGame[2];
+
+            if (data.difficulty != 0)
+			{
+				didSelectDifficulty = true;
+                difficulty = data.difficulty;
+            }
+			
         }
 		else
 		{

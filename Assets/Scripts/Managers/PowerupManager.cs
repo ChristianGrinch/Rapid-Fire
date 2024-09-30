@@ -55,9 +55,6 @@ public class PowerupManager : MonoBehaviour
                 newWave++;
             }
         }
-        Debug.Log("Ammunition count: " + ammunition);
-        Debug.Log("Heart powerup count: " + heartPowerups);
-        Debug.Log("Speed powerup count: " + speedPowerups);
     }
 
     public void SpawnPowerupsOnLoad()

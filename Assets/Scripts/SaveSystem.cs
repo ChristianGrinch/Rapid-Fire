@@ -6,10 +6,10 @@ using System.Collections.Generic;
 
 public static class SaveSystem
 {
-    public static void SavePlayer(PlayerController player)
+    public static void SavePlayer(PlayerController player, string saveName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/player.savefile";
+        string path = Application.persistentDataPath + saveName + ".savefile";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         SaveData data = new SaveData(player);
@@ -18,9 +18,9 @@ public static class SaveSystem
         stream.Close();
     }
 
-    public static SaveData LoadPlayer()
+    public static SaveData LoadPlayer(string saveName)
     {
-        string path = Application.persistentDataPath + "/player.savefile";
+        string path = Application.persistentDataPath + saveName + ".savefile";
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();

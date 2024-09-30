@@ -16,6 +16,11 @@ public class SaveData
     public int wave;
     public int[] numberOfEnemies = {0, 0, 0, 0};
     public int[] numberofPowerups = { 0, 0, 0 };
+    public int difficulty;
+
+    // Settings data
+    public int masterVolume;
+    public bool[] hasSavedGame = new bool[3];
 
     public SaveData(PlayerController player)
     {   // This method doesn't actually save the data, SaveSystem does that.
@@ -45,6 +50,12 @@ public class SaveData
         numberofPowerups[1] = PowerupManager.Instance.heartPowerups;
         numberofPowerups[2] = PowerupManager.Instance.speedPowerups;
 
-        Debug.Log(numberofPowerups[0] + numberofPowerups[1] + numberofPowerups[2]);
+        difficulty = UIManager.Instance.difficulty;
+
+        // Assign setting data
+        masterVolume = (int)UIManager.Instance.masterVolumeSlider.value;
+        this.hasSavedGame[0] = UIManager.Instance.hasSavedGame[0];
+        this.hasSavedGame[1] = UIManager.Instance.hasSavedGame[1];
+        this.hasSavedGame[2] = UIManager.Instance.hasSavedGame[2];
     }
 }
