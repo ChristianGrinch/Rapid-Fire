@@ -50,6 +50,11 @@ public class HealthSystem : MonoBehaviour
 		}
 	}
 
+	public void UpdateLives(int newLives)
+	{
+		lives = newLives;
+	}
+
 	public void AssignLives()
 	{
 		if (UIManager.Instance.isGameActive && !didAssignLives)
