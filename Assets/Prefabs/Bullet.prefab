@@ -151,3 +151,5 @@ MonoBehaviour:
   damage: 10
   ammoParent: {fileID: 0}
   ammo: {fileID: 1812258003393764395, guid: c169d57941076614b8d8e5ef41158482, type: 3}
+  enemySpawnManager: {fileID: 0}
+  gameManager: {fileID: 6240122114360281231, guid: f81ed7fa1466fb649b975d334cb6588a, type: 3}

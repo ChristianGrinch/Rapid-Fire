@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
@@ -37,17 +38,28 @@ public class UIManager : MonoBehaviour
 
 	public GameObject settingsScreen;
 	public Button toTitleScreenFromSettingsButton;
+	
 
 	private HealthSystem healthSystem;
 	private GunController gunController;
-	public GameObject player;
-	public PlayerController playerController;
+    public PlayerController playerController;
+	public EnemySpawnManager enemySpawnManager;
+    public GameObject player;
+	public GameObject gameManager;
 
 	public int difficulty = 1;
 	public bool isGameActive = false;
 	public bool didSelectDifficulty = false;
+	public bool didPlayerLoadSpawnManager = false;
+	public bool didPlayerLoadPowerupManager = false;
 
-	void Awake()
+	public int enemyLevel1;
+	public int enemyLevel2;
+	public int enemyLevel3;
+	public int bossLevel1;
+
+
+    void Awake()
 	{
 		// Singleton pattern implementation
 		if (Instance == null)
@@ -68,6 +80,7 @@ public class UIManager : MonoBehaviour
 		healthSystem = player.GetComponent<HealthSystem>();
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
+		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
     }
 
@@ -201,19 +214,47 @@ public class UIManager : MonoBehaviour
 	
 	public void LoadPlayer()
 	{
-		PlayerData data = SaveSystem.LoadPlayer();
+		didPlayerLoadSpawnManager = true;
+		didPlayerLoadPowerupManager = true;
 
-		playerController.exp = data.exp;
-        playerController.health = data.health;
-		
+        // Load the player data
+        SaveData data = SaveSystem.LoadPlayer();
 
-		Vector3 position;
-        position.x = data.position[0];
-        position.y = data.position[1];
-        position.z = data.position[2];
-		player.transform.position = position;
+		if(data != null)
+		{
+            // Update player data
+            playerController.exp = data.exp;
+            playerController.health = data.health;
+            playerController.lives = data.lives;
+			playerController.wave = data.wave;
+			playerController.ammo = data.ammo;
 
-		healthSystem.UpdateHealth(data.health);
-		Debug.Log(data.health);
+            Vector3 position;
+            position.x = data.position[0];
+            position.y = data.position[1];
+            position.z = data.position[2];
+            player.transform.position = position;
+
+            healthSystem.UpdateHealth(data.health);
+            healthSystem.UpdateLives(data.lives);
+
+            // Update game data
+            enemySpawnManager.currentWave = data.wave;
+            gunController.ammo = data.ammo;
+
+			enemyLevel1 = data.numberOfEnemies[0];
+            enemyLevel2 = data.numberOfEnemies[1];
+            enemyLevel3 = data.numberOfEnemies[2];
+            bossLevel1 = data.numberOfEnemies[3];
+
+			PowerupManager.Instance.ammunition = data.numberofPowerups[0];
+            PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
+            PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
+        }
+		else
+		{
+			Debug.LogError("Data is null.");
+		}
+
     }
 }
