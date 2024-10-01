@@ -88,7 +88,7 @@ public class UIManager : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		SwitchToTitle(); 
+		SwitchToTitle();
 
 		healthSystem = player.GetComponent<HealthSystem>();
 		gunController = player.GetComponent<GunController>();
@@ -129,7 +129,6 @@ public class UIManager : MonoBehaviour
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
-
 	public void StartGame()
 	{
 		titleScreen.SetActive(false);
@@ -145,14 +144,12 @@ public class UIManager : MonoBehaviour
 		pauseScreen.SetActive(true);
 		Time.timeScale = 0;
 	}
-
 	public void ResumeGame()
 	{
 		isGameActive = true;
 		pauseScreen.SetActive(false);
 		Time.timeScale = 1;
 	}
-
 	public void OpenDifficultyScreen()
 	{
 		if (!didSelectDifficulty)
@@ -188,7 +185,6 @@ public class UIManager : MonoBehaviour
 		}
 
 	}
-
 	public void SetDifficulty(int selectedDifficulty)
 	{
 		difficulty = selectedDifficulty;
@@ -200,7 +196,6 @@ public class UIManager : MonoBehaviour
 		quitGamePopup.SetActive(true);
 		pauseScreen.SetActive(false);
 	}
-
 	public void ClosePopup()
 	{
 		quitGamePopup.SetActive(false);
@@ -230,21 +225,18 @@ public class UIManager : MonoBehaviour
 		titleScreen.SetActive(false);
 		pauseScreen.SetActive(false);
 	}
-
 	public void OpenAudioPanel()
 	{
 		audioPanel.SetActive(true);
 		videoPanel.SetActive(false);
 		savesPanel.SetActive(false);
 	}
-
 	public void OpenVideoPanel()
 	{
 		audioPanel.SetActive(false);
 		videoPanel.SetActive(true);
         savesPanel.SetActive(false);
     }
-
 	public void OpenSavesPanel()
 	{
 		if(Time.timeScale == 1)
@@ -254,38 +246,31 @@ public class UIManager : MonoBehaviour
             savesPanel.SetActive(true);
         }
     }
-
 	public void DecreaseMasterVolume()
 	{
 		masterVolumeSlider.value--;
 		masterVolume.text = masterVolumeSlider.value.ToString();
 
     }
-
     public void IncreaseMasterVolume()
     {
         masterVolumeSlider.value++;
         masterVolume.text = masterVolumeSlider.value.ToString();
     }
-
 	public void ChangeSaveName(int save)
 	{
-		StartCoroutine(DelayedSaveNameChange(save));
-		hasSavedGame[save - 1] = true;
+		if(saveNameInputField[save - 1].text != "")
+		{
+            saveName[save - 1] = saveNameInputField[save - 1].text;
+        }
+        hasSavedGame[save - 1] = true;
 	}
-    private IEnumerator DelayedSaveNameChange(int save)
-    {
-        yield return new WaitForEndOfFrame();
-        saveName[save - 1] = saveNameInputField[save - 1].text;
-		saveNameInputField[save - 1].interactable = false;
-    }
-
     public void SavePlayer(int save)
 	{
 		SaveSystem.SavePlayer(playerController, saveName[save - 1]);
+        saveNameInputField[save - 1].interactable = false;
+    }
 
-	}
-	
 	public void LoadPlayer(int save)
 	{
 		didPlayerLoadSpawnManager = true;
@@ -293,6 +278,7 @@ public class UIManager : MonoBehaviour
 
         // Load the player data
         SaveData data = SaveSystem.LoadPlayer(saveName[save - 1]);
+		Debug.Log(saveName[0]);
 
 		if(data != null)
 		{
@@ -329,9 +315,12 @@ public class UIManager : MonoBehaviour
 			masterVolumeSlider.value = data.masterVolume;
 			masterVolume.text = data.masterVolume.ToString();
 
-			saveNameInputField[0].interactable = data.hasSavedGame[0];
-            saveNameInputField[1].interactable = data.hasSavedGame[1];
-            saveNameInputField[2].interactable = data.hasSavedGame[2];
+            for (int i = 0; i < saveNameInputField.Length; i++)
+            {
+                saveNameInputField[i].interactable = data.hasSavedGame[i];
+            }
+
+            Debug.Log("uimanager " + saveNameInputField[0].interactable.ToString() + saveNameInputField[1].interactable.ToString() + saveNameInputField[2].interactable.ToString());
 
             if (data.difficulty != 0)
 			{

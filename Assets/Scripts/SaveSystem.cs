@@ -1,34 +1,31 @@
 using UnityEngine;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Collections.Generic;
+using MessagePack;
 
 
 public static class SaveSystem
 {
     public static void SavePlayer(PlayerController player, string saveName)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
+        SaveData saveData = SaveData.CreateFromPlayer(player);
+        byte[] bytes = MessagePackSerializer.Serialize(saveData);
         string path = Application.persistentDataPath + saveName + ".savefile";
-        FileStream stream = new FileStream(path, FileMode.Create);
 
-        SaveData data = new SaveData(player);
-
-        formatter.Serialize(stream, data);
-        stream.Close();
+        File.WriteAllBytes(path, bytes);
+        Debug.Log("Saved file with length: " + bytes.Length + " bytes.");
     }
 
     public static SaveData LoadPlayer(string saveName)
     {
         string path = Application.persistentDataPath + saveName + ".savefile";
+
         if (File.Exists(path))
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            
+            byte[] readBytes = File.ReadAllBytes(path);
+            SaveData data = MessagePackSerializer.Deserialize<SaveData>(readBytes);
 
-            SaveData data = formatter.Deserialize(stream) as SaveData;
-            stream.Close();
-
+            Debug.Log("Loaded file with length: " + readBytes.Length + " bytes.");
             return data;
         }
         else
@@ -38,3 +35,4 @@ public static class SaveSystem
         }
     }
 }
+
