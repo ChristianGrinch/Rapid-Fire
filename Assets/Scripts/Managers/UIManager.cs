@@ -48,14 +48,19 @@ public class UIManager : MonoBehaviour
 	public GameObject videoPanel;
 
 	public GameObject savesPanel;
-	public TMP_InputField[] saveNameInputField = new TMP_InputField[3];
+    public GameObject saveButtonPrefab;
+	public Transform contentPanel;
+	private List<string> savedGames = new List<string>();
+	public TMP_InputField saveNameInputField;
 
-	private HealthSystem healthSystem;
+    private HealthSystem healthSystem;
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
 	public GameObject player;
 	public GameObject gameManager;
+
+
 
 	public int difficulty = 1;
 	public bool isGameActive = false;
@@ -67,9 +72,6 @@ public class UIManager : MonoBehaviour
 	public int enemyLevel2;
 	public int enemyLevel3;
 	public int bossLevel1;
-
-	private string[] saveName = {"Save1", "Save2", "Save3"};
-	public bool[] hasSavedGame = new bool[3];
 
 
     void Awake()
@@ -90,8 +92,11 @@ public class UIManager : MonoBehaviour
 	{
 		SwitchToTitle();
 
-		healthSystem = player.GetComponent<HealthSystem>();
-		gunController = player.GetComponent<GunController>();
+		InstantiateSaveButtonsOnLoad();
+
+        healthSystem = player.GetComponent<HealthSystem>();
+        Debug.Log($"Health System Initialized: {healthSystem != null}");
+        gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
@@ -119,7 +124,6 @@ public class UIManager : MonoBehaviour
 			ResumeGame();
 		}
 	}
-
 	public void GameOver()
 	{
 		restartScreen.SetActive(true);
@@ -257,28 +261,71 @@ public class UIManager : MonoBehaviour
         masterVolumeSlider.value++;
         masterVolume.text = masterVolumeSlider.value.ToString();
     }
-	public void ChangeSaveName(int save)
+	public void InstantiateSaveButtonsOnLoad()
 	{
-		if(saveNameInputField[save - 1].text != "")
-		{
-            saveName[save - 1] = saveNameInputField[save - 1].text;
+        List<string> saveFiles = SaveSystem.FindSaves();
+
+        if (saveFiles.Count == 0)
+        {
+            Debug.Log("No save files to load.");
+            return;
         }
-        hasSavedGame[save - 1] = true;
-	}
-    public void SavePlayer(int save)
+
+        foreach (var save in saveFiles)
+		{
+			GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
+			newButton.GetComponentInChildren<TMP_Text>().text = save;
+
+			string saveName = save;
+			newButton.GetComponent<Button>().onClick.AddListener(() => LoadPlayer(saveName));
+		}
+
+    }
+	public void CreateNewSave(string saveName)
 	{
-		SaveSystem.SavePlayer(playerController, saveName[save - 1]);
-        saveNameInputField[save - 1].interactable = false;
+		savedGames.Add(saveName);
+		for(int i = 0; i < SaveSystem.FindSaves().Count; i++)
+		{
+            if (SaveSystem.FindSaves()[i] != saveName)
+            {
+                AddButton(saveName);
+            }
+        }
+		SavePlayer(saveName);
+	}
+	void AddButton(string saveName)
+	{
+		GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
+		newButton.GetComponentInChildren<TMP_Text>().text = saveName;
+
+		Button btn = newButton.GetComponent<Button>();
+		btn.onClick.AddListener(() => LoadPlayer(saveName));
+	}
+	public void OnSaveButtonClicked()
+	{
+		string saveName = saveNameInputField.text;
+
+		if (!string.IsNullOrEmpty(saveName))
+		{
+			CreateNewSave(saveName);
+		}
+		else
+		{
+			Debug.LogWarning("Save name cannot be empty!");
+		}
+	}
+    public void SavePlayer(string saveName)
+	{
+		SaveSystem.SavePlayer(playerController, saveName);
     }
 
-	public void LoadPlayer(int save)
+	public void LoadPlayer(string saveName)
 	{
 		didPlayerLoadSpawnManager = true;
 		didPlayerLoadPowerupManager = true;
 
         // Load the player data
-        SaveData data = SaveSystem.LoadPlayer(saveName[save - 1]);
-		Debug.Log(saveName[0]);
+        SaveData data = SaveSystem.LoadPlayer(saveName);
 
 		if(data != null)
 		{
@@ -314,13 +361,6 @@ public class UIManager : MonoBehaviour
 			// Update settings data
 			masterVolumeSlider.value = data.masterVolume;
 			masterVolume.text = data.masterVolume.ToString();
-
-            for (int i = 0; i < saveNameInputField.Length; i++)
-            {
-                saveNameInputField[i].interactable = data.hasSavedGame[i];
-            }
-
-            Debug.Log("uimanager " + saveNameInputField[0].interactable.ToString() + saveNameInputField[1].interactable.ToString() + saveNameInputField[2].interactable.ToString());
 
             if (data.difficulty != 0)
 			{

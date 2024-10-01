@@ -21,7 +21,6 @@ public class SaveData
 
     // Settings data
     [Key(20)] public int masterVolume;
-    [Key(21)] public bool[] hasSavedGame = new bool[3];
 
     // Parameterless constructor
     public SaveData() { }
@@ -61,15 +60,8 @@ public class SaveData
             difficulty = UIManager.Instance.difficulty,
 
             // Assign settings data
-            masterVolume = (int)UIManager.Instance.masterVolumeSlider.value,
-            hasSavedGame = new bool[3]
-            {
-                !UIManager.Instance.hasSavedGame[0],
-                !UIManager.Instance.hasSavedGame[1],
-                !UIManager.Instance.hasSavedGame[2]
-            }
+            masterVolume = (int)UIManager.Instance.masterVolumeSlider.value
         };
-        Debug.Log("savedata " + saveData.hasSavedGame[0].ToString() + saveData.hasSavedGame[1].ToString() + saveData.hasSavedGame[2].ToString());
         return saveData;
     }
 }
