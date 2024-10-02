@@ -1,40 +1,88 @@
 using UnityEngine;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using MessagePack;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
+// .svf for SaVeFile
 
 public static class SaveSystem
 {
-    public static void SavePlayer(PlayerController player, string saveName)
+	public static void SavePlayer(PlayerController player, string saveName)
+	{
+		SaveData saveData = SaveData.CreateFromPlayer(player);
+		byte[] bytes = MessagePackSerializer.Serialize(saveData);
+        string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
+
+
+        File.WriteAllBytes(path, bytes);
+		Debug.Log("Saved file with length: " + bytes.Length + " bytes.");
+	}
+
+	public static SaveData LoadPlayer(string saveName)
+	{
+        string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
+
+
+        if (File.Exists(path))
+		{
+			
+			byte[] readBytes = File.ReadAllBytes(path);
+			SaveData data = MessagePackSerializer.Deserialize<SaveData>(readBytes);
+
+			Debug.Log("Loaded file with length: " + readBytes.Length + " bytes.");
+			return data;
+		}
+		else
+		{
+			Debug.LogError("Save file not found in " + path);
+			return null;
+		}
+	}
+
+    public static List<string> FindSaves()
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + saveName + ".savefile";
-        FileStream stream = new FileStream(path, FileMode.Create);
+        string path = Application.persistentDataPath;
+        //Debug.Log($"Searching in path: {path}");
+        string[] files = Directory.GetFiles(path, "*.svf");
 
-        SaveData data = new SaveData(player);
+        //Debug.Log($"Files found: {files.Length}");
 
-        formatter.Serialize(stream, data);
-        stream.Close();
+        if (files.Length == 0)
+        {
+            Debug.Log("No save files found.");
+            return new List<string>();
+        }
+
+        List<string> saveFileNames = new List<string>();
+
+        for (int i = 0; i < files.Length; i++)
+        {
+            string filePath = files[i];
+            if (File.Exists(filePath))
+            {
+                string saveName = Path.GetFileNameWithoutExtension(filePath);
+                saveFileNames.Add(saveName);
+
+                Debug.Log("Found save file: " + saveName);
+            }
+        }
+
+        return saveFileNames;
     }
 
-    public static SaveData LoadPlayer(string saveName)
+    public static void DeleteSave(string saveName)
     {
-        string path = Application.persistentDataPath + saveName + ".savefile";
+        string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
+
         if (File.Exists(path))
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
-
-            SaveData data = formatter.Deserialize(stream) as SaveData;
-            stream.Close();
-
-            return data;
+            File.Delete(path);
         }
         else
         {
-            Debug.LogError("Save file not found in " + path);
-            return null;
+            Debug.LogError("File does not exist! Cannot delete a nonexistent file.");
         }
     }
 }
+
