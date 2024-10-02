@@ -8,7 +8,10 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     public Slider masterVolumeSlider;
-    private float volume;
+    public Slider musicVolumeSlider;
+    private float masterVolume = 100;
+    private float musicVolume = 100;
+
     private void Awake()
     {
         if (Instance == null)
@@ -25,22 +28,47 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         masterVolumeSlider.onValueChanged.AddListener(SetVolume);
-        masterVolumeSlider.value = volume;
-        SetVolume(volume);
+        masterVolumeSlider.value = masterVolume;
+        SetVolume(masterVolume);
+
+        musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
+        musicVolumeSlider.value = musicVolume;
+        SetMusicVolume(musicVolume);
     }
     private void Update()
     {
-        SetVolume(volume);
+        SetVolume(masterVolume);
+        SetMusicVolume(musicVolume);
     }
 
     public void SetVolume(float newVolume)
     {
-        volume = newVolume;
+        masterVolume = newVolume;
 
         AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
         foreach (var audioSource in allAudioSources)
         {
-            audioSource.volume = volume * 0.01f;
+            if (!audioSource.CompareTag("Music")) // Only affect non-music audio sources here
+            {
+                audioSource.volume = masterVolume * 0.01f;
+            }
+        }
+    }
+
+    public void SetMusicVolume(float newVolume)
+    {
+        musicVolume = newVolume;
+
+        GameObject[] allMusicObjects = GameObject.FindGameObjectsWithTag("Music");
+        AudioSource[] allMusicSources = new AudioSource[allMusicObjects.Length];
+
+        for (int i = 0; i < allMusicObjects.Length; i++)
+        {
+            allMusicSources[i] = allMusicObjects[i].GetComponent<AudioSource>();
+        }
+        foreach(var audioSource in allMusicSources)
+        {
+            audioSource.volume = (masterVolume / 100) * (musicVolume / 100);
         }
     }
 }

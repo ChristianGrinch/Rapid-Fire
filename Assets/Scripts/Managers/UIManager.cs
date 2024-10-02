@@ -46,8 +46,11 @@ public class UIManager : MonoBehaviour
 	public GameObject increaseMasterVolume;
 	public Slider masterVolumeSlider;
 	public TextMeshProUGUI masterVolume;
+	public Slider musicVolumeSlider;
+	public TextMeshProUGUI musicVolume;
 
-	public GameObject videoPanel;
+
+    public GameObject videoPanel;
 
 	public GameObject savesPanel;
 	public GameObject saveButtonPrefab;
@@ -259,7 +262,18 @@ public class UIManager : MonoBehaviour
 		masterVolumeSlider.value++;
 		masterVolume.text = masterVolumeSlider.value.ToString();
 	}
-	public void InstantiateSaveButtons()
+    public void DecreaseMusicVolume()
+    {
+        musicVolumeSlider.value--;
+        musicVolume.text = musicVolumeSlider.value.ToString();
+
+    }
+    public void IncreaseMusicVolume()
+    {
+        musicVolumeSlider.value++;
+        musicVolume.text = musicVolumeSlider.value.ToString();
+    }
+    public void InstantiateSaveButtons()
 	{
 		List<string> saveFiles = SaveSystem.FindSaves();
 
@@ -429,6 +443,9 @@ public class UIManager : MonoBehaviour
 			// Update settings data
 			masterVolumeSlider.value = data.masterVolume;
 			masterVolume.text = data.masterVolume.ToString();
+
+			musicVolumeSlider.value = data.musicVolume;
+			musicVolume.text = data.musicVolume.ToString();
 
 			if (data.difficulty != 0)
 			{

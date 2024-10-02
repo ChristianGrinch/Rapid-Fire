@@ -21,6 +21,7 @@ public class SaveData
 
     // Settings data
     [Key(20)] public int masterVolume;
+    [Key(21)] public int musicVolume;
 
     // Parameterless constructor
     public SaveData() { }
@@ -60,7 +61,8 @@ public class SaveData
             difficulty = UIManager.Instance.difficulty,
 
             // Assign settings data
-            masterVolume = (int)UIManager.Instance.masterVolumeSlider.value
+            masterVolume = (int)UIManager.Instance.masterVolumeSlider.value,
+            musicVolume = (int)UIManager.Instance.musicVolumeSlider.value,
         };
         return saveData;
     }

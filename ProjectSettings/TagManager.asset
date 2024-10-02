@@ -9,6 +9,7 @@ TagManager:
   - Powerup
   - Bullet
   - Ammo
+  - Music
   layers:
   - Default
   - TransparentFX
