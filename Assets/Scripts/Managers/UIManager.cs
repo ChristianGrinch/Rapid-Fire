@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
 	public TextMeshProUGUI healthText;
 	public TextMeshProUGUI livesText;
 	public TextMeshProUGUI ammoText;
+	public Button saveButton;
 
 	public GameObject restartScreen;
 	public TextMeshProUGUI gameOverText;
@@ -35,6 +36,7 @@ public class UIManager : MonoBehaviour
 
 	public GameObject quitGamePopup;
 	public GameObject returnToTitleScreenPopup;
+	public GameObject deleteSavePopup;
 
 	public GameObject settingsScreen;
 	public Button toTitleScreenFromSettingsButton;
@@ -48,12 +50,15 @@ public class UIManager : MonoBehaviour
 	public GameObject videoPanel;
 
 	public GameObject savesPanel;
-    public GameObject saveButtonPrefab;
+	public GameObject saveButtonPrefab;
 	public Transform contentPanel;
 	private List<string> savedGames = new List<string>();
-	public TMP_InputField saveNameInputField;
+	List<GameObject> saveButtons = new();
+    public TMP_InputField saveNameInputField;
+	public Button deleteSaveButton;
+	public string currentSave;
 
-    private HealthSystem healthSystem;
+	private HealthSystem healthSystem;
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
@@ -74,7 +79,7 @@ public class UIManager : MonoBehaviour
 	public int bossLevel1;
 
 
-    void Awake()
+	void Awake()
 	{
 		// Singleton pattern implementation
 		if (Instance == null)
@@ -92,13 +97,14 @@ public class UIManager : MonoBehaviour
 	{
 		SwitchToTitle();
 
-		InstantiateSaveButtonsOnLoad();
+		InstantiateSaveButtons();
 
-        healthSystem = player.GetComponent<HealthSystem>();
-        Debug.Log($"Health System Initialized: {healthSystem != null}");
-        gunController = player.GetComponent<GunController>();
+		healthSystem = player.GetComponent<HealthSystem>();
+		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
+
+        saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
 
     }
 
@@ -111,15 +117,15 @@ public class UIManager : MonoBehaviour
 		ammoText.text = $"Ammo: {gunController.ammo[gunController.currentGunInt]}";
 
 
-        if (healthSystem.lives <= 0)
+		if (healthSystem.lives <= 0)
 		{
 			GameOver();
 		}
 		if (Input.GetKeyDown(KeyCode.Escape) && isGameActive)
 		{
 			PauseGame();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive && pauseScreen.activeSelf)
+		}
+		else if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive && pauseScreen.activeSelf)
 		{
 			ResumeGame();
 		}
@@ -175,19 +181,11 @@ public class UIManager : MonoBehaviour
 	}
 	public void SwitchToTitle()
 	{
-		if(Time.timeScale == 1)
-		{
-            titleScreen.SetActive(true);
-            difficultyScreen.SetActive(false);
-            pauseScreen.SetActive(false);
-            settingsScreen.SetActive(false);
-		}
-		else
-		{
-			pauseScreen.SetActive(true);
-			settingsScreen.SetActive(false);
-		}
 
+			titleScreen.SetActive(true);
+			difficultyScreen.SetActive(false);
+			pauseScreen.SetActive(false);
+			settingsScreen.SetActive(false);
 	}
 	public void SetDifficulty(int selectedDifficulty)
 	{
@@ -239,59 +237,87 @@ public class UIManager : MonoBehaviour
 	{
 		audioPanel.SetActive(false);
 		videoPanel.SetActive(true);
-        savesPanel.SetActive(false);
-    }
+		savesPanel.SetActive(false);
+	}
 	public void OpenSavesPanel()
 	{
 		if(Time.timeScale == 1)
 		{
-            audioPanel.SetActive(false);
-            videoPanel.SetActive(false);
-            savesPanel.SetActive(true);
-        }
-    }
+			audioPanel.SetActive(false);
+			videoPanel.SetActive(false);
+			savesPanel.SetActive(true);
+		}
+	}
 	public void DecreaseMasterVolume()
 	{
 		masterVolumeSlider.value--;
 		masterVolume.text = masterVolumeSlider.value.ToString();
 
-    }
-    public void IncreaseMasterVolume()
-    {
-        masterVolumeSlider.value++;
-        masterVolume.text = masterVolumeSlider.value.ToString();
-    }
-	public void InstantiateSaveButtonsOnLoad()
+	}
+	public void IncreaseMasterVolume()
 	{
-        List<string> saveFiles = SaveSystem.FindSaves();
+		masterVolumeSlider.value++;
+		masterVolume.text = masterVolumeSlider.value.ToString();
+	}
+	public void InstantiateSaveButtons()
+	{
+		List<string> saveFiles = SaveSystem.FindSaves();
 
-        if (saveFiles.Count == 0)
+        foreach (Transform child in contentPanel.transform)
         {
-            Debug.Log("No save files to load.");
-            return;
+            Destroy(child.gameObject);
         }
 
-        foreach (var save in saveFiles)
+        if (saveFiles.Count == 0)
 		{
-			GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
+			Debug.Log("No save files to load.");
+			return;
+		}
+
+		foreach (var save in saveFiles)
+		{
+            string saveName = save;
+            savedGames.Add(saveName);
+            GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
 			newButton.GetComponentInChildren<TMP_Text>().text = save;
 
-			string saveName = save;
 			newButton.GetComponent<Button>().onClick.AddListener(() => LoadPlayer(saveName));
 		}
 
-    }
+	}
+	public void DestroySaveButtons()
+	{
+		List<string> saveNames = SaveSystem.FindSaves();
+		string saveName = saveNameInputField.text;
+
+		for(var i = 0; i < saveNames.Count; i++)
+		{
+			if(saveName == saveNames[i])
+			{
+				Destroy(saveButtons[i]);
+			}
+		}	
+	}
 	public void CreateNewSave(string saveName)
 	{
-		savedGames.Add(saveName);
-		for(int i = 0; i < SaveSystem.FindSaves().Count; i++)
-		{
-            if (SaveSystem.FindSaves()[i] != saveName)
+        bool saveNameInSavedGames = false;
+
+        foreach (string savedGame in SaveSystem.FindSaves())
+        {
+            if (savedGame == saveName)
             {
-                AddButton(saveName);
+                saveNameInSavedGames = true;
+                break;
             }
         }
-		SavePlayer(saveName);
+
+        if (!saveNameInSavedGames)
+        {
+            savedGames.Add(saveName);
+            AddButton(saveName);
+        }
+
+        SavePlayer(saveName);
 	}
 	void AddButton(string saveName)
 	{
@@ -314,65 +340,107 @@ public class UIManager : MonoBehaviour
 			Debug.LogWarning("Save name cannot be empty!");
 		}
 	}
-    public void SavePlayer(string saveName)
+	public void OpenPopupDeleteSave()
+	{
+		deleteSavePopup.SetActive(true);
+	}
+	public void ClosePopupDeleteSave()
+	{
+		deleteSavePopup.SetActive(false);
+	}
+	public void UpdateDeleteSaveButton()
+	{
+		string saveName = saveNameInputField.text;
+
+		if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
+        {
+			deleteSaveButton.gameObject.SetActive(true);
+		}
+		else
+		{
+			deleteSaveButton.gameObject.SetActive(false);
+		}
+
+	}
+	public void SaveFromInsideGame()
+	{
+		saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
+	}
+	public void DeleteSave()
+	{
+
+		string saveName = saveNameInputField.text;
+
+		if (!string.IsNullOrEmpty(saveName))
+		{
+			SaveSystem.DeleteSave(saveNameInputField.text);
+		}
+		else
+		{
+			Debug.LogWarning("Save name cannot be empty!");
+		}
+	}
+	public void SavePlayer(string saveName)
 	{
 		SaveSystem.SavePlayer(playerController, saveName);
-    }
+	}
 
 	public void LoadPlayer(string saveName)
 	{
+		currentSave = saveName;
+
 		didPlayerLoadSpawnManager = true;
 		didPlayerLoadPowerupManager = true;
 
-        // Load the player data
-        SaveData data = SaveSystem.LoadPlayer(saveName);
+		// Load the player data
+		SaveData data = SaveSystem.LoadPlayer(saveName);
 
 		if(data != null)
 		{
-            // Update player data
-            playerController.exp = data.exp;
-            playerController.health = data.health;
-            playerController.lives = data.lives;
+			// Update player data
+			playerController.exp = data.exp;
+			playerController.health = data.health;
+			playerController.lives = data.lives;
 			playerController.wave = data.wave;
 			playerController.ammo = data.ammo;
 
-            Vector3 position;
-            position.x = data.position[0];
-            position.y = data.position[1];
-            position.z = data.position[2];
-            player.transform.position = position;
+			Vector3 position;
+			position.x = data.position[0];
+			position.y = data.position[1];
+			position.z = data.position[2];
+			player.transform.position = position;
 
-            healthSystem.UpdateHealth(data.health);
-            healthSystem.UpdateLives(data.lives);
+			healthSystem.UpdateHealth(data.health);
+			healthSystem.UpdateLives(data.lives);
 
-            // Update game data
-            enemySpawnManager.currentWave = data.wave;
-            gunController.ammo = data.ammo;
+			// Update game data
+			enemySpawnManager.currentWave = data.wave;
+			gunController.ammo = data.ammo;
 
 			enemyLevel1 = data.numberOfEnemies[0];
-            enemyLevel2 = data.numberOfEnemies[1];
-            enemyLevel3 = data.numberOfEnemies[2];
-            bossLevel1 = data.numberOfEnemies[3];
+			enemyLevel2 = data.numberOfEnemies[1];
+			enemyLevel3 = data.numberOfEnemies[2];
+			bossLevel1 = data.numberOfEnemies[3];
 
 			PowerupManager.Instance.ammunition = data.numberofPowerups[0];
-            PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
-            PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
+			PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
+			PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
 
 			// Update settings data
 			masterVolumeSlider.value = data.masterVolume;
 			masterVolume.text = data.masterVolume.ToString();
 
-            if (data.difficulty != 0)
+			if (data.difficulty != 0)
 			{
 				didSelectDifficulty = true;
-                difficulty = data.difficulty;
-            }
+				difficulty = data.difficulty;
+			}
 			
-        }
+		}
 		else
 		{
 			Debug.LogError("Data is null.");
 		}
 
-    }
+	}
 }

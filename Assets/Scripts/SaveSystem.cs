@@ -4,6 +4,7 @@ using MessagePack;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
+// .svf for SaVeFile
 
 public static class SaveSystem
 {
@@ -42,16 +43,10 @@ public static class SaveSystem
     public static List<string> FindSaves()
     {
         string path = Application.persistentDataPath;
-        Debug.Log($"Searching in path: {path}");
+        //Debug.Log($"Searching in path: {path}");
         string[] files = Directory.GetFiles(path, "*.svf");
 
-        Debug.Log($"Files found: {files.Length}");
-
-        // Log all file names found
-        foreach (string file in files)
-        {
-            Debug.Log("Found file: " + file);
-        }
+        //Debug.Log($"Files found: {files.Length}");
 
         if (files.Length == 0)
         {
@@ -74,6 +69,20 @@ public static class SaveSystem
         }
 
         return saveFileNames;
+    }
+
+    public static void DeleteSave(string saveName)
+    {
+        string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+        else
+        {
+            Debug.LogError("File does not exist! Cannot delete a nonexistent file.");
+        }
     }
 }
 
