@@ -39,8 +39,9 @@ public class PowerupManager : MonoBehaviour
             {
                 SpawnPowerupsOnLoad();
                 UIManager.Instance.didPlayerLoadPowerupManager = false;
+                newWave = currentWave;
             }
-            else if(Time.time >= nextSpawnTime|| currentWave > newWave)
+            else if(Time.time >= nextSpawnTime || currentWave > newWave)
             {
                 GenerateRandomPos();
                 InstantiateObject(ammo, randomSpawnPos, ammoParent);

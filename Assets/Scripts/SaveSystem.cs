@@ -3,8 +3,10 @@ using System.IO;
 using MessagePack;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using static UnityEditorInternal.ReorderableList;
 
 // .svf for SaVeFile
+// .dsvf for Default SaVeFile
 
 public static class SaveSystem
 {
@@ -83,6 +85,31 @@ public static class SaveSystem
         {
             Debug.LogError("File does not exist! Cannot delete a nonexistent file.");
         }
+    }
+
+    public static void SetDefaultSave(string saveName)
+    {
+        string path = Path.Combine(Application.persistentDataPath, "Default" + ".dsvf"); // Default SaVeFile
+
+        byte[] bytes = MessagePackSerializer.Serialize(saveName);
+
+        File.WriteAllBytes(path, bytes);
+        Debug.Log("Saved Default save name to unique save file.");
+    }
+    public static string LoadDefaultSave()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "Default" + ".dsvf");
+
+        if (File.Exists(path))
+        {
+            byte[] readBytes = File.ReadAllBytes(path);
+            string defaultSaveName = MessagePackSerializer.Deserialize<string>(readBytes);
+            Debug.Log("Loaded Default save file");
+            return defaultSaveName;
+        }
+
+        Debug.LogWarning("No default save assigned!");
+        return null;
     }
 }
 

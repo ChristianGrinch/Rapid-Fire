@@ -52,13 +52,12 @@ public class ShootBullet : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            HealthSystem enemyHealth = collision.gameObject.GetComponent<HealthSystem>(); // Gets the HealthSystem script from the enemy.
-
-            if (enemyHealth != null) // Makes sure that the line above was able to actually get the HealthSystem script
+            
+            if (collision.gameObject.TryGetComponent<HealthSystem>(out var enemyHealth)) // Makes sure that the line above was able to actually get the HealthSystem script
             {
                 int modifiedHealth = enemyHealth.health - damage; // Creates a modified health variable, and makes the value equal to the enemy health minus the damage the bullet should do.
                 enemyHealth.UpdateHealth(modifiedHealth); // Calls the function inside of HealthSystem inside the enemy to update the health on the enemy using the modifiedHealth.
-                if(modifiedHealth <= 0)
+                if (modifiedHealth <= 0)
                 {
                     GameObject instantiatedEnemy = Instantiate(ammo, bulletRb.transform.position, Quaternion.Euler(90, 0, 0)); // Spawns ammo on enemy death
                     instantiatedEnemy.transform.parent = ammoParent.transform; // Sets parent

@@ -9,8 +9,10 @@ public class AudioManager : MonoBehaviour
 
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
+    public Slider gunVolumeSlider;  
     private float masterVolume = 100;
     private float musicVolume = 100;
+    private float gunVolume = 100;
 
     private void Awake()
     {
@@ -34,11 +36,16 @@ public class AudioManager : MonoBehaviour
         musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
         musicVolumeSlider.value = musicVolume;
         SetMusicVolume(musicVolume);
+
+        gunVolumeSlider.onValueChanged.AddListener(SetGunVolume);
+        gunVolumeSlider.value = gunVolume;
+        SetGunVolume(gunVolume);
     }
     private void Update()
     {
         SetVolume(masterVolume);
         SetMusicVolume(musicVolume);
+        SetGunVolume(gunVolume);
     }
 
     public void SetVolume(float newVolume)
@@ -70,5 +77,15 @@ public class AudioManager : MonoBehaviour
         {
             audioSource.volume = (masterVolume / 100) * (musicVolume / 100);
         }
+    }
+
+    public void SetGunVolume(float newVolume)
+    {
+        gunVolume = newVolume;
+
+        GameObject player = GameObject.Find("Player");
+        AudioSource audioSource = player.GetComponent<AudioSource>();
+
+        audioSource.volume = (masterVolume / 100) * (gunVolume / 100);
     }
 }

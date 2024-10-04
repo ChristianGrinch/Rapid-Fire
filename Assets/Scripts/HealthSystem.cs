@@ -14,7 +14,7 @@ public class HealthSystem : MonoBehaviour
 
 	public void UpdateHealth(int newHealth)
 	{
-		if (newHealth <= maxHealth) // Makes sure health never goes above 200
+		if (newHealth <= maxHealth || gameObject.CompareTag("Enemy")) // Makes sure health never goes above 200
 		{
 			health = newHealth;
 		}
@@ -57,6 +57,7 @@ public class HealthSystem : MonoBehaviour
 
 	public void AssignLives()
 	{
+
 		if (UIManager.Instance.isGameActive && !didAssignLives)
 		{
 			switch (UIManager.Instance.difficulty)

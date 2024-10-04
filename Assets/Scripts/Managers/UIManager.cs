@@ -42,12 +42,12 @@ public class UIManager : MonoBehaviour
 	public Button toTitleScreenFromSettingsButton;
 
 	public GameObject audioPanel;
-	public GameObject lowerMasterVolume;
-	public GameObject increaseMasterVolume;
 	public Slider masterVolumeSlider;
 	public TextMeshProUGUI masterVolume;
 	public Slider musicVolumeSlider;
 	public TextMeshProUGUI musicVolume;
+	public Slider gunVolumeSlider;
+	public TextMeshProUGUI gunVolume;
 
 
     public GameObject videoPanel;
@@ -60,6 +60,7 @@ public class UIManager : MonoBehaviour
     public TMP_InputField saveNameInputField;
 	public Button deleteSaveButton;
 	public string currentSave;
+	public Button defaultSaveButton;
 
 	private HealthSystem healthSystem;
 	private GunController gunController;
@@ -81,6 +82,8 @@ public class UIManager : MonoBehaviour
 	public int enemyLevel3;
 	public int bossLevel1;
 
+	public string defaultSave;
+
 
 	void Awake()
 	{
@@ -99,16 +102,16 @@ public class UIManager : MonoBehaviour
 	void Start()
 	{
 		SwitchToTitle();
-
 		InstantiateSaveButtons();
+		InitializeVolume();
+		defaultSave = SaveSystem.LoadDefaultSave();
 
-		healthSystem = player.GetComponent<HealthSystem>();
+        healthSystem = player.GetComponent<HealthSystem>();
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
         saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
-
     }
 
 	// Update is called once per frame
@@ -118,7 +121,6 @@ public class UIManager : MonoBehaviour
 		healthText.text = $"Health: {healthSystem.health}";
 		livesText.text = $"Lives: {healthSystem.lives}";
 		ammoText.text = $"Ammo: {gunController.ammo[gunController.currentGunInt]}";
-
 
 		if (healthSystem.lives <= 0)
 		{
@@ -144,7 +146,8 @@ public class UIManager : MonoBehaviour
 	}
 	public void StartGame()
 	{
-		titleScreen.SetActive(false);
+        LoadPlayer(defaultSave);
+        titleScreen.SetActive(false);
 		game.SetActive(true);
 		isGameActive = true;
 
@@ -251,6 +254,15 @@ public class UIManager : MonoBehaviour
 			savesPanel.SetActive(true);
 		}
 	}
+	public void InitializeVolume()
+	{
+        masterVolumeSlider.value = 50;
+        musicVolumeSlider.value = 50;
+        gunVolumeSlider.value = 35;
+        masterVolume.text = masterVolumeSlider.value.ToString();
+        musicVolume.text = musicVolumeSlider.value.ToString();
+        gunVolume.text = gunVolumeSlider.value.ToString();
+    }
 	public void DecreaseMasterVolume()
 	{
 		masterVolumeSlider.value--;
@@ -273,6 +285,20 @@ public class UIManager : MonoBehaviour
         musicVolumeSlider.value++;
         musicVolume.text = musicVolumeSlider.value.ToString();
     }
+    public void DecreaseGunVolume()
+    {
+        gunVolumeSlider.value--;
+        gunVolume.text = gunVolumeSlider.value.ToString();
+
+    }
+    public void IncreaseGunVolume()
+    {
+        gunVolumeSlider.value++;
+        gunVolume.text = gunVolumeSlider.value.ToString();
+    }
+    public void UpdateMasterSlider() { masterVolume.text = masterVolumeSlider.value.ToString(); }
+	public void UpdateMusicSlider() { musicVolume.text = musicVolumeSlider.value.ToString(); }
+    public void UpdateGunSlider() { gunVolume.text = gunVolumeSlider.value.ToString(); }
     public void InstantiateSaveButtons()
 	{
 		List<string> saveFiles = SaveSystem.FindSaves();
@@ -333,7 +359,7 @@ public class UIManager : MonoBehaviour
 
         SavePlayer(saveName);
 	}
-	void AddButton(string saveName)
+	private void AddButton(string saveName)
 	{
 		GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
 		newButton.GetComponentInChildren<TMP_Text>().text = saveName;
@@ -369,12 +395,24 @@ public class UIManager : MonoBehaviour
 		if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
         {
 			deleteSaveButton.gameObject.SetActive(true);
+			defaultSaveButton.gameObject.SetActive(true);
 		}
 		else
 		{
 			deleteSaveButton.gameObject.SetActive(false);
-		}
+            defaultSaveButton.gameObject.SetActive(false);
+        }
 
+	}
+	public void SetDefaultSave()
+	{
+        string saveName = saveNameInputField.text;
+
+        if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
+		{
+			SaveSystem.SetDefaultSave(saveName);
+			Debug.Log("Set " + saveName + " to default save.");
+        }
 	}
 	public void SaveFromInsideGame()
 	{
@@ -447,6 +485,9 @@ public class UIManager : MonoBehaviour
 			musicVolumeSlider.value = data.musicVolume;
 			musicVolume.text = data.musicVolume.ToString();
 
+			gunVolumeSlider.value = data.gunVolume;
+			gunVolume.text = data.musicVolume.ToString();
+
 			if (data.difficulty != 0)
 			{
 				didSelectDifficulty = true;
@@ -460,4 +501,5 @@ public class UIManager : MonoBehaviour
 		}
 
 	}
+
 }

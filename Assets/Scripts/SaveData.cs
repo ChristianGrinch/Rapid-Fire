@@ -22,6 +22,7 @@ public class SaveData
     // Settings data
     [Key(20)] public int masterVolume;
     [Key(21)] public int musicVolume;
+    [Key(22)] public int gunVolume;
 
     // Parameterless constructor
     public SaveData() { }
@@ -63,6 +64,7 @@ public class SaveData
             // Assign settings data
             masterVolume = (int)UIManager.Instance.masterVolumeSlider.value,
             musicVolume = (int)UIManager.Instance.musicVolumeSlider.value,
+            gunVolume = (int)UIManager.Instance.gunVolumeSlider.value,
         };
         return saveData;
     }
