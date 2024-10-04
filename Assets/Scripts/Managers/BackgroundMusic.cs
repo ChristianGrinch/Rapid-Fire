@@ -9,6 +9,8 @@ public class BackgroundMusic : MonoBehaviour // Not my script! Thanks to https:/
     private AudioSource audioSource;
     int clipOrder = 0; // for ordered playlist
 
+    public static BackgroundMusic Instance { get; private set; }
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -56,6 +58,15 @@ public class BackgroundMusic : MonoBehaviour // Not my script! Thanks to https:/
 
     void Awake()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
 }

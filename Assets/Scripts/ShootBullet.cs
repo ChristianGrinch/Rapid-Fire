@@ -62,7 +62,7 @@ public class ShootBullet : MonoBehaviour
                     GameObject instantiatedEnemy = Instantiate(ammo, bulletRb.transform.position, Quaternion.Euler(90, 0, 0)); // Spawns ammo on enemy death
                     instantiatedEnemy.transform.parent = ammoParent.transform; // Sets parent
                     StartCoroutine(EnemySpawnManager.Instance.AssignEnemiesToArray());
-                }
+                }   
             }
             else // If it isn't able to get the HealthSystem script, throw an error.
             {
