@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 	private HealthSystem healthSystem;
 	private EnemySpawnManager enemySpawnManager;
 	private GunController gunController;
+	public GameObject jumpTrigger;
 
 	// Start is called before the first frame update
 	void Start()
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour
 		wave = enemySpawnManager.currentWave;
 		ammo = gunController.ammo;
 
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Space) && JumpCheck.Instance.canJump)
 		{
 			StartCoroutine(Jump());
 		}
