@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: 3a7a154cace9f0a47bf572eb935a661e
+guid: 50d3b9f877fce0a41aab6cc6949accc6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - ringPrefab: {fileID: 7630538994560031099, guid: 46296af7467c0ee418262bbe70f5847f, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

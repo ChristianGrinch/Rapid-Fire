@@ -15,25 +15,79 @@ public class EnemyController : MonoBehaviour
 	private int difficulty = 1;
 	private float damageRate = 0.4f;
 	private bool isDamagingPlayer = false;
+	private int jumpForce = 10;
+	private bool isRunningJump;
 
 	private Rigidbody enemyRb;
 	private GameObject player;
 	private HealthSystem healthSystem;
 
-	// Start is called before the first frame update
-	void Start()
+    public GameObject ringPrefab;
+    private float ringExpandTime = 1f;
+    private float ringMaxSize = 45f;
+    private float spawnRingCooldown = 10f;
+    private float lastSpawnRingTime = 0f;
+
+    // Start is called before the first frame update
+    void Start()
 	{
 		enemyRb = GetComponent<Rigidbody>();
 		player = GameObject.Find("Player");
 		healthSystem = gameObject.GetComponent<HealthSystem>();
 		AssignStats();
 		healthSystem.health = health;
-	}
-
-	// Update is called once per frame
-	void Update()
+    }
+	IEnumerator Jump(float jumpHeight)
 	{
-		if (!followingPlayer && Vector3.Distance(player.transform.position, transform.position) < detectionRadius && UIManager.Instance.isGameActive)
+		isRunningJump = true;
+		yield return new WaitForSeconds(Random.Range(5, 14)); // Delay between jumps
+
+		enemyRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        enemyRb.useGravity = true;
+
+        yield return new WaitForSeconds(0.2f); // Wait 0.2 seconds so Y is > jumpHeight
+
+        while (transform.position.y > jumpHeight)
+        {
+            yield return null;
+        }
+
+        enemyRb.useGravity = false;
+		isRunningJump = false;
+    }
+    IEnumerator SpawnRing() // not my code, chatgpt
+    {
+        lastSpawnRingTime = Time.time;
+        GameObject ring = Instantiate(ringPrefab, transform.position, Quaternion.identity);
+
+        ring.transform.position = new Vector3(transform.position.x, 0.1f, transform.position.z);
+
+        float currentTime = 0f;
+        Vector3 initialScale = ring.transform.localScale;
+
+        while (currentTime < ringExpandTime)
+        {
+            float progress = currentTime / ringExpandTime;
+            float scale = Mathf.Lerp(1f, ringMaxSize, progress);
+            ring.transform.localScale = new Vector3(scale, ring.transform.localScale.y, scale);
+
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(ring, 0.5f);
+    }
+    // Update is called once per frame
+    void Update()
+	{
+		if (!isRunningJump && gameObject.name == "Boss 1")
+		{
+			StartCoroutine(Jump(2.1f));
+		}
+
+		if (!followingPlayer
+			&& Vector3.Distance(player.transform.position, transform.position) < detectionRadius
+			&& UIManager.Instance.isGameActive)
 		{
 			MoveEnemy();
 		}
@@ -63,32 +117,40 @@ public class EnemyController : MonoBehaviour
 				StartCoroutine(MoveForTime(5));
 			}
 		}
-	}
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
+
+        if (collision.gameObject.CompareTag("Ground") && gameObject.name == "Boss 1")
+        {
+            if(Time.time - lastSpawnRingTime >= spawnRingCooldown)
+            {
+                StartCoroutine(SpawnRing());
+            }
+        }
+    }
+	private void OnCollisionExit(Collision collision)
+	{
+		if (collision.gameObject.CompareTag("Player"))
 		{
 			isDamagingPlayer = false;
 			StopAllCoroutines();
 		}
-    }
+	}
 
-    IEnumerator DamagePlayer(Collision collision, HealthSystem playerHealth)
+	IEnumerator DamagePlayer(Collision collision, HealthSystem playerHealth)
 	{
 		isDamagingPlayer = true;
 
-        int initialHealth = playerHealth.health - damage;
-        playerHealth.UpdateHealth(initialHealth);
+		int initialHealth = playerHealth.health - damage;
+		playerHealth.UpdateHealth(initialHealth);
 
-        while (playerHealth.health > 0)
+		while (playerHealth.health > 0)
 		{
-            int modifiedHealth = playerHealth.health - damage;
-            yield return new WaitForSeconds(damageRate);
-            playerHealth.UpdateHealth(modifiedHealth);
+			int modifiedHealth = playerHealth.health - damage;
+			yield return new WaitForSeconds(damageRate);
+			playerHealth.UpdateHealth(modifiedHealth);
 			Debug.Log("running DamagePlayer in if");
-        }
+		}
 		isDamagingPlayer = false;
-    }
+	}
 
 	IEnumerator MoveForTime(float duration)
 	{

@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 	private Rigidbody playerRb;
-	public float speed = 80;
+    public float speed = 8;
+	public float jumpForce = 10;
 	public int exp;
 	public int health;
 	public int lives;
@@ -34,6 +35,11 @@ public class PlayerController : MonoBehaviour
 		lives = healthSystem.lives;
 		wave = enemySpawnManager.currentWave;
 		ammo = gunController.ammo;
+
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			StartCoroutine(Jump());
+		}
 	}
 
 	private void FixedUpdate()
@@ -87,7 +93,22 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	public void UpdateSpeed(float newSpeed)
+    IEnumerator Jump()
+    {
+        playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        playerRb.useGravity = true;
+
+        yield return new WaitForSeconds(0.2f); // Wait 0.2 seconds so Y is > jumpHeight
+
+        while (transform.position.y > 0.5f)
+        {
+            yield return null;
+        }
+
+        playerRb.useGravity = false;
+    }
+
+    public void UpdateSpeed(float newSpeed)
 	{
 		speed = newSpeed;
 	}

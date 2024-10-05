@@ -132,13 +132,13 @@ public class EnemySpawnManager : MonoBehaviour
 			float randomPosX = Random.Range(-20f, 20f);
 			float randomPosZ = Random.Range(-20f, 20f);
 
-			Vector3 randomSpawnPos = new(randomPosX, 2.5f, randomPosZ);
+			Vector3 randomSpawnPos = new(randomPosX, 2, randomPosZ);
 
 			while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance)
 			{
 				randomPosX = Random.Range(-20f, 20f);
 				randomPosZ = Random.Range(-20f, 20f);
-				randomSpawnPos = new Vector3(randomPosX, 2.5f, randomPosZ);
+				randomSpawnPos = new Vector3(randomPosX, 2, randomPosZ);
 			}
 			return randomSpawnPos;
 
@@ -149,13 +149,13 @@ public class EnemySpawnManager : MonoBehaviour
 			float randomPosX = Random.Range(-20f, 20f);
 			float randomPosZ = Random.Range(-20f, 20f);
 
-			Vector3 randomSpawnPos = new(randomPosX, 1, randomPosZ);
+			Vector3 randomSpawnPos = new(randomPosX, .5f, randomPosZ);
 
 			while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance)
 			{
 				randomPosX = Random.Range(-20f, 20f);
 				randomPosZ = Random.Range(-20f, 20f);
-				randomSpawnPos = new Vector3(randomPosX, 1, randomPosZ);
+				randomSpawnPos = new Vector3(randomPosX, .5f, randomPosZ);
 			}
 			return randomSpawnPos;
 		}
@@ -222,7 +222,7 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 
-	void InstantiateEnemy(int type)
+	public void InstantiateEnemy(int type)
 	{
 		GameObject instantiatedEnemy = Instantiate(enemy[type], GenerateSpawnPosition(type), Quaternion.Euler(90, 0, 0));
 
