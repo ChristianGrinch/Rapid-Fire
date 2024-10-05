@@ -123,8 +123,6 @@ MonoBehaviour:
   exp: 0
   health: 0
   ringPrefab: {fileID: 7630538994560031099, guid: 46296af7467c0ee418262bbe70f5847f, type: 3}
-  ringExpandTime: 1
-  ringMaxSize: 5
 --- !u!54 &5683137164762641240
 Rigidbody:
   m_ObjectHideFlags: 0

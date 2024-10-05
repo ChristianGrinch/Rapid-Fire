@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
 	private GunController gunController;
 	public GameObject jumpTrigger;
 
+	private bool isGrounded;
+	private int fallMultiplier = 4;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -31,7 +34,7 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		Sprinting();
+        Sprinting();
 		health = healthSystem.health;
 		lives = healthSystem.lives;
 		wave = enemySpawnManager.currentWave;
@@ -45,6 +48,13 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		isGrounded = JumpCheck.Instance.canJump;
+
+		if (!isGrounded)
+		{
+			playerRb.AddForce((fallMultiplier - 1) * playerRb.mass * Physics.gravity);
+		}
+
 		if (UIManager.Instance.isGameActive)
 		{
             MovePlayer();

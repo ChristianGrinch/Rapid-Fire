@@ -169,7 +169,10 @@ public class EnemyController : MonoBehaviour
 
 	void MoveEnemy()
 	{
-		enemyRb.AddForce(Time.deltaTime * speed * (player.transform.position - transform.position).normalized, ForceMode.Impulse);
+        Vector3 direction = (player.transform.position - transform.position).normalized;
+        direction.y = 0;
+
+        enemyRb.AddForce(Time.deltaTime * speed * direction, ForceMode.Impulse);
 	}
 
 	void AssignStats()
