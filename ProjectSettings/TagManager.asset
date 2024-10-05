@@ -10,6 +10,7 @@ TagManager:
   - Bullet
   - Ammo
   - Music
+  - Ground
   layers:
   - Default
   - TransparentFX

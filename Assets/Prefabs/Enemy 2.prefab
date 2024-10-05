@@ -120,7 +120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7a154cace9f0a47bf572eb935a661e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  exp: 0
+  health: 0
+  ringPrefab: {fileID: 7630538994560031099, guid: 46296af7467c0ee418262bbe70f5847f, type: 3}
 --- !u!54 &7921058218914513466
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,7 +148,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &2404675491570499796
 MonoBehaviour:
@@ -161,3 +163,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 60
+  maxHealth: 200
+  lives: 3

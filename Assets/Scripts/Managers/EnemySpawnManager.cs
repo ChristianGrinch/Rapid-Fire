@@ -22,9 +22,11 @@ public class EnemySpawnManager : MonoBehaviour
     public GameObject[] bossLevel1;
 
 	public int currentWave = 0;
-	private int spawnBufferDistance = 3;
+	private int spawnBufferDistance = 4;
 
-	private Dictionary<EnemyType, int> enemiesToSpawn = new()
+    private Vector3 lastBossSpawnPos;
+
+    private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
 		{ EnemyType.Level1, 4 },
 		{ EnemyType.Level2, 0 },
@@ -127,39 +129,29 @@ public class EnemySpawnManager : MonoBehaviour
 	}
 	private Vector3 GenerateSpawnPosition(int type)
 	{
-		if (type == 3) // if its a boss:
+		float posY = type == 3 ? 2 : 0.5f;
+
+        float randomPosX = Random.Range(-20f, 20f);
+		float randomPosZ = Random.Range(-20f, 20f);
+
+		Vector3 randomSpawnPos = new(randomPosX, posY, randomPosZ);
+
+		if (type == 3)
 		{
-			float randomPosX = Random.Range(-20f, 20f);
-			float randomPosZ = Random.Range(-20f, 20f);
-
-			Vector3 randomSpawnPos = new(randomPosX, 2.5f, randomPosZ);
-
-			while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance)
-			{
-				randomPosX = Random.Range(-20f, 20f);
-				randomPosZ = Random.Range(-20f, 20f);
-				randomSpawnPos = new Vector3(randomPosX, 2.5f, randomPosZ);
-			}
-			return randomSpawnPos;
-
-
+            lastBossSpawnPos = randomSpawnPos;
+			return lastBossSpawnPos;
 		}
-		else
-		{
-			float randomPosX = Random.Range(-20f, 20f);
-			float randomPosZ = Random.Range(-20f, 20f);
+		Debug.Log(lastBossSpawnPos);
 
-			Vector3 randomSpawnPos = new(randomPosX, 1, randomPosZ);
-
-			while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance)
-			{
-				randomPosX = Random.Range(-20f, 20f);
-				randomPosZ = Random.Range(-20f, 20f);
-				randomSpawnPos = new Vector3(randomPosX, 1, randomPosZ);
-			}
-			return randomSpawnPos;
+        while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance 
+			|| (Vector3.Distance(lastBossSpawnPos, randomSpawnPos) < 5))
+        {
+			randomPosX = Random.Range(-20f, 20f);
+			randomPosZ = Random.Range(-20f, 20f);
+			randomSpawnPos = new(randomPosX, posY, randomPosZ);
 		}
 
+		return randomSpawnPos;
 	}
 	 
 	void SpawnEnemyWave()
@@ -204,6 +196,10 @@ public class EnemySpawnManager : MonoBehaviour
 
 	public void SpawnEnemiesOnLoad(int enemyLevel1, int enemyLevel2, int enemyLevel3, int bossLevel1)
 	{
+        for (int i = 0; i < bossLevel1; i++) // must be first so the boss pos can be saved
+        {
+            InstantiateEnemy(3);
+        }
         for (int i = 0; i < enemyLevel1; i++)
         {
             InstantiateEnemy(0);
@@ -216,13 +212,9 @@ public class EnemySpawnManager : MonoBehaviour
         {
             InstantiateEnemy(2);
         }
-        for (int i = 0; i < bossLevel1; i++)
-        {
-            InstantiateEnemy(3);
-        }
     }
 
-	void InstantiateEnemy(int type)
+	public void InstantiateEnemy(int type)
 	{
 		GameObject instantiatedEnemy = Instantiate(enemy[type], GenerateSpawnPosition(type), Quaternion.Euler(90, 0, 0));
 

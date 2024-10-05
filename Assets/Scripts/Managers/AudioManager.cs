@@ -84,8 +84,16 @@ public class AudioManager : MonoBehaviour
         gunVolume = newVolume;
 
         GameObject player = GameObject.Find("Player");
-        AudioSource audioSource = player.GetComponent<AudioSource>();
+        if(player != null)
+        {
+            AudioSource audioSource = player.GetComponent<AudioSource>();
 
-        audioSource.volume = (masterVolume / 100) * (gunVolume / 100);
+            audioSource.volume = (masterVolume / 100) * (gunVolume / 100);
+        }
+        else
+        {
+            Debug.LogWarning("Cannot find player!");
+        }
+        
     }
 }
