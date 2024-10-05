@@ -16,7 +16,9 @@ public class UIManager : MonoBehaviour
 	public TextMeshProUGUI healthText;
 	public TextMeshProUGUI livesText;
 	public TextMeshProUGUI ammoText;
+	public Image ammoImage;
 	public Button saveButton;
+	public TMP_Text difficultyText;
 
 	public GameObject restartScreen;
 	public TextMeshProUGUI gameOverText;
@@ -74,7 +76,8 @@ public class UIManager : MonoBehaviour
 
 	public int difficulty = 1;
 	public bool isGameActive = false;
-	public bool didSelectDifficulty = false;
+    public bool isInGame = false;
+    public bool didSelectDifficulty = false;
 	public bool didPlayerLoadSpawnManager = false;
 	public bool didPlayerLoadPowerupManager = false;
 
@@ -121,7 +124,7 @@ public class UIManager : MonoBehaviour
 		waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
 		healthText.text = $"Health: {healthSystem.health}";
 		livesText.text = $"Lives: {healthSystem.lives}";
-		ammoText.text = $"Ammo: {gunController.ammo[gunController.currentGunInt]}";
+		ammoText.text = $"{gunController.ammo[gunController.currentGunInt]}";
 
 		if (healthSystem.lives <= 0)
 		{
@@ -151,11 +154,25 @@ public class UIManager : MonoBehaviour
         titleScreen.SetActive(false);
 		game.SetActive(true);
 		isGameActive = true;
+		isInGame = true;
 
 		healthSystem.AssignLives();
 		Time.timeScale = 1;
-	}
-	public void PauseGame()
+		SetDifficultyText();
+
+    }
+    public void StartNewGame()
+    {
+        titleScreen.SetActive(false);
+        game.SetActive(true);
+        isGameActive = true;
+        isInGame = true;
+
+        healthSystem.AssignLives();
+        Time.timeScale = 1;
+        SetDifficultyText();
+    }
+    public void PauseGame()
 	{
 		isGameActive = false;
 		pauseScreen.SetActive(true);
@@ -188,11 +205,19 @@ public class UIManager : MonoBehaviour
 	}
 	public void SwitchToTitle()
 	{
-
-			titleScreen.SetActive(true);
-			difficultyScreen.SetActive(false);
-			pauseScreen.SetActive(false);
-			settingsScreen.SetActive(false);
+		if (isInGame)
+		{
+            pauseScreen.SetActive(true);
+            settingsScreen.SetActive(false);
+        }
+		else
+		{
+            titleScreen.SetActive(true);
+            difficultyScreen.SetActive(false);
+            pauseScreen.SetActive(false);
+            settingsScreen.SetActive(false);
+        }
+		
 	}
 	public void SetDifficulty(int selectedDifficulty)
 	{
@@ -322,6 +347,21 @@ public class UIManager : MonoBehaviour
         }
 
     }
+	public void SetDifficultyText()
+	{
+		if (difficulty == 1)
+		{
+			difficultyText.text = "Easy";
+        } 
+		else if (difficulty == 2)
+		{
+            difficultyText.text = "Normal";
+        }
+		else if (difficulty == 3)
+		{
+            difficultyText.text = "Master";
+        }
+	}
     public void InstantiateSaveButtons()
 	{
 		List<string> saveFiles = SaveSystem.FindSaves();
