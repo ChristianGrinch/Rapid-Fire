@@ -22,9 +22,11 @@ public class EnemySpawnManager : MonoBehaviour
     public GameObject[] bossLevel1;
 
 	public int currentWave = 0;
-	private int spawnBufferDistance = 3;
+	private int spawnBufferDistance = 4;
 
-	private Dictionary<EnemyType, int> enemiesToSpawn = new()
+    Vector3 lastBossSpawnPos = new();
+
+    private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
 		{ EnemyType.Level1, 4 },
 		{ EnemyType.Level2, 0 },
@@ -127,39 +129,36 @@ public class EnemySpawnManager : MonoBehaviour
 	}
 	private Vector3 GenerateSpawnPosition(int type)
 	{
-		if (type == 3) // if its a boss:
+		float posY;
+		if(type == 3) // if boss
 		{
-			float randomPosX = Random.Range(-20f, 20f);
-			float randomPosZ = Random.Range(-20f, 20f);
-
-			Vector3 randomSpawnPos = new(randomPosX, 2, randomPosZ);
-
-			while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance)
-			{
-				randomPosX = Random.Range(-20f, 20f);
-				randomPosZ = Random.Range(-20f, 20f);
-				randomSpawnPos = new Vector3(randomPosX, 2, randomPosZ);
-			}
-			return randomSpawnPos;
-
-
+			posY = 2;
 		}
 		else
 		{
-			float randomPosX = Random.Range(-20f, 20f);
-			float randomPosZ = Random.Range(-20f, 20f);
-
-			Vector3 randomSpawnPos = new(randomPosX, .5f, randomPosZ);
-
-			while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance)
-			{
-				randomPosX = Random.Range(-20f, 20f);
-				randomPosZ = Random.Range(-20f, 20f);
-				randomSpawnPos = new Vector3(randomPosX, .5f, randomPosZ);
-			}
-			return randomSpawnPos;
+			posY = 0.5f;
 		}
 
+		float randomPosX = Random.Range(-20f, 20f);
+		float randomPosZ = Random.Range(-20f, 20f);
+
+		Vector3 randomSpawnPos = new(randomPosX, posY, randomPosZ);
+
+		if (type == 3)
+		{
+			lastBossSpawnPos = randomSpawnPos;
+			return randomSpawnPos;
+		}
+        bool bossSpawned = lastBossSpawnPos != Vector3.zero;
+
+        while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance || (bossSpawned && Vector3.Distance(lastBossSpawnPos, randomSpawnPos) < 5))
+        {
+			randomPosX = Random.Range(-20f, 20f);
+			randomPosZ = Random.Range(-20f, 20f);
+			randomSpawnPos = new(randomPosX, posY, randomPosZ);
+		}
+
+		return randomSpawnPos;
 	}
 	 
 	void SpawnEnemyWave()
