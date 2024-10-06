@@ -52,7 +52,7 @@ public class UIManager : MonoBehaviour
 	public TextMeshProUGUI gunVolume;
 
 
-    public GameObject videoPanel;
+	public GameObject videoPanel;
 	public TMP_Dropdown screenModeDropdown;
 
 	public GameObject savesPanel;
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
 	public Transform contentPanel;
 	private List<string> savedGames = new List<string>();
 	List<GameObject> saveButtons = new();
-    public TMP_InputField saveNameInputField;
+	public TMP_InputField saveNameInputField;
 	public Button deleteSaveButton;
 	public string currentSave;
 	public Button defaultSaveButton;
@@ -76,8 +76,8 @@ public class UIManager : MonoBehaviour
 
 	public int difficulty = 1;
 	public bool isGameActive = false;
-    public bool isInGame = false;
-    public bool didSelectDifficulty = false;
+	public bool isInGame = false;
+	public bool didSelectDifficulty = false;
 	public bool didPlayerLoadSpawnManager = false;
 	public bool didPlayerLoadPowerupManager = false;
 
@@ -109,24 +109,24 @@ public class UIManager : MonoBehaviour
 		InstantiateSaveButtons();
 		InitializeVolume();
 		defaultSave = SaveSystem.LoadDefaultSave();
-        playDefaultText.text = "Play default save \n[ " + defaultSave + " ]";
+		playDefaultText.text = "Play default save \n[ " + defaultSave + " ]";
 
-        healthSystem = player.GetComponent<HealthSystem>();
+		healthSystem = player.GetComponent<HealthSystem>();
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
-        saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
+		saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
 
 
-    }
+	}
 
 	// Update is called once per frame
 	void Update()
 	{
-        
+		
 
-        waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
+		waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
 		healthText.text = $"Health: {healthSystem.health}";
 		livesText.text = $"Lives: {healthSystem.lives}";
 		ammoText.text = $"{gunController.ammo[gunController.currentGunInt]}";
@@ -155,8 +155,8 @@ public class UIManager : MonoBehaviour
 	}
 	public void StartGame()
 	{
-        LoadPlayer(defaultSave);
-        titleScreen.SetActive(false);
+		LoadPlayer(defaultSave);
+		titleScreen.SetActive(false);
 		game.SetActive(true);
 		isGameActive = true;
 		isInGame = true;
@@ -165,19 +165,19 @@ public class UIManager : MonoBehaviour
 		Time.timeScale = 1;
 		SetDifficultyText();
 
-    }
-    public void StartNewGame()
-    {
-        titleScreen.SetActive(false);
-        game.SetActive(true);
-        isGameActive = true;
-        isInGame = true;
+	}
+	public void StartNewGame()
+	{
+		titleScreen.SetActive(false);
+		game.SetActive(true);
+		isGameActive = true;
+		isInGame = true;
 
-        healthSystem.AssignLives();
-        Time.timeScale = 1;
-        SetDifficultyText();
-    }
-    public void PauseGame()
+		healthSystem.AssignLives();
+		Time.timeScale = 1;
+		SetDifficultyText();
+	}
+	public void PauseGame()
 	{
 		isGameActive = false;
 		pauseScreen.SetActive(true);
@@ -212,16 +212,16 @@ public class UIManager : MonoBehaviour
 	{
 		if (isInGame)
 		{
-            pauseScreen.SetActive(true);
-            settingsScreen.SetActive(false);
-        }
+			pauseScreen.SetActive(true);
+			settingsScreen.SetActive(false);
+		}
 		else
 		{
-            titleScreen.SetActive(true);
-            difficultyScreen.SetActive(false);
-            pauseScreen.SetActive(false);
-            settingsScreen.SetActive(false);
-        }
+			titleScreen.SetActive(true);
+			difficultyScreen.SetActive(false);
+			pauseScreen.SetActive(false);
+			settingsScreen.SetActive(false);
+		}
 		
 	}
 	public void SetDifficulty(int selectedDifficulty)
@@ -287,13 +287,13 @@ public class UIManager : MonoBehaviour
 	}
 	public void InitializeVolume()
 	{
-        masterVolumeSlider.value = 50;
-        musicVolumeSlider.value = 50;
-        gunVolumeSlider.value = 35;
-        masterVolume.text = masterVolumeSlider.value.ToString();
-        musicVolume.text = musicVolumeSlider.value.ToString();
-        gunVolume.text = gunVolumeSlider.value.ToString();
-    }
+		masterVolumeSlider.value = 50;
+		musicVolumeSlider.value = 50;
+		gunVolumeSlider.value = 35;
+		masterVolume.text = masterVolumeSlider.value.ToString();
+		musicVolume.text = musicVolumeSlider.value.ToString();
+		gunVolume.text = gunVolumeSlider.value.ToString();
+	}
 	public void DecreaseMasterVolume()
 	{
 		masterVolumeSlider.value--;
@@ -305,78 +305,78 @@ public class UIManager : MonoBehaviour
 		masterVolumeSlider.value++;
 		masterVolume.text = masterVolumeSlider.value.ToString();
 	}
-    public void DecreaseMusicVolume()
-    {
-        musicVolumeSlider.value--;
-        musicVolume.text = musicVolumeSlider.value.ToString();
-
-    }
-    public void IncreaseMusicVolume()
-    {
-        musicVolumeSlider.value++;
-        musicVolume.text = musicVolumeSlider.value.ToString();
-    }
-    public void DecreaseGunVolume()
-    {
-        gunVolumeSlider.value--;
-        gunVolume.text = gunVolumeSlider.value.ToString();
-
-    }
-    public void IncreaseGunVolume()
-    {
-        gunVolumeSlider.value++;
-        gunVolume.text = gunVolumeSlider.value.ToString();
-    }
-    public void UpdateMasterSlider() { masterVolume.text = masterVolumeSlider.value.ToString(); }
-	public void UpdateMusicSlider() { musicVolume.text = musicVolumeSlider.value.ToString(); }
-    public void UpdateGunSlider() { gunVolume.text = gunVolumeSlider.value.ToString(); }
-	public void UpdateFullscreenMode()
+	public void DecreaseMusicVolume()
 	{
-        switch (screenModeDropdown.value)
-        {
-            case 0:
-                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
-                break;
-            case 1:
-                Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-                break;
-			case 2:
-                Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-                break;
-			case 3:
-                Screen.fullScreenMode = FullScreenMode.Windowed;
-				break;
-			default:
-				Screen.fullScreenMode = FullScreenMode.Windowed;
-				break;
-        }
+		musicVolumeSlider.value--;
+		musicVolume.text = musicVolumeSlider.value.ToString();
 
-    }
+	}
+	public void IncreaseMusicVolume()
+	{
+		musicVolumeSlider.value++;
+		musicVolume.text = musicVolumeSlider.value.ToString();
+	}
+	public void DecreaseGunVolume()
+	{
+		gunVolumeSlider.value--;
+		gunVolume.text = gunVolumeSlider.value.ToString();
+
+	}
+	public void IncreaseGunVolume()
+	{
+		gunVolumeSlider.value++;
+		gunVolume.text = gunVolumeSlider.value.ToString();
+	}
+	public void UpdateMasterSlider() { masterVolume.text = masterVolumeSlider.value.ToString(); }
+	public void UpdateMusicSlider() { musicVolume.text = musicVolumeSlider.value.ToString(); }
+	public void UpdateGunSlider() { gunVolume.text = gunVolumeSlider.value.ToString(); }
+	//public void UpdateFullscreenMode()
+	//{
+	//	switch (screenModeDropdown.value)
+	//	{
+	//		case 0:
+	//			Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+	//			break;
+	//		case 1:
+	//			Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
+	//			break;
+	//		case 2:
+	//			Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+	//			break;
+	//		case 3:
+	//			Screen.fullScreenMode = FullScreenMode.Windowed;
+	//			break;
+	//		default:
+	//			Screen.fullScreenMode = FullScreenMode.Windowed;
+	//			break;
+	//	}
+
+	//}
 	public void SetDifficultyText()
 	{
 		if (difficulty == 1)
 		{
 			difficultyText.text = "Easy";
-        } 
+		} 
 		else if (difficulty == 2)
 		{
-            difficultyText.text = "Normal";
-        }
+			difficultyText.text = "Normal";
+		}
 		else if (difficulty == 3)
 		{
-            difficultyText.text = "Master";
-        }
+			difficultyText.text = "Master";
+		}
 	}
-    public void InstantiateSaveButtons()
+	public void InstantiateSaveButtons()
 	{
 		List<string> saveFiles = SaveSystem.FindSaves();
 
-        foreach (Transform child in contentPanel.transform)
-        {
-            Destroy(child.gameObject);
-        }
+		foreach (Transform child in contentPanel.transform)
+		{
+			Destroy(child.gameObject);
+		}
 
-        if (saveFiles.Count == 0)
+		if (saveFiles.Count == 0)
 		{
 			Debug.Log("No save files to load.");
 			return;
@@ -384,12 +384,14 @@ public class UIManager : MonoBehaviour
 
 		foreach (var save in saveFiles)
 		{
-            string saveName = save;
-            savedGames.Add(saveName);
-            GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
+			string saveName = save;
+			savedGames.Add(saveName);
+			GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
 			newButton.GetComponentInChildren<TMP_Text>().text = save;
 
 			newButton.GetComponent<Button>().onClick.AddListener(() => LoadPlayer(saveName));
+			AudioManager.Instance.AssignSoundToNewButton(newButton);
+			newButton.tag = "ButtonWithPop";
 		}
 
 	}
@@ -408,24 +410,24 @@ public class UIManager : MonoBehaviour
 	}
 	public void CreateNewSave(string saveName)
 	{
-        bool saveNameInSavedGames = false;
+		bool saveNameInSavedGames = false;
 
-        foreach (string savedGame in SaveSystem.FindSaves())
-        {
-            if (savedGame == saveName)
-            {
-                saveNameInSavedGames = true;
-                break;
-            }
-        }
+		foreach (string savedGame in SaveSystem.FindSaves())
+		{
+			if (savedGame == saveName)
+			{
+				saveNameInSavedGames = true;
+				break;
+			}
+		}
 
-        if (!saveNameInSavedGames)
-        {
-            savedGames.Add(saveName);
-            AddButton(saveName);
-        }
+		if (!saveNameInSavedGames)
+		{
+			savedGames.Add(saveName);
+			AddButton(saveName);
+		}
 
-        SavePlayer(saveName);
+		SavePlayer(saveName);
 	}
 	private void AddButton(string saveName)
 	{
@@ -461,27 +463,27 @@ public class UIManager : MonoBehaviour
 		string saveName = saveNameInputField.text;
 
 		if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
-        {
+		{
 			deleteSaveButton.gameObject.SetActive(true);
 			defaultSaveButton.gameObject.SetActive(true);
 		}
 		else
 		{
 			deleteSaveButton.gameObject.SetActive(false);
-            defaultSaveButton.gameObject.SetActive(false);
-        }
+			defaultSaveButton.gameObject.SetActive(false);
+		}
 
 	}
 	public void SetDefaultSave()
 	{
-        string saveName = saveNameInputField.text;
-        playDefaultText.text = "Play default save \n[ " + saveName + " ]";
+		string saveName = saveNameInputField.text;
+		playDefaultText.text = "Play default save \n[ " + saveName + " ]";
 
-        if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
+		if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
 		{
 			SaveSystem.SetDefaultSave(saveName);
 			Debug.Log("Set '" + saveName + "' to default save.");
-        }
+		}
 	}
 	public void SaveFromInsideGame()
 	{

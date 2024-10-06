@@ -11,6 +11,7 @@ TagManager:
   - Ammo
   - Music
   - Ground
+  - ButtonWithPop
   layers:
   - Default
   - TransparentFX

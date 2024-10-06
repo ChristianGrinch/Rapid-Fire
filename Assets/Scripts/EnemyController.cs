@@ -27,8 +27,11 @@ public class EnemyController : MonoBehaviour
     private float ringMaxSize = 45f;
     private float spawnRingCooldown = 10f;
     private float lastSpawnRingTime = 0f;
+	private bool isDashing = false;
 
-    // Start is called before the first frame update
+    private int[] rangeDashSeconds = {10, 20};
+	private float dashSpeed;
+
     void Start()
 	{
 		enemyRb = GetComponent<Rigidbody>();
@@ -36,6 +39,25 @@ public class EnemyController : MonoBehaviour
 		healthSystem = gameObject.GetComponent<HealthSystem>();
 		AssignStats();
 		healthSystem.health = health;
+
+		switch (UIManager.Instance.difficulty)
+		{
+			case 1:
+				rangeDashSeconds[0] = 10;
+				rangeDashSeconds[1] = 20;
+                dashSpeed = speed * 100;
+                break;
+            case 2:
+                rangeDashSeconds[0] = 8;
+                rangeDashSeconds[1] = 15;
+                dashSpeed = speed * 120;
+                break;
+            case 3:
+                rangeDashSeconds[0] = 8;
+                rangeDashSeconds[1] = 10;
+                dashSpeed = speed * 140;
+                break;
+        }
     }
 	IEnumerator Jump(float jumpHeight)
 	{
@@ -77,6 +99,16 @@ public class EnemyController : MonoBehaviour
 
         Destroy(ring, 0.5f);
     }
+    IEnumerator Dash()
+    {
+		isDashing = true;
+        yield return new WaitForSeconds(Random.Range(rangeDashSeconds[0], rangeDashSeconds[1]));
+
+        Vector3 direction = (player.transform.position - transform.position).normalized;
+        
+        enemyRb.AddForce(Time.deltaTime * dashSpeed * direction, ForceMode.Impulse);
+		isDashing = false;
+    }
     // Update is called once per frame
     void Update()
 	{
@@ -91,7 +123,13 @@ public class EnemyController : MonoBehaviour
 		{
 			MoveEnemy();
 		}
+
+		if(!isDashing && gameObject.name == "Enemy 3")
+		{
+			StartCoroutine(Dash());
+		}
 	}
+
 
 	private void OnCollisionEnter(Collision collision)
 	{
