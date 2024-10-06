@@ -9869,8 +9869,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19
-  m_fontSizeBase: 19
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11898,7 +11898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &937104825
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14723,8 +14723,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19
-  m_fontSizeBase: 19
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -18305,7 +18305,7 @@ MonoBehaviour:
   gameOverText: {fileID: 2076342779}
   restartButton: {fileID: 752176803}
   titleScreen: {fileID: 937104824}
-  playButton: {fileID: 1168366736}
+  playDefaultText: {fileID: 824748085}
   difficultySelectorButton: {fileID: 142093521}
   difficultySelectWarning: {fileID: 443424226}
   settingsButton: {fileID: 1874352950}
