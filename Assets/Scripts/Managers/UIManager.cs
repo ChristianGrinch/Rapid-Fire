@@ -25,7 +25,7 @@ public class UIManager : MonoBehaviour
 	public Button restartButton;
 
 	public GameObject titleScreen;
-	public Button playButton;
+	public TMP_Text playDefaultText;
 	public Button difficultySelectorButton;
 	public GameObject difficultySelectWarning;
 	public Button settingsButton;
@@ -109,6 +109,7 @@ public class UIManager : MonoBehaviour
 		InstantiateSaveButtons();
 		InitializeVolume();
 		defaultSave = SaveSystem.LoadDefaultSave();
+        playDefaultText.text = "Play default save \n[ " + defaultSave + " ]";
 
         healthSystem = player.GetComponent<HealthSystem>();
 		gunController = player.GetComponent<GunController>();
@@ -116,12 +117,16 @@ public class UIManager : MonoBehaviour
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
         saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
+
+
     }
 
 	// Update is called once per frame
 	void Update()
 	{
-		waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
+        
+
+        waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
 		healthText.text = $"Health: {healthSystem.health}";
 		livesText.text = $"Lives: {healthSystem.lives}";
 		ammoText.text = $"{gunController.ammo[gunController.currentGunInt]}";
@@ -470,11 +475,12 @@ public class UIManager : MonoBehaviour
 	public void SetDefaultSave()
 	{
         string saveName = saveNameInputField.text;
+        playDefaultText.text = "Play default save \n[ " + saveName + " ]";
 
         if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
 		{
 			SaveSystem.SetDefaultSave(saveName);
-			Debug.Log("Set " + saveName + " to default save.");
+			Debug.Log("Set '" + saveName + "' to default save.");
         }
 	}
 	public void SaveFromInsideGame()
