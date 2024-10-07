@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
 	public GameObject quitGamePopup;
 	public GameObject returnToTitleScreenPopup;
 	public GameObject deleteSavePopup;
+	public GameObject playSavePopup;
 
 	public GameObject settingsScreen;
 	public Button toTitleScreenFromSettingsButton;
@@ -64,6 +65,7 @@ public class UIManager : MonoBehaviour
 	public Button deleteSaveButton;
 	public string currentSave;
 	public Button defaultSaveButton;
+	public TMP_Text loadWarning;
 
 	private HealthSystem healthSystem;
 	private GunController gunController;
@@ -135,6 +137,7 @@ public class UIManager : MonoBehaviour
 		{
 			GameOver();
 		}
+
 		if (Input.GetKeyDown(KeyCode.Escape) && isGameActive)
 		{
 			PauseGame();
@@ -142,6 +145,11 @@ public class UIManager : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive && pauseScreen.activeSelf)
 		{
 			ResumeGame();
+		}
+
+		if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive && settingsScreen.activeSelf)
+		{
+			SwitchToTitle();	
 		}
 	}
 	public void GameOver()
@@ -389,7 +397,19 @@ public class UIManager : MonoBehaviour
 			GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
 			newButton.GetComponentInChildren<TMP_Text>().text = save;
 
-			newButton.GetComponent<Button>().onClick.AddListener(() => LoadPlayer(saveName));
+			newButton.GetComponent<Button>().onClick.AddListener(() =>
+			{
+				if (!isInGame)
+				{
+                    LoadPlayer(saveName);
+				}
+				else
+				{
+					Debug.Log("Cannot load save while game is active.");
+					loadWarning.gameObject.SetActive(true);
+				}
+				
+			});
 			AudioManager.Instance.AssignSoundToNewButton(newButton);
 			newButton.tag = "ButtonWithPop";
 		}
@@ -450,15 +470,11 @@ public class UIManager : MonoBehaviour
 			Debug.LogWarning("Save name cannot be empty!");
 		}
 	}
-	public void OpenPopupDeleteSave()
-	{
-		deleteSavePopup.SetActive(true);
-	}
-	public void ClosePopupDeleteSave()
-	{
-		deleteSavePopup.SetActive(false);
-	}
-	public void UpdateDeleteSaveButton()
+	public void OpenPopupDeleteSave() { deleteSavePopup.SetActive(true); }
+	public void ClosePopupDeleteSave() { deleteSavePopup.SetActive(false); }
+	public void OpenPopupPlaySave() { playSavePopup.SetActive(true); }
+    public void ClosePopupPlaySave() { playSavePopup.SetActive(false); }
+    public void UpdateDeleteSaveButton()
 	{
 		string saveName = saveNameInputField.text;
 
