@@ -73,8 +73,11 @@ public class UIManager : MonoBehaviour
 	public Button idontevenknow;
 	public GameObject loadSaveWarning;
 	public TMP_Text loadSaveHeader;
+	public Button playNewSaveButton;
+	public GameObject saveNameWarning;
 
-	private HealthSystem healthSystem;
+
+    private HealthSystem healthSystem;
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
@@ -129,10 +132,9 @@ public class UIManager : MonoBehaviour
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
 		saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
-        loadNewSaveButton.onClick.AddListener(() => SavePlayer(newSaveName));
+        //loadNewSaveButton.onClick.AddListener(() => SavePlayer(newSaveName));
 		idontevenknow.onClick.AddListener(() =>
 		{
-            string saveName = saveNameInputField.text;
 
             if (!isInGame)
             {
@@ -143,7 +145,7 @@ public class UIManager : MonoBehaviour
 				}
 				else
 				{
-                    StartCoroutine(ShowLoadWarning());
+                    StartCoroutine(ShowSaveNameWarning());
                 }
             }
             else
@@ -155,8 +157,28 @@ public class UIManager : MonoBehaviour
 
         loadSelectedSaveButton.onClick.AddListener(() => LoadPlayer(currentSave));
 
+		playNewSaveButton.onClick.AddListener(() =>
+		{
+			currentSave = newSaveNameInputField.text;
 
+            Debug.Log(SaveSystem.FindSavesBool(currentSave));
+
+            if (!string.IsNullOrEmpty(currentSave) && !SaveSystem.FindSavesBool(currentSave))
+            {
+				Debug.Log("ran if true");
+				SavePlayer(currentSave);
+                StartNewGame();
+                ClosePopupCreateSaveName();
+            }
+            else
+            {
+				Debug.Log("ran if false");
+                StartCoroutine(ShowSaveNameWarning());
+                ClosePopupCreateSaveName();
+            }
+        });
     }
+
 
 	// Update is called once per frame
 	void Update()
@@ -257,6 +279,13 @@ public class UIManager : MonoBehaviour
         loadSaveWarning.SetActive(true);
         yield return new WaitForSeconds(3);
         loadSaveWarning.SetActive(false);
+
+    }
+    private IEnumerator ShowSaveNameWarning()
+    {
+        saveNameWarning.SetActive(true);
+        yield return new WaitForSeconds(5);
+        saveNameWarning.SetActive(false);
 
     }
     public void SwitchToTitle()
@@ -457,6 +486,11 @@ public class UIManager : MonoBehaviour
 			});
 			AudioManager.Instance.AssignSoundToNewButton(newButton);
 			newButton.tag = "ButtonWithPop";
+
+			if(save == "")
+			{
+				Destroy(newButton);
+			}
 		}
 
 	}
