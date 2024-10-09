@@ -75,6 +75,7 @@ public class UIManager : MonoBehaviour
 	public TMP_Text loadSaveHeader;
 	public Button playNewSaveButton;
 	public GameObject saveNameWarning;
+	public Button TEMP;
 
 
     private HealthSystem healthSystem;
@@ -157,26 +158,27 @@ public class UIManager : MonoBehaviour
 
         loadSelectedSaveButton.onClick.AddListener(() => LoadPlayer(currentSave));
 
-		playNewSaveButton.onClick.AddListener(() =>
-		{
-			currentSave = newSaveNameInputField.text;
+		TEMP.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.CreateSavePopup));
+		//playNewSaveButton.onClick.AddListener(() =>
+		//{
+		//	currentSave = newSaveNameInputField.text;
 
-            Debug.Log(SaveSystem.FindSavesBool(currentSave));
+  //          Debug.Log(SaveSystem.FindSavesBool(currentSave));
 
-            if (!string.IsNullOrEmpty(currentSave) && !SaveSystem.FindSavesBool(currentSave))
-            {
-				Debug.Log("ran if true");
-				SavePlayer(currentSave);
-                StartNewGame();
-                ClosePopupCreateSaveName();
-            }
-            else
-            {
-				Debug.Log("ran if false");
-                StartCoroutine(ShowSaveNameWarning());
-                ClosePopupCreateSaveName();
-            }
-        });
+  //          if (!string.IsNullOrEmpty(currentSave) && !SaveSystem.FindSavesBool(currentSave))
+  //          {
+		//		Debug.Log("ran if true");
+		//		SavePlayer(currentSave);
+  //              StartNewGame();
+  //              ClosePopupCreateSaveName();
+  //          }
+  //          else
+  //          {
+		//		Debug.Log("ran if false");
+  //              StartCoroutine(ShowSaveNameWarning());
+  //              ClosePopupCreateSaveName();
+  //          }
+  //      });
     }
 
 
@@ -267,21 +269,21 @@ public class UIManager : MonoBehaviour
 			StartCoroutine(ShowWarning());
 		}
 	}
-	private IEnumerator ShowWarning()
+    public IEnumerator ShowWarning()
 	{
         difficultySelectWarning.SetActive(true);
 		yield return new WaitForSeconds(2);
         difficultySelectWarning.SetActive(false);
 
 	}
-    private IEnumerator ShowLoadWarning()
+    public IEnumerator ShowLoadWarning()
     {
         loadSaveWarning.SetActive(true);
         yield return new WaitForSeconds(3);
         loadSaveWarning.SetActive(false);
 
     }
-    private IEnumerator ShowSaveNameWarning()
+    public IEnumerator ShowSaveNameWarning()
     {
         saveNameWarning.SetActive(true);
         yield return new WaitForSeconds(5);

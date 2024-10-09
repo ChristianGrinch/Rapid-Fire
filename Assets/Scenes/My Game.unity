@@ -19070,19 +19070,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1372311723}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OpenPopupCreateSaveName
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1372311723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21582,8 +21570,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1606568286}
   - component: {fileID: 1606568285}
+  - component: {fileID: 1606568287}
   - component: {fileID: 1606568284}
-  - component: {fileID: 1606568283}
   - component: {fileID: 1606568282}
   m_Layer: 0
   m_Name: Game Manager
@@ -21608,28 +21596,6 @@ MonoBehaviour:
   musicVolumeSlider: {fileID: 617879801}
   gunVolumeSlider: {fileID: 1507247702}
   buttonClickSound: {fileID: 8300000, guid: 8382157704801084192a80d8b3493473, type: 3}
---- !u!114 &1606568283
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1606568281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9ba5565898a81346b32efb09d7a335e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ammo: {fileID: 1812258003393764395, guid: c169d57941076614b8d8e5ef41158482, type: 3}
-  heartPowerup: {fileID: 218993501472074304, guid: c9b7a53e3099eda4bbf49edefa6cb36d, type: 3}
-  speedPowerup: {fileID: 5110566718042937477, guid: dcb2c088f3a99e4468fb99d6e4a9cac0, type: 3}
-  powerupParent: {fileID: 1156736859}
-  ammoParent: {fileID: 158608402}
-  ammunition: 0
-  heartPowerups: 0
-  speedPowerups: 0
-  isLoading: 0
-  didLoad: 0
 --- !u!114 &1606568284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21719,6 +21685,7 @@ MonoBehaviour:
   loadSaveHeader: {fileID: 371128040}
   playNewSaveButton: {fileID: 1999164167}
   saveNameWarning: {fileID: 1293793277}
+  TEMP: {fileID: 1372311722}
   player: {fileID: 883152918}
   gameManager: {fileID: 1606568281}
   difficulty: 1
@@ -21749,6 +21716,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1606568287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606568281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb36fb0441ef9a84a856a7735836931b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popup: {fileID: 2995332234101614325, guid: 2d2626c8378f51f4782203f9779f3d9f, type: 3}
+  nameInput: {fileID: 1723171340997216101, guid: b06fc98933fc72e4191cc4cd33a61b98, type: 3}
 --- !u!1 &1613060320
 GameObject:
   m_ObjectHideFlags: 0
