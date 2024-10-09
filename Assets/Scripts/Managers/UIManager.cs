@@ -36,12 +36,9 @@ public class UIManager : MonoBehaviour
 	public Button toTitleScreenFromPauseMenuButton;
 	public Button quitGameButton;
 
-	public GameObject quitGamePopup;
 	public GameObject returnToTitleScreenPopup;
 	public GameObject deleteSavePopup;
 	public GameObject playSavePopup;
-	public GameObject createSaveNamepopup;
-	public TMP_InputField newSaveNameInputField;
 	public Button loadNewSaveButton;
 
 	public GameObject settingsScreen;
@@ -73,9 +70,13 @@ public class UIManager : MonoBehaviour
 	public Button idontevenknow;
 	public GameObject loadSaveWarning;
 	public TMP_Text loadSaveHeader;
-	public Button playNewSaveButton;
+
+
+
 	public GameObject saveNameWarning;
 	public Button TEMP;
+	public Button quitGame;
+
 
 
     private HealthSystem healthSystem;
@@ -84,8 +85,6 @@ public class UIManager : MonoBehaviour
 	private EnemySpawnManager enemySpawnManager;
 	public GameObject player;
 	public GameObject gameManager;
-
-
 
 	public int difficulty = 1;
 	public bool isGameActive = false;
@@ -100,7 +99,6 @@ public class UIManager : MonoBehaviour
 	public int bossLevel1;
 
 	public string defaultSave;
-	public string newSaveName;
 	public string selectedSaveName;
 
 
@@ -124,6 +122,8 @@ public class UIManager : MonoBehaviour
 		SwitchToTitle();
 		InstantiateSaveButtons();
 		InitializeVolume();
+		AddButtonListeners();
+
 		defaultSave = SaveSystem.LoadDefaultSave();
 		playDefaultText.text = "Play default save \n[ " + defaultSave + " ]";
 
@@ -133,7 +133,6 @@ public class UIManager : MonoBehaviour
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
 		saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
-        //loadNewSaveButton.onClick.AddListener(() => SavePlayer(newSaveName));
 		idontevenknow.onClick.AddListener(() =>
 		{
 
@@ -158,29 +157,13 @@ public class UIManager : MonoBehaviour
 
         loadSelectedSaveButton.onClick.AddListener(() => LoadPlayer(currentSave));
 
-		TEMP.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.CreateSavePopup));
-		//playNewSaveButton.onClick.AddListener(() =>
-		//{
-		//	currentSave = newSaveNameInputField.text;
-
-  //          Debug.Log(SaveSystem.FindSavesBool(currentSave));
-
-  //          if (!string.IsNullOrEmpty(currentSave) && !SaveSystem.FindSavesBool(currentSave))
-  //          {
-		//		Debug.Log("ran if true");
-		//		SavePlayer(currentSave);
-  //              StartNewGame();
-  //              ClosePopupCreateSaveName();
-  //          }
-  //          else
-  //          {
-		//		Debug.Log("ran if false");
-  //              StartCoroutine(ShowSaveNameWarning());
-  //              ClosePopupCreateSaveName();
-  //          }
-  //      });
+		
     }
-
+	void AddButtonListeners()
+	{
+        TEMP.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.CreateSavePopup));
+		quitGame.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitGameConfirm));
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -311,17 +294,6 @@ public class UIManager : MonoBehaviour
 		difficulty = selectedDifficulty;
 		Debug.Log("Difficulty set to: " + difficulty);
 		didSelectDifficulty = true;
-	}
-	public void OpenPopup()
-	{
-		quitGamePopup.SetActive(true);
-		pauseScreen.SetActive(false);
-	}
-	public void ClosePopup()
-	{
-		quitGamePopup.SetActive(false);
-		returnToTitleScreenPopup.SetActive(false);
-		pauseScreen.SetActive(true);
 	}
 	public void OpenPopupToTitleScreen()
 	{
@@ -475,16 +447,9 @@ public class UIManager : MonoBehaviour
 			{
 				if (!isInGame)
 				{
-					//LoadPlayer(saveName);
 					currentSave = saveName;
 
                 }
-				//else
-				//{
-				//	Debug.Log("Cannot load save while game is active.");
-				//	loadWarning.gameObject.SetActive(true);
-				//}
-				
 			});
 			AudioManager.Instance.AssignSoundToNewButton(newButton);
 			newButton.tag = "ButtonWithPop";
@@ -555,8 +520,6 @@ public class UIManager : MonoBehaviour
 	public void ClosePopupDeleteSave() { deleteSavePopup.SetActive(false); }
 	public void OpenPopupPlaySave() { playSavePopup.SetActive(true); }
     public void ClosePopupPlaySave() { playSavePopup.SetActive(false); }
-	public void OpenPopupCreateSaveName() { createSaveNamepopup.SetActive(true); }
-    public void ClosePopupCreateSaveName() { createSaveNamepopup.SetActive(false); }
     public void UpdateDeleteSaveButton()
 	{
 		string saveName = saveNameInputField.text;
@@ -573,12 +536,6 @@ public class UIManager : MonoBehaviour
 		}
 
 	}
-	public void CreateNewSaveName() 
-	{ 
-		newSaveName = newSaveNameInputField.text;
-
-
-    }
 	public void SetDefaultSave()
 	{
 		string saveName = saveNameInputField.text;

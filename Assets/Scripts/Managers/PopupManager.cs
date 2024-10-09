@@ -50,14 +50,12 @@ public class PopupManager : MonoBehaviour
 
 		// not my code ---------
 
-			// Get the RectTransform of the instantiated popup
 			RectTransform rectTransform = instantiatedPopup.GetComponent<RectTransform>();
 
-			// Set the position to the center of the screen
 			rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
 			rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
 			rectTransform.pivot = new Vector2(0.5f, 0.5f);
-			rectTransform.anchoredPosition = Vector2.zero; // Center it
+			rectTransform.anchoredPosition = Vector2.zero;
 
 		// end  ---------
 
