@@ -47,7 +47,7 @@ public class EnemySpawnManager : MonoBehaviour
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
 
-		if (enemyCount == 0 && UIManager.Instance.isGameActive)
+		if (enemyCount == 0 && UIManager.Instance.isGameUnpaused)
 		{
 			if (UIManager.Instance.didPlayerLoadSpawnManager)
 			{
@@ -141,7 +141,6 @@ public class EnemySpawnManager : MonoBehaviour
             lastBossSpawnPos = randomSpawnPos;
 			return lastBossSpawnPos;
 		}
-		Debug.Log(lastBossSpawnPos);
 
         while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance 
 			|| (Vector3.Distance(lastBossSpawnPos, randomSpawnPos) < 5))

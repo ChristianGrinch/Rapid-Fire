@@ -10,10 +10,13 @@ public class PopupManager : MonoBehaviour
 
 	public GameObject popup;
 	public GameObject nameInput;
-
 	private Canvas canvas;
 
-	private GameObject instantiatedPopup;
+    Color32 quitRed = new(138, 8, 25, 255);
+    Color32 playBlue = new(62, 138, 171, 255);
+
+    // Empty variables in reference to the instantiated popup
+    private GameObject instantiatedPopup;
 	private GameObject Header;
 	private TMP_Text header;
 	private GameObject Body;
@@ -26,13 +29,10 @@ public class PopupManager : MonoBehaviour
 	private TMP_Text cancelBtnText;
 	private Image line;
 
-	Color32 quitRed = new(138, 8, 25, 255);
-	Color32 playBlue = new(62, 138, 171, 255);
-
 	public enum PopupType
 	{
 		QuitGameConfirm,
-		ReturnToTitleConfirm,
+		StartReturnConfirm,
 		DeleteSaveConfirm,
 		PlaySaveConfirm,
 		CreateSavePopup
@@ -45,19 +45,13 @@ public class PopupManager : MonoBehaviour
 
 	public void ShowPopup(PopupType popupType)
 	{
-		Debug.Log("RAN SHOWPUP");
 		AssignPopupObjects();
 
-		// not my code ---------
-
-			RectTransform rectTransform = instantiatedPopup.GetComponent<RectTransform>();
-
-			rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-			rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-			rectTransform.pivot = new Vector2(0.5f, 0.5f);
-			rectTransform.anchoredPosition = Vector2.zero;
-
-		// end  ---------
+		RectTransform rectTransform = instantiatedPopup.GetComponent<RectTransform>();
+		rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+		rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+		rectTransform.pivot = new Vector2(0.5f, 0.5f);
+		rectTransform.anchoredPosition = Vector2.zero;
 
 		switch (popupType)
 		{
@@ -70,13 +64,18 @@ public class PopupManager : MonoBehaviour
 				actionBtn.onClick.AddListener(() => UIManager.Instance.QuitGame());
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
-			case PopupType.ReturnToTitleConfirm:
-				header.text = "Return to Title Screen?";
+			case PopupType.StartReturnConfirm:
+				header.text = "Return to Start Screen?";
 				information.text = "You will lose any unsaved progress.";
 				actionBtnText.text = "Quit";
 				actionBtnImage.color = quitRed;
 
-				actionBtn.onClick.AddListener(() => UIManager.Instance.SwitchToTitle());
+				actionBtn.onClick.AddListener(() =>
+				{
+					UIManager.Instance.SwitchToStart();
+					UIManager.Instance.RestartGame();
+					ClosePopup();
+                });
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.DeleteSaveConfirm:
@@ -95,13 +94,15 @@ public class PopupManager : MonoBehaviour
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.PlaySaveConfirm:
-				header.text = "Play selected save?";
-				information.text = "This will immediately start the game.";
+				header.text = $"Play selected save? ({UIManager.Instance.currentSave})";
+
+                information.text = "This will immediately start the game.";
 				actionBtnText.text = "Play";
 				actionBtnImage.color = playBlue;
 
 				actionBtn.onClick.AddListener(() =>
 				{
+					UIManager.Instance.LoadPlayer(UIManager.Instance.currentSave);
 					UIManager.Instance.StartNewGame();
 					ClosePopup();
 				});
@@ -161,7 +162,9 @@ public class PopupManager : MonoBehaviour
 				{
 					saveName = nameField.text;
 
-					Debug.Log(SaveSystem.FindSavesBool(saveName));
+                    UIManager.Instance.currentSave = saveName;
+
+                    Debug.Log(SaveSystem.FindSavesBool(saveName));
 
 					if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 					{
