@@ -24,7 +24,11 @@ Rapid Fire is a top-down shooter game, where the player can fight enemies, gain 
 
 ## Usage
 ### Default controls
-[add later]
+- WASD for movement
+- Mouse position for shooting direction
+- Left click to shoot
+- 1 for pistol, 2 for assault rifle
+- Esc for pause menu or to go back
 
 ## Contributing
 Feel free to submit a pull request. For any medium-major sized changes, open an issue first to discuss what you would like changed.  _I'm not obligated to put your changes into production. I will consider them if they align with my view of the game._
