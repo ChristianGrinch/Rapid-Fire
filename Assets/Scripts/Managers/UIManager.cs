@@ -11,43 +11,30 @@ public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance { get; private set; }
 
-	public GameObject game;
+    // Menus
+    public GameObject difficultyMenu;
+    public GameObject settingsMenu;
+    public GameObject restartMenu;
+
+    // Active game 'menu'
+    public GameObject game;
 	public TextMeshProUGUI waveText;
 	public TextMeshProUGUI healthText;
 	public TextMeshProUGUI livesText;
 	public TextMeshProUGUI ammoText;
-	public Image ammoImage;
-	public Button saveButton;
 	public TMP_Text difficultyText;
 
-	public GameObject restartScreen;
-	public TextMeshProUGUI gameOverText;
-	public Button restartButton;
-
-	public GameObject titleScreen;
+	// Start Menu
+	public GameObject startMenu;
 	public TMP_Text playDefaultText;
-	public Button difficultySelectorButton;
 	public GameObject difficultySelectWarning;
-	public Button settingsButton;
 
-	public GameObject difficultyScreen;
+    // Pause Menu
+    public GameObject pauseMenu;
+    public Button saveButton;
 
-	public GameObject pauseScreen;
-	public Button toTitleScreenFromPauseMenuButton;
-	public Button quitGameButton;
-
-	public GameObject quitGamePopup;
-	public GameObject returnToTitleScreenPopup;
-	public GameObject deleteSavePopup;
-	public GameObject playSavePopup;
-	public GameObject createSaveNamepopup;
-	public TMP_InputField newSaveNameInputField;
-	public Button loadNewSaveButton;
-
-	public GameObject settingsScreen;
-	public Button toTitleScreenFromSettingsButton;
-
-	public GameObject audioPanel;
+    // Settings - Audio panel
+    public GameObject audioPanel;
 	public Slider masterVolumeSlider;
 	public TextMeshProUGUI masterVolume;
 	public Slider musicVolumeSlider;
@@ -55,39 +42,45 @@ public class UIManager : MonoBehaviour
 	public Slider gunVolumeSlider;
 	public TextMeshProUGUI gunVolume;
 
-
+	// Settings - Video panel
 	public GameObject videoPanel;
 	public TMP_Dropdown screenModeDropdown;
 
+	// Settings - Saves panel
 	public GameObject savesPanel;
 	public GameObject saveButtonPrefab;
 	public Transform contentPanel;
 	private List<string> savedGames = new List<string>();
 	List<GameObject> saveButtons = new();
 	public TMP_InputField saveNameInputField;
-	public Button deleteSaveButton;
 	public string currentSave;
 	public Button defaultSaveButton;
 	public TMP_Text loadWarning;
-	public Button loadSelectedSaveButton;
 	public Button idontevenknow;
 	public GameObject loadSaveWarning;
-	public TMP_Text loadSaveHeader;
-	public Button playNewSaveButton;
+
+
+	// Refactored popup stuff
 	public GameObject saveNameWarning;
+	public GameObject createSaveWarning;
+	public Button createSave_StartMenu;
+	public Button quitGame_PauseMenu;
+	public Button startReturn_PauseMenu;
+	public Button deleteSave_SavesMenu;
+	public Button loadSave_SavesMenu;
 
 
-    private HealthSystem healthSystem;
+	// Important script/object references
+	private HealthSystem healthSystem;
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
 	public GameObject player;
 	public GameObject gameManager;
 
-
-
+	// crap idk lol
 	public int difficulty = 1;
-	public bool isGameActive = false;
+	public bool isGameUnpaused = false;
 	public bool isInGame = false;
 	public bool didSelectDifficulty = false;
 	public bool didPlayerLoadSpawnManager = false;
@@ -99,12 +92,11 @@ public class UIManager : MonoBehaviour
 	public int bossLevel1;
 
 	public string defaultSave;
-	public string newSaveName;
 	public string selectedSaveName;
 
 
 
-    void Awake()
+	void Awake()
 	{
 		// Singleton pattern implementation
 		if (Instance == null)
@@ -120,9 +112,11 @@ public class UIManager : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		SwitchToTitle();
+		SwitchToStart();
 		InstantiateSaveButtons();
 		InitializeVolume();
+		AddButtonListeners();
+
 		defaultSave = SaveSystem.LoadDefaultSave();
 		playDefaultText.text = "Play default save \n[ " + defaultSave + " ]";
 
@@ -131,60 +125,39 @@ public class UIManager : MonoBehaviour
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
-		saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
-        //loadNewSaveButton.onClick.AddListener(() => SavePlayer(newSaveName));
-		idontevenknow.onClick.AddListener(() =>
+		saveButton.onClick.AddListener(() => SavePlayer(currentSave));
+	}
+	void AddButtonListeners()
+	{
+		createSave_StartMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.CreateSavePopup));
+		quitGame_PauseMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitGameConfirm));
+		startReturn_PauseMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.StartReturnConfirm));
+		deleteSave_SavesMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.DeleteSaveConfirm));
+		loadSave_SavesMenu.onClick.AddListener(() =>
 		{
-
-            if (!isInGame)
-            {
-                if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
-                {
-					loadSaveHeader.text = $"Play selected save? [{currentSave}]";
-                    OpenPopupPlaySave();
-				}
-				else
-				{
-                    StartCoroutine(ShowSaveNameWarning());
-                }
-            }
-            else
+            if (isInGame)
             {
                 Debug.Log("Cannot load save while game is active.");
                 loadWarning.gameObject.SetActive(true);
             }
-        });
-
-        loadSelectedSaveButton.onClick.AddListener(() => LoadPlayer(currentSave));
-
-		playNewSaveButton.onClick.AddListener(() =>
-		{
-			currentSave = newSaveNameInputField.text;
-
-            Debug.Log(SaveSystem.FindSavesBool(currentSave));
-
-            if (!string.IsNullOrEmpty(currentSave) && !SaveSystem.FindSavesBool(currentSave))
-            {
-				Debug.Log("ran if true");
-				SavePlayer(currentSave);
-                StartNewGame();
-                ClosePopupCreateSaveName();
-            }
             else
             {
-				Debug.Log("ran if false");
-                StartCoroutine(ShowSaveNameWarning());
-                ClosePopupCreateSaveName();
+                if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
+                {
+                    PopupManager.Instance.ShowPopup(PopupManager.PopupType.PlaySaveConfirm);
+                }
+                else
+                {
+                    StartCoroutine(ShowLoadWarning());
+                }
             }
         });
-    }
 
+    }
 
 	// Update is called once per frame
 	void Update()
 	{
-		
-
 		waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
 		healthText.text = $"Health: {healthSystem.health}";
 		livesText.text = $"Lives: {healthSystem.lives}";
@@ -195,24 +168,24 @@ public class UIManager : MonoBehaviour
 			GameOver();
 		}
 
-		if (Input.GetKeyDown(KeyCode.Escape) && isGameActive)
+		if (Input.GetKeyDown(KeyCode.Escape) && isGameUnpaused)
 		{
 			PauseGame();
 		}
-		else if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive && pauseScreen.activeSelf)
+		else if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && pauseMenu.activeSelf)
 		{
 			ResumeGame();
 		}
 
-		if (Input.GetKeyDown(KeyCode.Escape) && !isGameActive && settingsScreen.activeSelf)
+		if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && settingsMenu.activeSelf)
 		{
-			SwitchToTitle();	
+			SwitchToStart();	
 		}
 	}
 	public void GameOver()
 	{
-		restartScreen.SetActive(true);
-		isGameActive = false;
+		restartMenu.SetActive(true);
+		isGameUnpaused = false;
 	}
 	public void RestartGame()
 	{
@@ -221,9 +194,9 @@ public class UIManager : MonoBehaviour
 	public void StartGame()
 	{
 		LoadPlayer(defaultSave);
-		titleScreen.SetActive(false);
+		startMenu.SetActive(false);
 		game.SetActive(true);
-		isGameActive = true;
+		isGameUnpaused = true;
 		isInGame = true;
 
 		healthSystem.AssignLives();
@@ -233,10 +206,10 @@ public class UIManager : MonoBehaviour
 	}
 	public void StartNewGame()
 	{
-		titleScreen.SetActive(false);
-		settingsScreen.SetActive(false);
+		startMenu.SetActive(false);
+		settingsMenu.SetActive(false);
 		game.SetActive(true);
-		isGameActive = true;
+		isGameUnpaused = true;
 		isInGame = true;
 
 		healthSystem.AssignLives();
@@ -245,90 +218,78 @@ public class UIManager : MonoBehaviour
 	}
 	public void PauseGame()
 	{
-		isGameActive = false;
-		pauseScreen.SetActive(true);
+		isGameUnpaused = false;
+		pauseMenu.SetActive(true);
 		Time.timeScale = 0;
+		saveButton.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{
-		isGameActive = true;
-		pauseScreen.SetActive(false);
+		isGameUnpaused = true;
+		pauseMenu.SetActive(false);
 		Time.timeScale = 1;
 	}
 	public void OpenDifficultyScreen()
 	{
 		if (!didSelectDifficulty)
 		{
-			titleScreen.SetActive(false);
-			difficultyScreen.SetActive(true);
+			startMenu.SetActive(false);
+			difficultyMenu.SetActive(true);
 		}
 		else
 		{
 			StartCoroutine(ShowWarning());
 		}
 	}
-	private IEnumerator ShowWarning()
+	public IEnumerator ShowWarning()
 	{
-        difficultySelectWarning.SetActive(true);
+		difficultySelectWarning.SetActive(true);
 		yield return new WaitForSeconds(2);
-        difficultySelectWarning.SetActive(false);
+		difficultySelectWarning.SetActive(false);
 
 	}
-    private IEnumerator ShowLoadWarning()
-    {
-        loadSaveWarning.SetActive(true);
-        yield return new WaitForSeconds(3);
-        loadSaveWarning.SetActive(false);
+	public IEnumerator ShowLoadWarning()
+	{
+		loadSaveWarning.SetActive(true);
+		yield return new WaitForSeconds(5);
+		loadSaveWarning.SetActive(false);
 
-    }
-    private IEnumerator ShowSaveNameWarning()
-    {
-        saveNameWarning.SetActive(true);
-        yield return new WaitForSeconds(5);
-        saveNameWarning.SetActive(false);
+	}
+	public IEnumerator ShowSaveNameWarning()
+	{
+		createSaveWarning.SetActive(true);
+		yield return new WaitForSeconds(5);
+        createSaveWarning.SetActive(false);
 
-    }
-    public void SwitchToTitle()
+	}
+	public IEnumerator ShowCreateSaveWarning()
+	{
+		saveNameWarning.SetActive(true);
+		yield return new WaitForSeconds(5);
+		saveNameWarning.SetActive(false);
+
+	}
+	public void SwitchToStart()
 	{
 		if (isInGame)
 		{
-			pauseScreen.SetActive(true);
-			settingsScreen.SetActive(false);
+		pauseMenu.SetActive(true);
+		settingsMenu.SetActive(false);
 		}
 		else
 		{
-			titleScreen.SetActive(true);
-			difficultyScreen.SetActive(false);
-			pauseScreen.SetActive(false);
-			settingsScreen.SetActive(false);
+			startMenu.SetActive(true);
+			difficultyMenu.SetActive(false);
+			pauseMenu.SetActive(false);
+			settingsMenu.SetActive(false);
 		}
-		
+
 	}
 	public void SetDifficulty(int selectedDifficulty)
 	{
 		difficulty = selectedDifficulty;
 		Debug.Log("Difficulty set to: " + difficulty);
 		didSelectDifficulty = true;
-	}
-	public void OpenPopup()
-	{
-		quitGamePopup.SetActive(true);
-		pauseScreen.SetActive(false);
-	}
-	public void ClosePopup()
-	{
-		quitGamePopup.SetActive(false);
-		returnToTitleScreenPopup.SetActive(false);
-		pauseScreen.SetActive(true);
-	}
-	public void OpenPopupToTitleScreen()
-	{
-		returnToTitleScreenPopup.SetActive(true);
-		pauseScreen.SetActive(false);
-	}
-	public void ClosePopupToTitleScreen()
-	{
-		RestartGame();
 	}
 	public void QuitGame()
 	{
@@ -340,9 +301,9 @@ public class UIManager : MonoBehaviour
 	}
 	public void OpenSettings()
 	{
-		settingsScreen.SetActive(true);
-		titleScreen.SetActive(false);
-		pauseScreen.SetActive(false);
+		settingsMenu.SetActive(true);
+		startMenu.SetActive(false);
+		pauseMenu.SetActive(false);
 	}
 	public void OpenAudioPanel()
 	{
@@ -464,30 +425,24 @@ public class UIManager : MonoBehaviour
 
 		foreach (var save in saveFiles)
 		{
-			string saveName = save;
-			savedGames.Add(saveName);
+			savedGames.Add(save);
 			GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
 			newButton.GetComponentInChildren<TMP_Text>().text = save;
 
 			newButton.GetComponent<Button>().onClick.AddListener(() =>
 			{
-				if (!isInGame)
-				{
-					//LoadPlayer(saveName);
-					currentSave = saveName;
+				string btnSaveName = newButton.GetComponentInChildren<TMP_Text>().text;
+				UpdateDeleteSaveButton();
 
-                }
-				//else
-				//{
-				//	Debug.Log("Cannot load save while game is active.");
-				//	loadWarning.gameObject.SetActive(true);
-				//}
-				
+                if (!isInGame)
+				{
+					currentSave = btnSaveName;
+				}
 			});
 			AudioManager.Instance.AssignSoundToNewButton(newButton);
 			newButton.tag = "ButtonWithPop";
 
-			if(save == "")
+			if(save == "") // hacky fix for getting rid of the random empty save file
 			{
 				Destroy(newButton);
 			}
@@ -540,52 +495,29 @@ public class UIManager : MonoBehaviour
 	{
 		string saveName = saveNameInputField.text;
 
-		if (!string.IsNullOrEmpty(saveName))
+		if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 		{
 			CreateNewSave(saveName);
 		}
 		else
 		{
-			Debug.LogWarning("Save name cannot be empty!");
-		}
+			Debug.LogWarning("Save name cannot be empty OR attempted to create a new save of an already existing name.");
+            StartCoroutine(ShowSaveNameWarning());
+        }
 	}
-	public void OpenPopupDeleteSave() { deleteSavePopup.SetActive(true); }
-	public void ClosePopupDeleteSave() { deleteSavePopup.SetActive(false); }
-	public void OpenPopupPlaySave() { playSavePopup.SetActive(true); }
-    public void ClosePopupPlaySave() { playSavePopup.SetActive(false); }
-	public void OpenPopupCreateSaveName() { createSaveNamepopup.SetActive(true); }
-    public void ClosePopupCreateSaveName() { createSaveNamepopup.SetActive(false); }
-    public void UpdateDeleteSaveButton()
+	public void UpdateDeleteSaveButton()
 	{
-		string saveName = saveNameInputField.text;
-
-		if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
-		{
-			deleteSaveButton.gameObject.SetActive(true);
-			defaultSaveButton.gameObject.SetActive(true);
-		}
-		else
-		{
-			deleteSaveButton.gameObject.SetActive(false);
-			defaultSaveButton.gameObject.SetActive(false);
-		}
-
+        deleteSave_SavesMenu.gameObject.SetActive(true);
+        defaultSaveButton.gameObject.SetActive(true);
 	}
-	public void CreateNewSaveName() 
-	{ 
-		newSaveName = newSaveNameInputField.text;
-
-
-    }
 	public void SetDefaultSave()
 	{
-		string saveName = saveNameInputField.text;
-		playDefaultText.text = "Play default save \n[ " + saveName + " ]";
-
-		if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
+		playDefaultText.text = "Play default save \n[ " + currentSave + " ]";
+		Debug.Log("hi");
+		if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
 		{
-			SaveSystem.SetDefaultSave(saveName);
-			Debug.Log("Set '" + saveName + "' to default save.");
+			SaveSystem.SetDefaultSave(currentSave);
+			Debug.Log("Set '" + currentSave + "' to default save.");
 		}
 	}
 	public void SaveFromInsideGame()
@@ -597,9 +529,9 @@ public class UIManager : MonoBehaviour
 
 		string saveName = saveNameInputField.text;
 
-		if (!string.IsNullOrEmpty(saveName))
+		if (!string.IsNullOrEmpty(currentSave))
 		{
-			SaveSystem.DeleteSave(saveNameInputField.text);
+			SaveSystem.DeleteSave(currentSave);
 		}
 		else
 		{

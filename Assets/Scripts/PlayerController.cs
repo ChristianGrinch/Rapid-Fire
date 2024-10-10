@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
 			playerRb.AddForce((fallMultiplier - 1) * playerRb.mass * Physics.gravity);
 		}
 
-		if (UIManager.Instance.isGameActive)
+		if (UIManager.Instance.isGameUnpaused)
 		{
             MovePlayer();
             RotatePlayer();
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
 	void RotatePlayer() // all code in this method was made by chatgpt not me :fade:
 	{
-		if (UIManager.Instance.isGameActive)
+		if (UIManager.Instance.isGameUnpaused)
 		{
 			Vector3 mouseScreenPosition = Input.mousePosition; // Get mouse position in screen space
 			Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPosition.x, mouseScreenPosition.y, Camera.main.transform.position.y)); // Convert screen position to world space

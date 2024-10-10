@@ -119,7 +119,7 @@ public class EnemyController : MonoBehaviour
 
 		if (!followingPlayer
 			&& Vector3.Distance(player.transform.position, transform.position) < detectionRadius
-			&& UIManager.Instance.isGameActive)
+			&& UIManager.Instance.isGameUnpaused)
 		{
 			MoveEnemy();
 		}
