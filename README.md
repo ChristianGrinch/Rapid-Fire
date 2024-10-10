@@ -3,14 +3,20 @@
 Rapid Fire is a top-down shooter game, where the player can fight enemies, gain experience and buy new guns or other items (not currently in production), and use abilities to help aide them in their fights. 
 
 ## Table of Contents
-1. [Installation](#installation)
-2. [Usage](#usage)
-3. [Contributing](#contributing)
-4. [License](#license)
+1. [License](#license)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Contributing](#contributing)
 5. [Acknowledgements](#acknowledgements)
 
-## Installation
+## License
+This project is licensed under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0).
+### Contribution Guidelines
+- You are welcome to modify the code for personal use.
+- Please do not distribute modified versions as your own.
+- If you have changes or improvements, submit them via pull request for consideration.
 
+## Installation
 ### Prerequisites
 - Simple knowledge of `Windows File Explorer`
 
@@ -32,9 +38,6 @@ Rapid Fire is a top-down shooter game, where the player can fight enemies, gain 
 
 ## Contributing
 Feel free to submit a pull request. For any medium-major sized changes, open an issue first to discuss what you would like changed.  _I'm not obligated to put your changes into production. I will consider them if they align with my view of the game._
-
-## License
-[find one to use later]
 
 ## Acknowledgements
 - Special thanks to Unity for their starter coding courses.
