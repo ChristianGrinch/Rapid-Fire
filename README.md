@@ -1,64 +1,37 @@
 # Rapid Fire
 
-**Date:** 09/16/2024  
-**Author:** Christian  
+Rapid Fire is a top-down shooter game, where the player can fight enemies, gain experience and buy new guns or other items (not currently in production), and use abilities to help aide them in their fights. 
 
+## Table of Contents
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [Contributing[(#contributing)
+4. [License](#license)
+5. [Acknowledgements](#acknowledgements
 
+## Installation
 
-## Project Concept
+### Prerequisites
+- Simple knowledge of `Windows File Explorer`
 
-### 1. Player Control
-In this **top-down shooter** game, you control a person using keyboard and mouse inputs to:
-- Shoot
-- Use abilities
-- Move
-- Change direction
+### Steps
+1. Locate the latest release in the releases section.
+2. Download the zip file `Rapid.Fire.[version].zip`
+3. Unzip the file to get the contents.
+4. Delete the `.zip` file, and then open the `Rapid Fire[version]` folder.
+5. Run `Personal Project.exe`.
+**If you encounter any Windows Defender issues, allow it to run anyway. I'm not sure why this happens, but I promise it isn't a virus.**
 
-### 2. Basic Gameplay
-During the game, **enemies** will appear from every side of the screen.  
-The goal of the game is to **survive as many waves as possible**.
+## Usage
+### Default controls
+[add later]
 
-### 3. Sound & Effects
-There will be sound effects for:
-- Guns
-- Damage
-- Enemies
+## Contributing
+Feel free to submit a pull request. For any medium-major sized changes, open an issue first to discuss what you would like changed.  _I'm not obligated to put your changes into production. I will consider them if they align with my view of the game._
 
-There will also be particle effects when a bullet hits an enemy.
+## License
+[find one to use later]
 
-### 4. Gameplay Mechanics
-As the game progresses, the waves will increase in difficulty with **different enemies** spawning, making it harder to stay alive.
-
-### 5. User Interface
-- Health will decrease whenever you get hit by an enemy.
-- The title "**Rapid Fire**" will appear at the start of the game.
-- The game will end when you die.
-
-### 6. Other Features
-*(To be determined)*
-
-### 7. Notes
-The gameplay is similar to a mobile game where you spin in circles, shoot zombies, and collect abilities from them.
-
----
-
-## Project Timeline
-
-| Milestone | Description | Due Date |
-| --- | --- | --- |
-| **#1** | Project and camera setup with primitive objects | 09/20 |
-| **#2** | Player can move around, with the camera following them. Player can collide with outer walls so they don’t fall off the map. | 09/25 |
-| **#3** | Player holds a gun and shoots bullets with colliders. Player has 3 lives. No UI. Restart the game when all lives are lost. | 10/02 |
-| **#4** | Enemies randomly move and can be shot and killed, with SFX and GFX. Enemies damage the player on contact. After killing X enemies, the next wave begins. | 10/16 |
-| **#5** | Actual enemy movement. Enemies drop ammo that can be collected, and UI tracks ammo. The player has unlimited shooting but a limited ammo count. Waves. | 10/22 |
-
-### Backlog
-- Polish everything
-- Improve game balancing by adjusting enemy kills per wave
-- Add new guns after X kills, etc.
-
----
-
-## Project Sketch
-*(Include your project sketch here if you want an image or further explanation.)*
+## Acknowledgements
+- Special thanks to Unity for their starter coding courses.
 
