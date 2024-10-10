@@ -1,64 +1,53 @@
 # Rapid Fire
 
-**Date:** 09/16/2024  
-**Author:** Christian  
+Rapid Fire is a top-down shooter game, where the player can fight enemies, gain experience and buy new guns or other items (not currently in production), and use abilities to help aide them in their fights. 
 
+## Table of Contents
+1. [License](#license)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Upcoming Features](#upcoming-features)
+5. [Contributing](#contributing)
+6. [Acknowledgements](#acknowledgements)
+7. [Contact](#contact)
 
+## License
+This project is licensed under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0).
+### Contribution Guidelines
+- You are welcome to modify the code for personal use.
+- Do not distribute modified versions without my [explicit permission](#contact).
+- If you have changes or improvements, submit them via pull request for consideration.
 
-## Project Concept
+## Installation
+### Prerequisites
+- Simple knowledge of `Windows File Explorer`
+### Steps
+1. Locate the latest release in the releases section.
+2. Download the zip file `Rapid.Fire.[version].zip`
+3. Unzip the file to get the contents.
+4. Delete the `.zip` file, and then open the `Rapid Fire[version]` folder.
+5. Run `Personal Project.exe`.
+**If you encounter any Windows Defender issues, allow it to run anyway. I'm not sure why this happens, but I promise it isn't a virus.**
 
-### 1. Player Control
-In this **top-down shooter** game, you control a person using keyboard and mouse inputs to:
-- Shoot
-- Use abilities
-- Move
-- Change direction
+## Usage
+### Default controls
+- WASD for movement
+- Mouse position for shooting direction
+- Left click to shoot
+- 1 for pistol, 2 for assault rifle
+- Esc for pause menu or to go back
 
-### 2. Basic Gameplay
-During the game, **enemies** will appear from every side of the screen.  
-The goal of the game is to **survive as many waves as possible**.
+## Upcoming Features
 
-### 3. Sound & Effects
-There will be sound effects for:
-- Guns
-- Damage
-- Enemies
+## Contributing
+Feel free to submit a pull request. For any medium-major sized changes, open an issue first to discuss what you would like changed.  _I'm not obligated to put your changes into production. I will consider them if they align with my view of the game._
 
-There will also be particle effects when a bullet hits an enemy.
+## Acknowledgements
+- Special thanks to Unity for their starter coding courses.
 
-### 4. Gameplay Mechanics
-As the game progresses, the waves will increase in difficulty with **different enemies** spawning, making it harder to stay alive.
-
-### 5. User Interface
-- Health will decrease whenever you get hit by an enemy.
-- The title "**Rapid Fire**" will appear at the start of the game.
-- The game will end when you die.
-
-### 6. Other Features
-*(To be determined)*
-
-### 7. Notes
-The gameplay is similar to a mobile game where you spin in circles, shoot zombies, and collect abilities from them.
-
----
-
-## Project Timeline
-
-| Milestone | Description | Due Date |
-| --- | --- | --- |
-| **#1** | Project and camera setup with primitive objects | 09/20 |
-| **#2** | Player can move around, with the camera following them. Player can collide with outer walls so they don’t fall off the map. | 09/25 |
-| **#3** | Player holds a gun and shoots bullets with colliders. Player has 3 lives. No UI. Restart the game when all lives are lost. | 10/02 |
-| **#4** | Enemies randomly move and can be shot and killed, with SFX and GFX. Enemies damage the player on contact. After killing X enemies, the next wave begins. | 10/16 |
-| **#5** | Actual enemy movement. Enemies drop ammo that can be collected, and UI tracks ammo. The player has unlimited shooting but a limited ammo count. Waves. | 10/22 |
-
-### Backlog
-- Polish everything
-- Improve game balancing by adjusting enemy kills per wave
-- Add new guns after X kills, etc.
-
----
-
-## Project Sketch
-*(Include your project sketch here if you want an image or further explanation.)*
+## Contact
+For any inquires, reach out from: 
+- Discord: `jrr`
+- Email: `jointjrs@gmail.com` _It may take longer to get a reply via email._
+- Github Discussions: [Open a discussion](https://github.com/Rapid-Fire/discussions)
 
