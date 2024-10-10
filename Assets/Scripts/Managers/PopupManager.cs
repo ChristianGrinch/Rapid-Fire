@@ -79,7 +79,7 @@ public class PopupManager : MonoBehaviour
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.DeleteSaveConfirm:
-				header.text = "Delete save?";
+				header.text = $"Delete save? ({UIManager.Instance.currentSave})";
 				information.text = "This cannot be undone.";
 				actionBtnText.text = "Delete";
 				actionBtnImage.color = quitRed;

@@ -62,6 +62,7 @@ public class UIManager : MonoBehaviour
 
 	// Refactored popup stuff
 	public GameObject saveNameWarning;
+	public GameObject createSaveWarning;
 	public Button createSave_StartMenu;
 	public Button quitGame_PauseMenu;
 	public Button startReturn_PauseMenu;
@@ -250,11 +251,18 @@ public class UIManager : MonoBehaviour
 	public IEnumerator ShowLoadWarning()
 	{
 		loadSaveWarning.SetActive(true);
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(5);
 		loadSaveWarning.SetActive(false);
 
 	}
 	public IEnumerator ShowSaveNameWarning()
+	{
+		createSaveWarning.SetActive(true);
+		yield return new WaitForSeconds(5);
+        createSaveWarning.SetActive(false);
+
+	}
+	public IEnumerator ShowCreateSaveWarning()
 	{
 		saveNameWarning.SetActive(true);
 		yield return new WaitForSeconds(5);
@@ -270,12 +278,10 @@ public class UIManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("ran false");
-
-		startMenu.SetActive(true);
-		difficultyMenu.SetActive(false);
-		pauseMenu.SetActive(false);
-		settingsMenu.SetActive(false);
+			startMenu.SetActive(true);
+			difficultyMenu.SetActive(false);
+			pauseMenu.SetActive(false);
+			settingsMenu.SetActive(false);
 		}
 
 	}
@@ -426,6 +432,7 @@ public class UIManager : MonoBehaviour
 			newButton.GetComponent<Button>().onClick.AddListener(() =>
 			{
 				string btnSaveName = newButton.GetComponentInChildren<TMP_Text>().text;
+				UpdateDeleteSaveButton();
 
                 if (!isInGame)
 				{
@@ -488,40 +495,29 @@ public class UIManager : MonoBehaviour
 	{
 		string saveName = saveNameInputField.text;
 
-		if (!string.IsNullOrEmpty(saveName))
+		if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 		{
 			CreateNewSave(saveName);
 		}
 		else
 		{
-			Debug.LogWarning("Save name cannot be empty!");
-		}
+			Debug.LogWarning("Save name cannot be empty OR attempted to create a new save of an already existing name.");
+            StartCoroutine(ShowSaveNameWarning());
+        }
 	}
 	public void UpdateDeleteSaveButton()
 	{
-		string saveName = saveNameInputField.text;
-
-		if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
-		{
-			deleteSave_SavesMenu.gameObject.SetActive(true);
-			defaultSaveButton.gameObject.SetActive(true);
-		}
-		else
-		{
-			deleteSave_SavesMenu.gameObject.SetActive(false);
-			defaultSaveButton.gameObject.SetActive(false);
-		}
-
+        deleteSave_SavesMenu.gameObject.SetActive(true);
+        defaultSaveButton.gameObject.SetActive(true);
 	}
 	public void SetDefaultSave()
 	{
-		string saveName = saveNameInputField.text;
-		playDefaultText.text = "Play default save \n[ " + saveName + " ]";
-
-		if (!string.IsNullOrEmpty(saveName) && SaveSystem.FindSaves().Contains(saveName))
+		playDefaultText.text = "Play default save \n[ " + currentSave + " ]";
+		Debug.Log("hi");
+		if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
 		{
-			SaveSystem.SetDefaultSave(saveName);
-			Debug.Log("Set '" + saveName + "' to default save.");
+			SaveSystem.SetDefaultSave(currentSave);
+			Debug.Log("Set '" + currentSave + "' to default save.");
 		}
 	}
 	public void SaveFromInsideGame()
@@ -533,9 +529,9 @@ public class UIManager : MonoBehaviour
 
 		string saveName = saveNameInputField.text;
 
-		if (!string.IsNullOrEmpty(saveName))
+		if (!string.IsNullOrEmpty(currentSave))
 		{
-			SaveSystem.DeleteSave(saveNameInputField.text);
+			SaveSystem.DeleteSave(currentSave);
 		}
 		else
 		{
