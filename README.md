@@ -5,9 +5,9 @@ Rapid Fire is a top-down shooter game, where the player can fight enemies, gain 
 ## Table of Contents
 1. [Installation](#installation)
 2. [Usage](#usage)
-3. [Contributing[(#contributing)
+3. [Contributing](#contributing)
 4. [License](#license)
-5. [Acknowledgements](#acknowledgements
+5. [Acknowledgements](#acknowledgements)
 
 ## Installation
 
