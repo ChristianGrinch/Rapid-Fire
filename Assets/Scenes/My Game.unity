@@ -10551,7 +10551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 80
-  jumpForce: 10
+  jumpForce: 20
   exp: 0
   health: 0
   lives: 0

@@ -65,7 +65,6 @@ public class EnemyController : MonoBehaviour
 		yield return new WaitForSeconds(Random.Range(5, 14)); // Delay between jumps
 
 		enemyRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        enemyRb.useGravity = true;
 
         yield return new WaitForSeconds(0.2f); // Wait 0.2 seconds so Y is > jumpHeight
 
@@ -74,7 +73,6 @@ public class EnemyController : MonoBehaviour
             yield return null;
         }
 
-        enemyRb.useGravity = false;
 		isRunningJump = false;
     }
     IEnumerator SpawnRing() // not my code, chatgpt
@@ -220,22 +218,22 @@ public class EnemyController : MonoBehaviour
 		switch (difficulty)
 		{
 			case 1:
-				SetStats(20, 12, 10, 40, "Enemy 1");
-				SetStats(25, 10, 15, 60, "Enemy 2");
-				SetStats(50, 10, 20, 100, "Enemy 3");
-				SetStats(90, 5, 200, 450, "Boss 1");
+				SetStats(20, 23, 10, 40, "Enemy 1");
+				SetStats(25, 21, 15, 60, "Enemy 2");
+				SetStats(50, 21, 20, 100, "Enemy 3");
+				SetStats(90, 16, 200, 450, "Boss 1");
 				break;
 			case 2:
-				SetStats(25, 12, 15, 55, "Enemy 1");
-				SetStats(30, 10, 20, 75, "Enemy 2");
-				SetStats(55, 10, 25, 130, "Enemy 3");
-				SetStats(95, 5.5f, 250, 675, "Boss 1");
+				SetStats(25, 23, 15, 55, "Enemy 1");
+				SetStats(30, 21, 20, 75, "Enemy 2");
+				SetStats(55, 21, 25, 130, "Enemy 3");
+				SetStats(95, 16.5f, 250, 675, "Boss 1");
 				break;
 			case 3:
-				SetStats(35, 14.5f, 18, 68, "Enemy 1");
-				SetStats(45, 13, 25, 100, "Enemy 2");
-				SetStats(70, 13, 35, 156, "Enemy 3");
-				SetStats(130, 6.5f, 325, 800, "Boss 1");
+				SetStats(35, 25, 18, 68, "Enemy 1");
+				SetStats(45, 24, 25, 100, "Enemy 2");
+				SetStats(70, 24, 35, 156, "Enemy 3");
+				SetStats(130, 17.5f, 325, 800, "Boss 1");
 				break;
 			default:
 				Debug.LogError("Invalid difficulty level.");

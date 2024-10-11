@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 	private Rigidbody playerRb;
     public float speed = 8;
-	public float jumpForce = 10;
+	public float jumpForce = 20;
 	public int exp;
 	public int health;
 	public int lives;
@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
         Vector3 rayDirection = Vector3.down;
-        float rayDistance = 1f;
+        float rayDistance = 0.8f;
         Ray ray = new(rayOrigin, rayDirection);
 
 		isGrounded = Physics.Raycast(ray, out RaycastHit hit, rayDistance) && hit.collider.gameObject.layer != LayerMask.NameToLayer("MoveableObject");
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
 		}
 		if (!isGrounded)
 		{
-			playerRb.AddForce(Vector3.down * 2, ForceMode.Impulse);
+			playerRb.AddForce(Vector3.down * 1.5f, ForceMode.Impulse);
 		}
 	}
 	// Moves player based on WASD/Arrow keys input
