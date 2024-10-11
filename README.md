@@ -8,8 +8,9 @@ Rapid Fire is a top-down shooter game, where the player can fight enemies, gain 
 3. [Usage](#usage)
 4. [Upcoming Features](#upcoming-features)
 5. [Contributing](#contributing)
-6. [Acknowledgements](#acknowledgements)
-7. [Contact](#contact)
+6. [itch.io](#itch-io)
+7. [Acknowledgements](#acknowledgements)
+8. [Contact](#contact)
 
 ## License
 This project is licensed under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0).
@@ -38,9 +39,18 @@ This project is licensed under the [Apache License 2.0](https://opensource.org/l
 - Esc for pause menu or to go back
 
 ## Upcoming Features
+- Shop system that allows the player to spend experience points (exp) to get new guns, ammo, abilties, and more.
+- More sound effects, particles, and better art for UIs.
+- An actual map for the user to play around in and find secrets in. _This feature will most likely get delayed heavily, since it requires a complete redo of current logic for spawning and path-finding._
+- HUD and inventory<br>
+### If you want anything else added or changed, you can create new [issue(s)](https://github.com/ChristianGrinch/Rapid-Fire/issues) for each of your requests.
 
 ## Contributing
 Feel free to submit a pull request. For any medium-major sized changes, open an issue first to discuss what you would like changed.  _I'm not obligated to put your changes into production. I will consider them if they align with my view of the game._
+
+## itch-io
+itch.io is an app/website that allows developers to publish their games and send out updates similarly to how developers on a platform like steam send out **updates** to the game instead of entire redownloads. itch.io is really helpful for the player, especially if they have slower internet. I will keep the itch.io up to date with the same releases that this repo gets, assuming there are people that want it to be updated. I will not publish any releases to itch.io if no one wants to use the app. <br>
+### Install it [here](https://itch.io/app) and learn how to use it [here](https://itch.io/docs/itch/using/downloading.html)
 
 ## Acknowledgements
 - Special thanks to Unity for their starter coding courses.
@@ -49,5 +59,5 @@ Feel free to submit a pull request. For any medium-major sized changes, open an 
 For any inquires, reach out from: 
 - Discord: `jrr`
 - Email: `jointjrs@gmail.com` _It may take longer to get a reply via email._
-- Github Discussions: [Open a discussion](https://github.com/Rapid-Fire/discussions)
+- Github Discussions: [Open a discussion](https://github.com/ChristianGrinch/Rapid-Fire/discussions)
 
