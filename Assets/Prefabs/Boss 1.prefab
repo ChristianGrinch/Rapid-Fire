@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 805512071818335848}
   - component: {fileID: 3714075820879624866}
   - component: {fileID: 1273109842664447203}
-  m_Layer: 0
+  - component: {fileID: -8185177241439951232}
+  m_Layer: 3
   m_Name: Boss 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -145,10 +146,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &1273109842664447203
 MonoBehaviour:
@@ -165,3 +166,25 @@ MonoBehaviour:
   health: 500
   maxHealth: 200
   lives: 3
+--- !u!195 &-8185177241439951232
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8543954980356892885}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 2
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

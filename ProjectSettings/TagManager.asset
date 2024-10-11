@@ -16,10 +16,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - MoveableObject
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 
