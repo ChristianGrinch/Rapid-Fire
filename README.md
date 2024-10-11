@@ -37,6 +37,8 @@ This project is licensed under the [Apache License 2.0](https://opensource.org/l
 - Left click to shoot
 - 1 for pistol, 2 for assault rifle
 - Esc for pause menu or to go back
+- Spacebar to jump
+- Scroll wheel to zoom in and out
 
 ## Upcoming Features
 - Shop system that allows the player to spend experience points (exp) to get new guns, ammo, abilties, and more.
