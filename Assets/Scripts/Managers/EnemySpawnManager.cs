@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawnManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class EnemySpawnManager : MonoBehaviour
 	private int spawnBufferDistance = 4;
 
     private Vector3 lastBossSpawnPos;
+	private float mapSize = 50;
 
     private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
@@ -41,8 +43,11 @@ public class EnemySpawnManager : MonoBehaviour
 		Boss1
 	}
 
-	// Update is called once per frame
-	void Update()
+    private void Start()
+    {
+		
+    }
+    void Update()
 	{
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
@@ -129,12 +134,10 @@ public class EnemySpawnManager : MonoBehaviour
 	}
 	private Vector3 GenerateSpawnPosition(int type)
 	{
-		float posY = type == 3 ? 2 : 0.5f;
+        Vector3 randomSpawnPos = GetRandomNavMeshPosition();
 
-        float randomPosX = Random.Range(-20f, 20f);
-		float randomPosZ = Random.Range(-20f, 20f);
-
-		Vector3 randomSpawnPos = new(randomPosX, posY, randomPosZ);
+        float posY = type == 3 ? 2 : 0.5f;
+		randomSpawnPos.y = posY;
 
 		if (type == 3)
 		{
@@ -145,14 +148,28 @@ public class EnemySpawnManager : MonoBehaviour
         while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance 
 			|| (Vector3.Distance(lastBossSpawnPos, randomSpawnPos) < 5))
         {
-			randomPosX = Random.Range(-20f, 20f);
-			randomPosZ = Random.Range(-20f, 20f);
-			randomSpawnPos = new(randomPosX, posY, randomPosZ);
+			randomSpawnPos = GetRandomNavMeshPosition();
+			randomSpawnPos.y = posY;
 		}
 
 		return randomSpawnPos;
 	}
-	 
+
+	Vector3 GetRandomNavMeshPosition()
+	{
+		Vector3 randomPosition = new(
+			Random.Range(-mapSize, mapSize),
+			Random.Range(0, mapSize),
+			Random.Range(-mapSize, mapSize)
+		);
+
+		NavMeshHit hit;
+		if(NavMesh.SamplePosition(randomPosition, out hit, spawnBufferDistance, NavMesh.AllAreas))
+		{
+			return hit.position;
+		}
+		return randomPosition;
+	}
 	void SpawnEnemyWave()
 	{
 		switch (currentWave % 10)
