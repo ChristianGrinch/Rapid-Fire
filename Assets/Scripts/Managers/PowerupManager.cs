@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PowerupManager : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class PowerupManager : MonoBehaviour
     public bool isLoading = false;
     public bool didLoad = false;
 
+    private float mapSize = GameManager.mapSize;
+
     // Update is called once per frame
     void Update()
     {
@@ -43,13 +46,13 @@ public class PowerupManager : MonoBehaviour
             }
             else if(Time.time >= nextSpawnTime || currentWave > newWave)
             {
-                GenerateRandomPos();
+                randomSpawnPos = GenerateRandomPos();
                 InstantiateObject(ammo, randomSpawnPos, ammoParent);
 
-                GenerateRandomPos();
+                randomSpawnPos = GenerateRandomPos();
                 InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
 
-                GenerateRandomPos();
+                randomSpawnPos = GenerateRandomPos();
                 InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
 
                 nextSpawnTime = Time.time + spawnInterval;
@@ -57,7 +60,21 @@ public class PowerupManager : MonoBehaviour
             }
         }
     }
+    Vector3 GetRandomNavMeshPosition()
+    {
+        Vector3 randomPosition = new(
+            Random.Range(-mapSize, mapSize),
+            Random.Range(0, mapSize),
+            Random.Range(-mapSize, mapSize)
+        );
 
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPosition, out hit, EnemySpawnManager.Instance.spawnBufferDistance, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+        return randomPosition;
+    }
     public void SpawnPowerupsOnLoad()
     {
         didLoad = true;
@@ -65,17 +82,17 @@ public class PowerupManager : MonoBehaviour
 
         for (int i = 0; i < ammunition; i++)
         {
-            GenerateRandomPos();
+            randomSpawnPos = GenerateRandomPos();
             InstantiateObject(ammo, randomSpawnPos, ammoParent);
         }
         for (int i = 0; i < heartPowerups; i++)
         {
-            GenerateRandomPos();
+            randomSpawnPos = GenerateRandomPos();
             InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
         }
         for (int i = 0; i < speedPowerups; i++)
         {
-            GenerateRandomPos();
+            randomSpawnPos = GenerateRandomPos();
             InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
         }
 
@@ -101,7 +118,7 @@ public class PowerupManager : MonoBehaviour
 
     void InstantiateObject(GameObject objectToSpawn, Vector3 spawnPos, GameObject objectParent)
     {
-        GameObject instantiatedObject = Instantiate(objectToSpawn, randomSpawnPos, Quaternion.Euler(90, 0, 0));
+        GameObject instantiatedObject = Instantiate(objectToSpawn, spawnPos, Quaternion.Euler(90, 0, 0));
         instantiatedObject.transform.parent = objectParent.transform; // Sets parent
         instantiatedObject.name = objectToSpawn.name; // Removes (Clone) from name
         if (isLoading == false)
@@ -112,9 +129,8 @@ public class PowerupManager : MonoBehaviour
 
     Vector3 GenerateRandomPos()
     {
-        randomXPos = Random.Range(-20f, 20f);
-        randomZPos = Random.Range(-20f, 20f);
-        randomSpawnPos = new(randomXPos, 1, randomZPos);
+        Vector3 randomSpawnPos = GetRandomNavMeshPosition();
+        randomSpawnPos = new(randomSpawnPos.x, 0.5f, randomSpawnPos.z);
 
         return randomSpawnPos;
     }

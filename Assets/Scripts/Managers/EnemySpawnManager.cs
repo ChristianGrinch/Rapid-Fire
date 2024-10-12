@@ -17,18 +17,18 @@ public class EnemySpawnManager : MonoBehaviour
 	List<GameObject> level3Enemies = new();
 	List<GameObject> boss1Enemies = new();
 
-    public GameObject[] enemyLevel1;
-    public GameObject[] enemyLevel2;
-    public GameObject[] enemyLevel3;
-    public GameObject[] bossLevel1;
+	public GameObject[] enemyLevel1;
+	public GameObject[] enemyLevel2;
+	public GameObject[] enemyLevel3;
+	public GameObject[] bossLevel1;
 
 	public int currentWave = 0;
-	private int spawnBufferDistance = 4;
+	public int spawnBufferDistance = 4;
 
-    private Vector3 lastBossSpawnPos;
-	private float mapSize = 50;
+	private Vector3 lastBossSpawnPos;
+	private float mapSize = GameManager.mapSize;
 
-    private Dictionary<EnemyType, int> enemiesToSpawn = new()
+	private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
 		{ EnemyType.Level1, 4 },
 		{ EnemyType.Level2, 0 },
@@ -42,12 +42,7 @@ public class EnemySpawnManager : MonoBehaviour
 		Level3,
 		Boss1
 	}
-
-    private void Start()
-    {
-		
-    }
-    void Update()
+	void Update()
 	{
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
@@ -61,16 +56,16 @@ public class EnemySpawnManager : MonoBehaviour
 			}
 			else
 			{
-                currentWave++;
+				currentWave++;
 
-                NumberOfEnemiesToSpawn();
+				NumberOfEnemiesToSpawn();
 
-                SpawnEnemyWave();
-            }
+				SpawnEnemyWave();
+			}
 		}
 
-        StartCoroutine(AssignEnemiesToArray()); // this is INCREDIBLY bad for perfomrance. FIX THIS LATER!!!!
-    }
+		StartCoroutine(AssignEnemiesToArray()); // this is INCREDIBLY bad for perfomrance. FIX THIS LATER!!!!
+	}
 
 	public IEnumerator AssignEnemiesToArray()
 	{
@@ -81,31 +76,31 @@ public class EnemySpawnManager : MonoBehaviour
 		level3Enemies = new();
 		boss1Enemies = new();
 
-        foreach (GameObject enemy in enemyCountArray)
+		foreach (GameObject enemy in enemyCountArray)
 		{
 			if (enemy.name.Contains("Enemy 1"))
 			{
 				level1Enemies.Add(enemy);
-            }
+			}
 			else if (enemy.name.Contains("Enemy 2"))
 			{
 				level2Enemies.Add(enemy);
-            }
+			}
 			else if (enemy.name.Contains("Enemy 3"))
 			{
 				level3Enemies.Add(enemy);
-            }
+			}
 			else if (enemy.name.Contains("Boss 1"))
 			{
 				boss1Enemies.Add(enemy);
-            }
+			}
 		}
 
 		enemyLevel1 = level1Enemies.ToArray();
 		enemyLevel2 = level2Enemies.ToArray();
 		enemyLevel3 = level3Enemies.ToArray();
 		bossLevel1 = boss1Enemies.ToArray();
-    }
+	}
 
 	void NumberOfEnemiesToSpawn()
 	{
@@ -134,20 +129,20 @@ public class EnemySpawnManager : MonoBehaviour
 	}
 	private Vector3 GenerateSpawnPosition(int type)
 	{
-        Vector3 randomSpawnPos = GetRandomNavMeshPosition();
+		Vector3 randomSpawnPos = GetRandomNavMeshPosition();
 
-        float posY = type == 3 ? 2 : 0.5f;
+		float posY = type == 3 ? 2 : 0.5f;
 		randomSpawnPos.y = posY;
 
 		if (type == 3)
 		{
-            lastBossSpawnPos = randomSpawnPos;
+			lastBossSpawnPos = randomSpawnPos;
 			return lastBossSpawnPos;
 		}
 
-        while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance 
+		while (Vector3.Distance(player.transform.position, randomSpawnPos) < spawnBufferDistance 
 			|| (Vector3.Distance(lastBossSpawnPos, randomSpawnPos) < 5))
-        {
+		{
 			randomSpawnPos = GetRandomNavMeshPosition();
 			randomSpawnPos.y = posY;
 		}
@@ -212,23 +207,23 @@ public class EnemySpawnManager : MonoBehaviour
 
 	public void SpawnEnemiesOnLoad(int enemyLevel1, int enemyLevel2, int enemyLevel3, int bossLevel1)
 	{
-        for (int i = 0; i < bossLevel1; i++) // must be first so the boss pos can be saved
-        {
-            InstantiateEnemy(3);
-        }
-        for (int i = 0; i < enemyLevel1; i++)
-        {
-            InstantiateEnemy(0);
-        }
-        for (int i = 0; i < enemyLevel2; i++)
-        {
-            InstantiateEnemy(1);
-        }
-        for (int i = 0; i < enemyLevel3; i++)
-        {
-            InstantiateEnemy(2);
-        }
-    }
+		for (int i = 0; i < bossLevel1; i++) // must be first so the boss pos can be saved
+		{
+			InstantiateEnemy(3);
+		}
+		for (int i = 0; i < enemyLevel1; i++)
+		{
+			InstantiateEnemy(0);
+		}
+		for (int i = 0; i < enemyLevel2; i++)
+		{
+			InstantiateEnemy(1);
+		}
+		for (int i = 0; i < enemyLevel3; i++)
+		{
+			InstantiateEnemy(2);
+		}
+	}
 
 	public void InstantiateEnemy(int type)
 	{
@@ -236,7 +231,7 @@ public class EnemySpawnManager : MonoBehaviour
 
 		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
 		instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
-    }
+	}
 
 	// Singleton code -----
 	public static EnemySpawnManager Instance { get; private set; }

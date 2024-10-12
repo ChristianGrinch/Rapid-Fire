@@ -25,7 +25,6 @@ public class EnemyController : MonoBehaviour
     public GameObject ringPrefab;
     private float ringExpandTime = 1f;
     private float ringMaxSize = 45f;
-    private float spawnRingCooldown = 10f;
     private float lastSpawnRingTime = 0f;
 	private bool isDashing = false;
 
