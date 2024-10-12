@@ -11076,7 +11076,7 @@ Transform:
   m_GameObject: {fileID: 883152918}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11688,8 +11688,8 @@ Transform:
   m_GameObject: {fileID: 921949495}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.3, y: 0.5, z: -3.7000008}
-  m_LocalScale: {x: 13.5, y: 1, z: 0.5}
+  m_LocalPosition: {x: -4.3, y: 1.1000001, z: -3.7000008}
+  m_LocalScale: {x: 13.5, y: 1.3, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 768840086}
@@ -18795,13 +18795,15 @@ MonoBehaviour:
   - {fileID: 6329172769025539485, guid: bc93f41b1fcce1941aa00fd4e16aa9b8, type: 3}
   - {fileID: 8683618380255166290, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
   - {fileID: 8543954980356892885, guid: fcaa37993dbf15f47a5331e30ba4ac14, type: 3}
+  - {fileID: 227322009373829816, guid: 6a70885e14300a24e97b4df7c7d75e28, type: 3}
   enemyParent: {fileID: 1061023598}
   player: {fileID: 883152918}
   enemyCountArray: []
-  enemyLevel1: []
-  enemyLevel2: []
-  enemyLevel3: []
-  bossLevel1: []
+  level1Enemies: []
+  level2Enemies: []
+  level3Enemies: []
+  boss1Enemies: []
+  iceZombie: []
   currentWave: 0
   spawnBufferDistance: 4
 --- !u!114 &1606568285
@@ -18861,14 +18863,7 @@ MonoBehaviour:
   isGameUnpaused: 0
   isInGame: 0
   didSelectDifficulty: 0
-  didPlayerLoadSpawnManager: 0
-  didPlayerLoadPowerupManager: 0
-  enemyLevel1: 0
-  enemyLevel2: 0
-  enemyLevel3: 0
-  bossLevel1: 0
   defaultSave: 
-  selectedSaveName: 
 --- !u!4 &1606568286
 Transform:
   m_ObjectHideFlags: 0
@@ -18942,6 +18937,7 @@ MonoBehaviour:
   enemyLevel2: 0
   enemyLevel3: 0
   bossLevel1: 0
+  iceZombie: 0
   didLoadSpawnManager: 0
   didLoadPowerupManager: 0
 --- !u!1 &1612366217
@@ -23058,8 +23054,8 @@ Transform:
   m_GameObject: {fileID: 2050545238}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.23, y: 0.5, z: -3.7000008}
-  m_LocalScale: {x: 8.480024, y: 1, z: 0.5}
+  m_LocalPosition: {x: -18.23, y: 1.1000001, z: -3.7000008}
+  m_LocalScale: {x: 8.480024, y: 1.3, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 768840086}

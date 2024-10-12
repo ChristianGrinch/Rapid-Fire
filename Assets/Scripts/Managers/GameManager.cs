@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,7 +19,7 @@ public class GameManager : MonoBehaviour
 	public string currentSave;
 	public int difficulty;
 	public bool didSelectDifficulty = false;
-	public int enemyLevel1; public int enemyLevel2; public int enemyLevel3; public int bossLevel1;
+	public int enemyLevel1; public int enemyLevel2; public int enemyLevel3; public int bossLevel1; public int iceZombie;
 	public bool didLoadSpawnManager = false;
 	public bool didLoadPowerupManager = false;
 
@@ -158,10 +161,34 @@ public class GameManager : MonoBehaviour
             enemySpawnManager.currentWave = data.wave;
             gunController.ammo = data.ammo;
 
+			// Check if the save is an old save, if so, preform a modification to it so it can be compatible with current saves.
+			if(data.numberOfEnemies.Length == 4) // Handling for no iceZombie
+			{
+				int[] tempEnemies = new int[5];
+				for (int i = 0; i < 4; i++)
+				{
+					tempEnemies[i] = data.numberOfEnemies[i];
+				}
+				switch (data.difficulty) // Sets the current number of ice zombies based on saved difficulty and wave
+				{
+                    case 1:
+                        tempEnemies[4] = data.wave - 4 > 0 ? data.wave - 3 : 0; // Spawns 1 iceZombie on wave 4, then increments
+                        break;
+                    case 2:
+                        tempEnemies[4] = data.wave - 2 > 0 ? data.wave - 2 : 0; // Spawns 1 iceZombie on wave 2, then increments
+                        break;
+                    case 3:
+                        tempEnemies[4] = data.wave + 1; // Spawns iceZombie starting at wave 1 and increments
+                        break;
+                }
+				data.numberOfEnemies = tempEnemies;
+			}
+
             enemyLevel1 = data.numberOfEnemies[0];
             enemyLevel2 = data.numberOfEnemies[1];
             enemyLevel3 = data.numberOfEnemies[2];
             bossLevel1 = data.numberOfEnemies[3];
+			iceZombie = data.numberOfEnemies[4];
 
             PowerupManager.Instance.ammunition = data.numberofPowerups[0];
             PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
