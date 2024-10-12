@@ -8696,8 +8696,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:
@@ -12570,8 +12570,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDefaultSave
         m_Mode: 1
         m_Arguments:
@@ -18936,6 +18936,14 @@ MonoBehaviour:
   isInGame: 0
   defaultSave: 
   currentSave: 
+  difficulty: 0
+  didSelectDifficulty: 0
+  enemyLevel1: 0
+  enemyLevel2: 0
+  enemyLevel3: 0
+  bossLevel1: 0
+  didLoadSpawnManager: 0
+  didLoadPowerupManager: 0
 --- !u!1 &1612366217
 GameObject:
   m_ObjectHideFlags: 0

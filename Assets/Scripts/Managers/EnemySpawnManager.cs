@@ -49,10 +49,10 @@ public class EnemySpawnManager : MonoBehaviour
 
 		if (enemyCount == 0 && UIManager.Instance.isGameUnpaused)
 		{
-			if (UIManager.Instance.didPlayerLoadSpawnManager)
+			if (GameManager.Instance.didLoadSpawnManager)
 			{
-				SpawnEnemiesOnLoad(UIManager.Instance.enemyLevel1, UIManager.Instance.enemyLevel2, UIManager.Instance.enemyLevel3, UIManager.Instance.bossLevel1);
-				UIManager.Instance.didPlayerLoadSpawnManager = false;
+				SpawnEnemiesOnLoad(GameManager.Instance.enemyLevel1, GameManager.Instance.enemyLevel2, GameManager.Instance.enemyLevel3, GameManager.Instance.bossLevel1);
+                GameManager.Instance.didLoadSpawnManager = false;
 			}
 			else
 			{

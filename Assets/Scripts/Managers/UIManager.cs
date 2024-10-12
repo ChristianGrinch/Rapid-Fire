@@ -83,18 +83,8 @@ public class UIManager : MonoBehaviour
 	public bool isGameUnpaused = false;
 	public bool isInGame = false;
 	public bool didSelectDifficulty = false;
-	public bool didPlayerLoadSpawnManager = false;
-	public bool didPlayerLoadPowerupManager = false;
-
-	public int enemyLevel1;
-	public int enemyLevel2;
-	public int enemyLevel3;
-	public int bossLevel1;
 
 	public string defaultSave;
-	public string selectedSaveName;
-
-
 
 	void Awake()
 	{
@@ -123,7 +113,7 @@ public class UIManager : MonoBehaviour
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 
-		saveButton.onClick.AddListener(() => SavePlayer(currentSave));
+		saveButton.onClick.AddListener(() => GameManager.Instance.SavePlayer(currentSave));
 	}
 	void AddButtonListeners()
 	{
@@ -140,6 +130,7 @@ public class UIManager : MonoBehaviour
 			}
 			else
 			{
+				Debug.Log(currentSave);
 				if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
 				{
 					PopupManager.Instance.ShowPopup(PopupManager.PopupType.PlaySaveConfirm);
@@ -161,6 +152,7 @@ public class UIManager : MonoBehaviour
 
 		isGameUnpaused = GameManager.Instance.isGameUnpaused;
 		isInGame = GameManager.Instance.isInGame;
+		currentSave = GameManager.Instance.currentSave;
 
 		if (healthSystem.lives <= 0)
 		{
@@ -173,7 +165,7 @@ public class UIManager : MonoBehaviour
 		}
 		else if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && pauseMenu.activeSelf)
 		{
-            GameManager.Instance.ResumeGame();
+			GameManager.Instance.ResumeGame();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && settingsMenu.activeSelf)
@@ -181,29 +173,7 @@ public class UIManager : MonoBehaviour
 			SwitchToStart();	
 		}
 	}
-	//public void GameOver()
-	//{
-	//	restartMenu.SetActive(true);
-	//	isGameUnpaused = false;
-	//}
-	//public void RestartGame()
-	//{
-	//	SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	//}
 	public void ShowRestartMenu(){ restartMenu.SetActive(true); }
-	//public void StartGame()
-	//{
-	//	LoadPlayer(defaultSave);
-	//	CloseAllMenus();
-	//	game.SetActive(true);
-	//	isGameUnpaused = true;
-	//	isInGame = true;
-
-	//	healthSystem.AssignLives();
-	//	Time.timeScale = 1;
-	//	SetDifficultyText();
-
-	//}
 	public void CloseAllMenus()
 	{
 		Canvas canvas = FindObjectOfType<Canvas>();
@@ -215,30 +185,6 @@ public class UIManager : MonoBehaviour
 			child.gameObject.SetActive(false);
 		}
 	}
-	//public void StartNewGame()
-	//{
-	//	CloseAllMenus();
-	//	game.SetActive(true);
-	//	isGameUnpaused = true;
-	//	isInGame = true;
-
-	//	healthSystem.AssignLives();
-	//	Time.timeScale = 1;
-	//	SetDifficultyText();
-	//}
-	//public void PauseGame()
-	//{
-	//	isGameUnpaused = false;
-	//	pauseMenu.SetActive(true);
-	//	Time.timeScale = 0;
-	//	saveButton.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
-	//}
-	//public void ResumeGame()
-	//{
-	//	isGameUnpaused = true;
-	//	pauseMenu.SetActive(false);
-	//	Time.timeScale = 1;
-	//}
 	public void OpenDifficultyScreen()
 	{
 		if (!didSelectDifficulty)
@@ -298,14 +244,6 @@ public class UIManager : MonoBehaviour
 		Debug.Log("Difficulty set to: " + difficulty);
 		didSelectDifficulty = true;
 	}
-//	public void QuitGame()
-//	{
-//	#if UNITY_EDITOR
-//			UnityEditor.EditorApplication.isPlaying = false;
-//#else
-//		Application.Quit();
-//#endif
-//	}
 	public void OpenSettings()
 	{
 		CloseAllMenus();
@@ -487,7 +425,7 @@ public class UIManager : MonoBehaviour
 			AddButton(saveName);
 		}
 
-		SavePlayer(saveName);
+        GameManager.Instance.SavePlayer(saveName);
 	}
 	private void AddButton(string saveName)
 	{
@@ -495,7 +433,7 @@ public class UIManager : MonoBehaviour
 		newButton.GetComponentInChildren<TMP_Text>().text = saveName;
 
 		Button btn = newButton.GetComponent<Button>();
-		btn.onClick.AddListener(() => LoadPlayer(saveName));
+		btn.onClick.AddListener(() => GameManager.Instance.LoadPlayer(saveName));
 	}
 	public void OnSaveButtonClicked()
 	{
@@ -515,102 +453,5 @@ public class UIManager : MonoBehaviour
 	{
 		deleteSave_SavesMenu.gameObject.SetActive(true);
 		defaultSaveButton.gameObject.SetActive(true);
-	}
-	public void SetDefaultSave()
-	{
-		playDefaultText.text = "Play default save \n[ " + currentSave + " ]";
-		Debug.Log("hi");
-		if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
-		{
-			SaveSystem.SetDefaultSave(currentSave);
-			Debug.Log("Set '" + currentSave + "' to default save.");
-		}
-	}
-	public void SaveFromInsideGame()
-	{
-		saveButton.GetComponent<Button>().onClick.AddListener(() => SavePlayer(currentSave));
-	}
-	public void DeleteSave()
-	{
-
-		string saveName = saveNameInputField.text;
-
-		if (!string.IsNullOrEmpty(currentSave))
-		{
-			SaveSystem.DeleteSave(currentSave);
-		}
-		else
-		{
-			Debug.LogWarning("Save name cannot be empty!");
-		}
-	}
-	public void SavePlayer(string saveName)
-	{
-		SaveSystem.SavePlayer(playerController, saveName);
-	}
-
-	public void LoadPlayer(string saveName)
-	{
-		currentSave = saveName;
-
-		didPlayerLoadSpawnManager = true;
-		didPlayerLoadPowerupManager = true;
-
-		// Load the player data
-		SaveData data = SaveSystem.LoadPlayer(saveName);
-
-		if(data != null)
-		{
-			// Update player data
-			playerController.exp = data.exp;
-			playerController.health = data.health;
-			playerController.lives = data.lives;
-			playerController.wave = data.wave;
-			playerController.ammo = data.ammo;
-
-			Vector3 position;
-			position.x = data.position[0];
-			position.y = data.position[1];
-			position.z = data.position[2];
-			player.transform.position = position;
-
-			healthSystem.UpdateHealth(data.health);
-			healthSystem.UpdateLives(data.lives);
-
-			// Update game data
-			enemySpawnManager.currentWave = data.wave;
-			gunController.ammo = data.ammo;
-
-			enemyLevel1 = data.numberOfEnemies[0];
-			enemyLevel2 = data.numberOfEnemies[1];
-			enemyLevel3 = data.numberOfEnemies[2];
-			bossLevel1 = data.numberOfEnemies[3];
-
-			PowerupManager.Instance.ammunition = data.numberofPowerups[0];
-			PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
-			PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
-
-			// Update settings data
-			masterVolumeSlider.value = data.masterVolume;
-			masterVolume.text = data.masterVolume.ToString();
-
-			musicVolumeSlider.value = data.musicVolume;
-			musicVolume.text = data.musicVolume.ToString();
-
-			gunVolumeSlider.value = data.gunVolume;
-			gunVolume.text = data.musicVolume.ToString();
-
-			if (data.difficulty != 0)
-			{
-				didSelectDifficulty = true;
-				difficulty = data.difficulty;
-			}
-			
-		}
-		else
-		{
-			Debug.LogError("Data is null.");
-		}
-
 	}
 }

@@ -86,7 +86,7 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					UIManager.Instance.DeleteSave();
+                    GameManager.Instance.DeleteSave();
 					UIManager.Instance.InstantiateSaveButtons();
 					UIManager.Instance.UpdateDeleteSaveButton();
 					ClosePopup();
@@ -102,7 +102,7 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					UIManager.Instance.LoadPlayer(UIManager.Instance.currentSave);
+					GameManager.Instance.LoadPlayer(UIManager.Instance.currentSave);
 					GameManager.Instance.StartNewGame();
 					ClosePopup();
 				});
@@ -169,7 +169,7 @@ public class PopupManager : MonoBehaviour
 					if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 					{
 						Debug.Log("ran if true");
-						UIManager.Instance.SavePlayer(saveName);
+                        GameManager.Instance.SavePlayer(saveName);
 						GameManager.Instance.StartNewGame();
 						ClosePopup();
 					}

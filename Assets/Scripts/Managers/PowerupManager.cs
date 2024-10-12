@@ -38,10 +38,10 @@ public class PowerupManager : MonoBehaviour
         int currentWave = EnemySpawnManager.Instance.currentWave;
         if (UIManager.Instance.isGameUnpaused)
         {
-            if (UIManager.Instance.didPlayerLoadPowerupManager)
+            if (GameManager.Instance.didLoadPowerupManager)
             {
                 SpawnPowerupsOnLoad();
-                UIManager.Instance.didPlayerLoadPowerupManager = false;
+                GameManager.Instance.didLoadPowerupManager = false;
                 newWave = currentWave;
             }
             else if(Time.time >= nextSpawnTime || currentWave > newWave)

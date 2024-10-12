@@ -169,7 +169,6 @@ public class EnemyController : MonoBehaviour
 			int modifiedHealth = playerHealth.health - damage;
 			yield return new WaitForSeconds(damageRate);
 			playerHealth.UpdateHealth(modifiedHealth);
-			Debug.Log("running DamagePlayer in if");
 		}
 		isDamagingPlayer = false;
 	}

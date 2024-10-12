@@ -17,7 +17,7 @@ public class BackgroundMusic : MonoBehaviour // Not my script! Thanks to https:/
         audioSource.loop = false;
     }
 
-    void Update()
+    void FixedUpdate() // changed to fixedupdate to see if it can help reduce the random stuttering when transitioning songs
     {
         if (!audioSource.isPlaying)
         {
