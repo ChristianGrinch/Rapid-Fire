@@ -2542,9 +2542,9 @@ RectTransform:
   m_Father: {fileID: 355758975}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_SizeDelta: {x: -17, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &213418984
 MonoBehaviour:
@@ -4948,7 +4948,7 @@ RectTransform:
   m_Father: {fileID: 385760956}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8696,8 +8696,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:
@@ -11076,7 +11076,7 @@ Transform:
   m_GameObject: {fileID: 883152918}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11688,8 +11688,8 @@ Transform:
   m_GameObject: {fileID: 921949495}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.3, y: 0.5, z: -3.7000008}
-  m_LocalScale: {x: 13.5, y: 1, z: 0.5}
+  m_LocalPosition: {x: -4.3, y: 1.1000001, z: -3.7000008}
+  m_LocalScale: {x: 13.5, y: 1.3, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 768840086}
@@ -11782,7 +11782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &937104825
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12570,8 +12570,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDefaultSave
         m_Mode: 1
         m_Arguments:
@@ -14465,8 +14465,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
@@ -16110,7 +16110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1349277526
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18339,9 +18339,9 @@ RectTransform:
   m_Father: {fileID: 355758975}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 20, y: -17}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1584655851
 MonoBehaviour:
@@ -18749,12 +18749,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1606568286}
+  - component: {fileID: 1606568289}
   - component: {fileID: 1606568285}
   - component: {fileID: 1606568287}
   - component: {fileID: 1606568284}
   - component: {fileID: 1606568282}
   - component: {fileID: 1606568288}
-  - component: {fileID: 1606568289}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -18795,13 +18795,15 @@ MonoBehaviour:
   - {fileID: 6329172769025539485, guid: bc93f41b1fcce1941aa00fd4e16aa9b8, type: 3}
   - {fileID: 8683618380255166290, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
   - {fileID: 8543954980356892885, guid: fcaa37993dbf15f47a5331e30ba4ac14, type: 3}
+  - {fileID: 227322009373829816, guid: 6a70885e14300a24e97b4df7c7d75e28, type: 3}
   enemyParent: {fileID: 1061023598}
   player: {fileID: 883152918}
   enemyCountArray: []
-  enemyLevel1: []
-  enemyLevel2: []
-  enemyLevel3: []
-  bossLevel1: []
+  level1Enemies: []
+  level2Enemies: []
+  level3Enemies: []
+  boss1Enemies: []
+  iceZombie: []
   currentWave: 0
   spawnBufferDistance: 4
 --- !u!114 &1606568285
@@ -18861,14 +18863,7 @@ MonoBehaviour:
   isGameUnpaused: 0
   isInGame: 0
   didSelectDifficulty: 0
-  didPlayerLoadSpawnManager: 0
-  didPlayerLoadPowerupManager: 0
-  enemyLevel1: 0
-  enemyLevel2: 0
-  enemyLevel3: 0
-  bossLevel1: 0
   defaultSave: 
-  selectedSaveName: 
 --- !u!4 &1606568286
 Transform:
   m_ObjectHideFlags: 0
@@ -18932,6 +18927,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db483b6515ed33d478b22fc11a985f70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isGameUnpaused: 0
+  isInGame: 0
+  defaultSave: 
+  currentSave: 
+  difficulty: 0
+  didSelectDifficulty: 0
+  enemyLevel1: 0
+  enemyLevel2: 0
+  enemyLevel3: 0
+  bossLevel1: 0
+  iceZombie: 0
+  didLoadSpawnManager: 0
+  didLoadPowerupManager: 0
 --- !u!1 &1612366217
 GameObject:
   m_ObjectHideFlags: 0
@@ -20868,8 +20876,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 621276002}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.695}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -21990,9 +21998,9 @@ RectTransform:
   m_Father: {fileID: 355758975}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: -17}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1926791290
 MonoBehaviour:
@@ -23046,8 +23054,8 @@ Transform:
   m_GameObject: {fileID: 2050545238}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.23, y: 0.5, z: -3.7000008}
-  m_LocalScale: {x: 8.480024, y: 1, z: 0.5}
+  m_LocalPosition: {x: -18.23, y: 1.1000001, z: -3.7000008}
+  m_LocalScale: {x: 8.480024, y: 1.3, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 768840086}

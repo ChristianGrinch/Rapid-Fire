@@ -48,17 +48,17 @@ public class EnemyController : MonoBehaviour
 			case 1:
 				rangeDashSeconds[0] = 10;
 				rangeDashSeconds[1] = 20;
-                dashSpeed = speed * 100;
+                dashSpeed = speed * 500;
                 break;
             case 2:
                 rangeDashSeconds[0] = 8;
                 rangeDashSeconds[1] = 15;
-                dashSpeed = speed * 120;
+                dashSpeed = speed * 600;
                 break;
             case 3:
                 rangeDashSeconds[0] = 8;
                 rangeDashSeconds[1] = 10;
-                dashSpeed = speed * 140;
+                dashSpeed = speed * 700;
                 break;
         }
     }
@@ -169,7 +169,6 @@ public class EnemyController : MonoBehaviour
 			int modifiedHealth = playerHealth.health - damage;
 			yield return new WaitForSeconds(damageRate);
 			playerHealth.UpdateHealth(modifiedHealth);
-			Debug.Log("running DamagePlayer in if");
 		}
 		isDamagingPlayer = false;
 	}
@@ -181,23 +180,26 @@ public class EnemyController : MonoBehaviour
 		switch (difficulty)
 		{
 			case 1:
-				SetStats(20, 23, 10, 40, "Enemy 1");
-				SetStats(25, 21, 15, 60, "Enemy 2");
-				SetStats(50, 21, 20, 100, "Enemy 3");
-				SetStats(90, 16, 200, 450, "Boss 1");
+				SetStats(20, 5.5f, 10, 40, "Enemy 1");
+				SetStats(25, 4, 15, 60, "Enemy 2");
+				SetStats(50, 4, 20, 100, "Enemy 3");
+				SetStats(90, 2, 200, 450, "Boss 1");
+				SetStats(20, 6, 10, 30, "Ice Zombie");
 				break;
 			case 2:
-				SetStats(25, 23, 15, 55, "Enemy 1");
-				SetStats(30, 21, 20, 75, "Enemy 2");
-				SetStats(55, 21, 25, 130, "Enemy 3");
-				SetStats(95, 16.5f, 250, 675, "Boss 1");
-				break;
+				SetStats(25, 6, 15, 55, "Enemy 1");
+				SetStats(30, 4.5f, 20, 75, "Enemy 2");
+				SetStats(55, 4.5f, 25, 130, "Enemy 3");
+				SetStats(95, 2.5f, 250, 675, "Boss 1");
+                SetStats(25, 6.5f, 15, 40, "Ice Zombie");
+                break;
 			case 3:
-				SetStats(35, 25, 18, 68, "Enemy 1");
-				SetStats(45, 24, 25, 100, "Enemy 2");
-				SetStats(70, 24, 35, 156, "Enemy 3");
-				SetStats(130, 17.5f, 325, 800, "Boss 1");
-				break;
+				SetStats(35, 6.5f, 18, 68, "Enemy 1");
+				SetStats(45, 5, 25, 100, "Enemy 2");
+				SetStats(70, 5, 35, 156, "Enemy 3");
+				SetStats(130, 3, 325, 800, "Boss 1");
+                SetStats(30, 7, 19, 70, "Ice Zombie");
+                break;
 			default:
 				Debug.LogError("Invalid difficulty level.");
 				break;
@@ -211,6 +213,7 @@ public class EnemyController : MonoBehaviour
 			speed = enemySpeed;
 			exp = enemyExp;
 			health = enemyHealth;
+			agent.speed = enemySpeed;
 		}
 	}
 }

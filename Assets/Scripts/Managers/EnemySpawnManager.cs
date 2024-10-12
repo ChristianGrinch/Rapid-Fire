@@ -5,22 +5,22 @@ using UnityEngine.AI;
 
 public class EnemySpawnManager : MonoBehaviour
 {
-	public GameObject[] enemy;
+    // When making a new enemy, add them in the places that have the ~~~~~~~~~~ENEMY tag
+
+    //~~~~~~~~~~ENEMY (ADD IN INSPECTOR)
+    public GameObject[] enemy;
 	public GameObject enemyParent;
 	public GameObject player;
 
 	public GameObject[] enemyCountArray;
 	private int enemyCount = 0;
 
-	List<GameObject> level1Enemies = new();
-	List<GameObject> level2Enemies = new();
-	List<GameObject> level3Enemies = new();
-	List<GameObject> boss1Enemies = new();
-
-	public GameObject[] enemyLevel1;
-	public GameObject[] enemyLevel2;
-	public GameObject[] enemyLevel3;
-	public GameObject[] bossLevel1;
+    //~~~~~~~~~~ENEMY
+    public List<GameObject> level1Enemies = new();
+    public List<GameObject> level2Enemies = new();
+    public List<GameObject> level3Enemies = new();
+    public List<GameObject> boss1Enemies = new();
+	public List<GameObject> iceZombie = new();
 
 	public int currentWave = 0;
 	public int spawnBufferDistance = 4;
@@ -28,31 +28,35 @@ public class EnemySpawnManager : MonoBehaviour
 	private Vector3 lastBossSpawnPos;
 	private float mapSize = GameManager.mapSize;
 
-	private Dictionary<EnemyType, int> enemiesToSpawn = new()
+    //~~~~~~~~~~ENEMY
+    private enum EnemyType
+    {
+        Level1,
+        Level2,
+        Level3,
+        Boss1,
+		IceZombie
+    }
+    //~~~~~~~~~~ENEMY
+    private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
 		{ EnemyType.Level1, 4 },
 		{ EnemyType.Level2, 0 },
 		{ EnemyType.Level3, 0 },
-		{ EnemyType.Boss1, 0 }
+		{ EnemyType.Boss1, 0 },
+		{ EnemyType.IceZombie, 0 }
 	};
-	private enum EnemyType
-	{
-		Level1,
-		Level2,
-		Level3,
-		Boss1
-	}
 	void Update()
 	{
-		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
+        enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
 
 		if (enemyCount == 0 && UIManager.Instance.isGameUnpaused)
 		{
-			if (UIManager.Instance.didPlayerLoadSpawnManager)
+			if (GameManager.Instance.didLoadSpawnManager)
 			{
-				SpawnEnemiesOnLoad(UIManager.Instance.enemyLevel1, UIManager.Instance.enemyLevel2, UIManager.Instance.enemyLevel3, UIManager.Instance.bossLevel1);
-				UIManager.Instance.didPlayerLoadSpawnManager = false;
+				SpawnEnemiesOnLoad();
+                GameManager.Instance.didLoadSpawnManager = false;
 			}
 			else
 			{
@@ -64,10 +68,10 @@ public class EnemySpawnManager : MonoBehaviour
 			}
 		}
 
-		StartCoroutine(AssignEnemiesToArray()); // this is INCREDIBLY bad for perfomrance. FIX THIS LATER!!!!
+		StartCoroutine(AssignEnemiesToLists()); // this is INCREDIBLY bad for perfomrance. FIX THIS LATER!!!!
 	}
 
-	public IEnumerator AssignEnemiesToArray()
+	public IEnumerator AssignEnemiesToLists()
 	{
 		yield return null;
 
@@ -76,7 +80,8 @@ public class EnemySpawnManager : MonoBehaviour
 		level3Enemies = new();
 		boss1Enemies = new();
 
-		foreach (GameObject enemy in enemyCountArray)
+        //~~~~~~~~~~ENEMY
+        foreach (GameObject enemy in enemyCountArray)
 		{
 			if (enemy.name.Contains("Enemy 1"))
 			{
@@ -93,13 +98,12 @@ public class EnemySpawnManager : MonoBehaviour
 			else if (enemy.name.Contains("Boss 1"))
 			{
 				boss1Enemies.Add(enemy);
+			} 
+			else if(enemy.name.Contains("Ice Zombie"))
+			{
+				iceZombie.Add(enemy);
 			}
 		}
-
-		enemyLevel1 = level1Enemies.ToArray();
-		enemyLevel2 = level2Enemies.ToArray();
-		enemyLevel3 = level3Enemies.ToArray();
-		bossLevel1 = boss1Enemies.ToArray();
 	}
 
 	void NumberOfEnemiesToSpawn()
@@ -108,22 +112,26 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			enemiesToSpawn[EnemyType.Boss1] += 1;
 		}
-		switch (UIManager.Instance.difficulty)
+        //~~~~~~~~~~ENEMY
+        switch (UIManager.Instance.difficulty)
 		{
 			case 1:
 				enemiesToSpawn[EnemyType.Level1] = currentWave + 3;
 				enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
-				enemiesToSpawn[EnemyType.Level3] = currentWave + -2;
+				enemiesToSpawn[EnemyType.Level3] = currentWave + -2; // Spawns 1 lvl3 on wave 3, then incriments
+				enemiesToSpawn[EnemyType.IceZombie] = currentWave + -3; // Spawns 1 ice zombie on wave 4, then incriments
 				break;
 			case 2:
 				enemiesToSpawn[EnemyType.Level1] = currentWave + 5;
 				enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
 				enemiesToSpawn[EnemyType.Level3] = currentWave + 0;
+				enemiesToSpawn[EnemyType.IceZombie] = currentWave + -2;
 				break;
 			case 3:
 				enemiesToSpawn[EnemyType.Level1] = currentWave + 7;
 				enemiesToSpawn[EnemyType.Level2] = currentWave + 3;
 				enemiesToSpawn[EnemyType.Level3] = currentWave + 2;
+				enemiesToSpawn[EnemyType.IceZombie] = currentWave + 1;
 				break;
 		}
 	}
@@ -167,7 +175,8 @@ public class EnemySpawnManager : MonoBehaviour
 	}
 	void SpawnEnemyWave()
 	{
-		switch (currentWave % 10)
+        //~~~~~~~~~~ENEMY
+        switch (currentWave % 10)
 		{
 			case 0:
 				{
@@ -179,8 +188,12 @@ public class EnemySpawnManager : MonoBehaviour
 					{
 						InstantiateEnemy(0);
 					}
+                    for (int i = 0; i < enemiesToSpawn[EnemyType.IceZombie]; i++)
+                    {
+                        InstantiateEnemy(4);
+                    }
 
-					break;
+                    break;
 				}
 
 			default:
@@ -197,33 +210,41 @@ public class EnemySpawnManager : MonoBehaviour
 					{
 						InstantiateEnemy(2);
 					}
-
+					for(int i = 0; i < enemiesToSpawn[EnemyType.IceZombie]; i++)
+					{
+						InstantiateEnemy(4);
+					}
 					break;
 				}
 		}
 
-		StartCoroutine(AssignEnemiesToArray());
+		StartCoroutine(AssignEnemiesToLists());
 	}
 
-	public void SpawnEnemiesOnLoad(int enemyLevel1, int enemyLevel2, int enemyLevel3, int bossLevel1)
+	public void SpawnEnemiesOnLoad()
 	{
-		for (int i = 0; i < bossLevel1; i++) // must be first so the boss pos can be saved
+        //~~~~~~~~~~ENEMY
+        for (int i = 0; i < GameManager.Instance.bossLevel1; i++) // must be first so the boss pos can be saved
 		{
 			InstantiateEnemy(3);
 		}
-		for (int i = 0; i < enemyLevel1; i++)
+		for (int i = 0; i < GameManager.Instance.enemyLevel1; i++)
 		{
 			InstantiateEnemy(0);
 		}
-		for (int i = 0; i < enemyLevel2; i++)
+		for (int i = 0; i < GameManager.Instance.enemyLevel2; i++)
 		{
 			InstantiateEnemy(1);
 		}
-		for (int i = 0; i < enemyLevel3; i++)
+		for (int i = 0; i < GameManager.Instance.enemyLevel3; i++)
 		{
 			InstantiateEnemy(2);
 		}
-	}
+        for (int i = 0; i < GameManager.Instance.iceZombie; i++)
+        {
+            InstantiateEnemy(4);
+        }
+    }
 
 	public void InstantiateEnemy(int type)
 	{
