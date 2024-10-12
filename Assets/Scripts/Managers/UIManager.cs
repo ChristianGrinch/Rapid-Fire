@@ -11,13 +11,13 @@ public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance { get; private set; }
 
-    // Menus
-    public GameObject difficultyMenu;
-    public GameObject settingsMenu;
-    public GameObject restartMenu;
+	// Menus
+	public GameObject difficultyMenu;
+	public GameObject settingsMenu;
+	public GameObject restartMenu;
 
-    // Active game 'menu'
-    public GameObject game;
+	// Active game 'menu'
+	public GameObject game;
 	public TextMeshProUGUI waveText;
 	public TextMeshProUGUI healthText;
 	public TextMeshProUGUI livesText;
@@ -29,12 +29,12 @@ public class UIManager : MonoBehaviour
 	public TMP_Text playDefaultText;
 	public GameObject difficultySelectWarning;
 
-    // Pause Menu
-    public GameObject pauseMenu;
-    public Button saveButton;
+	// Pause Menu
+	public GameObject pauseMenu;
+	public Button saveButton;
 
-    // Settings - Audio panel
-    public GameObject audioPanel;
+	// Settings - Audio panel
+	public GameObject audioPanel;
 	public Slider masterVolumeSlider;
 	public TextMeshProUGUI masterVolume;
 	public Slider musicVolumeSlider;
@@ -102,14 +102,13 @@ public class UIManager : MonoBehaviour
 		if (Instance == null)
 		{
 			Instance = this;
+			DontDestroyOnLoad(gameObject);
 		}
 		else
 		{
 			Destroy(gameObject); // Ensures there's only one UIManager instance
 		}
 	}
-
-	// Start is called before the first frame update
 	void Start()
 	{
 		SwitchToStart();
@@ -135,27 +134,25 @@ public class UIManager : MonoBehaviour
 		deleteSave_SavesMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.DeleteSaveConfirm));
 		loadSave_SavesMenu.onClick.AddListener(() =>
 		{
-            if (isInGame)
-            {
-                Debug.Log("Cannot load save while game is active.");
-                loadWarning.gameObject.SetActive(true);
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
-                {
-                    PopupManager.Instance.ShowPopup(PopupManager.PopupType.PlaySaveConfirm);
-                }
-                else
-                {
-                    StartCoroutine(ShowLoadWarning());
-                }
-            }
-        });
+			if (isInGame)
+			{
+				Debug.Log("Cannot load save while game is active.");
+				loadWarning.gameObject.SetActive(true);
+			}
+			else
+			{
+				if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
+				{
+					PopupManager.Instance.ShowPopup(PopupManager.PopupType.PlaySaveConfirm);
+				}
+				else
+				{
+					StartCoroutine(ShowLoadWarning());
+				}
+			}
+		});
 
-    }
-
-	// Update is called once per frame
+	}
 	void Update()
 	{
 		waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
@@ -163,18 +160,21 @@ public class UIManager : MonoBehaviour
 		livesText.text = $"Lives: {healthSystem.lives}";
 		ammoText.text = $"{gunController.ammo[gunController.currentGunInt]}";
 
+		isGameUnpaused = GameManager.Instance.isGameUnpaused;
+		isInGame = GameManager.Instance.isInGame;
+
 		if (healthSystem.lives <= 0)
 		{
-			GameOver();
+			GameManager.Instance.GameOver();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Escape) && isGameUnpaused)
 		{
-			PauseGame();
+			GameManager.Instance.PauseGame();
 		}
 		else if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && pauseMenu.activeSelf)
 		{
-			ResumeGame();
+            GameManager.Instance.ResumeGame();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && settingsMenu.activeSelf)
@@ -182,53 +182,64 @@ public class UIManager : MonoBehaviour
 			SwitchToStart();	
 		}
 	}
-	public void GameOver()
-	{
-		restartMenu.SetActive(true);
-		isGameUnpaused = false;
-	}
-	public void RestartGame()
-	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	}
-	public void StartGame()
-	{
-		LoadPlayer(defaultSave);
-		startMenu.SetActive(false);
-		game.SetActive(true);
-		isGameUnpaused = true;
-		isInGame = true;
+	//public void GameOver()
+	//{
+	//	restartMenu.SetActive(true);
+	//	isGameUnpaused = false;
+	//}
+	//public void RestartGame()
+	//{
+	//	SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	//}
+	public void ShowRestartMenu(){ restartMenu.SetActive(true); }
+	//public void StartGame()
+	//{
+	//	LoadPlayer(defaultSave);
+	//	CloseAllMenus();
+	//	game.SetActive(true);
+	//	isGameUnpaused = true;
+	//	isInGame = true;
 
-		healthSystem.AssignLives();
-		Time.timeScale = 1;
-		SetDifficultyText();
+	//	healthSystem.AssignLives();
+	//	Time.timeScale = 1;
+	//	SetDifficultyText();
 
-	}
-	public void StartNewGame()
+	//}
+	public void CloseAllMenus()
 	{
-		startMenu.SetActive(false);
-		settingsMenu.SetActive(false);
-		game.SetActive(true);
-		isGameUnpaused = true;
-		isInGame = true;
+		Canvas canvas = FindObjectOfType<Canvas>();
+		int childCount = canvas.transform.childCount;
 
-		healthSystem.AssignLives();
-		Time.timeScale = 1;
-		SetDifficultyText();
+		for (int i = 0; i < childCount; i++)
+		{
+			Transform child = canvas.transform.GetChild(i);
+			child.gameObject.SetActive(false);
+		}
 	}
-	public void PauseGame()
-	{
-		isGameUnpaused = false;
-		pauseMenu.SetActive(true);
-		Time.timeScale = 0;
-		saveButton.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
-	}
-	public void ResumeGame()
-	{
-		isGameUnpaused = true;
-		pauseMenu.SetActive(false);
-		Time.timeScale = 1;
-	}
+	//public void StartNewGame()
+	//{
+	//	CloseAllMenus();
+	//	game.SetActive(true);
+	//	isGameUnpaused = true;
+	//	isInGame = true;
+
+	//	healthSystem.AssignLives();
+	//	Time.timeScale = 1;
+	//	SetDifficultyText();
+	//}
+	//public void PauseGame()
+	//{
+	//	isGameUnpaused = false;
+	//	pauseMenu.SetActive(true);
+	//	Time.timeScale = 0;
+	//	saveButton.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
+	//}
+	//public void ResumeGame()
+	//{
+	//	isGameUnpaused = true;
+	//	pauseMenu.SetActive(false);
+	//	Time.timeScale = 1;
+	//}
 	public void OpenDifficultyScreen()
 	{
 		if (!didSelectDifficulty)
@@ -259,7 +270,7 @@ public class UIManager : MonoBehaviour
 	{
 		createSaveWarning.SetActive(true);
 		yield return new WaitForSeconds(5);
-        createSaveWarning.SetActive(false);
+		createSaveWarning.SetActive(false);
 
 	}
 	public IEnumerator ShowCreateSaveWarning()
@@ -278,12 +289,9 @@ public class UIManager : MonoBehaviour
 		}
 		else
 		{
+			CloseAllMenus();
 			startMenu.SetActive(true);
-			difficultyMenu.SetActive(false);
-			pauseMenu.SetActive(false);
-			settingsMenu.SetActive(false);
 		}
-
 	}
 	public void SetDifficulty(int selectedDifficulty)
 	{
@@ -291,19 +299,18 @@ public class UIManager : MonoBehaviour
 		Debug.Log("Difficulty set to: " + difficulty);
 		didSelectDifficulty = true;
 	}
-	public void QuitGame()
-	{
-	#if UNITY_EDITOR
-			UnityEditor.EditorApplication.isPlaying = false;
-#else
-		Application.Quit();
-#endif
-	}
+//	public void QuitGame()
+//	{
+//	#if UNITY_EDITOR
+//			UnityEditor.EditorApplication.isPlaying = false;
+//#else
+//		Application.Quit();
+//#endif
+//	}
 	public void OpenSettings()
 	{
+		CloseAllMenus();
 		settingsMenu.SetActive(true);
-		startMenu.SetActive(false);
-		pauseMenu.SetActive(false);
 	}
 	public void OpenAudioPanel()
 	{
@@ -434,9 +441,9 @@ public class UIManager : MonoBehaviour
 				string btnSaveName = newButton.GetComponentInChildren<TMP_Text>().text;
 				UpdateDeleteSaveButton();
 
-                if (!isInGame)
+				if (!isInGame)
 				{
-					currentSave = btnSaveName;
+					GameManager.Instance.currentSave = btnSaveName;
 				}
 			});
 			AudioManager.Instance.AssignSoundToNewButton(newButton);
@@ -502,13 +509,13 @@ public class UIManager : MonoBehaviour
 		else
 		{
 			Debug.LogWarning("Save name cannot be empty OR attempted to create a new save of an already existing name.");
-            StartCoroutine(ShowSaveNameWarning());
-        }
+			StartCoroutine(ShowSaveNameWarning());
+		}
 	}
 	public void UpdateDeleteSaveButton()
 	{
-        deleteSave_SavesMenu.gameObject.SetActive(true);
-        defaultSaveButton.gameObject.SetActive(true);
+		deleteSave_SavesMenu.gameObject.SetActive(true);
+		defaultSaveButton.gameObject.SetActive(true);
 	}
 	public void SetDefaultSave()
 	{
