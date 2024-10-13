@@ -19,6 +19,7 @@ public class GunController : MonoBehaviour
 	private float nextFireTime = 0f;
     public int[] ammo = new int[] { 20, 40 };  // ammo[0] = pistol ammo, ammo[1] = assault rifle ammo
 
+    public AudioClip audioClip;
     AudioSource audioData;
 
 	public enum GunType
@@ -33,6 +34,7 @@ public class GunController : MonoBehaviour
 		playerRb = player.GetComponent <Rigidbody> ();
 
         audioData = GetComponent<AudioSource>();
+		audioData.clip = audioClip;
     }
 
 	// Update is called once per frame

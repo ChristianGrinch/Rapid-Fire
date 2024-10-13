@@ -295,8 +295,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
@@ -543,8 +543,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDifficulty
         m_Mode: 3
         m_Arguments:
@@ -2149,8 +2149,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDifficulty
         m_Mode: 3
         m_Arguments:
@@ -6212,6 +6212,7 @@ RectTransform:
   - {fileID: 937104825}
   - {fileID: 1444189146}
   - {fileID: 1349277526}
+  - {fileID: 1731901851}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -11153,6 +11154,7 @@ MonoBehaviour:
   currentGun: 0
   currentGunInt: 0
   ammo: 1400000028000000
+  audioClip: {fileID: 8300000, guid: 7dcbe26250f1a9b4f8a79a5223254032, type: 3}
 --- !u!114 &883152926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18859,10 +18861,8 @@ MonoBehaviour:
   loadSave_SavesMenu: {fileID: 1083307036}
   player: {fileID: 883152918}
   gameManager: {fileID: 1606568281}
-  difficulty: 1
   isGameUnpaused: 0
   isInGame: 0
-  didSelectDifficulty: 0
   defaultSave: 
 --- !u!4 &1606568286
 Transform:
@@ -19447,8 +19447,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 1606568289}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDifficulty
         m_Mode: 3
         m_Arguments:
@@ -19905,6 +19905,41 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!1 &1731901850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1731901851}
+  m_Layer: 5
+  m_Name: Shop Menu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1731901851
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731901850}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 513614344}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1738326651
 GameObject:
   m_ObjectHideFlags: 0

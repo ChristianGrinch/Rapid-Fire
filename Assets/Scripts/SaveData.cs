@@ -60,7 +60,7 @@ public class SaveData
                 PowerupManager.Instance.heartPowerups,
                 PowerupManager.Instance.speedPowerups
             },
-            difficulty = UIManager.Instance.difficulty,
+            difficulty = GameManager.Instance.difficulty,
 
             // Assign settings data
             masterVolume = (int)UIManager.Instance.masterVolumeSlider.value,

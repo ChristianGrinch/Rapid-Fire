@@ -113,7 +113,7 @@ public class EnemySpawnManager : MonoBehaviour
 			enemiesToSpawn[EnemyType.Boss1] += 1;
 		}
         //~~~~~~~~~~ENEMY
-        switch (UIManager.Instance.difficulty)
+        switch (GameManager.Instance.difficulty)
 		{
 			case 1:
 				enemiesToSpawn[EnemyType.Level1] = currentWave + 3;

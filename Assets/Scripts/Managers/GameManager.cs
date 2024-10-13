@@ -50,7 +50,13 @@ public class GameManager : MonoBehaviour
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
 	}
-	public void GameOver()
+    public void SetDifficulty(int selectedDifficulty)
+    {
+        difficulty = selectedDifficulty;
+        Debug.Log("Difficulty set to: " + difficulty);
+        didSelectDifficulty = true;
+    }
+    public void GameOver()
 	{
 		UIManager.Instance.ShowRestartMenu();
 		isGameUnpaused = false;

@@ -32,18 +32,22 @@ public class EnemyController : MonoBehaviour
 	private float dashSpeed;
 
 	private NavMeshAgent agent;
+	public AudioClip swooshClip;
+	private AudioSource audioData;
 
     void Start()
 	{
 		agent = GetComponent<NavMeshAgent>();
+        audioData = GetComponent<AudioSource>();
+		audioData.clip = swooshClip;
 
-		enemyRb = GetComponent<Rigidbody>();
+        enemyRb = GetComponent<Rigidbody>();
 		player = GameObject.FindWithTag("Player");
 		healthSystem = gameObject.GetComponent<HealthSystem>();
 		AssignStats();
 		healthSystem.health = health;
 
-		switch (UIManager.Instance.difficulty)
+		switch (GameManager.Instance.difficulty)
 		{
 			case 1:
 				rangeDashSeconds[0] = 10;
@@ -107,6 +111,7 @@ public class EnemyController : MonoBehaviour
     {
 		isDashing = true;
         yield return new WaitForSeconds(Random.Range(rangeDashSeconds[0], rangeDashSeconds[1]));
+        audioData.Play();
 
         Vector3 direction = (player.transform.position - transform.position).normalized;
         
@@ -175,7 +180,7 @@ public class EnemyController : MonoBehaviour
 
 	void AssignStats()
 	{
-		difficulty = UIManager.Instance.difficulty;
+		difficulty = GameManager.Instance.difficulty;
 
 		switch (difficulty)
 		{

@@ -79,10 +79,8 @@ public class UIManager : MonoBehaviour
 	public GameObject gameManager;
 
 	// crap idk lol
-	public int difficulty = 1;
 	public bool isGameUnpaused = false;
 	public bool isInGame = false;
-	public bool didSelectDifficulty = false;
 
 	public string defaultSave;
 
@@ -187,7 +185,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void OpenDifficultyScreen()
 	{
-		if (!didSelectDifficulty)
+		if (!GameManager.Instance.didSelectDifficulty)
 		{
 			startMenu.SetActive(false);
 			difficultyMenu.SetActive(true);
@@ -237,12 +235,6 @@ public class UIManager : MonoBehaviour
 			CloseAllMenus();
 			startMenu.SetActive(true);
 		}
-	}
-	public void SetDifficulty(int selectedDifficulty)
-	{
-		difficulty = selectedDifficulty;
-		Debug.Log("Difficulty set to: " + difficulty);
-		didSelectDifficulty = true;
 	}
 	public void OpenSettings()
 	{
@@ -339,15 +331,15 @@ public class UIManager : MonoBehaviour
 	//}
 	public void SetDifficultyText()
 	{
-		if (difficulty == 1)
+		if (GameManager.Instance.difficulty == 1)
 		{
 			difficultyText.text = "Easy";
 		} 
-		else if (difficulty == 2)
+		else if (GameManager.Instance.difficulty == 2)
 		{
 			difficultyText.text = "Normal";
 		}
-		else if (difficulty == 3)
+		else if (GameManager.Instance.difficulty == 3)
 		{
 			difficultyText.text = "Master";
 		}

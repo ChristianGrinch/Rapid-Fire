@@ -58,9 +58,9 @@ public class HealthSystem : MonoBehaviour
 	public void AssignLives()
 	{
 
-		if (UIManager.Instance.isGameUnpaused && !didAssignLives)
+		if (GameManager.Instance.isGameUnpaused && !didAssignLives)
 		{
-			switch (UIManager.Instance.difficulty)
+			switch (GameManager.Instance.difficulty)
 			{
 				case 1:
 					lives = 3;
