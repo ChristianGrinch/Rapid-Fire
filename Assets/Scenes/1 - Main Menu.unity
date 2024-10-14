@@ -3175,7 +3175,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 590605214}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StartUIManager, Assembly-CSharp
         m_MethodName: OpenMainMenu
         m_Mode: 1
@@ -3517,7 +3517,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 590605214}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StartUIManager, Assembly-CSharp
         m_MethodName: OpenMainMenu
         m_Mode: 1
@@ -4081,8 +4081,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 689592723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.695}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5647,7 +5647,6 @@ GameObject:
   m_Component:
   - component: {fileID: 590605213}
   - component: {fileID: 590605212}
-  - component: {fileID: 590605214}
   m_Layer: 0
   m_Name: ASyncManager
   m_TagString: Untagged
@@ -5685,43 +5684,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &590605214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 590605211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b43fb60f9e63aa04a86701a6bedb9538, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainMenu: {fileID: 2106375476}
-  difficultyMenu: {fileID: 160664293}
-  settingsMenu: {fileID: 1829192954}
-  playDefaultText: {fileID: 517866810}
-  difficultySelectWarning: {fileID: 1912301577}
-  playDefaultSave: {fileID: 1602695083}
-  playNewSave: {fileID: 1710211848}
-  audioPanel: {fileID: 1599593924}
-  masterVolumeSlider: {fileID: 1328254884}
-  masterVolume: {fileID: 1665858274}
-  musicVolumeSlider: {fileID: 1987879415}
-  musicVolume: {fileID: 2129803490}
-  gunVolumeSlider: {fileID: 1403274951}
-  gunVolume: {fileID: 546131728}
-  videoPanel: {fileID: 995048749}
-  savesPanel: {fileID: 1062121496}
-  saveButtonPrefab: {fileID: 6023388616657966226, guid: 84276b4c011b3f74883e0ca3b8631d85, type: 3}
-  contentPanel: {fileID: 643954346}
-  saveNameInputField: {fileID: 97444746}
-  defaultSaveButton: {fileID: 92746358}
-  loadWarning: {fileID: 1667893986}
-  loadSaveButton: {fileID: 1421399715}
-  emptySaveWarning: {fileID: 0}
-  defaultSave: 
-  currentSave: 
 --- !u!1 &607414394
 GameObject:
   m_ObjectHideFlags: 0
@@ -5964,6 +5926,115 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611728972}
   m_CullTransparentMesh: 1
+--- !u!1 &623758649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 623758652}
+  - component: {fileID: 623758651}
+  - component: {fileID: 623758654}
+  - component: {fileID: 623758653}
+  - component: {fileID: 623758650}
+  m_Layer: 0
+  m_Name: UI Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &623758650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623758649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5896b384cbf93b2448f1cb356667a055, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioPanel: {fileID: 1599593924}
+  masterVolumeSlider: {fileID: 1328254884}
+  masterVolume: {fileID: 1665858274}
+  musicVolumeSlider: {fileID: 1987879415}
+  musicVolume: {fileID: 2129803490}
+  gunVolumeSlider: {fileID: 1403274951}
+  gunVolume: {fileID: 546131728}
+  videoPanel: {fileID: 995048749}
+  savesPanel: {fileID: 1062121496}
+  saveButtonPrefab: {fileID: 6023388616657966226, guid: 84276b4c011b3f74883e0ca3b8631d85, type: 3}
+  contentPanel: {fileID: 643954346}
+  saveNameInputField: {fileID: 97444746}
+  defaultSaveBtn: {fileID: 92746358}
+  loadWarning: {fileID: 1667893986}
+  loadSaveBtn: {fileID: 1421399715}
+  deleteSaveBtn: {fileID: 1205765199}
+  emptySaveWarning: {fileID: 815599064}
+  defaultSaveName: 
+  currentSave: 
+--- !u!114 &623758651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623758649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b43fb60f9e63aa04a86701a6bedb9538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMenu: {fileID: 2106375476}
+  difficultyMenu: {fileID: 160664293}
+  settingsMenu: {fileID: 1829192954}
+--- !u!4 &623758652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623758649}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -16.895782, y: 107.082436, z: -125.68408}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &623758653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623758649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ea68a04b891b164387ea428f4acf514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &623758654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623758649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a56890e7522a07b43be46f37071509d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playDefaultText: {fileID: 517866810}
+  difficultySelectWarning: {fileID: 1912301577}
+  playDefaultSave: {fileID: 1602695083}
+  playNewSave: {fileID: 1710211848}
 --- !u!1 &643954345
 GameObject:
   m_ObjectHideFlags: 0
@@ -7112,7 +7183,7 @@ GameObject:
   - component: {fileID: 815599067}
   - component: {fileID: 815599066}
   m_Layer: 5
-  m_Name: Empty Load Warning
+  m_Name: Empty Save Warning
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7771,9 +7842,9 @@ RectTransform:
   m_Father: {fileID: 1028590624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 20}
+  m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &927901336
 MonoBehaviour:
@@ -10377,9 +10448,9 @@ RectTransform:
   m_Father: {fileID: 1028590624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: -17}
+  m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1308334272
 MonoBehaviour:
@@ -11556,7 +11627,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 590605214}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: StartUIManager, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -12912,7 +12983,7 @@ GameObject:
   - component: {fileID: 1710211849}
   - component: {fileID: 1710211848}
   m_Layer: 5
-  m_Name: Create new Save Button
+  m_Name: Play New Save Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14552,9 +14623,9 @@ RectTransform:
   m_Father: {fileID: 1028590624}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1820285179
 MonoBehaviour:
@@ -14624,7 +14695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1829192955
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14766,7 +14837,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 590605214}
+      - m_Target: {fileID: 623758651}
         m_TargetAssemblyTypeName: StartUIManager, Assembly-CSharp
         m_MethodName: OpenSettingsMenu
         m_Mode: 1
@@ -15778,7 +15849,7 @@ RectTransform:
   m_Father: {fileID: 1289990226}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -16521,7 +16592,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 590605214}
+      - m_Target: {fileID: 623758651}
         m_TargetAssemblyTypeName: StartUIManager, Assembly-CSharp
         m_MethodName: OpenDifficultyMenu
         m_Mode: 1
@@ -16849,3 +16920,4 @@ SceneRoots:
   - {fileID: 1198268652}
   - {fileID: 754589703}
   - {fileID: 590605213}
+  - {fileID: 623758652}
