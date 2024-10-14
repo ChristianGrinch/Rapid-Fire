@@ -5977,6 +5977,7 @@ MonoBehaviour:
   emptySaveWarning: {fileID: 815599064}
   defaultSaveName: 
   currentSave: 
+  createSaveWarning: {fileID: 966287595}
 --- !u!114 &623758651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15679,8 +15680,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+      - m_Target: {fileID: 623758650}
+        m_TargetAssemblyTypeName: SettingsMenuUI, Assembly-CSharp
         m_MethodName: OnSaveButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -15691,9 +15692,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 623758649}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: UpdateDeleteSaveButton
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
