@@ -187,7 +187,7 @@ public class UIManager : MonoBehaviour
 	{
 		if (!GameManager.Instance.didSelectDifficulty)
 		{
-			startMenu.SetActive(false);
+			CloseAllMenus();
 			difficultyMenu.SetActive(true);
 		}
 		else
