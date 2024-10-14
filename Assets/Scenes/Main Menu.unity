@@ -5702,6 +5702,8 @@ MonoBehaviour:
   settingsMenu: {fileID: 1829192954}
   playDefaultText: {fileID: 517866810}
   difficultySelectWarning: {fileID: 1912301577}
+  playDefaultSave: {fileID: 1602695083}
+  playNewSave: {fileID: 1710211848}
   audioPanel: {fileID: 1599593924}
   masterVolumeSlider: {fileID: 1328254884}
   masterVolume: {fileID: 1665858274}
@@ -5718,6 +5720,7 @@ MonoBehaviour:
   loadWarning: {fileID: 1667893986}
   loadSaveButton: {fileID: 1421399715}
   emptySaveWarning: {fileID: 0}
+  defaultSave: 
   currentSave: 
 --- !u!1 &607414394
 GameObject:
@@ -11553,8 +11556,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 590605214}
+        m_TargetAssemblyTypeName: StartUIManager, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:

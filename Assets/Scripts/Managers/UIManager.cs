@@ -307,28 +307,6 @@ public class UIManager : MonoBehaviour
 	public void UpdateMasterSlider() { masterVolume.text = masterVolumeSlider.value.ToString(); }
 	public void UpdateMusicSlider() { musicVolume.text = musicVolumeSlider.value.ToString(); }
 	public void UpdateGunSlider() { gunVolume.text = gunVolumeSlider.value.ToString(); }
-	//public void UpdateFullscreenMode()
-	//{
-	//	switch (screenModeDropdown.value)
-	//	{
-	//		case 0:
-	//			Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
-	//			break;
-	//		case 1:
-	//			Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-	//			break;
-	//		case 2:
-	//			Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-	//			break;
-	//		case 3:
-	//			Screen.fullScreenMode = FullScreenMode.Windowed;
-	//			break;
-	//		default:
-	//			Screen.fullScreenMode = FullScreenMode.Windowed;
-	//			break;
-	//	}
-
-	//}
 	public void SetDifficultyText()
 	{
 		if (GameManager.Instance.difficulty == 1)

@@ -15,6 +15,8 @@ public class StartUIManager : MonoBehaviour
 	[Header("Main Menu")]
 	public TMP_Text playDefaultText;
 	public GameObject difficultySelectWarning;
+	public Button playDefaultSave;
+	public Button playNewSave;
 
 	[Header("Settings - Audio Panel")]
 	public GameObject audioPanel;
@@ -37,20 +39,29 @@ public class StartUIManager : MonoBehaviour
 	public TMP_Text loadWarning;
 	public Button loadSaveButton;
 	public GameObject emptySaveWarning;
-    public string currentSave;
-    private List<string> savedGames = new List<string>();
-    private List<GameObject> saveButtons = new();
-    public void CloseAllMenus()
-    {
-		Canvas canvas = Canvas.FindFirstObjectByType<Canvas>();
-        int childCount = canvas.transform.childCount;
+	
+	[Header("Saves")]
+	public string defaultSave;
+	public string currentSave;
+	private List<string> savedGames = new List<string>();
+	private List<GameObject> saveButtons = new();
 
-        for (int i = 0; i < childCount; i++)
-        {
-            Transform child = canvas.transform.GetChild(i);
-            child.gameObject.SetActive(false);
-        }
-    }
+	private void Start()
+	{
+		defaultSave = SaveSystem.LoadDefaultSave();
+		playDefaultText.text = "Play default save \n[ " + defaultSave + " ]";
+	}
+	public void CloseAllMenus()
+	{
+		Canvas canvas = Canvas.FindFirstObjectByType<Canvas>();
+		int childCount = canvas.transform.childCount;
+
+		for (int i = 0; i < childCount; i++)
+		{
+			Transform child = canvas.transform.GetChild(i);
+			child.gameObject.SetActive(false);
+		}
+	}
 	public void OpenMainMenu()
 	{
 		CloseAllMenus();
@@ -58,12 +69,20 @@ public class StartUIManager : MonoBehaviour
 	}
 	public void OpenDifficultyMenu()
 	{
-        CloseAllMenus();
+		CloseAllMenus();
 		difficultyMenu.SetActive(true);
-    }
+	}
 	public void OpenSettingsMenu()
 	{
-        CloseAllMenus();
+		CloseAllMenus();
 		settingsMenu.SetActive(true);
-    }
+	}
+	public void QuitGame()
+	{
+		#if UNITY_EDITOR
+				UnityEditor.EditorApplication.isPlaying = false;
+		#else
+						Application.Quit();
+		#endif
+	}
 }
