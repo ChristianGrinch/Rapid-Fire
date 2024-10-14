@@ -3175,7 +3175,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 623758651}
         m_TargetAssemblyTypeName: StartUIManager, Assembly-CSharp
         m_MethodName: OpenMainMenu
         m_Mode: 1
@@ -3517,7 +3517,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 623758651}
         m_TargetAssemblyTypeName: StartUIManager, Assembly-CSharp
         m_MethodName: OpenMainMenu
         m_Mode: 1
@@ -10495,8 +10495,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 437550396}
   m_HandleRect: {fileID: 437550395}
   m_Direction: 2
-  m_Value: 1.0000001
-  m_Size: 0.305
+  m_Value: 1
+  m_Size: 0.30499998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

@@ -36,6 +36,8 @@ public class SettingsMenuUI : MonoBehaviour
     public string currentSave;
     private List<string> savedGames = new List<string>();
     private List<GameObject> saveButtons = new();
+    [Header("Warnings")]
+    public GameObject createSaveWarning;
     void Awake()
     {
         if (Instance == null)
@@ -95,5 +97,55 @@ public class SettingsMenuUI : MonoBehaviour
     {
         deleteSaveBtn.gameObject.SetActive(true);
         defaultSaveBtn.gameObject.SetActive(true);
+    }
+    public void OnSaveButtonClicked()
+    {
+        string saveName = saveNameInputField.text;
+
+        if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
+        {
+            CreateNewSave(saveName);
+        }
+        else
+        {
+            Debug.LogWarning("Save name cannot be empty OR attempted to create a new save of an already existing name.");
+            StartCoroutine(ShowSaveNameWarning());
+        }
+    }
+    public void CreateNewSave(string saveName)
+    {
+        bool saveNameInSavedGames = false;
+
+        foreach (string savedGame in SaveSystem.FindSaves())
+        {
+            if (savedGame == saveName)
+            {
+                saveNameInSavedGames = true;
+                break;
+            }
+        }
+
+        if (!saveNameInSavedGames)
+        {
+            savedGames.Add(saveName);
+            AddButton(saveName);
+        }
+
+        GameManager.Instance.SavePlayer(saveName);
+    }
+    private void AddButton(string saveName)
+    {
+        GameObject newButton = Instantiate(saveButtonPrefab, contentPanel);
+        newButton.GetComponentInChildren<TMP_Text>().text = saveName;
+
+        Button btn = newButton.GetComponent<Button>();
+        btn.onClick.AddListener(() => GameManager.Instance.LoadPlayer(saveName));
+    }
+    public IEnumerator ShowSaveNameWarning()
+    {
+        createSaveWarning.SetActive(true);
+        yield return new WaitForSeconds(5);
+        createSaveWarning.SetActive(false);
+
     }
 }
