@@ -12,6 +12,7 @@ TagManager:
   - Music
   - Ground
   - ButtonWithPop
+  - Game Manager
   layers:
   - Default
   - TransparentFX

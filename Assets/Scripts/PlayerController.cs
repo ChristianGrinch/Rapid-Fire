@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	private Rigidbody playerRb;
+    public static PlayerController Instance { get; private set; }
+
+    private Rigidbody playerRb;
     public float speed = 8;
 	public float jumpForce = 20;
 	public int exp;
@@ -13,30 +15,44 @@ public class PlayerController : MonoBehaviour
 	public int wave;
 	public int[] ammo;
 
-	public GameObject gameManager;
 	private HealthSystem healthSystem;
 	private EnemySpawnManager enemySpawnManager;
 	private GunController gunController;
 
 	public bool isGrounded;
-
-	// Start is called before the first frame update
-	void Start()
-	{
-		playerRb = GetComponent<Rigidbody>();
-		healthSystem = GetComponent<HealthSystem>();
-		enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
-		gunController = GetComponent<GunController>();
+	private bool gotReferences;
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
-
+    public void GetReferences()
+	{
+        playerRb = GetComponent<Rigidbody>();
+        healthSystem = GetComponent<HealthSystem>();
+        gunController = GetComponent<GunController>();
+		gotReferences = true;
+    }
 	// Update is called once per frame
 	void Update()
 	{
         Sprinting();
-		health = healthSystem.health;
-		lives = healthSystem.lives;
-		wave = enemySpawnManager.currentWave;
-		ammo = gunController.ammo;
+		if (gotReferences)
+		{
+            health = healthSystem.health;
+            lives = healthSystem.lives;
+            ammo = gunController.ammo;
+        }
+		else
+		{
+			Debug.Log("sus");
+		}
 
         Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
         Vector3 rayDirection = Vector3.down;
@@ -70,7 +86,7 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (UIManager.Instance.isGameUnpaused)
+		if (GameManager.Instance.isGameUnpaused)
 		{
 			MovePlayer();
 			RotatePlayer();

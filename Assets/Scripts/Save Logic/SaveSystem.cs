@@ -64,7 +64,7 @@ public static class SaveSystem
                 string saveName = Path.GetFileNameWithoutExtension(filePath);
                 saveFileNames.Add(saveName);
 
-                Debug.Log("Found save file: " + saveName);
+                //Debug.Log("Found save file: " + saveName);
             }
         }
 

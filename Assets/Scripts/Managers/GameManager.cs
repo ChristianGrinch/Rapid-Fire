@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-	public static GameManager Instance { get; private set; }
+	public static GameManager Instance { get; private set; }	
 	// Game
 	public static float mapSize = 50;
 	public bool isGameUnpaused = false;
@@ -27,13 +27,15 @@ public class GameManager : MonoBehaviour
     private HealthSystem healthSystem;
 	private GunController gunController;
 	private PlayerController playerController;
-	private EnemySpawnManager enemySpawnManager;
 	private GameObject player;
+
+	public GameObject gameManager;
 	void Awake()
 	{
 		if (Instance == null)
 		{
 			Instance = this;
+			DontDestroyOnLoad(gameObject);
 		}
 		else
 		{
@@ -43,13 +45,28 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 		defaultSave = SaveSystem.LoadDefaultSave();
-		player = GameObject.FindWithTag("Player");
+		gameManager = gameObject;
 
-		healthSystem = player.GetComponent<HealthSystem>();
-		gunController = player.GetComponent<GunController>();
-		playerController = player.GetComponent<PlayerController>();
-		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
-	}
+    }
+    private void Update()
+    {
+		difficulty = SaveManager.Instance.difficulty;
+    }
+    public void GetReferences()
+	{
+        player = GameObject.FindWithTag("Player");
+		if(player != null)
+		{
+            healthSystem = player.GetComponent<HealthSystem>();
+            gunController = player.GetComponent<GunController>();
+            playerController = player.GetComponent<PlayerController>();
+        }
+		else
+		{
+			Debug.LogError("Player is null!");
+		}
+
+    }
     public void SetDifficulty(int selectedDifficulty)
     {
         difficulty = selectedDifficulty;
@@ -58,7 +75,7 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
 	{
-		UIManager.Instance.ShowRestartMenu();
+		GameUIManager.Instance.ShowRestartMenu();
 		isGameUnpaused = false;
 	}
 	public void RestartGame()
@@ -67,42 +84,49 @@ public class GameManager : MonoBehaviour
 	}
 	public void StartGame()
 	{
-		LoadPlayer(defaultSave);
-		UIManager.Instance.CloseAllMenus();
-		UIManager.Instance.game.SetActive(true);
+		currentSave = defaultSave;
+		StartUIManager.Instance.CloseAllMenus();
 		isGameUnpaused = true;
 		isInGame = true;
-
-		healthSystem.AssignLives();
+		if(healthSystem != null)
+		{
+            healthSystem.AssignLives();
+		}
+		else
+		{
+			Debug.LogError("health system is null!");
+		}
+		
 		Time.timeScale = 1;
-		UIManager.Instance.SetDifficultyText();
+        Debug.Log(GameUI.Instance);
+        GameUI.Instance.SetDifficultyText();
 
-	}
+    }
 	public void StartNewGame()
 	{
-		UIManager.Instance.CloseAllMenus();
-		UIManager.Instance.game.SetActive(true);
+		StartUIManager.Instance.CloseAllMenus();
+		GameUIManager.Instance.game.SetActive(true);
 		isGameUnpaused = true;
 		isInGame = true;
 
 		healthSystem.AssignLives();
 		Time.timeScale = 1;
-		UIManager.Instance.SetDifficultyText();
+        GameUI.Instance.SetDifficultyText();
 	}
 	public void PauseGame()
 	{
 		isGameUnpaused = false;
-		UIManager.Instance.pauseMenu.SetActive(true);
+		GameUIManager.Instance.pauseMenu.SetActive(true);
 		Time.timeScale = 0;
-		UIManager.Instance.saveButton.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
+        PauseMenuUI.Instance.saveBtn.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{
 		isGameUnpaused = true;
-		UIManager.Instance.pauseMenu.SetActive(false);
+        GameUIManager.Instance.pauseMenu.SetActive(false);
 		Time.timeScale = 1;
 	}
-	public void QuitGame()
+	public void QuitGame() // KEEP
 	{
 		#if UNITY_EDITOR
 				UnityEditor.EditorApplication.isPlaying = false;
@@ -110,117 +134,4 @@ public class GameManager : MonoBehaviour
 				Application.Quit();
 		#endif
 	}
-    public void SetDefaultSave()
-    {
-        UIManager.Instance.playDefaultText.text = "Play default save \n[ " + currentSave + " ]";
-        if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
-        {
-            SaveSystem.SetDefaultSave(currentSave);
-            Debug.Log("Set '" + currentSave + "' to default save.");
-            defaultSave = SaveSystem.LoadDefaultSave();
-        }
-    }
-    public void DeleteSave()
-    {
-        if (!string.IsNullOrEmpty(currentSave))
-        {
-            SaveSystem.DeleteSave(currentSave);
-        }
-        else
-        {
-            Debug.LogWarning("Save name cannot be empty!");
-        }
-    }
-    public void SavePlayer(string saveName)
-    {
-        SaveSystem.SavePlayer(playerController, saveName);
-    }
-    public void LoadPlayer(string saveName)
-    {
-        currentSave = saveName;
-
-        didLoadSpawnManager = true;
-        didLoadPowerupManager = true;
-
-        // Load the player data
-        SaveData data = SaveSystem.LoadPlayer(saveName);
-
-        if (data != null)
-        {
-            // Update player data
-            playerController.exp = data.exp;
-            playerController.health = data.health;
-            playerController.lives = data.lives;
-            playerController.wave = data.wave;
-            playerController.ammo = data.ammo;
-
-            Vector3 position;
-            position.x = data.position[0];
-            position.y = data.position[1];
-            position.z = data.position[2];
-            player.transform.position = position;
-
-            healthSystem.UpdateHealth(data.health);
-            healthSystem.UpdateLives(data.lives);
-
-            // Update game data
-            enemySpawnManager.currentWave = data.wave;
-            gunController.ammo = data.ammo;
-
-			// Check if the save is an old save, if so, preform a modification to it so it can be compatible with current saves.
-			if(data.numberOfEnemies.Length == 4) // Handling for no iceZombie
-			{
-				int[] tempEnemies = new int[5];
-				for (int i = 0; i < 4; i++)
-				{
-					tempEnemies[i] = data.numberOfEnemies[i];
-				}
-				switch (data.difficulty) // Sets the current number of ice zombies based on saved difficulty and wave
-				{
-                    case 1:
-                        tempEnemies[4] = data.wave - 4 > 0 ? data.wave - 3 : 0; // Spawns 1 iceZombie on wave 4, then increments
-                        break;
-                    case 2:
-                        tempEnemies[4] = data.wave - 2 > 0 ? data.wave - 2 : 0; // Spawns 1 iceZombie on wave 2, then increments
-                        break;
-                    case 3:
-                        tempEnemies[4] = data.wave + 1; // Spawns iceZombie starting at wave 1 and increments
-                        break;
-                }
-				data.numberOfEnemies = tempEnemies;
-			}
-
-            enemyLevel1 = data.numberOfEnemies[0];
-            enemyLevel2 = data.numberOfEnemies[1];
-            enemyLevel3 = data.numberOfEnemies[2];
-            bossLevel1 = data.numberOfEnemies[3];
-			iceZombie = data.numberOfEnemies[4];
-
-            PowerupManager.Instance.ammunition = data.numberofPowerups[0];
-            PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
-            PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
-
-            // Update settings data
-            UIManager.Instance.masterVolumeSlider.value = data.masterVolume;
-            UIManager.Instance.masterVolume.text = data.masterVolume.ToString();
-
-            UIManager.Instance.musicVolumeSlider.value = data.musicVolume;
-            UIManager.Instance.musicVolume.text = data.musicVolume.ToString();
-
-            UIManager.Instance.gunVolumeSlider.value = data.gunVolume;
-            UIManager.Instance.gunVolume.text = data.musicVolume.ToString();
-
-            if (data.difficulty != 0)
-            {
-                didSelectDifficulty = true;
-                difficulty = data.difficulty;
-            }
-
-        }
-        else
-        {
-            Debug.LogError("Data is null.");
-        }
-
-    }
 }

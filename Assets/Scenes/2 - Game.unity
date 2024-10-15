@@ -295,7 +295,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568289}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
@@ -543,7 +543,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568289}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDifficulty
         m_Mode: 3
@@ -767,7 +767,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1
@@ -1191,7 +1191,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OpenDifficultyScreen
         m_Mode: 1
@@ -2149,7 +2149,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568289}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDifficulty
         m_Mode: 3
@@ -4220,7 +4220,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: IncreaseMasterVolume
         m_Mode: 1
@@ -5178,7 +5178,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OpenSettings
         m_Mode: 1
@@ -7115,7 +7115,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: UpdateMusicSlider
         m_Mode: 1
@@ -7516,7 +7516,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: IncreaseMusicVolume
         m_Mode: 1
@@ -7860,7 +7860,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OnSaveButtonClicked
         m_Mode: 1
@@ -7872,7 +7872,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: UpdateDeleteSaveButton
         m_Mode: 1
@@ -8697,7 +8697,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568289}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: RestartGame
         m_Mode: 1
@@ -10988,7 +10988,7 @@ GameObject:
   - component: {fileID: 883152924}
   - component: {fileID: 883152923}
   - component: {fileID: 883152925}
-  - component: {fileID: 883152926}
+  - component: {fileID: 883152928}
   - component: {fileID: 883152927}
   m_Layer: 6
   m_Name: Player
@@ -11131,7 +11131,6 @@ MonoBehaviour:
   lives: 0
   wave: 0
   ammo: 
-  gameManager: {fileID: 1606568281}
   isGrounded: 0
 --- !u!114 &883152925
 MonoBehaviour:
@@ -11155,21 +11154,6 @@ MonoBehaviour:
   currentGunInt: 0
   ammo: 1400000028000000
   audioClip: {fileID: 8300000, guid: 7dcbe26250f1a9b4f8a79a5223254032, type: 3}
---- !u!114 &883152926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 883152918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afc113c9f8f01e749aeac20e13bc1ba1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  maxHealth: 200
-  lives: 3
 --- !u!82 &883152927
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11266,6 +11250,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &883152928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883152918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afc113c9f8f01e749aeac20e13bc1ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  maxHealth: 200
+  lives: 3
 --- !u!1 &895787882
 GameObject:
   m_ObjectHideFlags: 0
@@ -11784,7 +11783,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &937104825
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12305,7 +12304,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: DecreaseMusicVolume
         m_Mode: 1
@@ -12572,7 +12571,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568289}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDefaultSave
         m_Mode: 1
@@ -12980,7 +12979,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: DecreaseGunVolume
         m_Mode: 1
@@ -13365,7 +13364,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: UpdateMasterSlider
         m_Mode: 1
@@ -13636,7 +13635,7 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: UpdateDeleteSaveButton
         m_Mode: 1
@@ -13648,7 +13647,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: LoadSaveButtons
         m_Mode: 1
@@ -14467,7 +14466,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568289}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
@@ -14962,7 +14961,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: UpdateFullscreenMode
         m_Mode: 1
@@ -17550,7 +17549,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: UpdateGunSlider
         m_Mode: 1
@@ -18672,7 +18671,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: SwitchToStart
         m_Mode: 1
@@ -18751,15 +18750,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1606568286}
-  - component: {fileID: 1606568289}
-  - component: {fileID: 1606568285}
   - component: {fileID: 1606568287}
   - component: {fileID: 1606568284}
   - component: {fileID: 1606568282}
   - component: {fileID: 1606568288}
+  - component: {fileID: 1606568289}
+  - component: {fileID: 1606568290}
   m_Layer: 0
-  m_Name: Game Manager
-  m_TagString: Untagged
+  m_Name: Game Stuff
+  m_TagString: Game Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18808,62 +18807,6 @@ MonoBehaviour:
   iceZombie: []
   currentWave: 0
   spawnBufferDistance: 4
---- !u!114 &1606568285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1606568281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df36cf79e30f09546a9748362b361154, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  difficultyMenu: {fileID: 1444189145}
-  settingsMenu: {fileID: 1349277525}
-  restartMenu: {fileID: 269595876}
-  game: {fileID: 237144106}
-  waveText: {fileID: 998620403}
-  healthText: {fileID: 1790604757}
-  livesText: {fileID: 513455926}
-  ammoText: {fileID: 1107752336}
-  difficultyText: {fileID: 1850970891}
-  startMenu: {fileID: 937104824}
-  playDefaultText: {fileID: 824748085}
-  difficultySelectWarning: {fileID: 443424226}
-  pauseMenu: {fileID: 159427683}
-  saveButton: {fileID: 875161525}
-  audioPanel: {fileID: 590523639}
-  masterVolumeSlider: {fileID: 1041571555}
-  masterVolume: {fileID: 1086750656}
-  musicVolumeSlider: {fileID: 617879801}
-  musicVolume: {fileID: 2048829717}
-  gunVolumeSlider: {fileID: 1507247702}
-  gunVolume: {fileID: 1513717734}
-  videoPanel: {fileID: 838440928}
-  screenModeDropdown: {fileID: 1192717567}
-  savesPanel: {fileID: 704240308}
-  saveButtonPrefab: {fileID: 6023388616657966226, guid: 84276b4c011b3f74883e0ca3b8631d85, type: 3}
-  contentPanel: {fileID: 1306868542}
-  saveNameInputField: {fileID: 1062116304}
-  currentSave: 
-  defaultSaveButton: {fileID: 1002528135}
-  loadWarning: {fileID: 1749685983}
-  idontevenknow: {fileID: 1083307036}
-  loadSaveWarning: {fileID: 1493279698}
-  saveNameWarning: {fileID: 1293793277}
-  createSaveWarning: {fileID: 1874781936}
-  createSave_StartMenu: {fileID: 1372311722}
-  quitGame_PauseMenu: {fileID: 895787883}
-  startReturn_PauseMenu: {fileID: 1578617634}
-  deleteSave_SavesMenu: {fileID: 48678214}
-  loadSave_SavesMenu: {fileID: 1083307036}
-  player: {fileID: 883152918}
-  gameManager: {fileID: 1606568281}
-  isGameUnpaused: 0
-  isInGame: 0
-  defaultSave: 
 --- !u!4 &1606568286
 Transform:
   m_ObjectHideFlags: 0
@@ -18924,22 +18867,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1606568281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db483b6515ed33d478b22fc11a985f70, type: 3}
+  m_Script: {fileID: 11500000, guid: 8eb587d32a1e1994fa7c5518e0d13074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGameUnpaused: 0
-  isInGame: 0
-  defaultSave: 
-  currentSave: 
-  difficulty: 0
-  didSelectDifficulty: 0
-  enemyLevel1: 0
-  enemyLevel2: 0
-  enemyLevel3: 0
-  bossLevel1: 0
-  iceZombie: 0
-  didLoadSpawnManager: 0
-  didLoadPowerupManager: 0
+  game: {fileID: 237144106}
+  pauseMenu: {fileID: 159427683}
+  settingsMenu: {fileID: 1349277525}
+  restartMenu: {fileID: 269595876}
+  difficultyText: {fileID: 1850970891}
+--- !u!114 &1606568290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606568281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49fbd6b1d42932f44b0e29917a124adc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficultyText: {fileID: 1850970891}
+  waveText: {fileID: 998620403}
+  healthText: {fileID: 1790604757}
+  livesText: {fileID: 513455926}
+  ammoText: {fileID: 1107752336}
 --- !u!1 &1612366217
 GameObject:
   m_ObjectHideFlags: 0
@@ -19447,7 +19399,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568289}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SetDifficulty
         m_Mode: 3
@@ -20294,7 +20246,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: SwitchToStart
         m_Mode: 1
@@ -20427,7 +20379,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: DecreaseMasterVolume
         m_Mode: 1
@@ -21187,7 +21139,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OpenSettings
         m_Mode: 1
@@ -22276,7 +22228,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OpenSavesPanel
         m_Mode: 1
@@ -23287,7 +23239,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OpenAudioPanel
         m_Mode: 1
@@ -23962,7 +23914,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: IncreaseGunVolume
         m_Mode: 1
@@ -24133,7 +24085,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1606568285}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OpenVideoPanel
         m_Mode: 1

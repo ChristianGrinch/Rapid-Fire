@@ -63,9 +63,9 @@ public class SaveData
             difficulty = GameManager.Instance.difficulty,
 
             // Assign settings data
-            masterVolume = (int)UIManager.Instance.masterVolumeSlider.value,
-            musicVolume = (int)UIManager.Instance.musicVolumeSlider.value,
-            gunVolume = (int)UIManager.Instance.gunVolumeSlider.value,
+            masterVolume = (int)SettingsMenuUI.Instance.masterVolumeSlider.value,
+            musicVolume = (int)SettingsMenuUI.Instance.musicVolumeSlider.value,
+            gunVolume = (int)SettingsMenuUI.Instance.gunVolumeSlider.value,
         };
         return saveData;
     }

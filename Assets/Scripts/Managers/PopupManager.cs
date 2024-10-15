@@ -72,29 +72,29 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					UIManager.Instance.SwitchToStart();
+					StartUIManager.Instance.OpenMainMenu();
 					GameManager.Instance.RestartGame();
 					ClosePopup();
                 });
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.DeleteSaveConfirm:
-				header.text = $"Delete save? ({UIManager.Instance.currentSave})";
+				header.text = $"Delete save? ({SaveManager.Instance.currentSave})";
 				information.text = "This cannot be undone.";
 				actionBtnText.text = "Delete";
 				actionBtnImage.color = quitRed;
 
 				actionBtn.onClick.AddListener(() =>
 				{
-                    GameManager.Instance.DeleteSave();
-					UIManager.Instance.InstantiateSaveButtons();
-					UIManager.Instance.UpdateDeleteSaveButton();
+                    SaveManager.Instance.DeleteSave();
+					SettingsMenuUI.Instance.InstantiateSaveButtons();
+                    SettingsMenuUI.Instance.UpdateDeleteSaveButton();
 					ClosePopup();
 				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.PlaySaveConfirm:
-				header.text = $"Play selected save? ({UIManager.Instance.currentSave})";
+				header.text = $"Play selected save? ({SaveManager.Instance.currentSave})";
 
                 information.text = "This will immediately start the game.";
 				actionBtnText.text = "Play";
@@ -102,7 +102,7 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					GameManager.Instance.LoadPlayer(UIManager.Instance.currentSave);
+					SaveManager.Instance.LoadPlayer(SaveManager.Instance.currentSave);
 					GameManager.Instance.StartNewGame();
 					ClosePopup();
 				});
@@ -162,21 +162,19 @@ public class PopupManager : MonoBehaviour
 				{
 					saveName = nameField.text;
 
-                    UIManager.Instance.currentSave = saveName;
+                    SaveManager.Instance.currentSave = saveName;
 
                     Debug.Log(SaveSystem.FindSavesBool(saveName));
 
 					if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 					{
-						Debug.Log("ran if true");
-                        GameManager.Instance.SavePlayer(saveName);
+                        SaveManager.Instance.SavePlayer(saveName);
 						GameManager.Instance.StartNewGame();
 						ClosePopup();
 					}
 					else
 					{
-						Debug.Log("ran if false");
-						StartCoroutine(UIManager.Instance.ShowSaveNameWarning());
+						StartCoroutine(MainMenuUI.Instance.ShowSaveNameWarning());
 						ClosePopup();
 					}
 				});
@@ -213,6 +211,7 @@ public class PopupManager : MonoBehaviour
 		if (Instance == null)
 		{
 			Instance = this;
+			//DontDestroyOnLoad(gameObject);
 		}
 		else
 		{

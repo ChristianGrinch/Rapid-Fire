@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
@@ -11,8 +8,7 @@ public class HealthSystem : MonoBehaviour
 	public int lives = 3;
 
 	private bool didAssignLives = false;
-
-	public void UpdateHealth(int newHealth)
+    public void UpdateHealth(int newHealth)
 	{
 		if (newHealth <= maxHealth || gameObject.CompareTag("Enemy")) // Makes sure health never goes above 200
 		{

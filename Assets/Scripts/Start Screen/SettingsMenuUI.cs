@@ -33,11 +33,12 @@ public class SettingsMenuUI : MonoBehaviour
 
     [Header("Saves")]
     public string defaultSaveName;
-    public string currentSave;
     private List<string> savedGames = new List<string>();
     private List<GameObject> saveButtons = new();
     [Header("Warnings")]
     public GameObject createSaveWarning;
+    public GameObject loadSaveWarning;
+
     void Awake()
     {
         if (Instance == null)
@@ -53,6 +54,16 @@ public class SettingsMenuUI : MonoBehaviour
     {
         defaultSaveName = SaveSystem.LoadDefaultSave();
         MainMenuUI.Instance.playDefaultText.text = "Play default save \n[ " + defaultSaveName + " ]";
+        AddButtonListeners();
+        InitializeVolume();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && !GameManager.Instance.isGameUnpaused && StartUIManager.Instance.settingsMenu.activeSelf)
+        {
+            StartUIManager.Instance.CloseAllMenus();
+            StartUIManager.Instance.OpenMainMenu();
+        }
     }
     public void InstantiateSaveButtons()
     {
@@ -79,7 +90,11 @@ public class SettingsMenuUI : MonoBehaviour
             {
                 string btnSaveName = newButton.GetComponentInChildren<TMP_Text>().text;
                 UpdateDeleteSaveButton();
-                GameManager.Instance.currentSave = btnSaveName;
+                if (!GameManager.Instance.isInGame)
+                {
+                    SaveManager.Instance.currentSave = btnSaveName;
+                }
+
 
             });
             // TODO: add audio functionality back later
@@ -131,7 +146,7 @@ public class SettingsMenuUI : MonoBehaviour
             AddButton(saveName);
         }
 
-        GameManager.Instance.SavePlayer(saveName);
+        SaveManager.Instance.SavePlayer(saveName);
     }
     private void AddButton(string saveName)
     {
@@ -139,7 +154,20 @@ public class SettingsMenuUI : MonoBehaviour
         newButton.GetComponentInChildren<TMP_Text>().text = saveName;
 
         Button btn = newButton.GetComponent<Button>();
-        btn.onClick.AddListener(() => GameManager.Instance.LoadPlayer(saveName));
+        btn.onClick.AddListener(() => SaveManager.Instance.LoadPlayer(saveName));
+    }
+    public void DestroySaveButtons()
+    {
+        List<string> saveNames = SaveSystem.FindSaves();
+        string saveName = saveNameInputField.text;
+
+        for (var i = 0; i < saveNames.Count; i++)
+        {
+            if (saveName == saveNames[i])
+            {
+                Destroy(saveButtons[i]);
+            }
+        }
     }
     public IEnumerator ShowSaveNameWarning()
     {
@@ -147,5 +175,90 @@ public class SettingsMenuUI : MonoBehaviour
         yield return new WaitForSeconds(5);
         createSaveWarning.SetActive(false);
 
+    }
+    public IEnumerator ShowLoadWarning()
+    {
+        loadSaveWarning.SetActive(true);
+        yield return new WaitForSeconds(5);
+        loadSaveWarning.SetActive(false);
+
+    }
+    void AddButtonListeners()
+    {
+        deleteSaveBtn.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.DeleteSaveConfirm));
+        loadSaveBtn.onClick.AddListener(() =>
+        {
+            string currentSave = SaveManager.Instance.currentSave;
+            if (GameManager.Instance.isInGame)
+            {
+                Debug.Log("Cannot load save while game is active.");
+                loadWarning.gameObject.SetActive(true);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
+                {
+                    PopupManager.Instance.ShowPopup(PopupManager.PopupType.PlaySaveConfirm);
+                }
+                else
+                {
+                    StartCoroutine(ShowLoadWarning());
+                }
+            }
+        });
+    }
+    public void InitializeVolume()
+    {
+        masterVolumeSlider.value = 50;
+        musicVolumeSlider.value = 50;
+        gunVolumeSlider.value = 35;
+        masterVolume.text = masterVolumeSlider.value.ToString();
+        musicVolume.text = musicVolumeSlider.value.ToString();
+        gunVolume.text = gunVolumeSlider.value.ToString();
+    }
+    public void DecreaseMasterVolume()
+    {
+        masterVolumeSlider.value--;
+        masterVolume.text = masterVolumeSlider.value.ToString();
+
+    }
+    public void IncreaseMasterVolume()
+    {
+        masterVolumeSlider.value++;
+        masterVolume.text = masterVolumeSlider.value.ToString();
+    }
+    public void DecreaseMusicVolume()
+    {
+        musicVolumeSlider.value--;
+        musicVolume.text = musicVolumeSlider.value.ToString();
+
+    }
+    public void IncreaseMusicVolume()
+    {
+        musicVolumeSlider.value++;
+        musicVolume.text = musicVolumeSlider.value.ToString();
+    }
+    public void DecreaseGunVolume()
+    {
+        gunVolumeSlider.value--;
+        gunVolume.text = gunVolumeSlider.value.ToString();
+
+    }
+    public void IncreaseGunVolume()
+    {
+        gunVolumeSlider.value++;
+        gunVolume.text = gunVolumeSlider.value.ToString();
+    }
+    public void UpdateMasterSlider() 
+    { 
+        masterVolume.text = masterVolumeSlider.value.ToString();
+    }
+    public void UpdateMusicSlider() 
+    { 
+        musicVolume.text = musicVolumeSlider.value.ToString();
+    }
+    public void UpdateGunSlider() 
+    { 
+        gunVolume.text = gunVolumeSlider.value.ToString();
     }
 }

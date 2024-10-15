@@ -5,6 +5,25 @@ using UnityEngine.AI;
 
 public class EnemySpawnManager : MonoBehaviour
 {
+    public static EnemySpawnManager Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    public EnemySpawnManager enemySpawnManager;
+    private void Start()
+    {
+		enemySpawnManager = this;
+    }
+
     // When making a new enemy, add them in the places that have the ~~~~~~~~~~ENEMY tag
 
     //~~~~~~~~~~ENEMY (ADD IN INSPECTOR)
@@ -51,7 +70,7 @@ public class EnemySpawnManager : MonoBehaviour
         enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
 
-		if (enemyCount == 0 && UIManager.Instance.isGameUnpaused)
+		if (enemyCount == 0 && GameManager.Instance.isGameUnpaused)
 		{
 			if (GameManager.Instance.didLoadSpawnManager)
 			{
@@ -254,20 +273,4 @@ public class EnemySpawnManager : MonoBehaviour
 		instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
 	}
 
-	// Singleton code -----
-	public static EnemySpawnManager Instance { get; private set; }
-
-	void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
-	}
-
-	// End singleton code -----
 }
