@@ -33,8 +33,7 @@ public class MainMenuUI : MonoBehaviour
 		playNewSave.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.CreateSavePopup));
 		quitGame.onClick.AddListener(() => GameManager.Instance.QuitGame());
 		playDefaultSave.onClick.AddListener(() => {
-			ASyncLoader.Instance.LoadLevelBtn("2 - Game");
-
+			ASyncLoader.Instance.LoadLevelBtn("2 - Game", 1, SaveManager.Instance.defaultSave);
 		});
 	}
 	public IEnumerator ShowWarning()

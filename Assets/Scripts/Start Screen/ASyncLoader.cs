@@ -26,15 +26,15 @@ public class ASyncLoader : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void LoadLevelBtn(string levelToLoad)
+    public void LoadLevelBtn(string levelToLoad, int loadType, string saveName)
     {
         mainMenu.SetActive(false);
         loadingScreen.SetActive(true);
 
-        StartCoroutine(LoadLevelASync(levelToLoad));
+        StartCoroutine(LoadLevelASync(levelToLoad, loadType, saveName));
     }
 
-    IEnumerator LoadLevelASync(string levelToLoad)
+    IEnumerator LoadLevelASync(string levelToLoad, int loadType, string saveName)
     {
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(levelToLoad);
 
@@ -44,17 +44,48 @@ public class ASyncLoader : MonoBehaviour
             loadingSlider.value = progressValue;
             yield return null;
         }
-        OnSceneLoaded();
+        OnSceneLoaded(loadType, saveName);
     }
-    void OnSceneLoaded()
+    void OnSceneLoaded(int loadType, string saveName)
     {
-        GameObject player = GameObject.FindWithTag("Player");
-        Debug.Log(player != null ? "Player found!" : "Player not found!");
-        GameManager.Instance.GetReferences();
-        SaveManager.Instance.GetReferences();
-        PlayerController.Instance.GetReferences();
-        GameUI.Instance.GetReferences();
-        SaveManager.Instance.LoadPlayer(SaveManager.Instance.defaultSave);
-        GameManager.Instance.StartGame();
+        switch (loadType) 
+        {
+            case 1: // Default
+                Debug.Log("Load type: " + loadType + " (Default)");
+                GameManager.Instance.GetReferences();
+                SaveManager.Instance.GetReferences();
+                PlayerController.Instance.GetReferences();
+                GameUI.Instance.GetReferences();
+
+                SaveManager.Instance.LoadPlayer(SaveManager.Instance.defaultSave);
+                GameManager.Instance.StartGame();
+                break;
+
+            case 2: // Existing save
+                Debug.Log("Load type: " + loadType + " (Existing)");
+                GameManager.Instance.GetReferences();
+                SaveManager.Instance.GetReferences();
+                PlayerController.Instance.GetReferences();
+                GameUI.Instance.GetReferences();
+
+                SaveManager.Instance.LoadPlayer(saveName);
+                GameManager.Instance.StartGame();
+                break;
+
+            case 3: // New save
+                Debug.Log("Load type: " + loadType + " (New)");
+                GameManager.Instance.GetReferences();
+                SaveManager.Instance.GetReferences();
+                PlayerController.Instance.GetReferences();
+                GameUI.Instance.GetReferences();
+
+                SaveManager.Instance.LoadPlayer(saveName);
+                GameManager.Instance.StartGame();
+                break;
+            default:
+                Debug.LogError("No valid load type specified!");
+                break;
+        }
+
     }
 }

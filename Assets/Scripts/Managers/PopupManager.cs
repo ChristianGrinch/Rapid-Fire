@@ -102,8 +102,7 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					SaveManager.Instance.LoadPlayer(SaveManager.Instance.currentSave);
-					GameManager.Instance.StartNewGame();
+					ASyncLoader.Instance.LoadLevelBtn("2 - Game", 2, SaveManager.Instance.currentSave);
 					ClosePopup();
 				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
@@ -169,8 +168,8 @@ public class PopupManager : MonoBehaviour
 					if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 					{
                         SaveManager.Instance.SavePlayer(saveName);
-						GameManager.Instance.StartNewGame();
-						ClosePopup();
+                        ASyncLoader.Instance.LoadLevelBtn("2 - Game", 3, saveName);
+                        ClosePopup();
 					}
 					else
 					{
