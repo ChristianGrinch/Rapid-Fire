@@ -34,19 +34,4 @@ public class GameUIManager : MonoBehaviour
     {
         restartMenu.SetActive(true);
     }
-    public void SetDifficultyText()
-    {
-        if (GameManager.Instance.difficulty == 1)
-        {
-            difficultyText.text = "Easy";
-        }
-        else if (GameManager.Instance.difficulty == 2)
-        {
-            difficultyText.text = "Normal";
-        }
-        else if (GameManager.Instance.difficulty == 3)
-        {
-            difficultyText.text = "Master";
-        }
-    }
 }

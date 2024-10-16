@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MessagePack;
-using System.Diagnostics;
 
 [MessagePackObject]
 public class SaveData
@@ -35,6 +34,7 @@ public class SaveData
         // Assign player data
         if(player != null)
         {
+            Debug.Log("Player null");
             saveData.exp = player.exp;
             saveData.health = player.health;
             saveData.lives = player.lives;
@@ -51,18 +51,23 @@ public class SaveData
         }
         else
         {
+            Debug.Log("Player not null");
             int defaultHealth = 100;
             int defaultLives = 3;
             int[] defaultAmmo = { 30, 50 };
 
-            switch (GameManager.Instance.difficulty)
+            switch (SaveManager.Instance.difficulty)
             {
                 case 1:
+                    Debug.Log("case 1");
+                    defaultLives = 3;
                     break;
                 case 2:
+                    Debug.Log("case 2");
                     defaultLives = 2;
                     break;
                 case 3:
+                    Debug.Log("case 3");
                     defaultLives = 1;
                     break;
             }
@@ -139,7 +144,7 @@ public class SaveData
             };
         }
         
-        saveData.difficulty = GameManager.Instance.difficulty;
+        saveData.difficulty = SaveManager.Instance.difficulty;
 
         // Assign settings data
         saveData.masterVolume = (int)SettingsMenuUI.Instance.masterVolumeSlider.value;

@@ -48,9 +48,9 @@ public class GameManager : MonoBehaviour
 		gameManager = gameObject;
 
     }
-    private void Update()
-    {
-		difficulty = SaveManager.Instance.difficulty;
+	public void SetDifficulty()
+	{
+        difficulty = SaveManager.Instance.difficulty;
     }
     public void GetReferences()
 	{
@@ -66,12 +66,6 @@ public class GameManager : MonoBehaviour
 			Debug.LogError("Player is null!");
 		}
 
-    }
-    public void SetDifficulty(int selectedDifficulty)
-    {
-        difficulty = selectedDifficulty;
-        Debug.Log("Difficulty set to: " + difficulty);
-        didSelectDifficulty = true;
     }
     public void GameOver()
 	{
@@ -98,9 +92,8 @@ public class GameManager : MonoBehaviour
 		}
 		
 		Time.timeScale = 1;
-        Debug.Log(GameUI.Instance);
         GameUI.Instance.SetDifficultyText();
-
+		GameUIManager.Instance.game.SetActive(true);
     }
 	public void StartNewGame()
 	{

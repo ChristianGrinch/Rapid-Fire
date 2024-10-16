@@ -46,7 +46,6 @@ public class SaveManager :MonoBehaviour
     private void Start()
     {
 		defaultSave = SaveSystem.LoadDefaultSave();
-		Debug.Log(defaultSave);
     }
     public void GetReferences()
     {
@@ -54,7 +53,6 @@ public class SaveManager :MonoBehaviour
 		//TODO: change game manager reference cuz this is stupid
 		gameManager = GameManager.Instance.gameObject;
 		enemySpawnManager = EnemySpawnManager.Instance.enemySpawnManager;
-		Debug.Log(enemySpawnManager);
         if (player != null)
         {
             healthSystem = player.GetComponent<HealthSystem>();

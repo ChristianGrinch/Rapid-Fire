@@ -18756,6 +18756,7 @@ GameObject:
   - component: {fileID: 1606568288}
   - component: {fileID: 1606568289}
   - component: {fileID: 1606568290}
+  - component: {fileID: 1606568291}
   m_Layer: 0
   m_Name: Game Stuff
   m_TagString: Game Manager
@@ -18791,6 +18792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63fa2c5c04c8de84182c5c21b62c5a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemySpawnManager: {fileID: 0}
   enemy:
   - {fileID: 3643904846915297769, guid: 403c55a11ad960c48a952cbf22b38405, type: 3}
   - {fileID: 6329172769025539485, guid: bc93f41b1fcce1941aa00fd4e16aa9b8, type: 3}
@@ -18892,6 +18894,20 @@ MonoBehaviour:
   healthText: {fileID: 1790604757}
   livesText: {fileID: 513455926}
   ammoText: {fileID: 1107752336}
+--- !u!114 &1606568291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606568281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc5f93a4a8893e428a7f96f37a5fc07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveBtn: {fileID: 875161525}
+  quitGameBtn: {fileID: 895787883}
 --- !u!1 &1612366217
 GameObject:
   m_ObjectHideFlags: 0

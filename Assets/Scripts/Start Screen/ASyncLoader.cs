@@ -14,6 +14,8 @@ public class ASyncLoader : MonoBehaviour
 
     [Header("Slider")]
     [SerializeField] private Slider loadingSlider;
+
+    public bool loadedScene = false;
     void Awake()
     {
         if (Instance == null)
@@ -57,8 +59,11 @@ public class ASyncLoader : MonoBehaviour
                 PlayerController.Instance.GetReferences();
                 GameUI.Instance.GetReferences();
 
-                SaveManager.Instance.LoadPlayer(SaveManager.Instance.defaultSave);
                 GameManager.Instance.StartGame();
+                SaveManager.Instance.LoadPlayer(SaveManager.Instance.defaultSave);
+                loadedScene = true;
+                GameManager.Instance.SetDifficulty();
+                GameUI.Instance.SetDifficultyText();
                 break;
 
             case 2: // Existing save
@@ -68,8 +73,11 @@ public class ASyncLoader : MonoBehaviour
                 PlayerController.Instance.GetReferences();
                 GameUI.Instance.GetReferences();
 
-                SaveManager.Instance.LoadPlayer(saveName);
                 GameManager.Instance.StartGame();
+                SaveManager.Instance.LoadPlayer(saveName);
+                loadedScene = true;
+                GameManager.Instance.SetDifficulty();
+                GameUI.Instance.SetDifficultyText();
                 break;
 
             case 3: // New save
@@ -79,8 +87,11 @@ public class ASyncLoader : MonoBehaviour
                 PlayerController.Instance.GetReferences();
                 GameUI.Instance.GetReferences();
 
-                SaveManager.Instance.LoadPlayer(saveName);
                 GameManager.Instance.StartGame();
+                SaveManager.Instance.LoadPlayer(saveName);
+                loadedScene = true;
+                GameManager.Instance.SetDifficulty();
+                GameUI.Instance.SetDifficultyText();
                 break;
             default:
                 Debug.LogError("No valid load type specified!");

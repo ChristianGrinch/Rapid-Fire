@@ -6023,6 +6023,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ea68a04b891b164387ea428f4acf514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  easyDifficulty: {fileID: 1155179123}
+  mediumDifficulty: {fileID: 1738851888}
+  masterDifficulty: {fileID: 125101795}
 --- !u!114 &623758654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7896,7 +7899,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1965551203}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10501,7 +10504,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 437550396}
   m_HandleRect: {fileID: 437550395}
   m_Direction: 2
-  m_Value: 1.0000001
+  m_Value: 1
   m_Size: 0.305
   m_NumberOfSteps: 0
   m_OnValueChanged:

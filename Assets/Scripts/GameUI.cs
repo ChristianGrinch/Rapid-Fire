@@ -16,7 +16,7 @@ public class GameUI : MonoBehaviour
     private GunController gunController;
     private PlayerController playerController;
 
-    private bool gotReferences;
+    public bool gotReferences;
     void Awake()
     {
         if (Instance == null)

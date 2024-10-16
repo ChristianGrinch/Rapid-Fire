@@ -49,10 +49,6 @@ public class PlayerController : MonoBehaviour
             lives = healthSystem.lives;
             ammo = gunController.ammo;
         }
-		else
-		{
-			Debug.Log("sus");
-		}
 
         Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
         Vector3 rayDirection = Vector3.down;
@@ -91,7 +87,7 @@ public class PlayerController : MonoBehaviour
 			MovePlayer();
 			RotatePlayer();
 		}
-		if (!isGrounded)
+		if (!isGrounded && gotReferences)
 		{
 			playerRb.AddForce(Vector3.down * 1.5f, ForceMode.Impulse);
 		}

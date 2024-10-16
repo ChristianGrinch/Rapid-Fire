@@ -67,18 +67,22 @@ public class EnemySpawnManager : MonoBehaviour
 	};
 	void Update()
 	{
+		Debug.Log(SaveManager.Instance.enemyLevel1);
         enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
 
 		if (enemyCount == 0 && GameManager.Instance.isGameUnpaused)
 		{
-			if (GameManager.Instance.didLoadSpawnManager)
+			Debug.Log(currentWave);
+			if (SaveManager.Instance.didLoadSpawnManager) // runs at the start to 
 			{
+				Debug.Log("sus");
 				SpawnEnemiesOnLoad();
-                GameManager.Instance.didLoadSpawnManager = false;
+                SaveManager.Instance.didLoadSpawnManager = false;
 			}
 			else
 			{
+				Debug.Log("rgwe");
 				currentWave++;
 
 				NumberOfEnemiesToSpawn();
@@ -243,23 +247,23 @@ public class EnemySpawnManager : MonoBehaviour
 	public void SpawnEnemiesOnLoad()
 	{
         //~~~~~~~~~~ENEMY
-        for (int i = 0; i < GameManager.Instance.bossLevel1; i++) // must be first so the boss pos can be saved
+        for (int i = 0; i < SaveManager.Instance.bossLevel1; i++) // must be first so the boss pos can be saved
 		{
 			InstantiateEnemy(3);
 		}
-		for (int i = 0; i < GameManager.Instance.enemyLevel1; i++)
+		for (int i = 0; i < SaveManager.Instance.enemyLevel1; i++)
 		{
 			InstantiateEnemy(0);
 		}
-		for (int i = 0; i < GameManager.Instance.enemyLevel2; i++)
+		for (int i = 0; i < SaveManager.Instance.enemyLevel2; i++)
 		{
 			InstantiateEnemy(1);
 		}
-		for (int i = 0; i < GameManager.Instance.enemyLevel3; i++)
+		for (int i = 0; i < SaveManager.Instance.enemyLevel3; i++)
 		{
 			InstantiateEnemy(2);
 		}
-        for (int i = 0; i < GameManager.Instance.iceZombie; i++)
+        for (int i = 0; i < SaveManager.Instance.iceZombie; i++)
         {
             InstantiateEnemy(4);
         }
