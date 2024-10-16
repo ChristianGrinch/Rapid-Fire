@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MessagePack;
+using System.Diagnostics;
 
 [MessagePackObject]
 public class SaveData
@@ -30,43 +31,120 @@ public class SaveData
     // Factory method to create SaveData from PlayerController
     public static SaveData CreateFromPlayer(PlayerController player)
     {
-        SaveData saveData = new SaveData
+        SaveData saveData = new SaveData();
+        // Assign player data
+        if(player != null)
         {
-            // Assign player data
-            exp = player.exp,
-            health = player.health,
-            lives = player.lives,
-            position = new float[3]
+            saveData.exp = player.exp;
+            saveData.health = player.health;
+            saveData.lives = player.lives;
+            saveData.position = new float[3]
             {
                 player.transform.position.x,
                 player.transform.position.y,
                 player.transform.position.z
-            },
-            ammo = player.ammo,
+            };
+            saveData.ammo = player.ammo;
 
             // Assign game data
-            wave = player.wave,
-            numberOfEnemies = new int[]
-            {
-                EnemySpawnManager.Instance.level1Enemies.Count,
-                EnemySpawnManager.Instance.level2Enemies.Count,
-                EnemySpawnManager.Instance.level3Enemies.Count,
-                EnemySpawnManager.Instance.boss1Enemies.Count,
-                EnemySpawnManager.Instance.iceZombie.Count,
-            },
-            numberofPowerups = new int[]
-            {
-                PowerupManager.Instance.ammunition,
-                PowerupManager.Instance.heartPowerups,
-                PowerupManager.Instance.speedPowerups
-            },
-            difficulty = GameManager.Instance.difficulty,
+            saveData.wave = player.wave;
+        }
+        else
+        {
+            int defaultHealth = 100;
+            int defaultLives = 3;
+            int[] defaultAmmo = { 30, 50 };
 
-            // Assign settings data
-            masterVolume = (int)SettingsMenuUI.Instance.masterVolumeSlider.value,
-            musicVolume = (int)SettingsMenuUI.Instance.musicVolumeSlider.value,
-            gunVolume = (int)SettingsMenuUI.Instance.gunVolumeSlider.value,
-        };
+            switch (GameManager.Instance.difficulty)
+            {
+                case 1:
+                    break;
+                case 2:
+                    defaultLives = 2;
+                    break;
+                case 3:
+                    defaultLives = 1;
+                    break;
+            }
+
+            saveData.health = defaultHealth;
+            saveData.lives = defaultLives;
+            saveData.position = new float[3] { 0, 0.5f, 0 };
+            saveData.ammo = defaultAmmo;
+
+            saveData.wave = 1;
+        }
+
+        if (EnemySpawnManager.Instance != null)
+        {
+            saveData.numberOfEnemies = new int[]
+            {
+            EnemySpawnManager.Instance.level1Enemies.Count,
+            EnemySpawnManager.Instance.level2Enemies.Count,
+            EnemySpawnManager.Instance.level3Enemies.Count,
+            EnemySpawnManager.Instance.boss1Enemies.Count,
+            EnemySpawnManager.Instance.iceZombie.Count,
+            };
+        }
+        else
+        {
+            switch (GameManager.Instance.difficulty)
+            {
+                case 1:
+                    saveData.numberOfEnemies = new int[]
+                    {
+                        4,
+                        0,
+                        0,
+                        0
+                    };
+                    break;
+                case 2:
+                    saveData.numberOfEnemies = new int[]
+                    {
+                        6,
+                        2,
+                        1,
+                        0
+                    };
+                    break;
+                case 3:
+                    saveData.numberOfEnemies = new int[]
+                    {
+                        8,
+                        4,
+                        3,
+                        2
+                    };
+                    break;
+            }
+        }
+        
+        if(PowerupManager.Instance != null)
+        {
+            saveData.numberofPowerups = new int[]
+            {
+            PowerupManager.Instance.ammunition,
+            PowerupManager.Instance.heartPowerups,
+            PowerupManager.Instance.speedPowerups
+            };
+        }
+        else
+        {
+            saveData.numberofPowerups = new int[]
+            {
+                0,
+                0,
+                0
+            };
+        }
+        
+        saveData.difficulty = GameManager.Instance.difficulty;
+
+        // Assign settings data
+        saveData.masterVolume = (int)SettingsMenuUI.Instance.masterVolumeSlider.value;
+        saveData.musicVolume = (int)SettingsMenuUI.Instance.musicVolumeSlider.value;
+        saveData.gunVolume = (int)SettingsMenuUI.Instance.gunVolumeSlider.value;
         return saveData;
     }
 }

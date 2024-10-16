@@ -151,6 +151,10 @@ public class SaveManager :MonoBehaviour
 				didSelectDifficulty = true;
 				difficulty = data.difficulty;
 			}
+			else
+			{
+				difficulty = 1;
+			}
 
 		}
 		else
