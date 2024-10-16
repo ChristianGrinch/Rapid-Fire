@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 	private HealthSystem healthSystem;
 	private EnemySpawnManager enemySpawnManager;
 	private GunController gunController;
+	public GameObject gameManager;
 
 	public bool isGrounded;
 	private bool gotReferences;
@@ -37,17 +38,20 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody>();
         healthSystem = GetComponent<HealthSystem>();
         gunController = GetComponent<GunController>();
+		//enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
 		gotReferences = true;
     }
 	// Update is called once per frame
 	void Update()
 	{
+		Debug.Log("Player controller wave: " + wave);
         Sprinting();
 		if (gotReferences)
 		{
             health = healthSystem.health;
             lives = healthSystem.lives;
             ammo = gunController.ammo;
+			//wave = enemySpawnManager.currentWave;
         }
 
         Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;

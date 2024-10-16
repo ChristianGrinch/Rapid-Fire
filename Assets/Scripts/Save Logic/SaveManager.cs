@@ -66,6 +66,7 @@ public class SaveManager :MonoBehaviour
     }
     public void SavePlayer(string saveName)
 	{
+		Debug.Log(saveName);
 		SaveSystem.SavePlayer(playerController, saveName);
 	}
 	public void LoadPlayer(string saveName)
@@ -85,6 +86,7 @@ public class SaveManager :MonoBehaviour
 			playerController.health = data.health;
 			playerController.lives = data.lives;
 			playerController.wave = data.wave;
+			Debug.Log("data wave: " + data.wave);
 			playerController.ammo = data.ammo;
 
 			Vector3 position;

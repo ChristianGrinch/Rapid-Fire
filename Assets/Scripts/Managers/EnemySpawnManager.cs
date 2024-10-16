@@ -41,11 +41,13 @@ public class EnemySpawnManager : MonoBehaviour
     public List<GameObject> boss1Enemies = new();
 	public List<GameObject> iceZombie = new();
 
-	public int currentWave = 0;
+	public int currentWave = 100;
 	public int spawnBufferDistance = 4;
 
 	private Vector3 lastBossSpawnPos;
 	private float mapSize = GameManager.mapSize;
+
+	private bool didLoadEnemies = false;
 
     //~~~~~~~~~~ENEMY
     private enum EnemyType
@@ -67,22 +69,25 @@ public class EnemySpawnManager : MonoBehaviour
 	};
 	void Update()
 	{
-		Debug.Log(SaveManager.Instance.enemyLevel1);
+		//Debug.Log(SaveManager.Instance.enemyLevel1);
         enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
-
-		if (enemyCount == 0 && GameManager.Instance.isGameUnpaused)
+        Debug.Log("enemy spawn manager wave: " + currentWave);
+        if (enemyCount == 0 && GameManager.Instance.isGameUnpaused)
 		{
-			Debug.Log(currentWave);
+			
 			if (SaveManager.Instance.didLoadSpawnManager) // runs at the start to 
 			{
-				Debug.Log("sus");
+				Debug.Log("ran didload thing");
 				SpawnEnemiesOnLoad();
-                SaveManager.Instance.didLoadSpawnManager = false;
+				if (didLoadEnemies)
+				{
+                    SaveManager.Instance.didLoadSpawnManager = false;
+                }
 			}
 			else
 			{
-				Debug.Log("rgwe");
+				Debug.Log("enemyspawnmanager");
 				currentWave++;
 
 				NumberOfEnemiesToSpawn();
@@ -267,6 +272,7 @@ public class EnemySpawnManager : MonoBehaviour
         {
             InstantiateEnemy(4);
         }
+		didLoadEnemies = true;
     }
 
 	public void InstantiateEnemy(int type)

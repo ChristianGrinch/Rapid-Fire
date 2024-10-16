@@ -51,6 +51,7 @@ public class GameUI : MonoBehaviour
     {
         if (gotReferences)
         {
+            Debug.Log(EnemySpawnManager.Instance.currentWave);
             waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
             healthText.text = $"Health: {healthSystem.health}";
             livesText.text = $"Lives: {healthSystem.lives}";

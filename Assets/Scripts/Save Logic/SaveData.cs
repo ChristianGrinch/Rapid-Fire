@@ -34,7 +34,7 @@ public class SaveData
         // Assign player data
         if(player != null)
         {
-            Debug.Log("Player null");
+            Debug.Log("Player not null");
             saveData.exp = player.exp;
             saveData.health = player.health;
             saveData.lives = player.lives;
@@ -51,7 +51,7 @@ public class SaveData
         }
         else
         {
-            Debug.Log("Player not null");
+            Debug.Log("Player null");
             int defaultHealth = 100;
             int defaultLives = 3;
             int[] defaultAmmo = { 30, 50 };

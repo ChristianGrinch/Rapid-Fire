@@ -11131,6 +11131,7 @@ MonoBehaviour:
   lives: 0
   wave: 0
   ammo: 
+  gameManager: {fileID: 1606568281}
   isGrounded: 0
 --- !u!114 &883152925
 MonoBehaviour:
@@ -18894,6 +18895,7 @@ MonoBehaviour:
   healthText: {fileID: 1790604757}
   livesText: {fileID: 513455926}
   ammoText: {fileID: 1107752336}
+  gotReferences: 0
 --- !u!114 &1606568291
 MonoBehaviour:
   m_ObjectHideFlags: 0
