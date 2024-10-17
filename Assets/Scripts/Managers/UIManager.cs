@@ -31,7 +31,6 @@ public class UIManager : MonoBehaviour
 
 	// Pause Menu
 	public GameObject pauseMenu;
-	public Button saveButton;
 
 	// Settings - Audio panel
 	public GameObject audioPanel;
@@ -64,8 +63,6 @@ public class UIManager : MonoBehaviour
 	public GameObject saveNameWarning;
 	public GameObject createSaveWarning;
 	public Button createSave_StartMenu;
-	public Button quitGame_PauseMenu;
-	public Button startReturn_PauseMenu;
 	public Button deleteSave_SavesMenu;
 	public Button loadSave_SavesMenu;
 
@@ -86,14 +83,13 @@ public class UIManager : MonoBehaviour
 
 	void Awake()
 	{
-		// Singleton pattern implementation
 		if (Instance == null)
 		{
 			Instance = this;
 		}
 		else
 		{
-			Destroy(gameObject); // Ensures there's only one UIManager instance
+			Destroy(gameObject);
 		}
 	}
 	void Start()
@@ -110,14 +106,10 @@ public class UIManager : MonoBehaviour
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
-
-		saveButton.onClick.AddListener(() => GameManager.Instance.SaveGame(currentSave));
 	}
 	void AddButtonListeners()
 	{
 		createSave_StartMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.CreateSavePopup));
-		quitGame_PauseMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitGameConfirm));
-		startReturn_PauseMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.StartReturnConfirm));
 		deleteSave_SavesMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.DeleteSaveConfirm));
 		loadSave_SavesMenu.onClick.AddListener(() =>
 		{

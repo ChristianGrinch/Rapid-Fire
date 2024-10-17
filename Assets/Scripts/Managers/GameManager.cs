@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 		isGameUnpaused = false;
 		UIManager.Instance.pauseMenu.SetActive(true);
 		Time.timeScale = 0;
-		UIManager.Instance.saveButton.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
+	    PauseMenuUI.Instance.saveGame.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{

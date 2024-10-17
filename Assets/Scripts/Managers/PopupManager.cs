@@ -65,7 +65,7 @@ public class PopupManager : MonoBehaviour
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.StartReturnConfirm:
-				header.text = "Return to Start Screen?";
+				header.text = "Return to Start Menu?";
 				information.text = "You will lose any unsaved progress.";
 				actionBtnText.text = "Quit";
 				actionBtnImage.color = quitRed;
