@@ -18931,7 +18931,7 @@ MonoBehaviour:
   isInGame: 0
   defaultSave: 
   currentSave: 
-  difficulty: 0
+  difficulty: 1
   didSelectDifficulty: 0
   enemyLevel1: 0
   enemyLevel2: 0

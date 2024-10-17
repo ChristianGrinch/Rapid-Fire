@@ -164,12 +164,12 @@ public class PopupManager : MonoBehaviour
 
                     UIManager.Instance.currentSave = saveName;
 
-                    Debug.Log(SaveSystem.FindSavesBool(saveName));
+                    //Debug.Log(SaveSystem.FindSavesBool(saveName));
 
 					if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 					{
 						Debug.Log("ran if true");
-                        GameManager.Instance.SavePlayer(saveName);
+                        GameManager.Instance.CreateSave(saveName);
 						GameManager.Instance.StartNewGame();
 						ClosePopup();
 					}

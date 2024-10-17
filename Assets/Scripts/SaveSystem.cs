@@ -8,9 +8,9 @@ using System.Collections.Generic;
 
 public static class SaveSystem
 {
-	public static void SavePlayer(PlayerController player, string saveName)
+	public static void SaveGame(PlayerController player, string saveName)
 	{
-		SaveData saveData = SaveData.CreateFromPlayer(player);
+		SaveData saveData = SaveData.AssignData(player);
 		byte[] bytes = MessagePackSerializer.Serialize(saveData);
         string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
 
@@ -18,8 +18,16 @@ public static class SaveSystem
         File.WriteAllBytes(path, bytes);
 		Debug.Log("Saved file with length: " + bytes.Length + " bytes.");
 	}
+    public static void CreateSave(PlayerController player, string saveName)
+    {
+        SaveData saveData = SaveData.CreateDefaultData(player, GameManager.Instance.difficulty);
+        byte[] bytes = MessagePackSerializer.Serialize(saveData);
+        string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
 
-	public static SaveData LoadPlayer(string saveName)
+        File.WriteAllBytes(path, bytes);
+        Debug.Log("Created new save file with length: " + bytes.Length + " bytes.");
+    }
+	public static SaveData LoadGame(string saveName)
 	{
         string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
 
@@ -64,7 +72,7 @@ public static class SaveSystem
                 string saveName = Path.GetFileNameWithoutExtension(filePath);
                 saveFileNames.Add(saveName);
 
-                Debug.Log("Found save file: " + saveName);
+                //Debug.Log("Found save file: " + saveName);
             }
         }
 
@@ -131,7 +139,7 @@ public static class SaveSystem
         {
             byte[] readBytes = File.ReadAllBytes(path);
             string defaultSaveName = MessagePackSerializer.Deserialize<string>(readBytes);
-            Debug.Log("Loaded Default save file");
+            //Debug.Log("Loaded Default save file");
             return defaultSaveName;
         }
 

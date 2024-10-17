@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 	public bool isInGame = false;
 	public string defaultSave;
 	public string currentSave;
-	public int difficulty;
+	public int difficulty = 1;
 	public bool didSelectDifficulty = false;
 	public int enemyLevel1; public int enemyLevel2; public int enemyLevel3; public int bossLevel1; public int iceZombie;
 	public bool didLoadSpawnManager = false;
@@ -40,7 +40,11 @@ public class GameManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-	private void Start()
+    private void Update()
+    {
+        Debug.Log("GameManager difficulty:" + difficulty);
+    }
+    private void Start()
 	{
 		defaultSave = SaveSystem.LoadDefaultSave();
 		player = GameObject.FindWithTag("Player");
@@ -131,9 +135,14 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Save name cannot be empty!");
         }
     }
-    public void SavePlayer(string saveName)
+    public void SaveGame(string saveName)
     {
-        SaveSystem.SavePlayer(playerController, saveName);
+        SaveSystem.SaveGame(playerController, saveName);
+    }
+    public void CreateSave(string saveName)
+    {
+        SaveSystem.CreateSave(playerController, saveName);
+        currentSave = saveName;
     }
     public void LoadPlayer(string saveName)
     {
@@ -143,7 +152,7 @@ public class GameManager : MonoBehaviour
         didLoadPowerupManager = true;
 
         // Load the player data
-        SaveData data = SaveSystem.LoadPlayer(saveName);
+        SaveData data = SaveSystem.LoadGame(saveName);
 
         if (data != null)
         {
@@ -175,6 +184,7 @@ public class GameManager : MonoBehaviour
 				{
 					tempEnemies[i] = data.numberOfEnemies[i];
 				}
+                Debug.Log("Data difficulty: " + data.difficulty);
 				switch (data.difficulty) // Sets the current number of ice zombies based on saved difficulty and wave
 				{
                     case 1:
@@ -213,7 +223,7 @@ public class GameManager : MonoBehaviour
             if (data.difficulty != 0)
             {
                 didSelectDifficulty = true;
-                difficulty = data.difficulty;
+                //difficulty = data.difficulty;
             }
 
         }

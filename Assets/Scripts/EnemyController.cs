@@ -206,6 +206,7 @@ public class EnemyController : MonoBehaviour
                 SetStats(30, 7, 19, 70, "Ice Zombie");
                 break;
 			default:
+				Debug.Log(difficulty);
 				Debug.LogError("Invalid difficulty level.");
 				break;
 		}
