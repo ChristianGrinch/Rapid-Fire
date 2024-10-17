@@ -1043,6 +1043,7 @@ GameObject:
   m_Component:
   - component: {fileID: 112359701}
   - component: {fileID: 112359700}
+  - component: {fileID: 112359702}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -1062,6 +1063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90ca4417d3f454b448003bf08de1621d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 159427683}
   quitGame: {fileID: 895787883}
   settings: {fileID: 487199064}
   returnToStart: {fileID: 1578617634}
@@ -1082,6 +1084,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &112359702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112359699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b72d73f4bee36fb4f8db2fc222e00b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game: {fileID: 237144106}
+  difficulty: {fileID: 1850970891}
+  health: {fileID: 1790604757}
+  lives: {fileID: 513455926}
+  wave: {fileID: 998620403}
+  ammo: {fileID: 1107752336}
 --- !u!1 &126162989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,7 +1625,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &159427684
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18872,17 +18892,10 @@ MonoBehaviour:
   difficultyMenu: {fileID: 1444189145}
   settingsMenu: {fileID: 1349277525}
   restartMenu: {fileID: 269595876}
-  game: {fileID: 237144106}
-  waveText: {fileID: 998620403}
-  healthText: {fileID: 1790604757}
-  livesText: {fileID: 513455926}
-  ammoText: {fileID: 1107752336}
-  difficultyText: {fileID: 1850970891}
   startMenu: {fileID: 937104824}
   playDefaultText: {fileID: 824748085}
   difficultySelectWarning: {fileID: 443424226}
   pauseMenu: {fileID: 159427683}
-  saveButton: {fileID: 875161525}
   audioPanel: {fileID: 590523639}
   masterVolumeSlider: {fileID: 1041571555}
   masterVolume: {fileID: 1086750656}
@@ -18904,8 +18917,6 @@ MonoBehaviour:
   saveNameWarning: {fileID: 1293793277}
   createSaveWarning: {fileID: 1874781936}
   createSave_StartMenu: {fileID: 1372311722}
-  quitGame_PauseMenu: {fileID: 895787883}
-  startReturn_PauseMenu: {fileID: 1578617634}
   deleteSave_SavesMenu: {fileID: 48678214}
   loadSave_SavesMenu: {fileID: 1083307036}
   player: {fileID: 883152918}

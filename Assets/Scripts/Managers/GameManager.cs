@@ -72,26 +72,29 @@ public class GameManager : MonoBehaviour
 	public void StartGame()
 	{
 		LoadPlayer(defaultSave);
+
 		UIManager.Instance.CloseAllMenus();
-		UIManager.Instance.game.SetActive(true);
+        GameMenuUI.Instance.game.SetActive(true);
+
 		isGameUnpaused = true;
 		isInGame = true;
 
 		healthSystem.AssignLives();
 		Time.timeScale = 1;
-		UIManager.Instance.SetDifficultyText();
+		GameMenuUI.Instance.SetDifficultyText();
 
 	}
 	public void StartNewGame()
 	{
 		UIManager.Instance.CloseAllMenus();
-		UIManager.Instance.game.SetActive(true);
+        GameMenuUI.Instance.game.SetActive(true);
+
 		isGameUnpaused = true;
 		isInGame = true;
 
 		healthSystem.AssignLives();
 		Time.timeScale = 1;
-		UIManager.Instance.SetDifficultyText();
+        GameMenuUI.Instance.SetDifficultyText();
 	}
 	public void PauseGame()
 	{
@@ -223,7 +226,7 @@ public class GameManager : MonoBehaviour
             if (data.difficulty != 0)
             {
                 didSelectDifficulty = true;
-                //difficulty = data.difficulty;
+                difficulty = data.difficulty;
             }
 
         }

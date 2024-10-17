@@ -16,14 +16,6 @@ public class UIManager : MonoBehaviour
 	public GameObject settingsMenu;
 	public GameObject restartMenu;
 
-	// Active game 'menu'
-	public GameObject game;
-	public TextMeshProUGUI waveText;
-	public TextMeshProUGUI healthText;
-	public TextMeshProUGUI livesText;
-	public TextMeshProUGUI ammoText;
-	public TMP_Text difficultyText;
-
 	// Start Menu
 	public GameObject startMenu;
 	public TMP_Text playDefaultText;
@@ -135,11 +127,6 @@ public class UIManager : MonoBehaviour
 	}
 	void Update()
 	{
-		waveText.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
-		healthText.text = $"Health: {healthSystem.health}";
-		livesText.text = $"Lives: {healthSystem.lives}";
-		ammoText.text = $"{gunController.ammo[gunController.currentGunInt]}";
-
 		isGameUnpaused = GameManager.Instance.isGameUnpaused;
 		isInGame = GameManager.Instance.isInGame;
 		currentSave = GameManager.Instance.currentSave;
@@ -299,21 +286,6 @@ public class UIManager : MonoBehaviour
 	public void UpdateMasterSlider() { masterVolume.text = masterVolumeSlider.value.ToString(); }
 	public void UpdateMusicSlider() { musicVolume.text = musicVolumeSlider.value.ToString(); }
 	public void UpdateGunSlider() { gunVolume.text = gunVolumeSlider.value.ToString(); }
-	public void SetDifficultyText()
-	{
-		if (GameManager.Instance.difficulty == 1)
-		{
-			difficultyText.text = "Easy";
-		} 
-		else if (GameManager.Instance.difficulty == 2)
-		{
-			difficultyText.text = "Normal";
-		}
-		else if (GameManager.Instance.difficulty == 3)
-		{
-			difficultyText.text = "Master";
-		}
-	}
 	public void InstantiateSaveButtons()
 	{
 		List<string> saveFiles = SaveSystem.FindSaves();
