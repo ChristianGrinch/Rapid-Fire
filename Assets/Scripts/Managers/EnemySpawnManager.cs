@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,6 +29,8 @@ public class EnemySpawnManager : MonoBehaviour
 	private Vector3 lastBossSpawnPos;
 	private float mapSize = GameManager.mapSize;
 
+	private bool runningAssignEnemiesToLists;
+
     //~~~~~~~~~~ENEMY
     private enum EnemyType
     {
@@ -50,6 +53,8 @@ public class EnemySpawnManager : MonoBehaviour
 	{
         enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
+		Debug.Log("Number of ice zombies: "+iceZombie.Count);
+		Debug.Log("Number of enemies: "+ enemyCountArray.Length);
 
 		if (enemyCount == 0 && UIManager.Instance.isGameUnpaused)
 		{
@@ -68,12 +73,16 @@ public class EnemySpawnManager : MonoBehaviour
 			}
 		}
 
-		StartCoroutine(AssignEnemiesToLists()); // this is INCREDIBLY bad for perfomrance. FIX THIS LATER!!!!
+		if (!runningAssignEnemiesToLists)
+		{
+            StartCoroutine(AssignEnemiesToLists());
+        }
 	}
 
 	public IEnumerator AssignEnemiesToLists()
 	{
-		yield return null;
+		runningAssignEnemiesToLists = true;
+        yield return null;
 
 		level1Enemies = new();
 		level2Enemies = new();
@@ -83,6 +92,7 @@ public class EnemySpawnManager : MonoBehaviour
         //~~~~~~~~~~ENEMY
         foreach (GameObject enemy in enemyCountArray)
 		{
+			Debug.Log("Ran foreach enemy in enemyCountArray");
 			if (enemy.name.Contains("Enemy 1"))
 			{
 				level1Enemies.Add(enemy);
@@ -104,7 +114,9 @@ public class EnemySpawnManager : MonoBehaviour
 				iceZombie.Add(enemy);
 			}
 		}
-	}
+		runningAssignEnemiesToLists = false;
+
+    }
 
 	void NumberOfEnemiesToSpawn()
 	{
@@ -210,10 +222,20 @@ public class EnemySpawnManager : MonoBehaviour
 					{
 						InstantiateEnemy(2);
 					}
-					for(int i = 0; i < enemiesToSpawn[EnemyType.IceZombie]; i++)
+					if (enemiesToSpawn[EnemyType.IceZombie] > 500)
 					{
-						InstantiateEnemy(4);
+						Debug.LogError("Massive number of enemies detected! Stopping game to prevent crashing.");
+						Debug.Log(enemiesToSpawn[EnemyType.IceZombie]);
+						UnityEditor.EditorApplication.isPaused = true;
 					}
+					else
+					{
+                        for (int i = 0; i < enemiesToSpawn[EnemyType.IceZombie]; i++)
+                        {
+                            InstantiateEnemy(4);
+                        }
+                    }
+					
 					break;
 				}
 		}
@@ -240,9 +262,18 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			InstantiateEnemy(2);
 		}
-        for (int i = 0; i < GameManager.Instance.iceZombie; i++)
+        if (GameManager.Instance.iceZombie > 500)
         {
-            InstantiateEnemy(4);
+            Debug.LogError("Massive number of enemies detected! Pausing game to prevent crashing.");
+            Debug.Log(GameManager.Instance.iceZombie);
+            UnityEditor.EditorApplication.isPaused = true;
+        }
+        else
+        {
+            for (int i = 0; i < GameManager.Instance.iceZombie; i++)
+            {
+                InstantiateEnemy(4);
+            }
         }
     }
 
