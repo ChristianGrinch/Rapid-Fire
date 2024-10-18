@@ -6,6 +6,18 @@ using UnityEngine.AI;
 
 public class EnemySpawnManager : MonoBehaviour
 {
+    public static EnemySpawnManager Instance { get; private set; }
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     // When making a new enemy, add them in the places that have the ~~~~~~~~~~ENEMY tag
 
     //~~~~~~~~~~ENEMY (ADD IN INSPECTOR)
@@ -16,11 +28,11 @@ public class EnemySpawnManager : MonoBehaviour
 	public GameObject[] enemyCountArray;
 	private int enemyCount = 0;
 
-    //~~~~~~~~~~ENEMY
-    public List<GameObject> level1Enemies = new();
-    public List<GameObject> level2Enemies = new();
-    public List<GameObject> level3Enemies = new();
-    public List<GameObject> boss1Enemies = new();
+	//~~~~~~~~~~ENEMY
+	public List<GameObject> level1Enemies = new();
+	public List<GameObject> level2Enemies = new();
+	public List<GameObject> level3Enemies = new();
+	public List<GameObject> boss1Enemies = new();
 	public List<GameObject> iceZombie = new();
 
 	public int currentWave = 0;
@@ -31,17 +43,17 @@ public class EnemySpawnManager : MonoBehaviour
 
 	private bool runningAssignEnemiesToLists;
 
-    //~~~~~~~~~~ENEMY
-    private enum EnemyType
-    {
-        Level1,
-        Level2,
-        Level3,
-        Boss1,
+	//~~~~~~~~~~ENEMY
+	private enum EnemyType
+	{
+		Level1,
+		Level2,
+		Level3,
+		Boss1,
 		IceZombie
-    }
-    //~~~~~~~~~~ENEMY
-    private Dictionary<EnemyType, int> enemiesToSpawn = new()
+	}
+	//~~~~~~~~~~ENEMY
+	private Dictionary<EnemyType, int> enemiesToSpawn = new()
 	{
 		{ EnemyType.Level1, 4 },
 		{ EnemyType.Level2, 0 },
@@ -51,7 +63,7 @@ public class EnemySpawnManager : MonoBehaviour
 	};
 	void Update()
 	{
-        enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
+		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		enemyCount = enemyCountArray.Length;
 		Debug.Log("Number of ice zombies: "+iceZombie.Count);
 		Debug.Log("Number of enemies: "+ enemyCountArray.Length);
@@ -61,7 +73,7 @@ public class EnemySpawnManager : MonoBehaviour
 			if (GameManager.Instance.didLoadSpawnManager)
 			{
 				SpawnEnemiesOnLoad();
-                GameManager.Instance.didLoadSpawnManager = false;
+				GameManager.Instance.didLoadSpawnManager = false;
 			}
 			else
 			{
@@ -73,21 +85,18 @@ public class EnemySpawnManager : MonoBehaviour
 			}
 		}
 
-		if (!runningAssignEnemiesToLists)
-		{
-            StartCoroutine(AssignEnemiesToLists());
-        }
+		StartCoroutine(AssignEnemiesToLists());
 	}
 
 	public IEnumerator AssignEnemiesToLists()
 	{
-		runningAssignEnemiesToLists = true;
-        yield return null;
-
-		level1Enemies = new();
+		yield return null;
+        //~~~~~~~~~~ENEMY
+        level1Enemies = new();
 		level2Enemies = new();
 		level3Enemies = new();
 		boss1Enemies = new();
+        iceZombie = new();
 
         //~~~~~~~~~~ENEMY
         foreach (GameObject enemy in enemyCountArray)
@@ -114,9 +123,7 @@ public class EnemySpawnManager : MonoBehaviour
 				iceZombie.Add(enemy);
 			}
 		}
-		runningAssignEnemiesToLists = false;
-
-    }
+	}
 
 	void NumberOfEnemiesToSpawn()
 	{
@@ -124,8 +131,8 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			enemiesToSpawn[EnemyType.Boss1] += 1;
 		}
-        //~~~~~~~~~~ENEMY
-        switch (GameManager.Instance.difficulty)
+		//~~~~~~~~~~ENEMY
+		switch (GameManager.Instance.difficulty)
 		{
 			case 1:
 				enemiesToSpawn[EnemyType.Level1] = currentWave + 3;
@@ -187,8 +194,8 @@ public class EnemySpawnManager : MonoBehaviour
 	}
 	void SpawnEnemyWave()
 	{
-        //~~~~~~~~~~ENEMY
-        switch (currentWave % 10)
+		//~~~~~~~~~~ENEMY
+		switch (currentWave % 10)
 		{
 			case 0:
 				{
@@ -200,12 +207,12 @@ public class EnemySpawnManager : MonoBehaviour
 					{
 						InstantiateEnemy(0);
 					}
-                    for (int i = 0; i < enemiesToSpawn[EnemyType.IceZombie]; i++)
-                    {
-                        InstantiateEnemy(4);
-                    }
+					for (int i = 0; i < enemiesToSpawn[EnemyType.IceZombie]; i++)
+					{
+						InstantiateEnemy(4);
+					}
 
-                    break;
+					break;
 				}
 
 			default:
@@ -230,11 +237,11 @@ public class EnemySpawnManager : MonoBehaviour
 					}
 					else
 					{
-                        for (int i = 0; i < enemiesToSpawn[EnemyType.IceZombie]; i++)
-                        {
-                            InstantiateEnemy(4);
-                        }
-                    }
+						for (int i = 0; i < enemiesToSpawn[EnemyType.IceZombie]; i++)
+						{
+							InstantiateEnemy(4);
+						}
+					}
 					
 					break;
 				}
@@ -245,8 +252,8 @@ public class EnemySpawnManager : MonoBehaviour
 
 	public void SpawnEnemiesOnLoad()
 	{
-        //~~~~~~~~~~ENEMY
-        for (int i = 0; i < GameManager.Instance.bossLevel1; i++) // must be first so the boss pos can be saved
+		//~~~~~~~~~~ENEMY
+		for (int i = 0; i < GameManager.Instance.bossLevel1; i++) // must be first so the boss pos can be saved
 		{
 			InstantiateEnemy(3);
 		}
@@ -262,20 +269,20 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			InstantiateEnemy(2);
 		}
-        if (GameManager.Instance.iceZombie > 500)
-        {
-            Debug.LogError("Massive number of enemies detected! Pausing game to prevent crashing.");
-            Debug.Log(GameManager.Instance.iceZombie);
-            UnityEditor.EditorApplication.isPaused = true;
-        }
-        else
-        {
-            for (int i = 0; i < GameManager.Instance.iceZombie; i++)
-            {
-                InstantiateEnemy(4);
-            }
-        }
-    }
+		if (GameManager.Instance.iceZombie > 500)
+		{
+			Debug.LogError("Massive number of enemies detected! Pausing game to prevent crashing.");
+			Debug.Log(GameManager.Instance.iceZombie);
+			UnityEditor.EditorApplication.isPaused = true;
+		}
+		else
+		{
+			for (int i = 0; i < GameManager.Instance.iceZombie; i++)
+			{
+				InstantiateEnemy(4);
+			}
+		}
+	}
 
 	public void InstantiateEnemy(int type)
 	{
@@ -285,20 +292,4 @@ public class EnemySpawnManager : MonoBehaviour
 		instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
 	}
 
-	// Singleton code -----
-	public static EnemySpawnManager Instance { get; private set; }
-
-	void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
-	}
-
-	// End singleton code -----
 }
