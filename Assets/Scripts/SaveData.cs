@@ -100,7 +100,7 @@ public class SaveData
 		saveData.ammo = new[] { 30, 50 };
 
 		// Assign game data
-		saveData.wave = 0; //TEST: this might lowk break something like it did at school when theriault was tryna help
+		saveData.wave = 1;
 		saveData.numberOfEnemies = new int[5];
         switch (difficulty)
 		{
