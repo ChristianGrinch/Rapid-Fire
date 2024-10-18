@@ -182,12 +182,15 @@ public class GameManager : MonoBehaviour
 			// Check if the save is an old save, if so, preform a modification to it so it can be compatible with current saves.
 			if(data.numberOfEnemies.Length == 4) // Handling for no iceZombie
 			{
+                Debug.LogWarning("Ran save incompatiblity fixer [ICE ZOMBIE]");
 				int[] tempEnemies = new int[5];
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i <= 4; i++)
 				{
 					tempEnemies[i] = data.numberOfEnemies[i];
 				}
+
                 Debug.Log("Data difficulty: " + data.difficulty);
+
 				switch (data.difficulty) // Sets the current number of ice zombies based on saved difficulty and wave
 				{
                     case 1:
