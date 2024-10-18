@@ -73,7 +73,7 @@ public class PopupManager : MonoBehaviour
 				actionBtn.onClick.AddListener(() =>
 				{
 					UIManager.Instance.SwitchToStart();
-					GameManager.Instance.RestartGame();
+					GameManager.RestartGame();
 					ClosePopup();
                 });
 				cancelBtn.onClick.AddListener(() => ClosePopup());

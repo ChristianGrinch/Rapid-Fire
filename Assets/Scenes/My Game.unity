@@ -1044,6 +1044,7 @@ GameObject:
   - component: {fileID: 112359701}
   - component: {fileID: 112359700}
   - component: {fileID: 112359702}
+  - component: {fileID: 112359703}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -1102,6 +1103,20 @@ MonoBehaviour:
   lives: {fileID: 513455926}
   wave: {fileID: 998620403}
   ammo: {fileID: 1107752336}
+--- !u!114 &112359703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112359699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d5be7620280a3547a6450664062b616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  restartMenu: {fileID: 269595876}
+  restart: {fileID: 752176803}
 --- !u!1 &126162989
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
 	// Menus
 	public GameObject difficultyMenu;
 	public GameObject settingsMenu;
-	public GameObject restartMenu;
 
 	// Start Menu
 	public GameObject startMenu;
@@ -134,7 +133,8 @@ public class UIManager : MonoBehaviour
 		if (healthSystem.lives <= 0)
 		{
 			GameManager.Instance.GameOver();
-		}
+            Time.timeScale = 0;
+        }
 
 		if (Input.GetKeyDown(KeyCode.Escape) && isGameUnpaused)
 		{
@@ -150,7 +150,6 @@ public class UIManager : MonoBehaviour
 			SwitchToStart();	
 		}
 	}
-	public void ShowRestartMenu(){ restartMenu.SetActive(true); }
 	public void CloseAllMenus()
 	{
 		Canvas canvas = FindObjectOfType<Canvas>();

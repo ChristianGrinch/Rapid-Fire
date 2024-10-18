@@ -62,10 +62,10 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
 	{
-		UIManager.Instance.ShowRestartMenu();
+		RestartMenuUI.Instance.ShowRestartMenu();
 		isGameUnpaused = false;
 	}
-	public void RestartGame()
+	public static void RestartGame()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
