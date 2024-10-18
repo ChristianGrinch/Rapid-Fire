@@ -8165,7 +8165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &704240309
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18906,11 +18906,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficultyMenu: {fileID: 1444189145}
   settingsMenu: {fileID: 1349277525}
-  restartMenu: {fileID: 269595876}
   startMenu: {fileID: 937104824}
   playDefaultText: {fileID: 824748085}
   difficultySelectWarning: {fileID: 443424226}
   pauseMenu: {fileID: 159427683}
+  panels: {fileID: 756270902}
   audioPanel: {fileID: 590523639}
   masterVolumeSlider: {fileID: 1041571555}
   masterVolume: {fileID: 1086750656}

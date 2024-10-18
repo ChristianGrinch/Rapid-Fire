@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour
 	{
 		isGameUnpaused = true;
 		UIManager.Instance.pauseMenu.SetActive(false);
+        GameMenuUI.Instance.game.SetActive(true);
 		Time.timeScale = 1;
 	}
 	public void QuitGame()

@@ -218,7 +218,8 @@ public class UIManager : MonoBehaviour
 	{
 		CloseAllMenus();
 		settingsMenu.SetActive(true);
-	}
+        OpenAudioPanel();
+    }
 	public void OpenAudioPanel()
 	{
 		audioPanel.SetActive(true);
