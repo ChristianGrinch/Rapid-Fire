@@ -51,7 +51,6 @@ public class UIManager : MonoBehaviour
 
 
 	// Refactored popup stuff
-	public GameObject saveNameWarning;
 	public GameObject createSaveWarning;
 	public Button createSave_StartMenu;
 	public Button deleteSave_SavesMenu;
@@ -100,7 +99,6 @@ public class UIManager : MonoBehaviour
 	}
 	void AddButtonListeners()
 	{
-		createSave_StartMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.CreateSavePopup));
 		deleteSave_SavesMenu.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.DeleteSaveConfirm));
 		loadSave_SavesMenu.onClick.AddListener(() =>
 		{
@@ -170,15 +168,8 @@ public class UIManager : MonoBehaviour
 		}
 		else
 		{
-			StartCoroutine(ShowWarning());
+			StartCoroutine(StartMenuUI.Instance.SaveNameWarning());
 		}
-	}
-	public IEnumerator ShowWarning()
-	{
-		difficultySelectWarning.SetActive(true);
-		yield return new WaitForSeconds(2);
-		difficultySelectWarning.SetActive(false);
-
 	}
 	public IEnumerator ShowLoadWarning()
 	{
@@ -192,13 +183,6 @@ public class UIManager : MonoBehaviour
 		createSaveWarning.SetActive(true);
 		yield return new WaitForSeconds(5);
 		createSaveWarning.SetActive(false);
-
-	}
-	public IEnumerator ShowCreateSaveWarning()
-	{
-		saveNameWarning.SetActive(true);
-		yield return new WaitForSeconds(5);
-		saveNameWarning.SetActive(false);
 
 	}
 	public void SwitchToStart()
@@ -218,7 +202,7 @@ public class UIManager : MonoBehaviour
 	{
 		CloseAllMenus();
 		settingsMenu.SetActive(true);
-        OpenAudioPanel();
+        OpenAudioPanel(); // Sets Audio Panel to "default" opened save, so that the save panel isn't open while in game.
     }
 	public void OpenAudioPanel()
 	{
@@ -234,7 +218,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void OpenSavesPanel()
 	{
-		if(Time.timeScale == 1)
+		if(!isInGame)
 		{
 			audioPanel.SetActive(false);
 			videoPanel.SetActive(false);

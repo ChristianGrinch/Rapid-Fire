@@ -294,19 +294,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11267830}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1606568289}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: QuitGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &11267830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1045,6 +1033,7 @@ GameObject:
   - component: {fileID: 112359700}
   - component: {fileID: 112359702}
   - component: {fileID: 112359703}
+  - component: {fileID: 112359704}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -1117,6 +1106,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   restartMenu: {fileID: 269595876}
   restart: {fileID: 752176803}
+--- !u!114 &112359704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112359699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693a6fee9f447754fa1b912465696db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMenu: {fileID: 937104824}
+  playDefault: {fileID: 1168366736}
+  createNewSave: {fileID: 1372311722}
+  difficultySelect: {fileID: 142093521}
+  settingsSelect: {fileID: 1874352950}
+  quitGame: {fileID: 11267829}
+  difficultySelectWarning: {fileID: 0}
+  saveNameWarning: {fileID: 1293793277}
 --- !u!1 &126162989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,19 +1283,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 142093522}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OpenDifficultyScreen
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &142093522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14550,19 +14547,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1168366737}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1606568289}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: StartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1168366737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18910,7 +18895,6 @@ MonoBehaviour:
   playDefaultText: {fileID: 824748085}
   difficultySelectWarning: {fileID: 443424226}
   pauseMenu: {fileID: 159427683}
-  panels: {fileID: 756270902}
   audioPanel: {fileID: 590523639}
   masterVolumeSlider: {fileID: 1041571555}
   masterVolume: {fileID: 1086750656}
@@ -18929,7 +18913,6 @@ MonoBehaviour:
   loadWarning: {fileID: 1749685983}
   idontevenknow: {fileID: 1083307036}
   loadSaveWarning: {fileID: 1493279698}
-  saveNameWarning: {fileID: 1293793277}
   createSaveWarning: {fileID: 1874781936}
   createSave_StartMenu: {fileID: 1372311722}
   deleteSave_SavesMenu: {fileID: 48678214}
@@ -21261,19 +21244,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1874352948}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1606568285}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OpenSettings
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1874781936
 GameObject:
   m_ObjectHideFlags: 0

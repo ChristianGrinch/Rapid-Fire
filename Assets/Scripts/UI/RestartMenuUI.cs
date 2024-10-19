@@ -24,7 +24,7 @@ public class RestartMenuUI : MonoBehaviour
     public Button restart;
     private void Start()
     {
-        restart.onClick.AddListener(() => GameManager.RestartGame());
+        restart.onClick.AddListener(() => GameManager.Instance.RestartGame());
     }
     public void ShowRestartMenu() 
     {

@@ -73,7 +73,7 @@ public class PopupManager : MonoBehaviour
 				actionBtn.onClick.AddListener(() =>
 				{
 					UIManager.Instance.SwitchToStart();
-					GameManager.RestartGame();
+					GameManager.Instance.RestartGame();
 					ClosePopup();
                 });
 				cancelBtn.onClick.AddListener(() => ClosePopup());
@@ -168,15 +168,13 @@ public class PopupManager : MonoBehaviour
 
 					if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 					{
-						Debug.Log("ran if true");
                         GameManager.Instance.CreateSave(saveName);
 						GameManager.Instance.StartNewGame();
 						ClosePopup();
 					}
 					else
 					{
-						Debug.Log("ran if false");
-						StartCoroutine(UIManager.Instance.ShowSaveNameWarning());
+						StartCoroutine(StartMenuUI.Instance.DifficultySelectWarning());
 						ClosePopup();
 					}
 				});
