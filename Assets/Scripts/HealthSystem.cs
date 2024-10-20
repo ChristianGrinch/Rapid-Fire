@@ -8,7 +8,7 @@ public class HealthSystem : MonoBehaviour
 
 	public int health = 100;
 	public int maxHealth = 200;
-	public int lives = 3;
+	public int lives;
 
 	private bool didAssignLives = false;
 
@@ -26,8 +26,12 @@ public class HealthSystem : MonoBehaviour
 		if (newHealth <= 0) // Makes sure health never goes below 0
 		{
 			health = 0;
-			lives -= 1;
-		}
+            if (lives - 1 > 0)
+            {
+                lives -= 1;
+            }
+
+        }
 
 		if (health <= 0 && gameObject.name != "Player")
 		{
@@ -53,9 +57,13 @@ public class HealthSystem : MonoBehaviour
 	public void UpdateLives(int newLives)
 	{
 		lives = newLives;
+		Debug.Log("HealthSystem lives: "+lives);
 	}
-
-	public void AssignLives()
+    private void Update()
+    {
+        Debug.Log("HealthSystem lives UPDATE: " + lives);
+    }
+    public void AssignLives()
 	{
 
 		if (GameManager.Instance.isGameUnpaused && !didAssignLives)
@@ -73,6 +81,7 @@ public class HealthSystem : MonoBehaviour
                     break;
 				default:
 					lives = 3;
+					Debug.Log("No difficulty selected.");
 					break;
 			}
 		}

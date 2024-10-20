@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
         Sprinting();
 		health = healthSystem.health;
 		lives = healthSystem.lives;
+		Debug.Log("player lviues	: " + lives);
 		wave = enemySpawnManager.currentWave;
 		ammo = gunController.ammo;
 

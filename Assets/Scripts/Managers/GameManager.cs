@@ -75,7 +75,6 @@ public class GameManager : MonoBehaviour
 		isGameUnpaused = true;
 		isInGame = true;
 
-		healthSystem.AssignLives();
 		Time.timeScale = 1;
 		GameMenuUI.Instance.SetDifficultyText();
 
@@ -92,6 +91,16 @@ public class GameManager : MonoBehaviour
 		Time.timeScale = 1;
         GameMenuUI.Instance.SetDifficultyText();
 	}
+    public void StartExistingGame(){
+        UIManager.Instance.CloseAllMenus();
+        GameMenuUI.Instance.game.SetActive(true);
+
+        isGameUnpaused = true;
+        isInGame = true;
+
+        Time.timeScale = 1;
+        GameMenuUI.Instance.SetDifficultyText();
+    }
 	public void PauseGame()
 	{
 		isGameUnpaused = false;
@@ -172,6 +181,7 @@ public class GameManager : MonoBehaviour
 
             healthSystem.UpdateHealth(data.health);
             healthSystem.UpdateLives(data.lives);
+            Debug.Log(data.lives);
 
             // Update game data
             enemySpawnManager.currentWave = data.wave;

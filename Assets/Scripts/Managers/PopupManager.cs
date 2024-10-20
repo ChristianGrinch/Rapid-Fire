@@ -103,7 +103,7 @@ public class PopupManager : MonoBehaviour
 				actionBtn.onClick.AddListener(() =>
 				{
 					GameManager.Instance.LoadPlayer(SavesPanelUI.Instance.currentSave);
-					GameManager.Instance.StartNewGame();
+					GameManager.Instance.StartExistingGame();
 					ClosePopup();
 				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
