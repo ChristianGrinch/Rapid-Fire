@@ -56,7 +56,7 @@ public class AudioManager : MonoBehaviour
 	{
 		masterVolume = newVolume;
 
-		AudioSource[] allAudioSources = FindObjectsOfType<AudioSource>();
+		AudioSource[] allAudioSources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
 		foreach (var audioSource in allAudioSources)
 		{
 			if (!audioSource.CompareTag("Music")) // Only affect non-music audio sources here
@@ -111,7 +111,7 @@ public class AudioManager : MonoBehaviour
 		buttonAudioSource = gameObject.AddComponent<AudioSource>();
 		buttonAudioSource.clip = buttonClickSound;
 
-		Button[] buttons = FindObjectsOfType<Button>(true);
+		Button[] buttons = FindObjectsByType<Button>(FindObjectsSortMode.None);
 
 		foreach (Button btn in buttons)
 		{

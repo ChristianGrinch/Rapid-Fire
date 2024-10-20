@@ -61,7 +61,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void CloseAllMenus()
 	{
-		Canvas canvas = FindObjectOfType<Canvas>();
+		Canvas canvas = FindAnyObjectByType<Canvas>();
 		int childCount = canvas.transform.childCount;
 
 		for (int i = 0; i < childCount; i++)
