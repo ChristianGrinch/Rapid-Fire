@@ -40,7 +40,7 @@ public class PopupManager : MonoBehaviour
 
 	private void Start()
 	{
-		canvas = FindObjectOfType<Canvas>();
+		canvas = FindAnyObjectByType<Canvas>();
 	}
 
 	public void ShowPopup(PopupType popupType)
