@@ -2760,7 +2760,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 474249418}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999998
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10907,7 +10907,7 @@ GameObject:
   - component: {fileID: 875161525}
   m_Layer: 5
   m_Name: Save Button
-  m_TagString: Untagged
+  m_TagString: ButtonWithPop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18942,25 +18942,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df36cf79e30f09546a9748362b361154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoPanel: {fileID: 838440928}
-  screenModeDropdown: {fileID: 1192717567}
-  savesPanel: {fileID: 704240308}
-  saveButtonPrefab: {fileID: 6023388616657966226, guid: 84276b4c011b3f74883e0ca3b8631d85, type: 3}
-  contentPanel: {fileID: 1306868542}
-  saveNameInputField: {fileID: 1062116304}
-  defaultSaveButton: {fileID: 1002528135}
-  loadWarning: {fileID: 1749685983}
-  idontevenknow: {fileID: 1083307036}
-  loadSaveWarning: {fileID: 1493279698}
-  createSaveWarning: {fileID: 1874781936}
-  createSave_StartMenu: {fileID: 1372311722}
-  deleteSave_SavesMenu: {fileID: 48678214}
-  loadSave_SavesMenu: {fileID: 1083307036}
   player: {fileID: 883152918}
-  gameManager: {fileID: 1606568281}
   isGameUnpaused: 0
   isInGame: 0
-  defaultSave: 
 --- !u!4 &1606568286
 Transform:
   m_ObjectHideFlags: 0

@@ -261,7 +261,9 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			Debug.LogError("Massive number of enemies detected! Pausing game to prevent crashing.");
 			Debug.Log(GameManager.Instance.iceZombie);
-			UnityEditor.EditorApplication.isPaused = true;
+			#if UNITY_EDITOR
+				UnityEditor.EditorApplication.isPaused = true;
+			#endif
 		}
 		else
 		{

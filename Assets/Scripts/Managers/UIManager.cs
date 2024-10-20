@@ -10,33 +10,22 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance { get; private set; }
-
-	public GameObject videoPanel;
-	public GameObject savesPanel;
-	public GameObject createSaveWarning;
-
-	// Important script/object references
-	private HealthSystem healthSystem;
-	private GunController gunController;
-	private PlayerController playerController;
-	private EnemySpawnManager enemySpawnManager;
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    private HealthSystem healthSystem;
 	public GameObject player;
-	public GameObject gameManager;
-
-	// crap idk lol
 	public bool isGameUnpaused = false;
 	public bool isInGame = false;
-	void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
-	}
+
 	void Start()
 	{
 		SwitchToStart();
@@ -44,9 +33,6 @@ public class UIManager : MonoBehaviour
 		AudioPanelUI.Instance.InitializeVolume();
 
 		healthSystem = player.GetComponent<HealthSystem>();
-		gunController = player.GetComponent<GunController>();
-		playerController = player.GetComponent<PlayerController>();
-		enemySpawnManager = gameManager.GetComponentInParent<EnemySpawnManager>();
 	}
 	void Update()
 	{
@@ -96,13 +82,6 @@ public class UIManager : MonoBehaviour
 			StartCoroutine(StartMenuUI.Instance.SaveNameWarning());
 		}
 	}
-	public IEnumerator ShowSaveNameWarning()
-	{
-		createSaveWarning.SetActive(true);
-		yield return new WaitForSeconds(5);
-		createSaveWarning.SetActive(false);
-
-	}
 	public void SwitchToStart()
 	{
 		if (isInGame)
@@ -125,22 +104,22 @@ public class UIManager : MonoBehaviour
 	public void OpenAudioPanel()
 	{
 		AudioPanelUI.Instance.audioPanel.SetActive(true);
-		videoPanel.SetActive(false);
-		savesPanel.SetActive(false);
+        VideoPanelUI.Instance.videoPanel.SetActive(false);
+        SavesPanelUI.Instance.savesPanel.SetActive(false);
 	}
 	public void OpenVideoPanel()
 	{
         AudioPanelUI.Instance.audioPanel.SetActive(false);
-		videoPanel.SetActive(true);
-		savesPanel.SetActive(false);
+		VideoPanelUI.Instance.videoPanel.SetActive(true);
+        SavesPanelUI.Instance.savesPanel.SetActive(false);
 	}
 	public void OpenSavesPanel()
 	{
 		if(!isInGame)
 		{
             AudioPanelUI.Instance.audioPanel.SetActive(false);
-			videoPanel.SetActive(false);
-			savesPanel.SetActive(true);
+            VideoPanelUI.Instance.videoPanel.SetActive(false);
+			SavesPanelUI.Instance.savesPanel.SetActive(true);
 		}
 	}
 }
