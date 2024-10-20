@@ -26,7 +26,7 @@ public class HealthSystem : MonoBehaviour
 		if (newHealth <= 0) // Makes sure health never goes below 0
 		{
 			health = 0;
-            if (lives - 1 > 0)
+            if (lives - 1 > -1)
             {
                 lives -= 1;
             }
@@ -57,12 +57,7 @@ public class HealthSystem : MonoBehaviour
 	public void UpdateLives(int newLives)
 	{
 		lives = newLives;
-		Debug.Log("HealthSystem lives: "+lives);
 	}
-    private void Update()
-    {
-        Debug.Log("HealthSystem lives UPDATE: " + lives);
-    }
     public void AssignLives()
 	{
 

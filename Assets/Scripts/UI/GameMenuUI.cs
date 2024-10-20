@@ -40,7 +40,6 @@ public class GameMenuUI : MonoBehaviour
     {
         wave.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
         health.text = $"Health: {healthSystem.health}";
-        Debug.Log(healthSystem.lives);
         lives.text = $"Lives: {healthSystem.lives}";
         ammo.text = $"{gunController.ammo[gunController.currentGunInt]}";
     }
