@@ -79,7 +79,7 @@ public class PopupManager : MonoBehaviour
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.DeleteSaveConfirm:
-				header.text = $"Delete save? ({UIManager.Instance.currentSave})";
+				header.text = $"Delete save? ({SavesPanelUI.Instance.currentSave})";
 				information.text = "This cannot be undone.";
 				actionBtnText.text = "Delete";
 				actionBtnImage.color = quitRed;
@@ -87,14 +87,14 @@ public class PopupManager : MonoBehaviour
 				actionBtn.onClick.AddListener(() =>
 				{
                     GameManager.Instance.DeleteSave();
-					UIManager.Instance.InstantiateSaveButtons();
-					UIManager.Instance.UpdateDeleteSaveButton();
+					SavesPanelUI.Instance.InstantiateSaveButtons();
+                    SavesPanelUI.Instance.UpdateDeleteSaveButton();
 					ClosePopup();
 				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.PlaySaveConfirm:
-				header.text = $"Play selected save? ({UIManager.Instance.currentSave})";
+				header.text = $"Play selected save? ({SavesPanelUI.Instance.currentSave})";
 
                 information.text = "This will immediately start the game.";
 				actionBtnText.text = "Play";
@@ -102,7 +102,7 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					GameManager.Instance.LoadPlayer(UIManager.Instance.currentSave);
+					GameManager.Instance.LoadPlayer(SavesPanelUI.Instance.currentSave);
 					GameManager.Instance.StartNewGame();
 					ClosePopup();
 				});
@@ -162,7 +162,7 @@ public class PopupManager : MonoBehaviour
 				{
 					saveName = nameField.text;
 
-                    UIManager.Instance.currentSave = saveName;
+                    SavesPanelUI.Instance.currentSave = saveName;
 
                     //Debug.Log(SaveSystem.FindSavesBool(saveName));
 

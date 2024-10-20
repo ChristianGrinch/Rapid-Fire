@@ -54,12 +54,6 @@ public class GameManager : MonoBehaviour
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
 	}
-    public void SetDifficulty(int selectedDifficulty)
-    {
-        difficulty = selectedDifficulty;
-        Debug.Log("Difficulty set to: " + difficulty);
-        didSelectDifficulty = true;
-    }
     public void GameOver()
 	{
 		RestartMenuUI.Instance.ShowRestartMenu();
@@ -101,14 +95,14 @@ public class GameManager : MonoBehaviour
 	public void PauseGame()
 	{
 		isGameUnpaused = false;
-		UIManager.Instance.pauseMenu.SetActive(true);
+		PauseMenuUI.Instance.pauseMenu.SetActive(true);
 		Time.timeScale = 0;
 	    PauseMenuUI.Instance.saveGame.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{
 		isGameUnpaused = true;
-		UIManager.Instance.pauseMenu.SetActive(false);
+		PauseMenuUI.Instance.pauseMenu.SetActive(false);
         GameMenuUI.Instance.game.SetActive(true);
 		Time.timeScale = 1;
 	}
@@ -122,12 +116,13 @@ public class GameManager : MonoBehaviour
 	}
     public void SetDefaultSave()
     {
-        UIManager.Instance.playDefaultText.text = "Play default save \n[ " + currentSave + " ]";
+        StartMenuUI.Instance.playDefaultText.text = "Play default save \n[ " + currentSave + " ]";
         if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
         {
             SaveSystem.SetDefaultSave(currentSave);
             Debug.Log("Set '" + currentSave + "' to default save.");
             defaultSave = SaveSystem.LoadDefaultSave();
+            SavesPanelUI.Instance.defaultSave = defaultSave;
         }
     }
     public void DeleteSave()
@@ -220,14 +215,14 @@ public class GameManager : MonoBehaviour
             PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
 
             // Update settings data
-            UIManager.Instance.masterVolumeSlider.value = data.masterVolume;
-            UIManager.Instance.masterVolume.text = data.masterVolume.ToString();
+            AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
+            AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
-            UIManager.Instance.musicVolumeSlider.value = data.musicVolume;
-            UIManager.Instance.musicVolume.text = data.musicVolume.ToString();
+            AudioPanelUI.Instance.musicVolume.value = data.musicVolume;
+            AudioPanelUI.Instance.music.text = data.musicVolume.ToString();
 
-            UIManager.Instance.gunVolumeSlider.value = data.gunVolume;
-            UIManager.Instance.gunVolume.text = data.musicVolume.ToString();
+            AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
+            AudioPanelUI.Instance.gun.text = data.musicVolume.ToString();
 
             if (data.difficulty != 0)
             {

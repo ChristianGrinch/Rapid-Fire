@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,8 @@ public class StartMenuUI : MonoBehaviour
     [Header("Warnings")]
     public GameObject difficultySelectWarning;
     public GameObject saveNameWarning;
+    [Header("Other")]
+    public TMP_Text playDefaultText;
     public IEnumerator SaveNameWarning()
     {
         saveNameWarning.SetActive(true);
