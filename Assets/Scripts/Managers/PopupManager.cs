@@ -65,7 +65,7 @@ public class PopupManager : MonoBehaviour
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.StartReturnConfirm:
-				header.text = "Return to Start Screen?";
+				header.text = "Return to Start Menu?";
 				information.text = "You will lose any unsaved progress.";
 				actionBtnText.text = "Quit";
 				actionBtnImage.color = quitRed;
@@ -79,7 +79,7 @@ public class PopupManager : MonoBehaviour
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.DeleteSaveConfirm:
-				header.text = $"Delete save? ({UIManager.Instance.currentSave})";
+				header.text = $"Delete save? ({SavesPanelUI.Instance.currentSave})";
 				information.text = "This cannot be undone.";
 				actionBtnText.text = "Delete";
 				actionBtnImage.color = quitRed;
@@ -87,14 +87,14 @@ public class PopupManager : MonoBehaviour
 				actionBtn.onClick.AddListener(() =>
 				{
                     GameManager.Instance.DeleteSave();
-					UIManager.Instance.InstantiateSaveButtons();
-					UIManager.Instance.UpdateDeleteSaveButton();
+					SavesPanelUI.Instance.InstantiateSaveButtons();
+                    SavesPanelUI.Instance.UpdateDeleteSaveButton();
 					ClosePopup();
 				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.PlaySaveConfirm:
-				header.text = $"Play selected save? ({UIManager.Instance.currentSave})";
+				header.text = $"Play selected save? ({SavesPanelUI.Instance.currentSave})";
 
                 information.text = "This will immediately start the game.";
 				actionBtnText.text = "Play";
@@ -102,8 +102,8 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					GameManager.Instance.LoadPlayer(UIManager.Instance.currentSave);
-					GameManager.Instance.StartNewGame();
+					GameManager.Instance.LoadPlayer(SavesPanelUI.Instance.currentSave);
+					GameManager.Instance.StartExistingGame();
 					ClosePopup();
 				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
@@ -162,21 +162,19 @@ public class PopupManager : MonoBehaviour
 				{
 					saveName = nameField.text;
 
-                    UIManager.Instance.currentSave = saveName;
+                    SavesPanelUI.Instance.currentSave = saveName;
 
                     //Debug.Log(SaveSystem.FindSavesBool(saveName));
 
 					if (!string.IsNullOrEmpty(saveName) && !SaveSystem.FindSavesBool(saveName))
 					{
-						Debug.Log("ran if true");
                         GameManager.Instance.CreateSave(saveName);
 						GameManager.Instance.StartNewGame();
 						ClosePopup();
 					}
 					else
 					{
-						Debug.Log("ran if false");
-						StartCoroutine(UIManager.Instance.ShowSaveNameWarning());
+						StartCoroutine(StartMenuUI.Instance.DifficultySelectWarning());
 						ClosePopup();
 					}
 				});

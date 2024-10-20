@@ -14,7 +14,7 @@ public class SaveData
 
 	// Game data
 	[Key(10)] public int wave;
-	[Key(11)] public int[] numberOfEnemies = { 0, 0, 0, 0 };
+	[Key(11)] public int[] numberOfEnemies = { 0, 0, 0, 0, 0 };
 	[Key(12)] public int[] numberofPowerups = { 0, 0, 0 };
 	[Key(13)] public int difficulty;
 
@@ -62,9 +62,9 @@ public class SaveData
 			difficulty = GameManager.Instance.difficulty,
 
 			// Assign settings data
-			masterVolume = (int)UIManager.Instance.masterVolumeSlider.value,
-			musicVolume = (int)UIManager.Instance.musicVolumeSlider.value,
-			gunVolume = (int)UIManager.Instance.gunVolumeSlider.value,
+			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
+			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
+			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
 		};
 		return saveData;
 	}
@@ -100,8 +100,8 @@ public class SaveData
 		saveData.ammo = new[] { 30, 50 };
 
 		// Assign game data
-		saveData.wave = 0; //TEST: this might lowk break something like it did at school when theriault was tryna help
-		saveData.numberOfEnemies = new int[4];
+		saveData.wave = 1;
+		saveData.numberOfEnemies = new int[5];
         switch (difficulty)
 		{
 			case 1:
@@ -109,19 +109,22 @@ public class SaveData
 				saveData.numberOfEnemies[1] = 2;
 				saveData.numberOfEnemies[2] = 0;
 				saveData.numberOfEnemies[3] = 0;
-				break;
+                saveData.numberOfEnemies[4] = 10;
+                break;
 			case 2:
 				saveData.numberOfEnemies[0] = 6;
 				saveData.numberOfEnemies[1] = 2;
 				saveData.numberOfEnemies[2] = 1;
 				saveData.numberOfEnemies[3] = 0;
-				break;
+                saveData.numberOfEnemies[4] = 10;
+                break;
 			case 3:
 				saveData.numberOfEnemies[0] = 8;
 				saveData.numberOfEnemies[1] = 4;
 				saveData.numberOfEnemies[2] = 3;
 				saveData.numberOfEnemies[3] = 2;
-				break;
+                saveData.numberOfEnemies[4] = 10;
+                break;
 		}
 		saveData.numberofPowerups = new[] {0, 0, 0};
 		saveData.difficulty = difficulty;

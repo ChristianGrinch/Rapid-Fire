@@ -54,56 +54,65 @@ public class GameManager : MonoBehaviour
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
 	}
-    public void SetDifficulty(int selectedDifficulty)
-    {
-        difficulty = selectedDifficulty;
-        Debug.Log("Difficulty set to: " + difficulty);
-        didSelectDifficulty = true;
-    }
     public void GameOver()
 	{
-		UIManager.Instance.ShowRestartMenu();
+		RestartMenuUI.Instance.ShowRestartMenu();
 		isGameUnpaused = false;
 	}
 	public void RestartGame()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        isInGame = false;
+        isGameUnpaused = false;
 	}
 	public void StartGame()
 	{
 		LoadPlayer(defaultSave);
+
 		UIManager.Instance.CloseAllMenus();
-		UIManager.Instance.game.SetActive(true);
+        GameMenuUI.Instance.game.SetActive(true);
+
 		isGameUnpaused = true;
 		isInGame = true;
 
-		healthSystem.AssignLives();
 		Time.timeScale = 1;
-		UIManager.Instance.SetDifficultyText();
+		GameMenuUI.Instance.SetDifficultyText();
 
 	}
 	public void StartNewGame()
 	{
 		UIManager.Instance.CloseAllMenus();
-		UIManager.Instance.game.SetActive(true);
+        GameMenuUI.Instance.game.SetActive(true);
+
 		isGameUnpaused = true;
 		isInGame = true;
 
 		healthSystem.AssignLives();
 		Time.timeScale = 1;
-		UIManager.Instance.SetDifficultyText();
+        GameMenuUI.Instance.SetDifficultyText();
 	}
+    public void StartExistingGame(){
+        UIManager.Instance.CloseAllMenus();
+        GameMenuUI.Instance.game.SetActive(true);
+
+        isGameUnpaused = true;
+        isInGame = true;
+
+        Time.timeScale = 1;
+        GameMenuUI.Instance.SetDifficultyText();
+    }
 	public void PauseGame()
 	{
 		isGameUnpaused = false;
-		UIManager.Instance.pauseMenu.SetActive(true);
+		PauseMenuUI.Instance.pauseMenu.SetActive(true);
 		Time.timeScale = 0;
-		UIManager.Instance.saveButton.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
+	    PauseMenuUI.Instance.saveGame.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{
 		isGameUnpaused = true;
-		UIManager.Instance.pauseMenu.SetActive(false);
+		PauseMenuUI.Instance.pauseMenu.SetActive(false);
+        GameMenuUI.Instance.game.SetActive(true);
 		Time.timeScale = 1;
 	}
 	public void QuitGame()
@@ -116,12 +125,13 @@ public class GameManager : MonoBehaviour
 	}
     public void SetDefaultSave()
     {
-        UIManager.Instance.playDefaultText.text = "Play default save \n[ " + currentSave + " ]";
+        StartMenuUI.Instance.playDefaultText.text = "Play default save \n[ " + currentSave + " ]";
         if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
         {
             SaveSystem.SetDefaultSave(currentSave);
             Debug.Log("Set '" + currentSave + "' to default save.");
             defaultSave = SaveSystem.LoadDefaultSave();
+            SavesPanelUI.Instance.defaultSave = defaultSave;
         }
     }
     public void DeleteSave()
@@ -171,6 +181,7 @@ public class GameManager : MonoBehaviour
 
             healthSystem.UpdateHealth(data.health);
             healthSystem.UpdateLives(data.lives);
+            Debug.Log(data.lives);
 
             // Update game data
             enemySpawnManager.currentWave = data.wave;
@@ -179,12 +190,15 @@ public class GameManager : MonoBehaviour
 			// Check if the save is an old save, if so, preform a modification to it so it can be compatible with current saves.
 			if(data.numberOfEnemies.Length == 4) // Handling for no iceZombie
 			{
+                Debug.LogWarning("Ran save incompatiblity fixer [ICE ZOMBIE]");
 				int[] tempEnemies = new int[5];
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i <= 4; i++)
 				{
 					tempEnemies[i] = data.numberOfEnemies[i];
 				}
+
                 Debug.Log("Data difficulty: " + data.difficulty);
+
 				switch (data.difficulty) // Sets the current number of ice zombies based on saved difficulty and wave
 				{
                     case 1:
@@ -211,19 +225,19 @@ public class GameManager : MonoBehaviour
             PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
 
             // Update settings data
-            UIManager.Instance.masterVolumeSlider.value = data.masterVolume;
-            UIManager.Instance.masterVolume.text = data.masterVolume.ToString();
+            AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
+            AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
-            UIManager.Instance.musicVolumeSlider.value = data.musicVolume;
-            UIManager.Instance.musicVolume.text = data.musicVolume.ToString();
+            AudioPanelUI.Instance.musicVolume.value = data.musicVolume;
+            AudioPanelUI.Instance.music.text = data.musicVolume.ToString();
 
-            UIManager.Instance.gunVolumeSlider.value = data.gunVolume;
-            UIManager.Instance.gunVolume.text = data.musicVolume.ToString();
+            AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
+            AudioPanelUI.Instance.gun.text = data.musicVolume.ToString();
 
             if (data.difficulty != 0)
             {
                 didSelectDifficulty = true;
-                //difficulty = data.difficulty;
+                difficulty = data.difficulty;
             }
 
         }
