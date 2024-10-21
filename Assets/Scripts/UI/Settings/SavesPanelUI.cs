@@ -47,9 +47,6 @@ public class SavesPanelUI : MonoBehaviour
     }
     private void Start()
     {
-        defaultSave = SaveSystem.LoadDefaultSave();
-        StartMenuUI.Instance.playDefaultText.text = "Play default save \n[ " + defaultSave + " ]";
-
         deleteSave.onClick.AddListener(() => PopupManager.Instance.ShowPopup(PopupManager.PopupType.DeleteSaveConfirm));
 		defaultSaveBtn.onClick.AddListener(() => GameManager.Instance.SetDefaultSave());
 		createSave.onClick.AddListener(() =>

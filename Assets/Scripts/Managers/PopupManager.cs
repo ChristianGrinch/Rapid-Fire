@@ -86,6 +86,13 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
+					if(GameManager.Instance.currentSave == GameManager.Instance.defaultSave)
+					{
+						StartMenuUI.Instance.playDefaultText.text = "Play default save \n[No default save!]";
+						GameManager.Instance.defaultSave = "";
+						GameManager.Instance.currentSave = "";
+						SaveSystem.SetDefaultSave("");
+					}
                     GameManager.Instance.DeleteSave();
 					SavesPanelUI.Instance.InstantiateSaveButtons();
                     SavesPanelUI.Instance.UpdateDeleteSaveButton();
