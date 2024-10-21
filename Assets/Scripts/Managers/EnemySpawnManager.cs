@@ -99,7 +99,7 @@ public class EnemySpawnManager : MonoBehaviour
         //~~~~~~~~~~ENEMY
         foreach (GameObject enemy in enemyCountArray)
 		{
-			if (enemy.name.Contains("Enemy 1"))
+			if (enemy.name.Contains("Enemy 1"))	
 			{
 				level1Enemies.Add(enemy);
 			}
