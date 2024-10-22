@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
 				}
 				else
 				{
-                    Debug.Log("detected ground");
                     Debug.DrawRay(rayOrigin, rayDirection, Color.red, 5);
                     playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 }

@@ -40,10 +40,6 @@ public class GameManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-    private void Update()
-    {
-        Debug.Log("GameManager difficulty:" + difficulty);
-    }
     private void Start()
 	{
 		defaultSave = SaveSystem.LoadDefaultSave();

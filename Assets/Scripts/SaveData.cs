@@ -105,11 +105,11 @@ public class SaveData
         switch (difficulty)
 		{
 			case 1:
-				saveData.numberOfEnemies[0] = 4;
-				saveData.numberOfEnemies[1] = 2;
-				saveData.numberOfEnemies[2] = 0;
-				saveData.numberOfEnemies[3] = 0;
-                saveData.numberOfEnemies[4] = 10;
+				saveData.numberOfEnemies[0] = 4; // Enemy level 1
+				saveData.numberOfEnemies[1] = 2; // Enemy level 2
+				saveData.numberOfEnemies[2] = 0; // Enemy level 3
+				saveData.numberOfEnemies[3] = 0; // Boss level 1
+                saveData.numberOfEnemies[4] = 10; // Ice Zombie
                 break;
 			case 2:
 				saveData.numberOfEnemies[0] = 6;
@@ -122,7 +122,7 @@ public class SaveData
 				saveData.numberOfEnemies[0] = 8;
 				saveData.numberOfEnemies[1] = 4;
 				saveData.numberOfEnemies[2] = 3;
-				saveData.numberOfEnemies[3] = 2;
+				saveData.numberOfEnemies[3] = 0;
                 saveData.numberOfEnemies[4] = 10;
                 break;
 		}
