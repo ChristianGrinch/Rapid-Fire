@@ -1,6 +1,6 @@
-# Rapid Fire
+# Terra Decay
 
-Rapid Fire is a top-down shooter game, where the player can fight enemies, gain experience and buy new guns or other items (not currently in production), and use abilities to help aide them in their fights. 
+Terra Decay is a top-down shooter game, where the player can fight enemies, gain experience and buy new guns or other items (not currently in production), and use abilities to help aide them in their fights. 
 
 ## Table of Contents
 1. [License](#license)
@@ -51,7 +51,7 @@ This project is licensed under the [Apache License 2.0](https://opensource.org/l
 Feel free to submit a pull request. For any medium-major sized changes, open an issue first to discuss what you would like changed.  _I'm not obligated to put your changes into production. I will consider them if they align with my view of the game._
 
 ## itch-io
-itch.io is an app/website that allows developers to publish their games and send out updates similarly to how developers on a platform like steam send out **updates** to the game instead of entire redownloads. itch.io is really helpful for the player, especially if they have slower internet. I will keep the itch.io up to date with the same releases that this repo gets, assuming there are people that want it to be updated. I will not publish any releases to itch.io if no one wants to use the app. <br>
+itch.io is an app/website that allows developers to publish their games and send out updates similarly to how developers on a platform like steam send out **updates** to the game instead of entire redownloads. itch.io is really helpful for the player, especially if they have slower internet. I will keep the itch.io up to date with ~~the same~~ different releases compared to the ones that this repo gets. This is simply due to not wanting to upload so many files and devlogs cause I'm lazy and my upload speed (internet) is mid at best. <br>
 ### Install it [here](https://itch.io/app) and learn how to use it [here](https://itch.io/docs/itch/using/downloading.html)
 
 ## Acknowledgements
