@@ -22,6 +22,7 @@ public class SaveData
 	[Key(20)] public int masterVolume;
 	[Key(21)] public int musicVolume;
 	[Key(22)] public int gunVolume;
+	[Key(23)] public bool useSprintHold;
 
 	// Parameterless constructor
 	public SaveData() { }
@@ -65,6 +66,7 @@ public class SaveData
 			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
 			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
 			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
+			useSprintHold = player.useSprintHold,
 		};
 		return saveData;
 	}
@@ -133,6 +135,7 @@ public class SaveData
 		saveData.masterVolume = 50;
         saveData.musicVolume = 50;
         saveData.gunVolume = 30;
+		saveData.useSprintHold = true;
 
         return saveData;
     }

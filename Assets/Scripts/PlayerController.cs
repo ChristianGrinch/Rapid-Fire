@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
 	private GunController gunController;
 
 	public bool isGrounded;
+	public bool useSprintHold = true;
+	public bool isSprinting;
 
 	// Start is called before the first frame update
 	void Start()
@@ -33,6 +35,7 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
         Sprinting();
+		Debug.Log("Player speed: "+speed);
 		health = healthSystem.health;
 		lives = healthSystem.lives;
 		wave = enemySpawnManager.currentWave;
@@ -108,14 +111,36 @@ public class PlayerController : MonoBehaviour
 	{
 		if (speed <= 100) // Stops changes in speed if speed powerup is enabled
 		{
-			if (Input.GetKeyDown(KeyCode.LeftShift))
+			if (useSprintHold)
 			{
-				speed = 100;
+				Debug.Log("Use sprint hold");
+				if (Input.GetKeyDown(KeyCode.LeftShift))
+				{
+					speed = 100;
+				}
+				else if (Input.GetKeyUp(KeyCode.LeftShift))
+				{
+					speed = 80;
+				}
 			}
-			else if (Input.GetKeyUp(KeyCode.LeftShift))
+			else
 			{
-				speed = 80;
+				Debug.Log("Use sprint toggle");
+				if (Input.GetKeyDown(KeyCode.LeftShift))
+				{
+					if (!isSprinting)
+					{
+						speed = 100;
+						isSprinting = true;
+					}
+					else
+					{
+						speed = 80;
+						isSprinting = false;
+					}
+				}
 			}
+			
 		}
 	}
 

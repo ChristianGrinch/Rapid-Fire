@@ -70,6 +70,13 @@ public class UIManager : MonoBehaviour
 			child.gameObject.SetActive(false);
 		}
 	}
+	public void CloseAllSettingsPanels() // bad cuz hard coded unlike closeallmenus but i could care less right now
+	{
+		AudioPanelUI.Instance.audioPanel.SetActive(false);
+		VideoPanelUI.Instance.videoPanel.SetActive(false);
+		SavesPanelUI.Instance.savesPanel.SetActive(false);
+		ControlsPanelUI.Instance.controlsPanel.SetActive(false);
+	}
 	public void OpenDifficultyScreen()
 	{
 		if (!GameManager.Instance.didSelectDifficulty)
@@ -99,27 +106,6 @@ public class UIManager : MonoBehaviour
 	{
 		CloseAllMenus();
 		SettingsMenuUI.Instance.settingsMenu.SetActive(true);
-        OpenAudioPanel(); // Sets Audio Panel to "default" opened save, so that the save panel isn't open while in game.
+        SettingsMenuUI.Instance.OpenAudioPanel(); // Sets Audio Panel to "default" opened save, so that the save panel isn't open while in game.
     }
-	public void OpenAudioPanel()
-	{
-		AudioPanelUI.Instance.audioPanel.SetActive(true);
-        VideoPanelUI.Instance.videoPanel.SetActive(false);
-        SavesPanelUI.Instance.savesPanel.SetActive(false);
-	}
-	public void OpenVideoPanel()
-	{
-        AudioPanelUI.Instance.audioPanel.SetActive(false);
-		VideoPanelUI.Instance.videoPanel.SetActive(true);
-        SavesPanelUI.Instance.savesPanel.SetActive(false);
-	}
-	public void OpenSavesPanel()
-	{
-		if(!isInGame)
-		{
-            AudioPanelUI.Instance.audioPanel.SetActive(false);
-            VideoPanelUI.Instance.videoPanel.SetActive(false);
-			SavesPanelUI.Instance.savesPanel.SetActive(true);
-		}
-	}
 }

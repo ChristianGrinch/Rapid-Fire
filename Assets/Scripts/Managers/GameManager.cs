@@ -1,34 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance { get; private set; }
-	// Game
-	public static float mapSize = 50;
-	public bool isGameUnpaused = false;
-	public bool isInGame = false;
-	public string defaultSave;
-	public string currentSave;
-	public int difficulty = 1;
-	public bool didSelectDifficulty = false;
-	public int enemyLevel1; public int enemyLevel2; public int enemyLevel3; public int bossLevel1; public int iceZombie;
-	public bool didLoadSpawnManager = false;
-	public bool didLoadPowerupManager = false;
-
-    // References
-    private HealthSystem healthSystem;
-	private GunController gunController;
-	private PlayerController playerController;
-	private EnemySpawnManager enemySpawnManager;
-	private GameObject player;
 	void Awake()
 	{
 		if (Instance == null)
@@ -40,6 +16,32 @@ public class GameManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
+	[Header("Game Values")]
+	public static float mapSize = 50;
+	public int difficulty = 1;
+	public bool isGameUnpaused = false;
+	public bool isInGame = false;
+	[Header("Saves")]
+	public string defaultSave;
+	public string currentSave;
+	[Header("Enemy Counts")]
+	public int enemyLevel1;
+	public int enemyLevel2;
+	public int enemyLevel3;
+	public int bossLevel1;
+	public int iceZombie;
+	[Header("Checks")]
+	public bool didSelectDifficulty = false;
+	public bool didLoadSpawnManager = false;
+	public bool didLoadPowerupManager = false;
+
+    // References
+    private HealthSystem healthSystem;
+	private GunController gunController;
+	private PlayerController playerController;
+	private EnemySpawnManager enemySpawnManager;
+	private GameObject player;
+
     private void Start()
 	{
 		defaultSave = SaveSystem.LoadDefaultSave();
@@ -177,7 +179,6 @@ public class GameManager : MonoBehaviour
 
             healthSystem.UpdateHealth(data.health);
             healthSystem.UpdateLives(data.lives);
-            Debug.Log(data.lives);
 
             // Update game data
             enemySpawnManager.currentWave = data.wave;
@@ -229,6 +230,15 @@ public class GameManager : MonoBehaviour
 
             AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
             AudioPanelUI.Instance.gun.text = data.musicVolume.ToString();
+			playerController.useSprintHold = data.useSprintHold;
+			if (data.useSprintHold)
+			{
+				ControlsPanelUI.Instance.sprintMode.value = 0;
+			} 
+			else if (!data.useSprintHold)
+			{
+				ControlsPanelUI.Instance.sprintMode.value = 1;
+			}
 
             if (data.difficulty != 0)
             {
