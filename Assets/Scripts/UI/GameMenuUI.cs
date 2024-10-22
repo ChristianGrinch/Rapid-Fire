@@ -24,6 +24,7 @@ public class GameMenuUI : MonoBehaviour
     public TMP_Text lives;
     public TMP_Text wave;
     public TMP_Text ammo;
+	public TMP_Text version;
 
     // References
     private GameObject player;
@@ -38,7 +39,8 @@ public class GameMenuUI : MonoBehaviour
         gunController = player.GetComponent<GunController>();
         gameManager = FindFirstObjectByType<GameManager>();
         enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
-    }
+		version.text = "Version: " + Application.version;
+	}
     private void Update()
     {
         wave.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
