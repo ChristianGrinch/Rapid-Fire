@@ -9,8 +9,9 @@ Terra Decay is a top-down shooter game, where the player can fight enemies, gain
 4. [Upcoming Features](#upcoming-features)
 5. [Contributing](#contributing)
 6. [itch.io](#itch-io)
-7. [Acknowledgements](#acknowledgements)
-8. [Contact](#contact)
+7. [Versioning](#versioning)
+8. [Acknowledgements](#acknowledgements)
+9. [Contact](#contact)
 
 ## License
 This project is licensed under the [Apache License 2.0](https://opensource.org/licenses/Apache-2.0).
@@ -53,6 +54,12 @@ Feel free to submit a pull request. For any medium-major sized changes, open an 
 ## itch-io
 itch.io is an app/website that allows developers to publish their games and send out updates similarly to how developers on a platform like steam send out **updates** to the game instead of entire redownloads. itch.io is really helpful for the player, especially if they have slower internet. I will keep the itch.io up to date with ~~the same~~ different releases compared to the ones that this repo gets. This is simply due to not wanting to upload so many files and devlogs cause I'm lazy and my upload speed (internet) is mid at best. <br>
 ### Install it [here](https://itch.io/app) and learn how to use it [here](https://itch.io/docs/itch/using/downloading.html)
+
+## Versioning
+`Terra Decay` uses semantic versioning. _Not strictly_, cause I dont even know what semantic versioning is really. The extent of my knowledge, and what the project uses, is as follows.
+1. **MAJOR version**: Major feature overhaul or significant change that break existing functionality.
+2. **MINOR version**: New features in a backwards-compatible manner.
+3. **PATCH version**: Bug fixes or minor tweaks that do not add new features and are backwards-compatible. 
 
 ## Acknowledgements
 - Special thanks to Unity for their starter coding courses.
