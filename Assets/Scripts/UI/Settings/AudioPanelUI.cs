@@ -42,11 +42,11 @@ public class AudioPanelUI : MonoBehaviour
         gunVolume.onValueChanged.AddListener((value) => UpdateGunSlider(value));
 
         masterVolumeIncrease.onClick.AddListener(() => ChangeMasterVolume(true));
-        masterVolumeIncrease.onClick.AddListener(() => ChangeMasterVolume(false));
+        masterVolumeDecrease.onClick.AddListener(() => ChangeMasterVolume(false));
         musicVolumeIncrease.onClick.AddListener(() => ChangeMusicVolume(true));
-        musicVolumeIncrease.onClick.AddListener(() => ChangeMusicVolume(false));
+        musicVolumeDecrease.onClick.AddListener(() => ChangeMusicVolume(false));
         gunVolumeIncrease.onClick.AddListener(() => ChangeGunVolume(true));
-        gunVolumeIncrease.onClick.AddListener(() => ChangeGunVolume(false));
+        gunVolumeDecrease.onClick.AddListener(() => ChangeGunVolume(false));
     }
     public void InitializeVolume()
     {
@@ -71,14 +71,17 @@ public class AudioPanelUI : MonoBehaviour
     }
     public void ChangeMasterVolume(bool increaseVolume)
     {
+		Debug.Log("ran change ma ster volume");
         if (increaseVolume)
         {
-            masterVolume.value++;
+			Debug.Log("ran true");
+			masterVolume.value++;
             master.text = masterVolume.value.ToString();
         }
         else
         {
-            masterVolume.value--;
+			Debug.Log("ran false");
+			masterVolume.value--;
             master.text = masterVolume.value.ToString();
         }
     }

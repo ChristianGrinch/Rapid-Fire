@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
         Sprinting();
-		Debug.Log("Player speed: "+speed);
 		health = healthSystem.health;
 		lives = healthSystem.lives;
 		wave = enemySpawnManager.currentWave;
@@ -50,11 +49,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            
-
-            Debug.DrawRay(rayOrigin, rayDirection, Color.blue, 5);
-
-			if (Physics.Raycast(ray, rayDistance))
+            //Debug.DrawRay(rayOrigin, rayDirection, Color.blue, 5);
+			if (Physics.Raycast(ray, rayDistance) && GameManager.Instance.isGameUnpaused)
             {
 				if(hit.collider.gameObject.layer == LayerMask.NameToLayer("MoveableObject")){
                     Debug.Log("hit a moveable object. no jump :p");
@@ -113,7 +109,6 @@ public class PlayerController : MonoBehaviour
 		{
 			if (useSprintHold)
 			{
-				Debug.Log("Use sprint hold");
 				if (Input.GetKeyDown(KeyCode.LeftShift))
 				{
 					speed = 100;
@@ -123,9 +118,8 @@ public class PlayerController : MonoBehaviour
 					speed = 80;
 				}
 			}
-			else
+			else // Use sprint toggle
 			{
-				Debug.Log("Use sprint toggle");
 				if (Input.GetKeyDown(KeyCode.LeftShift))
 				{
 					if (!isSprinting)
