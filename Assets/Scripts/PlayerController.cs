@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 	public int lives;
 	public int wave;
 	public int[] ammo;
+	public int speedPowerupCount = 0;
 
 	public GameObject gameManager;
 	private HealthSystem healthSystem;
