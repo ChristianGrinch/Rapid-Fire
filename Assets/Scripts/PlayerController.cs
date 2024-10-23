@@ -81,11 +81,11 @@ public class PlayerController : MonoBehaviour
 	// Moves player based on WASD/Arrow keys input
 	void MovePlayer()
 	{
-		float horizontalInput = Input.GetAxis("Horizontal");
-		float verticalInput = Input.GetAxis("Vertical");
+		float horizontalInput = Input.GetAxisRaw("Horizontal");
+		float verticalInput = Input.GetAxisRaw("Vertical");
 		
-		playerRb.AddForce(speed * Time.deltaTime * verticalInput * Vector3.forward, ForceMode.Impulse);
-		playerRb.AddForce(horizontalInput * speed * Time.deltaTime * Vector3.right, ForceMode.Impulse);
+		Vector3 v3 = new Vector3(horizontalInput, 0.0f, verticalInput);
+		playerRb.AddForce(speed * Time.deltaTime * v3.normalized, ForceMode.Impulse);
 	}
 
 	void RotatePlayer() // all code in this method was made by chatgpt not me :fade:
