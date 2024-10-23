@@ -8,14 +8,17 @@ public class SpeedPowerup : MonoBehaviour
     public AudioClip powerupCollectSound;
     public AudioClip powerupExpireSound;
     AudioSource audioData;
+	private PlayerController playerController;
+	private GameObject player;
 
     private void Start()
     {
+		player = GameObject.Find("Player");
         audioData = GetComponent<AudioSource>();
+		playerController = player.GetComponent<PlayerController>();
     }
     private void OnTriggerEnter(Collider other)
     {
-
         if (other.gameObject.CompareTag("Player"))
         {
             audioData.clip = powerupCollectSound;

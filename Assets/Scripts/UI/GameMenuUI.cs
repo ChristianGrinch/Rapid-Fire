@@ -26,6 +26,10 @@ public class GameMenuUI : MonoBehaviour
     public TMP_Text wave;
     public TMP_Text ammo;
 	public TMP_Text version;
+	[Header("Images")]
+	public Image ammoImage;
+	public Sprite rifleAmmo;
+	public Sprite pistolAmmo;
 	[Header("Debug Elements")]
 	public Button spawnEnemyDebug;
 	public Button killEnemiesDebug;
@@ -50,6 +54,14 @@ public class GameMenuUI : MonoBehaviour
 	}
     private void Update()
     {
+		if(gunController.currentGun == GunController.GunType.Pistol)
+		{
+			ammoImage.sprite = pistolAmmo;
+		} 
+		else if(gunController.currentGun == GunController.GunType.AssaultRifle)
+		{
+			ammoImage.sprite = rifleAmmo;
+		}
         wave.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
         health.text = $"Health: {healthSystem.health}";
         lives.text = $"Lives: {healthSystem.lives}";
