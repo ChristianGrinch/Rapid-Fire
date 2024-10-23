@@ -59,7 +59,8 @@ itch.io is an app/website that allows developers to publish their games and send
 `Terra Decay` uses semantic versioning. _Not strictly_, cause I dont even know what semantic versioning is really. The extent of my knowledge, and what the project uses, is as follows.
 1. **MAJOR version**: Major feature overhaul or significant change that break existing functionality.
 2. **MINOR version**: New features in a backwards-compatible manner.
-3. **PATCH version**: Bug fixes or minor tweaks that do not add new features and are backwards-compatible. 
+3. **PATCH version**: Bug fixes or minor tweaks that do not add new features and are backwards-compatible.
+4. **Suffix**: `b` to represent a `Beta` release. `a` to represent an `alpha` release. All current (as of 10/22/24) releases will be marked as b, because I'm in the beta testing phase.
 
 ## Acknowledgements
 - Special thanks to Unity for their starter coding courses.
