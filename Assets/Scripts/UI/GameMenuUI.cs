@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameMenuUI : MonoBehaviour
 {
@@ -25,6 +26,11 @@ public class GameMenuUI : MonoBehaviour
     public TMP_Text wave;
     public TMP_Text ammo;
 	public TMP_Text version;
+	[Header("Debug Elements")]
+	public Button spawnEnemyDebug;
+	public Button killEnemiesDebug;
+	public TMP_InputField enemySpawnCountDebug;
+	private int numberOfEnemiesDebug;
 
     // References
     private GameObject player;
@@ -40,6 +46,7 @@ public class GameMenuUI : MonoBehaviour
         gameManager = FindFirstObjectByType<GameManager>();
         enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
 		version.text = "Version: " + Application.version;
+		DebugLogic();
 	}
     private void Update()
     {
@@ -74,7 +81,19 @@ public class GameMenuUI : MonoBehaviour
                 break;
         }
     }
-    public void DEBUGKillAllEnemies()
+	public void DebugLogic()
+	{
+		spawnEnemyDebug.onClick.AddListener(() =>
+		{
+			for(var i = 0; i < numberOfEnemiesDebug; i++)
+			{
+				EnemySpawnManager.Instance.InstantiateEnemyDebug();
+			}
+		});
+		killEnemiesDebug.onClick.AddListener(KillAllEnemiesDebug);
+		enemySpawnCountDebug.onEndEdit.AddListener((string str) => { Debug.Log(str); numberOfEnemiesDebug = int.Parse(str); });
+	}
+    public void KillAllEnemiesDebug()
     {
         GameObject parent = EnemySpawnManager.Instance.enemyParent;
         int childCount = parent.transform.childCount;

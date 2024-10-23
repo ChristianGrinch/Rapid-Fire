@@ -281,5 +281,10 @@ public class EnemySpawnManager : MonoBehaviour
 		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
 		instantiatedEnemy.name = enemy[type].name; // Removes (Clone) from name
 	}
-
+	public void InstantiateEnemyDebug()
+	{
+		GameObject instantiatedEnemy = Instantiate(enemy[0], GenerateSpawnPosition(0), Quaternion.Euler(90, 0, 0));
+		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent
+		instantiatedEnemy.name = enemy[0].name; // Removes (Clone) from name
+	}
 }
