@@ -17568,10 +17568,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   randomPlay: 1
   clips:
-  - {fileID: 8300000, guid: 9fb5c3530ecb0154d9e3ff721a53e999, type: 3}
-  - {fileID: 8300000, guid: 324105c73d063fa46b1c3f2f94ba22ad, type: 3}
-  - {fileID: 8300000, guid: 14e96087d05d4774b9a325f35a4b2a00, type: 3}
-  - {fileID: 8300000, guid: 0423e645d0e4bb94b9a8aa91bf6f8130, type: 3}
+  - {fileID: 8300000, guid: aa57711a92252c340b3bb516d7d362f8, type: 3}
+  - {fileID: 8300000, guid: da697d1ab59bec44f9ffcb9a45c50219, type: 3}
+  - {fileID: 8300000, guid: 6baa07376a8a14d458e0392293e9b217, type: 3}
+  - {fileID: 8300000, guid: ce1d9254bfeab864c8eca71578a7a6d0, type: 3}
 --- !u!82 &1194173945
 AudioSource:
   m_ObjectHideFlags: 0
@@ -21674,6 +21674,7 @@ MonoBehaviour:
   didLoad: 0
   powerupCollectSound: {fileID: 8300000, guid: 89d076e3b844d334391f0aa21ecfcc6b, type: 3}
   powerupExpireSound: {fileID: 8300000, guid: f1d1ac2eb1926d348a096dbcb8916702, type: 3}
+  runningSpeedPowerup: 0
 --- !u!114 &1606568289
 MonoBehaviour:
   m_ObjectHideFlags: 0
