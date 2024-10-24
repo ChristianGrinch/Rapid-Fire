@@ -3,10 +3,7 @@ using UnityEngine;
 
 public class SpeedPowerup : MonoBehaviour
 {
-    private float powerupLength = 5f;
-
     public AudioClip powerupCollectSound;
-    public AudioClip powerupExpireSound;
     AudioSource audioData;
 	private PlayerController playerController;
 	private GameObject player;
@@ -21,31 +18,21 @@ public class SpeedPowerup : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            audioData.clip = powerupCollectSound;
-            audioData.volume = 0.3f;
-            audioData.Play();
-            StartCoroutine(ApplySpeedPowerup(other.gameObject));
-        }
+			StartCoroutine(PlayerCollide());
+		}
     }
+	private IEnumerator PlayerCollide()
+	{
+		playerController.speedPowerupCount++;
 
-    private IEnumerator ApplySpeedPowerup(GameObject player)
-    {
-        // Apply speed boost
-        player.GetComponent<PlayerController>().speed = 150;
- 
-        gameObject.GetComponent<Renderer>().enabled = false;
-        gameObject.GetComponent<Collider>().enabled = false;
+		audioData.clip = powerupCollectSound;
+		audioData.volume = 0.3f;
+		audioData.Play();
 
-        yield return new WaitForSeconds(powerupLength);
+		gameObject.GetComponent<Renderer>().enabled = false;
+		gameObject.GetComponent<Collider>().enabled = false;
 
-        audioData.clip = powerupExpireSound;
-        audioData.volume = 0.3f;
-        audioData.Play();
-
-        // Revert the effect after the powerup duration
-        player.GetComponent<PlayerController>().speed = 80;
-
-        PowerupManager.Instance.speedPowerups--;
-        Destroy(gameObject, powerupExpireSound.length);
-    }
+		yield return new WaitForSeconds(powerupCollectSound.length);
+		Destroy(gameObject);
+	}
 }

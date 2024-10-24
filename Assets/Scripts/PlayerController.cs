@@ -65,6 +65,10 @@ public class PlayerController : MonoBehaviour
 			}
         }
 
+		if (Input.GetKeyDown(KeyCode.F) && speedPowerupCount >= 1 && !PowerupManager.Instance.runningSpeedPowerup)
+		{
+			StartCoroutine(PowerupManager.Instance.ApplySpeedPowerup());
+		}
     }
 
 	private void FixedUpdate()
