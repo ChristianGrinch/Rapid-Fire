@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,6 +35,7 @@ public class EnemySpawnManager : MonoBehaviour
 	public List<GameObject> level3Enemies = new();
 	public List<GameObject> boss1Enemies = new();
 	public List<GameObject> iceZombie = new();
+	public List<int> enemies = new(5);
 
 	public int currentWave = 0;
 	public int spawnBufferDistance = 7;
@@ -95,29 +97,35 @@ public class EnemySpawnManager : MonoBehaviour
 		level3Enemies = new();
 		boss1Enemies = new();
         iceZombie = new();
+		enemies = new() { 0,0,0,0,0};
 
         //~~~~~~~~~~ENEMY
         foreach (GameObject enemy in enemyCountArray)
 		{
 			if (enemy.name.Contains("Enemy 1"))	
 			{
-				level1Enemies.Add(enemy);
+				enemies[0] += 1;
+				//level1Enemies.Add(enemy);
 			}
 			else if (enemy.name.Contains("Enemy 2"))
 			{
-				level2Enemies.Add(enemy);
+				enemies[1] += 1;
+				//level2Enemies.Add(enemy);
 			}
 			else if (enemy.name.Contains("Enemy 3"))
 			{
-				level3Enemies.Add(enemy);
+				enemies[2] += 1;
+				//level3Enemies.Add(enemy);
 			}
 			else if (enemy.name.Contains("Boss 1"))
 			{
-				boss1Enemies.Add(enemy);
+				enemies[3] += 1;
+				//boss1Enemies.Add(enemy);
 			} 
 			else if(enemy.name.Contains("Ice Zombie"))
 			{
-				iceZombie.Add(enemy);
+				enemies[4] += 1;
+				//iceZombie.Add(enemy);
 			}
 		}
 	}
