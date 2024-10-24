@@ -48,11 +48,11 @@ public class SaveData
 			wave = player.wave,
 			numberOfEnemies = new int[]
 			{
-				EnemySpawnManager.Instance.level1Enemies.Count,
-				EnemySpawnManager.Instance.level2Enemies.Count,
-				EnemySpawnManager.Instance.level3Enemies.Count,
-				EnemySpawnManager.Instance.boss1Enemies.Count,
-				EnemySpawnManager.Instance.iceZombie.Count,
+				EnemySpawnManager.Instance.enemyCount[0],
+				EnemySpawnManager.Instance.enemyCount[1],
+				EnemySpawnManager.Instance.enemyCount[2],
+				EnemySpawnManager.Instance.enemyCount[3],
+				EnemySpawnManager.Instance.enemyCount[4],
 			},
 			numberofPowerups = new int[]
 			{

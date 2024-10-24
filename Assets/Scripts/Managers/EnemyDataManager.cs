@@ -16,52 +16,43 @@ public class EnemyDataManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-	// All enemy prefabs
-	public GameObject[] enemies;
-	// Total enemy count
-	public GameObject[] enemyCountArray;
+	public GameObject[] enemies; // All enemy prefabs
+	public GameObject[] enemyCountArray; // All active enemy game objects
+	public int totalEnemyCount;
 
-	// Lists of how many enemies there are
-	public List<List<GameObject>> enemyCounts = new List<List<GameObject>>();
-	public List<GameObject> level1Enemies = new();
-	public List<GameObject> level2Enemies = new();
-	public List<GameObject> level3Enemies = new();
-	public List<GameObject> boss1Enemies = new();
-	public List<GameObject> iceZombie = new();
+	// Lists of how many enemies there are for each type ([0] is enemy 1, and the value is how many)
+	public List<int> enemyCount = new(5);
 	private void Update()
 	{
 		enemyCountArray = EnemySpawnManager.Instance.enemyCountArray;
+		totalEnemyCount = enemyCountArray.Length;
 	}
 	public IEnumerator AssignEnemiesToLists()
 	{
 		yield return null;
-		level1Enemies = new();
-		level2Enemies = new();
-		level3Enemies = new();
-		boss1Enemies = new();
-		iceZombie = new();
+		enemyCount = new() { 0, 0, 0, 0, 0 };
 
 		foreach (GameObject enemy in enemyCountArray)
 		{
 			if (enemy.name.Contains("Enemy 1"))
 			{
-				level1Enemies.Add(enemy);
+				enemyCount[0]++;
 			}
 			else if (enemy.name.Contains("Enemy 2"))
 			{
-				level2Enemies.Add(enemy);
+				enemyCount[1]++;
 			}
 			else if (enemy.name.Contains("Enemy 3"))
 			{
-				level3Enemies.Add(enemy);
+				enemyCount[2]++;
 			}
 			else if (enemy.name.Contains("Boss 1"))
 			{
-				boss1Enemies.Add(enemy);
+				enemyCount[3]++;
 			}
 			else if (enemy.name.Contains("Ice Zombie"))
 			{
-				iceZombie.Add(enemy);
+				enemyCount[4]++;
 			}
 		}
 	}

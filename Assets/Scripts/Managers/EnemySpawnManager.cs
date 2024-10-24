@@ -27,15 +27,10 @@ public class EnemySpawnManager : MonoBehaviour
 	public GameObject player;
 
 	public GameObject[] enemyCountArray;
-	private int enemyCount = 0;
+	private int totalEnemyCount = 0;
 
 	//~~~~~~~~~~ENEMY
-	public List<GameObject> level1Enemies = new();
-	public List<GameObject> level2Enemies = new();
-	public List<GameObject> level3Enemies = new();
-	public List<GameObject> boss1Enemies = new();
-	public List<GameObject> iceZombie = new();
-	public List<int> enemies = new(5);
+	public List<int> enemyCount = new(5);
 
 	public int currentWave = 0;
 	public int spawnBufferDistance = 7;
@@ -66,9 +61,9 @@ public class EnemySpawnManager : MonoBehaviour
 	void Update()
 	{
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
-		enemyCount = enemyCountArray.Length;
+		totalEnemyCount = enemyCountArray.Length;
 
-		if (enemyCount == 0 && UIManager.Instance.isGameUnpaused)
+		if (totalEnemyCount == 0 && UIManager.Instance.isGameUnpaused)
 		{
 			if (GameManager.Instance.didLoadSpawnManager)
 			{
@@ -84,48 +79,34 @@ public class EnemySpawnManager : MonoBehaviour
 				SpawnEnemyWave();
 			}
 		}
-
-		StartCoroutine(AssignEnemiesToLists());
 	}
 
 	public IEnumerator AssignEnemiesToLists()
 	{
 		yield return null;
-        //~~~~~~~~~~ENEMY
-        level1Enemies = new();
-		level2Enemies = new();
-		level3Enemies = new();
-		boss1Enemies = new();
-        iceZombie = new();
-		enemies = new() { 0,0,0,0,0};
+		enemyCount = new() { 0, 0, 0, 0, 0 };
 
-        //~~~~~~~~~~ENEMY
-        foreach (GameObject enemy in enemyCountArray)
+		foreach (GameObject enemy in enemyCountArray)
 		{
-			if (enemy.name.Contains("Enemy 1"))	
+			if (enemy.name.Contains("Enemy 1"))
 			{
-				enemies[0] += 1;
-				//level1Enemies.Add(enemy);
+				enemyCount[0]++;
 			}
 			else if (enemy.name.Contains("Enemy 2"))
 			{
-				enemies[1] += 1;
-				//level2Enemies.Add(enemy);
+				enemyCount[1]++;
 			}
 			else if (enemy.name.Contains("Enemy 3"))
 			{
-				enemies[2] += 1;
-				//level3Enemies.Add(enemy);
+				enemyCount[2]++;
 			}
 			else if (enemy.name.Contains("Boss 1"))
 			{
-				enemies[3] += 1;
-				//boss1Enemies.Add(enemy);
-			} 
-			else if(enemy.name.Contains("Ice Zombie"))
+				enemyCount[3]++;
+			}
+			else if (enemy.name.Contains("Ice Zombie"))
 			{
-				enemies[4] += 1;
-				//iceZombie.Add(enemy);
+				enemyCount[4]++;
 			}
 		}
 	}
@@ -267,21 +248,12 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			InstantiateEnemy(2);
 		}
-		if (GameManager.Instance.iceZombie > 500)
+		for (int i = 0; i < GameManager.Instance.iceZombie; i++)
 		{
-			Debug.LogError("Massive number of enemies detected! Pausing game to prevent crashing.");
-			Debug.Log(GameManager.Instance.iceZombie);
-			#if UNITY_EDITOR
-				UnityEditor.EditorApplication.isPaused = true;
-			#endif
+			InstantiateEnemy(4);
 		}
-		else
-		{
-			for (int i = 0; i < GameManager.Instance.iceZombie; i++)
-			{
-				InstantiateEnemy(4);
-			}
-		}
+
+		StartCoroutine(AssignEnemiesToLists());
 	}
 
 	public void InstantiateEnemy(int type)
