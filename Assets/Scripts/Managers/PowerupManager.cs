@@ -30,9 +30,22 @@ public class PowerupManager : MonoBehaviour
     public bool didLoad = false;
 
     private float mapSize = GameManager.mapSize;
-
-    // Update is called once per frame
-    void Update()
+	
+	// speed powerup stuff
+	private PlayerController playerController;
+	private GameObject player;
+	private float powerupLength = 5f;
+	public AudioClip powerupCollectSound;
+	public AudioClip powerupExpireSound;
+	private AudioSource audioData;
+	public bool runningSpeedPowerup;
+	private void Start()
+	{
+		player = GameObject.Find("Player");
+		audioData = GetComponent<AudioSource>();
+		playerController = player.GetComponent<PlayerController>();
+	}
+	void Update()
     {
         randomSpawnPos = new(randomXPos, 1, randomZPos);
         int currentWave = EnemySpawnManager.Instance.currentWave;
@@ -134,9 +147,32 @@ public class PowerupManager : MonoBehaviour
 
         return randomSpawnPos;
     }
+	public IEnumerator ApplySpeedPowerup()
+	{
+		runningSpeedPowerup = true;
+		playerController.speedPowerupCount--;
 
-    // Singleton code -----
-    public static PowerupManager Instance { get; private set; }
+		// Apply speed boost
+		player.GetComponent<PlayerController>().speed = 150;
+
+		audioData.clip = powerupCollectSound;
+		audioData.volume = 0.3f;
+		audioData.Play();
+
+		yield return new WaitForSeconds(powerupLength);
+
+		audioData.clip = powerupExpireSound;
+		audioData.volume = 0.3f;
+		audioData.Play();
+
+		// Revert the effect after the powerup duration
+		player.GetComponent<PlayerController>().speed = 80;
+
+		speedPowerups--;
+		runningSpeedPowerup = false;
+	}
+	// Singleton code -----
+	public static PowerupManager Instance { get; private set; }
 
     void Awake()
     {
