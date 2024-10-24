@@ -36,7 +36,7 @@ public class EnemySpawnManager : MonoBehaviour
 	public List<GameObject> iceZombie = new();
 
 	public int currentWave = 0;
-	public int spawnBufferDistance = 4;
+	public int spawnBufferDistance = 7;
 
 	private Vector3 lastBossSpawnPos;
 	private float mapSize = GameManager.mapSize;
@@ -183,7 +183,9 @@ public class EnemySpawnManager : MonoBehaviour
 		);
 
 		NavMeshHit hit;
-		if(NavMesh.SamplePosition(randomPosition, out hit, spawnBufferDistance, NavMesh.AllAreas))
+		if(NavMesh.SamplePosition(randomPosition, out hit, 4, NavMesh.AllAreas)) 
+			// the 4 was orginally the spawnBufferDistance, but modifying this number so that the enemies would spawn further away from the player,
+			// actually breaks it. so i hardcoded this instead and modified it for the use case above (while loop)
 		{
 			return hit.position;
 		}
