@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
         {
             SaveSystem.SetDefaultSave(currentSave);
-            Debug.Log("Set '" + currentSave + "' to default save.");
+            Debug.Log("Set '" + currentSave + "' to default save.");	
             defaultSave = SaveSystem.LoadDefaultSave();
             SavesPanelUI.Instance.defaultSave = defaultSave;
         }
