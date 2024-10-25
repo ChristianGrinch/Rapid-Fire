@@ -25,6 +25,7 @@ public class SaveData
 	[Key(22)] public int gunVolume;
 	[Key(23)] public bool useSprintHold;
 	[Key(24)] public int screenMode;
+	[Key(25)] public string defaultSaveName;
 
 	// Parameterless constructor
 	public SaveData() { }
@@ -146,4 +147,17 @@ public class SaveData
 
         return saveData;
     }
+
+	public static SaveData AssignSettingsData(PlayerController player)
+	{
+		SaveData saveData = new SaveData
+		{
+			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
+			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
+			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
+			useSprintHold = player.useSprintHold,
+			screenMode = VideoPanelUI.Instance.screenMode.value
+		};
+		return saveData;
+	}
 }

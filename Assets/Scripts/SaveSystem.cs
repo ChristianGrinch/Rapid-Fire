@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 // .svf for SaVeFile
 // .dsvf for Default SaVeFile
+// .ssvf for Settings SaVeFile
 
 public static class SaveSystem
 {
@@ -146,5 +147,14 @@ public static class SaveSystem
         Debug.LogWarning("No default save assigned!");
         return null;
     }
+	public static void SaveSettings(PlayerController player)
+	{
+		string path = Path.Combine(Application.persistentDataPath, "Settings" + ".ssvf"); // Settings SaVeFile
+
+		byte[] bytes = MessagePackSerializer.Serialize(SaveData.AssignSettingsData(player));
+
+		File.WriteAllBytes(path, bytes);
+		Debug.Log("Saved Default save name to unique save file.");
+	}
 }
 
