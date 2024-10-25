@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
 		healthSystem.AssignLives();
 		Time.timeScale = 1;
         GameMenuUI.Instance.SetDifficultyText();
+		LoadPlayer(currentSave);
 	}
     public void StartExistingGame(){
         UIManager.Instance.CloseAllMenus();

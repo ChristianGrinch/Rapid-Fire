@@ -34,6 +34,7 @@ public class EnemySpawnManager : MonoBehaviour
 	private float mapSize = GameManager.mapSize;
 
 	private bool runningAssignEnemiesToLists;
+	int boss1ToSpawn = 0;
 
 	private enum EnemyType //AddNewEnemy: Add type
 	{
@@ -45,7 +46,7 @@ public class EnemySpawnManager : MonoBehaviour
 	}
 	private Dictionary<EnemyType, int> enemiesToSpawn = new() //AddNewEnemy: Add type and default value at wave 1 (i think for the last part? lowk dont know)
 	{
-		{ EnemyType.Level1, 4 },
+		{ EnemyType.Level1, 0 },
 		{ EnemyType.Level2, 0 },
 		{ EnemyType.Level3, 0 },
 		{ EnemyType.Boss1, 0 },
@@ -75,69 +76,102 @@ public class EnemySpawnManager : MonoBehaviour
 	}
 	void NumberOfEnemiesToSpawn()
 	{
+		enemiesToSpawn[EnemyType.Boss1] = 0;
+
 		if (currentWave % 10 == 0)
 		{
-			enemiesToSpawn[EnemyType.Boss1] += 1;
+			boss1ToSpawn++;
+			enemiesToSpawn[EnemyType.Boss1] = boss1ToSpawn;
 		}
-		switch (GameManager.Instance.difficulty) // KEEP ALL THE STUFF COMMENTED CAUSE THIS MIGHT HAVE BROKEN EVERYTHING LOWK
+
+		switch (GameManager.Instance.difficulty)
 		{
 			case 1:
-				int number = 3; 
-				// (in reference to int above)
-				// Spawns 4 lvl1 enemies on wave 1,
-				// Spawns 1 lvl2 enemy on wave 1,
-				// Spawns -1 lvl3 enemies on wave 1, (spawns 1 on wave 3),
-				// And so on
-				foreach (var enemyType in enemiesToSpawn.Keys.ToList())
+				if (currentWave > 20)
 				{
-					if (enemyType == EnemyType.Boss1)
-					{
-						continue; // Skip to the next iteration
-					}
-
-					enemiesToSpawn[enemyType] = currentWave + number;
-					number -= 2;
+					enemiesToSpawn[EnemyType.Level1] += 2;
+					enemiesToSpawn[EnemyType.Level2] += 2;
+					enemiesToSpawn[EnemyType.Level3] += 1;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 1;
+					break;
+				} 
+				else if (currentWave > 10)
+				{
+					enemiesToSpawn[EnemyType.Level1] += 2;
+					enemiesToSpawn[EnemyType.Level2] += 1;
+					enemiesToSpawn[EnemyType.Level3] += 1;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 1;
+					break;
 				}
-				
-				//enemiesToSpawn[EnemyType.Level1] = currentWave + 3;
-				//enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
-				//enemiesToSpawn[EnemyType.Level3] = currentWave + -2; // Spawns 1 lvl3 on wave 3, then incriments
-				//enemiesToSpawn[EnemyType.IceZombie] = currentWave + -3; // Spawns 1 ice zombie on wave 4, then incriments
+				else if (currentWave > 0)
+				{
+					enemiesToSpawn[EnemyType.Level1] += 1;
+					enemiesToSpawn[EnemyType.Level2] += 1;
+					enemiesToSpawn[EnemyType.Level3] += 1;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 1;
+					break;
+				}
 				break;
 			case 2:
-				number = 5;
-				foreach (var enemyType in enemiesToSpawn.Keys.ToList())
+				if (currentWave > 20)
 				{
-					if (enemyType == EnemyType.Boss1)
-					{
-						continue; // Skip to the next iteration
-					}
-
-					enemiesToSpawn[enemyType] = currentWave + number;
-					number -= 2;
+					enemiesToSpawn[EnemyType.Level1] += 3;
+					enemiesToSpawn[EnemyType.Level2] += 2;
+					enemiesToSpawn[EnemyType.Level3] += 1;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 2;
+					break;
+				} 
+				else if (currentWave > 10)
+				{
+					enemiesToSpawn[EnemyType.Level1] += 2;
+					enemiesToSpawn[EnemyType.Level2] += 1;
+					enemiesToSpawn[EnemyType.Level3] += 1;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 2;
+					break;
 				}
-
-				//enemiesToSpawn[EnemyType.Level1] = currentWave + 5;
-				//enemiesToSpawn[EnemyType.Level2] = currentWave + 1;
-				//enemiesToSpawn[EnemyType.Level3] = currentWave + 0;
-				//enemiesToSpawn[EnemyType.IceZombie] = currentWave + -2;
+				else if (currentWave > 0)
+				{
+					enemiesToSpawn[EnemyType.Level1] += 1;
+					enemiesToSpawn[EnemyType.Level2] += 1;
+					enemiesToSpawn[EnemyType.Level3] += 1;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 1;
+					break;
+				}
 				break;
 			case 3:
-				number = 7;
-				foreach (var enemyType in enemiesToSpawn.Keys.ToList())
+				if (currentWave > 20)
 				{
-					if (enemyType == EnemyType.Boss1)
-					{
-						continue; // Skip to the next iteration
-					}
-
-					enemiesToSpawn[enemyType] = currentWave + number;
-					number -= 2;
+					enemiesToSpawn[EnemyType.Level1] += 3;
+					enemiesToSpawn[EnemyType.Level2] += 3;
+					enemiesToSpawn[EnemyType.Level3] += 2;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 3;
+					break;
 				}
-				//enemiesToSpawn[EnemyType.Level1] = currentWave + 7;
-				//enemiesToSpawn[EnemyType.Level2] = currentWave + 3;
-				//enemiesToSpawn[EnemyType.Level3] = currentWave + 2;
-				//enemiesToSpawn[EnemyType.IceZombie] = currentWave + 1;
+				else if (currentWave > 10)
+				{
+					enemiesToSpawn[EnemyType.Level1] += 2;
+					enemiesToSpawn[EnemyType.Level2] += 2;
+					enemiesToSpawn[EnemyType.Level3] += 1;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 2;
+					break;
+				}
+				else if (currentWave > 0)
+				{
+					enemiesToSpawn[EnemyType.Level1] += 2;
+					enemiesToSpawn[EnemyType.Level2] += 1;
+					enemiesToSpawn[EnemyType.Level3] += 1;
+					// boss1
+					enemiesToSpawn[EnemyType.IceZombie] += 2;
+					break;
+				}
 				break;
 		}
 

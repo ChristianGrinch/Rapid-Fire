@@ -169,7 +169,7 @@ public class PopupManager : MonoBehaviour
 				{
 					saveName = nameField.text;
 
-                    SavesPanelUI.Instance.currentSave = saveName;
+                    GameManager.Instance.currentSave = saveName;
 
                     //Debug.Log(SaveSystem.FindSavesBool(saveName));
 
@@ -181,7 +181,7 @@ public class PopupManager : MonoBehaviour
 					}
 					else
 					{
-						StartCoroutine(StartMenuUI.Instance.DifficultySelectWarning());
+						StartCoroutine(StartMenuUI.Instance.SaveNameWarning());
 						ClosePopup();
 					}
 				});
