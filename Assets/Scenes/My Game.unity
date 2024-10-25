@@ -1414,6 +1414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   videoPanel: {fileID: 838440928}
+  screenMode: {fileID: 1192717567}
 --- !u!114 &112359709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8682,7 +8683,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &590523640
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9632,7 +9633,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -12287,7 +12288,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -12334,7 +12335,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &838440929
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17348,7 +17349,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -18780,7 +18781,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1349277526
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19854,7 +19855,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -21591,16 +21592,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63fa2c5c04c8de84182c5c21b62c5a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy:
-  - {fileID: 3643904846915297769, guid: 403c55a11ad960c48a952cbf22b38405, type: 3}
-  - {fileID: 6329172769025539485, guid: bc93f41b1fcce1941aa00fd4e16aa9b8, type: 3}
-  - {fileID: 8683618380255166290, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
-  - {fileID: 8543954980356892885, guid: fcaa37993dbf15f47a5331e30ba4ac14, type: 3}
-  - {fileID: 227322009373829816, guid: 6a70885e14300a24e97b4df7c7d75e28, type: 3}
   enemyParent: {fileID: 1061023598}
   player: {fileID: 883152918}
   enemyCountArray: []
-  enemyCount: 
+  totalEnemiesToSpawn: 0
   currentWave: 0
   spawnBufferDistance: 4
 --- !u!114 &1606568285
@@ -21689,11 +21684,7 @@ MonoBehaviour:
   isInGame: 0
   defaultSave: 
   currentSave: 
-  enemyLevel1: 0
-  enemyLevel2: 0
-  enemyLevel3: 0
-  bossLevel1: 0
-  iceZombie: 0
+  enemyCount: 
   didSelectDifficulty: 0
   didLoadSpawnManager: 0
   didLoadPowerupManager: 0
