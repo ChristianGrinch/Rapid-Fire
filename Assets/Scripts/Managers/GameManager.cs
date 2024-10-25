@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -25,11 +26,7 @@ public class GameManager : MonoBehaviour
 	public string defaultSave;
 	public string currentSave;
 	[Header("Enemy Counts")]
-	public int enemyLevel1;
-	public int enemyLevel2;
-	public int enemyLevel3;
-	public int bossLevel1;
-	public int iceZombie;
+	public List<int> enemyCount;
 	[Header("Checks")]
 	public bool didSelectDifficulty = false;
 	public bool didLoadSpawnManager = false;
@@ -44,6 +41,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
 	{
+		enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
+
 		defaultSave = SaveSystem.LoadDefaultSave();
 		player = GameObject.FindWithTag("Player");
 
@@ -211,11 +210,11 @@ public class GameManager : MonoBehaviour
 				data.numberOfEnemies = tempEnemies;
 			}
 
-            enemyLevel1 = data.numberOfEnemies[0];
-            enemyLevel2 = data.numberOfEnemies[1];
-            enemyLevel3 = data.numberOfEnemies[2];
-            bossLevel1 = data.numberOfEnemies[3];
-			iceZombie = data.numberOfEnemies[4];
+			for(var i = 0; i < data.numberOfEnemies.Length; i++)
+			{
+				enemyCount[i] = data.numberOfEnemies[i];
+				Debug.Log(enemyCount[i]);
+			}
 
             PowerupManager.Instance.ammunition = data.numberofPowerups[0];
             PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];

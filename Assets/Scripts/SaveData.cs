@@ -30,6 +30,7 @@ public class SaveData
 	// Factory method to create SaveData from PlayerController
 	public static SaveData AssignData(PlayerController player)
 	{
+		Debug.Log(EnemyDataManager.Instance.enemyCount[0]);
 		SaveData saveData = new SaveData
 		{
 			// Assign player data
@@ -48,11 +49,11 @@ public class SaveData
 			wave = player.wave,
 			numberOfEnemies = new int[]
 			{
-				EnemySpawnManager.Instance.enemyCount[0],
-				EnemySpawnManager.Instance.enemyCount[1],
-				EnemySpawnManager.Instance.enemyCount[2],
-				EnemySpawnManager.Instance.enemyCount[3],
-				EnemySpawnManager.Instance.enemyCount[4],
+				EnemyDataManager.Instance.enemyCount[0],
+				EnemyDataManager.Instance.enemyCount[1],
+				EnemyDataManager.Instance.enemyCount[2],
+				EnemyDataManager.Instance.enemyCount[3],
+				EnemyDataManager.Instance.enemyCount[4],
 			},
 			numberofPowerups = new int[]
 			{
