@@ -11,11 +11,12 @@ public class SaveData
 	[Key(2)] public int lives;
 	[Key(3)] public float[] position;
 	[Key(4)] public int[] ammo;
+	[Key(5)] public int speedPowerup;
 
 	// Game data
 	[Key(10)] public int wave;
 	[Key(11)] public int[] numberOfEnemies = { 0, 0, 0, 0, 0 };
-	[Key(12)] public int[] numberofPowerups = { 0, 0, 0 };
+	[Key(12)] public int[] numberOfPowerups = { 0, 0, 0 };
 	[Key(13)] public int difficulty;
 
 	// Settings data
@@ -37,6 +38,7 @@ public class SaveData
 			exp = player.exp,
 			health = player.health,
 			lives = player.lives,
+			speedPowerup = player.speedPowerupCount,
 			position = new float[3]
 			{
 				player.transform.position.x,
@@ -55,7 +57,7 @@ public class SaveData
 				EnemyDataManager.Instance.enemyCount[3],
 				EnemyDataManager.Instance.enemyCount[4],
 			},
-			numberofPowerups = new int[]
+			numberOfPowerups = new int[]
 			{
 				PowerupManager.Instance.ammunition,
 				PowerupManager.Instance.heartPowerups,
@@ -101,6 +103,7 @@ public class SaveData
         }
         saveData.position = new float[3] { 0, 0.5f, 0};
 		saveData.ammo = new[] { 30, 50 };
+		saveData.speedPowerup = 0;
 
 		// Assign game data
 		saveData.wave = 1;
@@ -129,7 +132,7 @@ public class SaveData
                 saveData.numberOfEnemies[4] = 0;
                 break;
 		}
-		saveData.numberofPowerups = new[] {0, 0, 0};
+		saveData.numberOfPowerups = new[] {0, 0, 0};
 		saveData.difficulty = difficulty;
 
 		// Assign settings data

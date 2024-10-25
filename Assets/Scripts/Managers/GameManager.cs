@@ -170,6 +170,7 @@ public class GameManager : MonoBehaviour
             playerController.lives = data.lives;
             playerController.wave = data.wave;
             playerController.ammo = data.ammo;
+			playerController.speedPowerupCount = data.speedPowerup;
 
             Vector3 position;
             position.x = data.position[0];
@@ -217,9 +218,9 @@ public class GameManager : MonoBehaviour
 				Debug.Log(enemyCount[i]);
 			}
 
-            PowerupManager.Instance.ammunition = data.numberofPowerups[0];
-            PowerupManager.Instance.heartPowerups = data.numberofPowerups[1];
-            PowerupManager.Instance.speedPowerups = data.numberofPowerups[2];
+            PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
+            PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
+            PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];
 
             // Update settings data
             AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
