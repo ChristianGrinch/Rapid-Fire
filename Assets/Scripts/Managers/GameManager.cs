@@ -232,6 +232,9 @@ public class GameManager : MonoBehaviour
             AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
             AudioPanelUI.Instance.gun.text = data.musicVolume.ToString();
 			playerController.useSprintHold = data.useSprintHold;
+
+			VideoPanelUI.Instance.screenMode.value = data.screenMode;
+			VideoPanelUI.Instance.ChangeScreenMode(data.screenMode);
 			if (data.useSprintHold)
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 0;

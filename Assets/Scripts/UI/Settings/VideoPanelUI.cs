@@ -47,7 +47,7 @@ public class VideoPanelUI : MonoBehaviour
 		//		break;
 		//}
 	}
-	private void ChangeScreenMode(int selectedIndex)
+	public void ChangeScreenMode(int selectedIndex)
 	{
 		switch (selectedIndex)
 		{

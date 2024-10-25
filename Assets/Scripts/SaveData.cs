@@ -24,6 +24,7 @@ public class SaveData
 	[Key(21)] public int musicVolume;
 	[Key(22)] public int gunVolume;
 	[Key(23)] public bool useSprintHold;
+	[Key(24)] public int screenMode;
 
 	// Parameterless constructor
 	public SaveData() { }
@@ -70,6 +71,7 @@ public class SaveData
 			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
 			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
 			useSprintHold = player.useSprintHold,
+			screenMode = VideoPanelUI.Instance.screenMode.value
 		};
 		return saveData;
 	}
@@ -140,6 +142,7 @@ public class SaveData
         saveData.musicVolume = 50;
         saveData.gunVolume = 30;
 		saveData.useSprintHold = true;
+		saveData.screenMode = 0; // Exclusive fullscreen
 
         return saveData;
     }
