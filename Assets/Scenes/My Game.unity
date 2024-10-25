@@ -21555,6 +21555,7 @@ GameObject:
   - component: {fileID: 1606568282}
   - component: {fileID: 1606568288}
   - component: {fileID: 1606568290}
+  - component: {fileID: 1606568291}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -21599,11 +21600,7 @@ MonoBehaviour:
   enemyParent: {fileID: 1061023598}
   player: {fileID: 883152918}
   enemyCountArray: []
-  level1Enemies: []
-  level2Enemies: []
-  level3Enemies: []
-  boss1Enemies: []
-  iceZombie: []
+  enemyCount: 
   currentWave: 0
   spawnBufferDistance: 4
 --- !u!114 &1606568285
@@ -21797,6 +21794,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1606568291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606568281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76ed68e07c89459428554e304ba28561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies:
+  - {fileID: 3643904846915297769, guid: 403c55a11ad960c48a952cbf22b38405, type: 3}
+  - {fileID: 6329172769025539485, guid: bc93f41b1fcce1941aa00fd4e16aa9b8, type: 3}
+  - {fileID: 8683618380255166290, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
+  - {fileID: 8543954980356892885, guid: fcaa37993dbf15f47a5331e30ba4ac14, type: 3}
+  - {fileID: 227322009373829816, guid: 6a70885e14300a24e97b4df7c7d75e28, type: 3}
+  enemyNames: []
+  enemyCountArray: []
+  totalEnemyCount: 0
+  enemyCount: 
 --- !u!1 &1612366217
 GameObject:
   m_ObjectHideFlags: 0

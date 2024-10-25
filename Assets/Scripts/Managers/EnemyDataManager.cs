@@ -16,43 +16,54 @@ public class EnemyDataManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-	public GameObject[] enemies; // All enemy prefabs
+	//AddNewEnemy: Tag that describes what needs to be modified at a location for new enemy types.
+	[Header("Enemy Prefabs")]
+	public GameObject[] enemies; // All enemy prefabs - AddNewEnemy: Add enemy prefab in inspector
+	[Header("Don't touch in inspector")]
+	public string[] enemyNames;
 	public GameObject[] enemyCountArray; // All active enemy game objects
 	public int totalEnemyCount;
 
-	// Lists of how many enemies there are for each type ([0] is enemy 1, and the value is how many)
-	public List<int> enemyCount = new(5);
+	
+	public List<int> enemyCount; // How many enemies there are for each type ([0] is enemy 1, and the value is how many)
+	private void Start()
+	{
+		// Dynamically assign the length of the arrays based on how many enemy types exist
+		enemyNames = new string[enemies.Length];
+		enemyCount = new List<int>(new int[enemies.Length]);
+
+		for (var i = 0; i < enemies.Length; i++){
+			enemyNames[i] = enemies[i].name;
+		}
+		
+	}
 	private void Update()
 	{
 		enemyCountArray = EnemySpawnManager.Instance.enemyCountArray;
 		totalEnemyCount = enemyCountArray.Length;
+		StartCoroutine(AssignEnemiesToLists()); //TODO: make this not be here, for some reason it like triples the amount of enemies saved if it aint here
 	}
 	public IEnumerator AssignEnemiesToLists()
 	{
 		yield return null;
-		enemyCount = new() { 0, 0, 0, 0, 0 };
+
+		for (var j = 0; j < enemyCount.Count; j++) // Makes sure the enemy count is 0 before adding to the count later in the method
+		{
+			enemyCount[j] = 0;
+		}
 
 		foreach (GameObject enemy in enemyCountArray)
 		{
-			if (enemy.name.Contains("Enemy 1"))
+			if (enemy != null)
 			{
-				enemyCount[0]++;
-			}
-			else if (enemy.name.Contains("Enemy 2"))
-			{
-				enemyCount[1]++;
-			}
-			else if (enemy.name.Contains("Enemy 3"))
-			{
-				enemyCount[2]++;
-			}
-			else if (enemy.name.Contains("Boss 1"))
-			{
-				enemyCount[3]++;
-			}
-			else if (enemy.name.Contains("Ice Zombie"))
-			{
-				enemyCount[4]++;
+				for (var i = 0; i < enemyNames.Length; i++)
+				{
+					if (enemy.name.Contains(enemyNames[i]))
+					{
+						enemyCount[i]++;
+						break;
+					}
+				}
 			}
 		}
 	}
