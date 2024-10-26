@@ -18,17 +18,36 @@ public class SettingsMenuUI : MonoBehaviour
     }
     [Header("Menu")]
     public GameObject settingsMenu;
+	[Header("Buttons")]
+	public Button goBack;
+	public Button save;
 	[Header("Labels")]
 	public Button audioLabel;
 	public Button videoLabel;
 	public Button savesLabel;
 	public Button controlsLabel;
+	[Header("Other")]
+	public bool didModifySettings = false;
+	public bool didSaveSettings = false;
 	private void Start()
 	{
 		audioLabel.onClick.AddListener(OpenAudioPanel);
 		videoLabel.onClick.AddListener(OpenVideoPanel);
 		savesLabel.onClick.AddListener(OpenSavesPanel);
 		controlsLabel.onClick.AddListener(OpenControlPanel);
+		save.onClick.AddListener(() => didSaveSettings = true);
+		goBack.onClick.AddListener(() =>
+		{
+			if (didModifySettings && !didSaveSettings)
+			{
+				PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+				Debug.Log("lol");
+			} 
+			else
+			{
+				UIManager.Instance.SwitchToStart();
+			}
+		});
 	}
 	public void CloseAllSettingsPanels() // bad cuz hard coded unlike closeallmenus but i could care less right now
 	{

@@ -66,13 +66,6 @@ public class SaveData
 				PowerupManager.Instance.speedPowerups
 			},
 			difficulty = GameManager.Instance.difficulty,
-
-			// Assign settings data
-			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
-			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
-			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
-			useSprintHold = player.useSprintHold,
-			screenMode = VideoPanelUI.Instance.screenMode.value
 		};
 		return saveData;
 	}
@@ -138,13 +131,6 @@ public class SaveData
 		saveData.numberOfPowerups = new[] {0, 0, 0};
 		saveData.difficulty = difficulty;
 
-		// Assign settings data
-		saveData.masterVolume = 50;
-        saveData.musicVolume = 50;
-        saveData.gunVolume = 30;
-		saveData.useSprintHold = true;
-		saveData.screenMode = 0; // Exclusive fullscreen
-
         return saveData;
     }
 
@@ -158,6 +144,18 @@ public class SaveData
 			useSprintHold = player.useSprintHold,
 			screenMode = VideoPanelUI.Instance.screenMode.value
 		};
+		return saveData;
+	}
+	public static SaveData CreateDefaultSettings()
+	{
+		SaveData saveData = new SaveData();
+		
+		saveData.masterVolume = 50;
+		saveData.musicVolume = 50;
+		saveData.gunVolume = 30;
+		saveData.useSprintHold = true;
+		saveData.screenMode = 0; // Exclusive fullscreen
+
 		return saveData;
 	}
 }

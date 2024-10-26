@@ -30,6 +30,7 @@ public class ControlsPanelUI : MonoBehaviour
 
 		sprintMode.onValueChanged.AddListener((int value) =>
 		{
+			SettingsMenuUI.Instance.didModifySettings = true;
 			switch (value)
 			{
 				case 0:

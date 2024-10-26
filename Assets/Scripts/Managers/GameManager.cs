@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
+		LoadSettings(); 
+		SettingsMenuUI.Instance.didModifySettings = false;
 	}
     public void GameOver()
 	{
@@ -221,16 +223,31 @@ public class GameManager : MonoBehaviour
             PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
             PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
             PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];
+        }
+        else
+        {
+            Debug.LogError("Data is null.");
+        }
+    }
+	public void SaveSettings()
+	{
+		SaveSystem.SaveSettings(playerController);
+	}
+	public void LoadSettings()
+	{
+		SaveData data = SaveSystem.LoadSettings();
 
-            // Update settings data
-            AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
-            AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
+		if (data != null)
+		{
+			Debug.Log(data.masterVolume + " " + data.musicVolume + " " + data.gunVolume);
+			AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
+			AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
-            AudioPanelUI.Instance.musicVolume.value = data.musicVolume;
-            AudioPanelUI.Instance.music.text = data.musicVolume.ToString();
+			AudioPanelUI.Instance.musicVolume.value = data.musicVolume;
+			AudioPanelUI.Instance.music.text = data.musicVolume.ToString();
 
-            AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
-            AudioPanelUI.Instance.gun.text = data.musicVolume.ToString();
+			AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
+			AudioPanelUI.Instance.gun.text = data.gunVolume.ToString();
 			playerController.useSprintHold = data.useSprintHold;
 
 			VideoPanelUI.Instance.screenMode.value = data.screenMode;
@@ -238,23 +255,22 @@ public class GameManager : MonoBehaviour
 			if (data.useSprintHold)
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 0;
-			} 
+			}
 			else if (!data.useSprintHold)
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 1;
 			}
 
-            if (data.difficulty != 0)
-            {
-                didSelectDifficulty = true;
-                difficulty = data.difficulty;
-            }
-
-        }
-        else
-        {
-            Debug.LogError("Data is null.");
-        }
-
-    }
+			if (data.difficulty != 0)
+			{
+				didSelectDifficulty = true;
+				difficulty = data.difficulty;
+			}
+		}
+		else
+		{
+			SaveSystem.CreateSaveSettings();
+			LoadSettings();
+		}
+	}
 }

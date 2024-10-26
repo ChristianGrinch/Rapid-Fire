@@ -31,24 +31,10 @@ public class VideoPanelUI : MonoBehaviour
 			screenMode.options.Add(new TMP_Dropdown.OptionData("Maximized Window"));
 			screenMode.options.Add(new TMP_Dropdown.OptionData("Windowed"));
 		}
-		//switch (Screen.fullScreenMode)
-		//{
-		//	case FullScreenMode.ExclusiveFullScreen:
-		//		screenMode.value = 0;
-		//		break;
-		//	case FullScreenMode.FullScreenWindow:
-		//		screenMode.value = 1;
-		//		break;
-		//	case FullScreenMode.MaximizedWindow:
-		//		screenMode.value = 2;
-		//		break;
-		//	case FullScreenMode.Windowed:
-		//		screenMode.value = 3;
-		//		break;
-		//}
 	}
 	public void ChangeScreenMode(int selectedIndex)
 	{
+		SettingsMenuUI.Instance.didModifySettings = true;
 		switch (selectedIndex)
 		{
 			case 0:
