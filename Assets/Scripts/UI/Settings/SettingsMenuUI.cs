@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class SettingsMenuUI : MonoBehaviour
 {
@@ -41,13 +42,18 @@ public class SettingsMenuUI : MonoBehaviour
 			if (didModifySettings && !didSaveSettings)
 			{
 				PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
-				Debug.Log("lol");
 			} 
 			else
 			{
 				UIManager.Instance.SwitchToStart();
 			}
 		});
+		StartCoroutine(FixModifySettingsOnLoad());
+	}
+	IEnumerator FixModifySettingsOnLoad()
+	{
+		yield return new WaitForSeconds(0.05f);
+		didModifySettings = false;
 	}
 	public void CloseAllSettingsPanels() // bad cuz hard coded unlike closeallmenus but i could care less right now
 	{

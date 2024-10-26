@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         isInGame = false;
         isGameUnpaused = false;
 	}
-	public void StartGame()
+	public void StartDefaultGame()
 	{
 		LoadPlayer(defaultSave);
 
@@ -76,10 +76,12 @@ public class GameManager : MonoBehaviour
 
 		Time.timeScale = 1;
 		GameMenuUI.Instance.SetDifficultyText();
-
+		Debug.Log(difficulty);
 	}
 	public void StartNewGame()
 	{
+		LoadPlayer(currentSave);
+
 		UIManager.Instance.CloseAllMenus();
         GameMenuUI.Instance.game.SetActive(true);
 
@@ -89,7 +91,7 @@ public class GameManager : MonoBehaviour
 		healthSystem.AssignLives();
 		Time.timeScale = 1;
         GameMenuUI.Instance.SetDifficultyText();
-		LoadPlayer(currentSave);
+		Debug.Log(difficulty);
 	}
     public void StartExistingGame(){
         UIManager.Instance.CloseAllMenus();
@@ -100,7 +102,8 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 1;
         GameMenuUI.Instance.SetDifficultyText();
-    }
+		Debug.Log(difficulty);
+	}
 	public void PauseGame()
 	{
 		isGameUnpaused = false;
@@ -217,13 +220,19 @@ public class GameManager : MonoBehaviour
 			for(var i = 0; i < data.numberOfEnemies.Length; i++)
 			{
 				enemyCount[i] = data.numberOfEnemies[i];
-				Debug.Log(enemyCount[i]);
+				//Debug.Log(enemyCount[i]);
 			}
 
             PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
             PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
             PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];
-        }
+
+			if (data.difficulty != 0)
+			{
+				didSelectDifficulty = true;
+				difficulty = data.difficulty;
+			}
+		}
         else
         {
             Debug.LogError("Data is null.");
@@ -239,7 +248,6 @@ public class GameManager : MonoBehaviour
 
 		if (data != null)
 		{
-			Debug.Log(data.masterVolume + " " + data.musicVolume + " " + data.gunVolume);
 			AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
 			AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
@@ -259,12 +267,6 @@ public class GameManager : MonoBehaviour
 			else if (!data.useSprintHold)
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 1;
-			}
-
-			if (data.difficulty != 0)
-			{
-				didSelectDifficulty = true;
-				difficulty = data.difficulty;
 			}
 		}
 		else

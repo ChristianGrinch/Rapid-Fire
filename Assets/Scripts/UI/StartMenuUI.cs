@@ -55,7 +55,7 @@ public class StartMenuUI : MonoBehaviour
 		playDefault.onClick.AddListener(() => {
 			if (!string.IsNullOrEmpty(GameManager.Instance.defaultSave))
 			{
-				GameManager.Instance.StartGame();
+				GameManager.Instance.StartDefaultGame();
 			}
 			else
 			{
@@ -66,6 +66,11 @@ public class StartMenuUI : MonoBehaviour
         difficultySelect.onClick.AddListener(() => UIManager.Instance.OpenDifficultyScreen());
         settingsSelect.onClick.AddListener(() => UIManager.Instance.OpenSettings());
         quitGame.onClick.AddListener(() => GameManager.Instance.QuitGame());
+		StartCoroutine(SetDefaultSaveText());
+    }
+	IEnumerator SetDefaultSaveText()
+	{
+		yield return null;
 		if (!string.IsNullOrEmpty(GameManager.Instance.defaultSave))
 		{
 			playDefaultText.text = "Play default save \n[ " + GameManager.Instance.defaultSave + " ]";
@@ -75,5 +80,5 @@ public class StartMenuUI : MonoBehaviour
 			playDefaultText.text = "Play default save \n[No default save!]";
 			Debug.Log("No default save detected.");
 		}
-    }
+	}
 }
