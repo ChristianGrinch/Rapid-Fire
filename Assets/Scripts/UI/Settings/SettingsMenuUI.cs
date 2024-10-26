@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class SettingsMenuUI : MonoBehaviour
 {
@@ -18,17 +19,41 @@ public class SettingsMenuUI : MonoBehaviour
     }
     [Header("Menu")]
     public GameObject settingsMenu;
+	[Header("Buttons")]
+	public Button goBack;
+	public Button save;
 	[Header("Labels")]
 	public Button audioLabel;
 	public Button videoLabel;
 	public Button savesLabel;
 	public Button controlsLabel;
+	[Header("Other")]
+	public bool didModifySettings = false;
+	public bool didSaveSettings = false;
 	private void Start()
 	{
 		audioLabel.onClick.AddListener(OpenAudioPanel);
 		videoLabel.onClick.AddListener(OpenVideoPanel);
 		savesLabel.onClick.AddListener(OpenSavesPanel);
 		controlsLabel.onClick.AddListener(OpenControlPanel);
+		save.onClick.AddListener(() => didSaveSettings = true);
+		goBack.onClick.AddListener(() =>
+		{
+			if (didModifySettings && !didSaveSettings)
+			{
+				PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+			} 
+			else
+			{
+				UIManager.Instance.SwitchToStart();
+			}
+		});
+		StartCoroutine(FixModifySettingsOnLoad());
+	}
+	IEnumerator FixModifySettingsOnLoad()
+	{
+		yield return new WaitForSeconds(0.05f);
+		didModifySettings = false;
 	}
 	public void CloseAllSettingsPanels() // bad cuz hard coded unlike closeallmenus but i could care less right now
 	{

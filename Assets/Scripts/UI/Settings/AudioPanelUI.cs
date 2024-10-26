@@ -60,19 +60,22 @@ public class AudioPanelUI : MonoBehaviour
     public void UpdateMasterSlider(float value)
     {
         master.text = value.ToString();
-    }
+		SettingsMenuUI.Instance.didModifySettings = true;
+	}
     public void UpdateMusicSlider(float value)
     {
         music.text = value.ToString();
-    }
+		SettingsMenuUI.Instance.didModifySettings = true;
+	}
     public void UpdateGunSlider(float value)
     {
         gun.text = value.ToString();
-    }
+		SettingsMenuUI.Instance.didModifySettings = true;
+	}
     public void ChangeMasterVolume(bool increaseVolume)
     {
-		Debug.Log("ran change ma ster volume");
-        if (increaseVolume)
+		SettingsMenuUI.Instance.didModifySettings = true;
+		if (increaseVolume)
         {
 			Debug.Log("ran true");
 			masterVolume.value++;
@@ -86,8 +89,9 @@ public class AudioPanelUI : MonoBehaviour
         }
     }
     public void ChangeMusicVolume(bool increaseVolume)
-    {
-        if (increaseVolume)
+	{
+		SettingsMenuUI.Instance.didModifySettings = true;
+		if (increaseVolume)
         {
             musicVolume.value++;
             music.text = musicVolume.value.ToString();
@@ -99,8 +103,9 @@ public class AudioPanelUI : MonoBehaviour
         }
     }
     public void ChangeGunVolume(bool increaseVolume)
-    {
-        if (increaseVolume)
+	{
+		SettingsMenuUI.Instance.didModifySettings = true;
+		if (increaseVolume)
         {
             gunVolume.value++;
             gun.text = gunVolume.value.ToString();

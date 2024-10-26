@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
+		LoadSettings(); 
+		SettingsMenuUI.Instance.didModifySettings = false;
 	}
     public void GameOver()
 	{
@@ -62,7 +64,7 @@ public class GameManager : MonoBehaviour
         isInGame = false;
         isGameUnpaused = false;
 	}
-	public void StartGame()
+	public void StartDefaultGame()
 	{
 		LoadPlayer(defaultSave);
 
@@ -74,10 +76,12 @@ public class GameManager : MonoBehaviour
 
 		Time.timeScale = 1;
 		GameMenuUI.Instance.SetDifficultyText();
-
+		Debug.Log(difficulty);
 	}
 	public void StartNewGame()
 	{
+		LoadPlayer(currentSave);
+
 		UIManager.Instance.CloseAllMenus();
         GameMenuUI.Instance.game.SetActive(true);
 
@@ -87,7 +91,7 @@ public class GameManager : MonoBehaviour
 		healthSystem.AssignLives();
 		Time.timeScale = 1;
         GameMenuUI.Instance.SetDifficultyText();
-		LoadPlayer(currentSave);
+		Debug.Log(difficulty);
 	}
     public void StartExistingGame(){
         UIManager.Instance.CloseAllMenus();
@@ -98,7 +102,8 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 1;
         GameMenuUI.Instance.SetDifficultyText();
-    }
+		Debug.Log(difficulty);
+	}
 	public void PauseGame()
 	{
 		isGameUnpaused = false;
@@ -127,7 +132,7 @@ public class GameManager : MonoBehaviour
         if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
         {
             SaveSystem.SetDefaultSave(currentSave);
-            Debug.Log("Set '" + currentSave + "' to default save.");
+            Debug.Log("Set '" + currentSave + "' to default save.");	
             defaultSave = SaveSystem.LoadDefaultSave();
             SavesPanelUI.Instance.defaultSave = defaultSave;
         }
@@ -215,22 +220,42 @@ public class GameManager : MonoBehaviour
 			for(var i = 0; i < data.numberOfEnemies.Length; i++)
 			{
 				enemyCount[i] = data.numberOfEnemies[i];
-				Debug.Log(enemyCount[i]);
+				//Debug.Log(enemyCount[i]);
 			}
 
             PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
             PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
             PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];
 
-            // Update settings data
-            AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
-            AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
+			if (data.difficulty != 0)
+			{
+				didSelectDifficulty = true;
+				difficulty = data.difficulty;
+			}
+		}
+        else
+        {
+            Debug.LogError("Data is null.");
+        }
+    }
+	public void SaveSettings()
+	{
+		SaveSystem.SaveSettings(playerController);
+	}
+	public void LoadSettings()
+	{
+		SaveData data = SaveSystem.LoadSettings();
 
-            AudioPanelUI.Instance.musicVolume.value = data.musicVolume;
-            AudioPanelUI.Instance.music.text = data.musicVolume.ToString();
+		if (data != null)
+		{
+			AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
+			AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
-            AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
-            AudioPanelUI.Instance.gun.text = data.musicVolume.ToString();
+			AudioPanelUI.Instance.musicVolume.value = data.musicVolume;
+			AudioPanelUI.Instance.music.text = data.musicVolume.ToString();
+
+			AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
+			AudioPanelUI.Instance.gun.text = data.gunVolume.ToString();
 			playerController.useSprintHold = data.useSprintHold;
 
 			VideoPanelUI.Instance.screenMode.value = data.screenMode;
@@ -238,23 +263,16 @@ public class GameManager : MonoBehaviour
 			if (data.useSprintHold)
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 0;
-			} 
+			}
 			else if (!data.useSprintHold)
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 1;
 			}
-
-            if (data.difficulty != 0)
-            {
-                didSelectDifficulty = true;
-                difficulty = data.difficulty;
-            }
-
-        }
-        else
-        {
-            Debug.LogError("Data is null.");
-        }
-
-    }
+		}
+		else
+		{
+			SaveSystem.CreateSaveSettings();
+			LoadSettings();
+		}
+	}
 }

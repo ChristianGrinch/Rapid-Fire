@@ -25,6 +25,7 @@ public class SaveData
 	[Key(22)] public int gunVolume;
 	[Key(23)] public bool useSprintHold;
 	[Key(24)] public int screenMode;
+	[Key(25)] public string defaultSaveName;
 
 	// Parameterless constructor
 	public SaveData() { }
@@ -65,13 +66,6 @@ public class SaveData
 				PowerupManager.Instance.speedPowerups
 			},
 			difficulty = GameManager.Instance.difficulty,
-
-			// Assign settings data
-			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
-			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
-			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
-			useSprintHold = player.useSprintHold,
-			screenMode = VideoPanelUI.Instance.screenMode.value
 		};
 		return saveData;
 	}
@@ -137,13 +131,31 @@ public class SaveData
 		saveData.numberOfPowerups = new[] {0, 0, 0};
 		saveData.difficulty = difficulty;
 
-		// Assign settings data
+        return saveData;
+    }
+
+	public static SaveData AssignSettingsData(PlayerController player)
+	{
+		SaveData saveData = new SaveData
+		{
+			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
+			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
+			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
+			useSprintHold = player.useSprintHold,
+			screenMode = VideoPanelUI.Instance.screenMode.value
+		};
+		return saveData;
+	}
+	public static SaveData CreateDefaultSettings()
+	{
+		SaveData saveData = new SaveData();
+		
 		saveData.masterVolume = 50;
-        saveData.musicVolume = 50;
-        saveData.gunVolume = 30;
+		saveData.musicVolume = 50;
+		saveData.gunVolume = 30;
 		saveData.useSprintHold = true;
 		saveData.screenMode = 0; // Exclusive fullscreen
 
-        return saveData;
-    }
+		return saveData;
+	}
 }

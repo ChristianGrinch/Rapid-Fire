@@ -35,7 +35,8 @@ public class PopupManager : MonoBehaviour
 		StartReturnConfirm,
 		DeleteSaveConfirm,
 		PlaySaveConfirm,
-		CreateSavePopup
+		CreateSavePopup,
+		QuitWithoutSavingConfirm
 	}
 
 	private void Start()
@@ -187,6 +188,30 @@ public class PopupManager : MonoBehaviour
 				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
+			case PopupType.QuitWithoutSavingConfirm:
+				header.text = "Return without saving?";
+
+				information.text = "You have unsaved changes.";
+				actionBtnText.text = "Discard Changes";
+				cancelBtnText.text = "Keep Changes";
+
+				actionBtn.onClick.AddListener(() =>
+				{
+					UIManager.Instance.SwitchToStart();
+					GameManager.Instance.LoadSettings();
+					SettingsMenuUI.Instance.didSaveSettings = false;
+					SettingsMenuUI.Instance.didModifySettings = false;
+					ClosePopup();
+				});
+				cancelBtn.onClick.AddListener(()=>
+				{
+					UIManager.Instance.SwitchToStart();
+					GameManager.Instance.SaveSettings();
+					SettingsMenuUI.Instance.didSaveSettings = false;
+					SettingsMenuUI.Instance.didModifySettings = false;
+					ClosePopup();
+				});
+				break;
 		}
 	}
 
@@ -210,7 +235,7 @@ public class PopupManager : MonoBehaviour
 		actionBtnImage = actionBtn.GetComponent<Image>();
 		actionBtnText = actionBtn.GetComponentInChildren<TMP_Text>();
 		cancelBtn = Footer.transform.Find("Cancel Button").GetComponent<Button>();
-		cancelBtnText = actionBtn.GetComponentInChildren<TMP_Text>();
+		cancelBtnText = cancelBtn.GetComponentInChildren<TMP_Text>();
 		line = Body.transform.Find("Image").GetComponent<Image>();
 	}
 	void Awake()
