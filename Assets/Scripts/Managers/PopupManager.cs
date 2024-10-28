@@ -8,7 +8,9 @@ public class PopupManager : MonoBehaviour
 {
 	public static PopupManager Instance { get; private set; }
 
+	[Header("Popup ")]
 	public GameObject popup;
+	public GameObject informationPopup;
 	public GameObject nameInput;
 	private Canvas canvas;
 
@@ -28,6 +30,14 @@ public class PopupManager : MonoBehaviour
 	private Button cancelBtn;
 	private TMP_Text cancelBtnText;
 	private Image line;
+	// Empty variables in reference to the information popup
+	private GameObject instantiatedInformationPopup;
+	private TMP_Text informationPopupInformation;
+	private GameObject informationPopupParent; // What is the information about basically
+
+	[Header("Information buttons")] // IB for 'information button'
+	public GameObject screenModesIB;
+	public GameObject presetsIB;
 
 	public enum PopupType
 	{
@@ -38,10 +48,19 @@ public class PopupManager : MonoBehaviour
 		CreateSavePopup,
 		QuitWithoutSavingConfirm
 	}
+	public enum InformationType
+	{
+		// Settings Menu
+		ScreenModes,
+		Presets,
+		// [other menu]
+	}
 
 	private void Start()
 	{
 		canvas = FindAnyObjectByType<Canvas>();
+		
+		screenModesIB.
 	}
 
 	public void ShowPopup(PopupType popupType)
@@ -215,6 +234,24 @@ public class PopupManager : MonoBehaviour
 		}
 	}
 
+	public void ShowInformation(InformationType informationType)
+	{
+		AssignInformationPopupObjects();
+		RectTransform rectTransform = instantiatedPopup.GetComponent<RectTransform>();
+		rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+		rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+		rectTransform.pivot = new Vector2(0.5f, 0.5f);
+		rectTransform.anchoredPosition = Vector2.zero;
+
+		switch (informationType)
+		{
+			case InformationType.ScreenModes:
+				informationPopupInformation.text = "Choose how you want the game to be displayed.";
+				break;
+			case InformationType.Presets:
+				break;
+		}
+	}
 	public void ClosePopup()
 	{
 		Destroy(instantiatedPopup);
@@ -237,6 +274,18 @@ public class PopupManager : MonoBehaviour
 		cancelBtn = Footer.transform.Find("Cancel Button").GetComponent<Button>();
 		cancelBtnText = cancelBtn.GetComponentInChildren<TMP_Text>();
 		line = Body.transform.Find("Image").GetComponent<Image>();
+	}
+	void AssignInformationPopupObjects()
+	{
+		instantiatedInformationPopup = Instantiate(informationPopup, canvas.transform);
+		informationPopupInformation = instantiatedInformationPopup.GetComponentInChildren<TMP_Text>();
+		informationPopupParent = instantiatedInformationPopup.transform.parent.gameObject;
+
+		RectTransform rectTransform = instantiatedInformationPopup.GetComponent<RectTransform>();
+		rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+		rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+		rectTransform.pivot = new Vector2(0.5f, 0.5f);
+		rectTransform.anchoredPosition = new Vector2(informationPopupParent.transform.position.x + 100, informationPopupParent.transform.position.y);
 	}
 	void Awake()
 	{
