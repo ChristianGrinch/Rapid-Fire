@@ -14588,7 +14588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e757c902ba0c844aa8296c2269d1957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 883152918}
+  player: {fileID: 0}
 --- !u!1 &967993771
 GameObject:
   m_ObjectHideFlags: 0
@@ -21814,6 +21814,8 @@ MonoBehaviour:
   didSelectDifficulty: 0
   didLoadSpawnManager: 0
   didLoadPowerupManager: 0
+  player: {fileID: 0}
+  playerHealthSystem: {fileID: 0}
 --- !u!82 &1606568290
 AudioSource:
   m_ObjectHideFlags: 0
