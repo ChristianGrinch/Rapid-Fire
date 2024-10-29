@@ -32,21 +32,22 @@ public class GameManager : MonoBehaviour
 	public bool didLoadSpawnManager = false;
 	public bool didLoadPowerupManager = false;
 
-    // References
-    private HealthSystem healthSystem;
+	// References
+	public GameObject player;
+	public HealthSystem playerHealthSystem;
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
-	private GameObject player;
 
     private void Start()
 	{
+		player = GameObject.FindWithTag("Player");
+		playerHealthSystem = player.GetComponent<HealthSystem>();
+
 		enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
 
 		defaultSave = SaveSystem.LoadDefaultSave();
-		player = GameObject.FindWithTag("Player");
-
-		healthSystem = player.GetComponent<HealthSystem>();
+		
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
@@ -88,7 +89,7 @@ public class GameManager : MonoBehaviour
 		isGameUnpaused = true;
 		isInGame = true;
 
-		healthSystem.AssignLives();
+		playerHealthSystem.AssignLives();
 		Time.timeScale = 1;
         GameMenuUI.Instance.SetDifficultyText();
 		Debug.Log(difficulty);
@@ -183,8 +184,8 @@ public class GameManager : MonoBehaviour
             position.z = data.position[2];
             player.transform.position = position;
 
-            healthSystem.UpdateHealth(data.health);
-            healthSystem.UpdateLives(data.lives);
+            playerHealthSystem.UpdateHealth(data.health);
+            playerHealthSystem.UpdateLives(data.lives);
 
             // Update game data
             enemySpawnManager.currentWave = data.wave;

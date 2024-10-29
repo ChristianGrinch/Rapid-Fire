@@ -19,9 +19,15 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         targetZoom = offset.y;
+		StartCoroutine(AssignPlayer());
     }
+	private IEnumerator AssignPlayer()
+	{
+		yield return null;
+		player = GameManager.Instance.player;
+	}
 
-    void Update()
+	void Update()
     {
         HandleInput();
         UpdateCameraPosition();
