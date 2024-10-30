@@ -42,7 +42,7 @@ public class EnemyController : MonoBehaviour
 		audioData.clip = swooshClip;
 
         enemyRb = GetComponent<Rigidbody>();
-		player = GameObject.FindWithTag("Player");
+		player = GameManager.Instance.player;
 		healthSystem = gameObject.GetComponent<HealthSystem>();
 		AssignStats();
 		healthSystem.health = health;

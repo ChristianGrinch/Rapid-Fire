@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
-		LoadSettings(); 
+		StartCoroutine(DelayedLoadSettings()); 
 		SettingsMenuUI.Instance.didModifySettings = false;
 	}
     public void GameOver()
@@ -254,12 +254,18 @@ public class GameManager : MonoBehaviour
 	{
 		SaveSystem.SaveSettings(playerController);
 	}
+	private IEnumerator DelayedLoadSettings()
+	{
+		yield return null; // Wait one frame for UI elements to initialize
+		LoadSettings(); // Now the UI components should be ready
+	}
 	public void LoadSettings()
 	{
 		SaveData data = SaveSystem.LoadSettings();
 
 		if (data != null)
 		{
+			Debug.Log("data not null.");
 			AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
 			AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
@@ -283,6 +289,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
+			Debug.Log("data null.");
 			SaveSystem.CreateSaveSettings();
 			LoadSettings();
 		}

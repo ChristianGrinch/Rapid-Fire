@@ -20,7 +20,7 @@ public class EnemySpawnManager : MonoBehaviour
     }
 	//AddNewEnemy: Tag that describes what needs to be modified at a location for new enemy types.
 	public GameObject enemyParent;
-	public GameObject player;
+	private GameObject player;
 
 	public GameObject[] enemyCountArray;
 	private int totalEnemyCount = 0;
@@ -51,7 +51,11 @@ public class EnemySpawnManager : MonoBehaviour
 		{ EnemyType.Level3, 0 },
 		{ EnemyType.Boss1, 0 },
 		{ EnemyType.IceZombie, 0 }
-	};
+	}; 
+	private void Start()
+	{
+		player = GameManager.Instance.player;
+	}
 	void Update()
 	{
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");

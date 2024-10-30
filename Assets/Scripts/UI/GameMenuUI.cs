@@ -44,7 +44,7 @@ public class GameMenuUI : MonoBehaviour
     private GameManager gameManager;
     private void Start()
     {
-        player = GameObject.FindWithTag("Player");
+		player = GameManager.Instance.player;
         healthSystem = player.GetComponent<HealthSystem>();
         gunController = player.GetComponent<GunController>();
         gameManager = FindFirstObjectByType<GameManager>();

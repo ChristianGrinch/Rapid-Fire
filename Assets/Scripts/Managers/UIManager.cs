@@ -1,12 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.UI;
-
 public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance { get; private set; }
@@ -22,12 +14,13 @@ public class UIManager : MonoBehaviour
         }
     }
     private HealthSystem healthSystem;
-	public GameObject player;
+	private GameObject player;
 	public bool isGameUnpaused = false;
 	public bool isInGame = false;
 
 	void Start()
 	{
+		player = GameManager.Instance.player;
 		SwitchToStart();
 		SavesPanelUI.Instance.InstantiateSaveButtons();
 		AudioPanelUI.Instance.InitializeVolume();
