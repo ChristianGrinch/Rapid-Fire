@@ -45,7 +45,16 @@ public class SettingsMenuUI : MonoBehaviour
 			} 
 			else
 			{
-				UIManager.Instance.SwitchToStart();
+				if (GameManager.Instance.isInGame)
+				{
+					UIManager.Instance.CloseAllMenus();
+					PauseMenuUI.Instance.pauseMenu.SetActive(true);
+				}
+				else
+				{
+					UIManager.Instance.SwitchToStart();
+				}
+				
 			}
 		});
 		StartCoroutine(FixModifySettingsOnLoad());

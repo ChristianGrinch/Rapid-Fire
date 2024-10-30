@@ -10,7 +10,7 @@ public class GunController : MonoBehaviour
 	private Vector3 offset = new(0, 0, 1.25f);
 	private Rigidbody playerRb;
 
-	public GameObject bulletParent;
+	private GameObject bulletParent;
  	public GameObject[] gunObjects;
 
     public GunType currentGun = GunType.Pistol;
@@ -31,6 +31,7 @@ public class GunController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
 	{
+		bulletParent = GameManager.Instance.bullets;
 		player = GameManager.Instance.player;
 		playerRb = player.GetComponent <Rigidbody> ();
 

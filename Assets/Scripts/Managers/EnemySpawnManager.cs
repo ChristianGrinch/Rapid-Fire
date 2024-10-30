@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,7 +19,7 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 	//AddNewEnemy: Tag that describes what needs to be modified at a location for new enemy types.
-	public GameObject enemyParent;
+	private GameObject enemyParent;
 	private GameObject player;
 
 	public GameObject[] enemyCountArray;
@@ -55,6 +55,7 @@ public class EnemySpawnManager : MonoBehaviour
 	private void Start()
 	{
 		player = GameManager.Instance.player;
+		enemyParent = GameManager.Instance.enemies;
 	}
 	void Update()
 	{
@@ -65,11 +66,15 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			if (GameManager.Instance.didLoadSpawnManager)
 			{
+				Debug.Log("frame number: " + Time.frameCount);
 				SpawnEnemiesOnLoad();
 				GameManager.Instance.didLoadSpawnManager = false;
+				Debug.Log("spawnenemiesonload");
 			}
-			else
+			else if(!GameManager.Instance.didLoadSpawnManager)
 			{
+				Debug.Log("frame number: " + Time.frameCount);
+				Debug.Log("spawn enemies on 0 enemy count");
 				currentWave++;
 
 				NumberOfEnemiesToSpawn();
@@ -233,7 +238,7 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			for(var j = 0; j < enemy.Value; j++)
 			{
-				InstantiateEnemy(GetEnemyIndex(enemy.Key));
+				StartCoroutine(InstantiateEnemy(GetEnemyIndex(enemy.Key)));
 			}
 		}
 			
@@ -242,18 +247,20 @@ public class EnemySpawnManager : MonoBehaviour
 
 	public void SpawnEnemiesOnLoad()
 	{
+		Debug.Log("enemy count count " + GameManager.Instance.enemyCount.Count);
 		for(var i = 0; i < GameManager.Instance.enemyCount.Count; i++)
 		{
 			for(var j = 0; j < GameManager.Instance.enemyCount[i]; j++)
 			{
-				InstantiateEnemy(i);
+				StartCoroutine(InstantiateEnemy(i));
 			}
 		}
 		StartCoroutine(EnemyDataManager.Instance.AssignEnemiesToLists());
 	}
 
-	public void InstantiateEnemy(int type)
+	public IEnumerator InstantiateEnemy(int type)
 	{
+		yield return null;
 		GameObject instantiatedEnemy = Instantiate(EnemyDataManager.Instance.enemies[type], GenerateSpawnPosition(type), Quaternion.Euler(90, 0, 0));
 
 		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent

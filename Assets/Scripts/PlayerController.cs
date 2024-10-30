@@ -1,9 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+	public static PlayerController Instance { get; private set; }
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
 	private Rigidbody playerRb;
     public float speed = 8;
 	public float jumpForce = 20;

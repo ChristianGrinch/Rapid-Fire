@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance { get; private set; }
@@ -7,7 +8,8 @@ public class UIManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-        }
+			DontDestroyOnLoad(gameObject);
+		}
         else
         {
             Destroy(gameObject);
@@ -49,7 +51,16 @@ public class UIManager : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && SettingsMenuUI.Instance.settingsMenu.activeSelf)
 		{
-			SwitchToStart();	
+			if (isInGame)
+			{
+				CloseAllMenus();
+				PauseMenuUI.Instance.pauseMenu.SetActive(true);
+			}
+			else
+			{
+				SwitchToStart();
+			}
+			
 		}
 	}
 	public void CloseAllMenus()
@@ -84,16 +95,29 @@ public class UIManager : MonoBehaviour
 	}
 	public void SwitchToStart()
 	{
-		if (isInGame)
+		if(SceneManager.GetActiveScene().buildIndex == 2)
 		{
-			PauseMenuUI.Instance.pauseMenu.SetActive(true);
-			SettingsMenuUI.Instance.settingsMenu.SetActive(false);
+			Debug.Log("setting scene to start");
+			SceneManager.LoadScene(0);
+			CloseAllMenus();
+			StartMenuUI.Instance.startMenu.SetActive(true);
+			GameManager.Instance.isInGame = false;
+			GameManager.Instance.EmptyInstantiatedObjects();
 		}
 		else
 		{
-			CloseAllMenus();
-			StartMenuUI.Instance.startMenu.SetActive(true);
+			if (isInGame)
+			{
+				PauseMenuUI.Instance.pauseMenu.SetActive(true);
+				SettingsMenuUI.Instance.settingsMenu.SetActive(false);
+			}
+			else
+			{
+				CloseAllMenus();
+				StartMenuUI.Instance.startMenu.SetActive(true);
+			}
 		}
+		
 	}
 	public void OpenSettings()
 	{

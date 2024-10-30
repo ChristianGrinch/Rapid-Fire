@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 		if (Instance == null)
 		{
 			Instance = this;
+			DontDestroyOnLoad(gameObject);
 		}
 		else
 		{
@@ -33,7 +34,14 @@ public class GameManager : MonoBehaviour
 	public bool didSelectDifficulty = false;
 	public bool didLoadSpawnManager = false;
 	public bool didLoadPowerupManager = false;
+	[Header("Instantiated Objects")]
+	public GameObject instantiatedObjects;
+	public GameObject enemies;
+	public GameObject bullets;
+	public GameObject powerups;
+	public GameObject ammo;
 
+	[Header("Other")]
 	// References
 	public GameObject player; // Scripts will reference the player HERE instead of DIRECTLY referencing the player
 	public HealthSystem playerHealthSystem;
@@ -62,12 +70,33 @@ public class GameManager : MonoBehaviour
 	}
 	public void RestartGame()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        isInGame = false;
+		SceneManager.LoadScene(0);
+		UIManager.Instance.CloseAllMenus();
+		StartMenuUI.Instance.startMenu.SetActive(true);
+		EmptyInstantiatedObjects();
+
+		isInGame = false;
         isGameUnpaused = false;
+	}
+	public void EmptyInstantiatedObjects()
+	{
+		Transform parentTransform = instantiatedObjects.transform;
+
+		for(var i = 0; i < parentTransform.childCount; i++)
+		{
+			Transform childTransform = parentTransform.GetChild(i);
+			GameObject childObject = childTransform.gameObject;
+			for(var j = 0; j < childTransform.childCount; j++)
+			{
+				Transform grandChildTransform = childTransform.GetChild(j);
+				GameObject grandChildObject = grandChildTransform.gameObject;
+				Destroy(grandChildObject);
+			}
+		}
 	}
 	public void StartDefaultGame()
 	{
+		
 		LoadPlayer(defaultSave);
 
 		UIManager.Instance.CloseAllMenus();
@@ -161,7 +190,11 @@ public class GameManager : MonoBehaviour
     }
     public void LoadPlayer(string saveName)
     {
-        currentSave = saveName;
+		SceneManager.LoadScene(2);
+		Debug.Log("loading player...");
+		player.SetActive(true);
+
+		currentSave = saveName;
 
         didLoadSpawnManager = true;
         didLoadPowerupManager = true;
@@ -239,7 +272,8 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Data is null.");
         }
-    }
+		player.SetActive(true);
+	}
 	public void SaveSettings()
 	{
 		SaveSystem.SaveSettings(playerController);
@@ -251,6 +285,7 @@ public class GameManager : MonoBehaviour
 	}
 	public void LoadSettings()
 	{
+		
 		SaveData data = SaveSystem.LoadSettings();
 
 		if (data != null)
