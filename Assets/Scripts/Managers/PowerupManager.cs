@@ -41,7 +41,7 @@ public class PowerupManager : MonoBehaviour
 	public bool runningSpeedPowerup;
 	private void Start()
 	{
-		player = GameObject.Find("Player");
+		player = GameManager.Instance.player;
 		audioData = GetComponent<AudioSource>();
 		playerController = player.GetComponent<PlayerController>();
 	}

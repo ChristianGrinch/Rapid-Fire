@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -31,6 +33,7 @@ public class GameManager : MonoBehaviour
 	public bool didSelectDifficulty = false;
 	public bool didLoadSpawnManager = false;
 	public bool didLoadPowerupManager = false;
+	public bool didAssignPlayer = false;
 
 	// References
 	public GameObject player;
@@ -38,9 +41,17 @@ public class GameManager : MonoBehaviour
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
-
-    private void Start()
+	private IEnumerator WaitForPlayer()
 	{
+		while (player == null)
+		{
+			yield return null;
+		}
+		didAssignPlayer = true;
+	}
+	private void Start()
+	{
+		StartCoroutine(WaitForPlayer());
 		player = GameObject.FindWithTag("Player");
 		playerHealthSystem = player.GetComponent<HealthSystem>();
 
@@ -51,7 +62,7 @@ public class GameManager : MonoBehaviour
 		gunController = player.GetComponent<GunController>();
 		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
-		LoadSettings(); 
+		StartCoroutine(DelayedLoadSettings()); 
 		SettingsMenuUI.Instance.didModifySettings = false;
 	}
     public void GameOver()
@@ -243,12 +254,18 @@ public class GameManager : MonoBehaviour
 	{
 		SaveSystem.SaveSettings(playerController);
 	}
+	private IEnumerator DelayedLoadSettings()
+	{
+		yield return null; // Wait one frame for UI elements to initialize
+		LoadSettings(); // Now the UI components should be ready
+	}
 	public void LoadSettings()
 	{
 		SaveData data = SaveSystem.LoadSettings();
 
 		if (data != null)
 		{
+			Debug.Log("data not null.");
 			AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
 			AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
@@ -272,6 +289,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
+			Debug.Log("data null.");
 			SaveSystem.CreateSaveSettings();
 			LoadSettings();
 		}

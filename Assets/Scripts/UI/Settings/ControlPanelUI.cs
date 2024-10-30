@@ -25,7 +25,7 @@ public class ControlsPanelUI : MonoBehaviour
 
 	private void Start()
 	{
-		player = GameObject.FindWithTag("Player");
+		player = GameManager.Instance.player;
 		playerController = player.GetComponent<PlayerController>();
 
 		sprintMode.onValueChanged.AddListener((int value) =>

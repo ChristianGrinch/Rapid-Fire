@@ -32,7 +32,7 @@ public class AudioManager : MonoBehaviour
 
 	void Start()
 	{
-		StartCoroutine(AssignPlayer());
+		player = GameManager.Instance.player;
 		masterVolumeSlider.onValueChanged.AddListener(SetVolume);
 		masterVolumeSlider.value = masterVolume;
 		SetVolume(masterVolume);
@@ -53,11 +53,6 @@ public class AudioManager : MonoBehaviour
 		SetVolume(masterVolume);
 		SetMusicVolume(musicVolume);
 		SetGunVolume(gunVolume);
-	}
-	private IEnumerator AssignPlayer()
-	{
-		yield return null;
-		player = GameManager.Instance.player;
 	}
 	public void SetVolume(float newVolume)
 	{
