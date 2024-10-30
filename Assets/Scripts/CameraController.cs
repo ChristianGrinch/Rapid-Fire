@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     private Vector3 playerPos;
     private Vector3 offset = new Vector3(0, 10, 0);
 
@@ -14,6 +14,8 @@ public class CameraController : MonoBehaviour
 
     private float zoomSpeed = 5f;
     private float targetZoom;
+
+	private bool waitForPlayerToLoad = true;
 
     // Start is called before the first frame update
     void Start()
@@ -24,13 +26,22 @@ public class CameraController : MonoBehaviour
 	private IEnumerator AssignPlayer()
 	{
 		yield return null;
-		player = GameManager.Instance.player;
+		while (player == null)
+		{
+			yield return null;
+			player = GameManager.Instance.player;
+			waitForPlayerToLoad = false;
+		}
 	}
 
 	void Update()
     {
-        HandleInput();
-        UpdateCameraPosition();
+		if (!waitForPlayerToLoad) 
+		{
+			HandleInput();
+			UpdateCameraPosition();
+		}
+        
     }
 
     void HandleInput()

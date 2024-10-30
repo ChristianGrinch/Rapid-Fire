@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -31,6 +33,7 @@ public class GameManager : MonoBehaviour
 	public bool didSelectDifficulty = false;
 	public bool didLoadSpawnManager = false;
 	public bool didLoadPowerupManager = false;
+	public bool didAssignPlayer = false;
 
 	// References
 	public GameObject player;
@@ -38,9 +41,17 @@ public class GameManager : MonoBehaviour
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
-
-    private void Start()
+	private IEnumerator WaitForPlayer()
 	{
+		while (player == null)
+		{
+			yield return null;
+		}
+		didAssignPlayer = true;
+	}
+	private void Start()
+	{
+		StartCoroutine(WaitForPlayer());
 		player = GameObject.FindWithTag("Player");
 		playerHealthSystem = player.GetComponent<HealthSystem>();
 

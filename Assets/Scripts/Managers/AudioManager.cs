@@ -57,6 +57,10 @@ public class AudioManager : MonoBehaviour
 	private IEnumerator AssignPlayer()
 	{
 		yield return null;
+		while(player == null)
+		{
+			yield return null;
+		}
 		player = GameManager.Instance.player;
 	}
 	public void SetVolume(float newVolume)
