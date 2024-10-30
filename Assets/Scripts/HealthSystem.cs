@@ -14,6 +14,12 @@ public class HealthSystem : MonoBehaviour
 
 	public void UpdateHealth(int newHealth)
 	{
+		if (lives <= 0 && gameObject.name == "Player")
+		{
+			GameManager.Instance.GameOver();
+			Time.timeScale = 0;
+		}
+
 		if (newHealth <= maxHealth || gameObject.CompareTag("Enemy")) // Makes sure health never goes above 200
 		{
 			health = newHealth;

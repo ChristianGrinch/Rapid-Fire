@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class PlayerController : MonoBehaviour
 	public int[] ammo;
 	public int speedPowerupCount = 0;
 
-	public GameObject gameManager;
+	private GameObject gameManager;
 	private HealthSystem healthSystem;
 	private EnemySpawnManager enemySpawnManager;
 	private GunController gunController;
@@ -37,6 +38,8 @@ public class PlayerController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
+		gameManager = GameObject.Find("Game Manager");
+		useSprintHold = GameManager.Instance.useSprintHold;
 		playerRb = GetComponent<Rigidbody>();
 		healthSystem = GetComponent<HealthSystem>();
 		enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
@@ -46,6 +49,12 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+		Debug.Log(sceneIndex);
+		if (sceneIndex == 0)
+		{
+			gameObject.transform.position = new(0, 0.5f, 0);
+		}
         Sprinting();
 		health = healthSystem.health;
 		lives = healthSystem.lives;

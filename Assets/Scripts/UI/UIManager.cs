@@ -15,30 +15,19 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    private HealthSystem healthSystem;
-	private GameObject player;
 	public bool isGameUnpaused = false;
 	public bool isInGame = false;
 
 	void Start()
 	{
-		player = GameManager.Instance.player;
 		SwitchToStart();
 		SavesPanelUI.Instance.InstantiateSaveButtons();
 		AudioPanelUI.Instance.InitializeVolume();
-
-		healthSystem = player.GetComponent<HealthSystem>();
 	}
 	void Update()
 	{
 		isGameUnpaused = GameManager.Instance.isGameUnpaused;
 		isInGame = GameManager.Instance.isInGame;
-
-		if (healthSystem.lives <= 0)
-		{
-			GameManager.Instance.GameOver();
-            Time.timeScale = 0;
-        }
 
 		if (Input.GetKeyDown(KeyCode.Escape) && isGameUnpaused)
 		{

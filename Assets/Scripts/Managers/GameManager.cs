@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 	public GameObject bullets;
 	public GameObject powerups;
 	public GameObject ammo;
+	[Header("Tertiary stuff")]
+	public bool useSprintHold = true;
 
 	[Header("Other")]
 	// References
@@ -50,15 +52,9 @@ public class GameManager : MonoBehaviour
 	private EnemySpawnManager enemySpawnManager;
 	private void Start()
 	{
-		player = GameObject.FindWithTag("Player");
-		playerHealthSystem = player.GetComponent<HealthSystem>();
-
 		enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
 
 		defaultSave = SaveSystem.LoadDefaultSave();
-		
-		gunController = player.GetComponent<GunController>();
-		playerController = player.GetComponent<PlayerController>();
 		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
 		StartCoroutine(DelayedLoadSettings()); 
 		SettingsMenuUI.Instance.didModifySettings = false;
@@ -191,8 +187,14 @@ public class GameManager : MonoBehaviour
     public void LoadPlayer(string saveName)
     {
 		SceneManager.LoadScene(2);
+
+		player = GameObject.FindWithTag("Player");
+		playerController = player.GetComponent<PlayerController>();
+		playerHealthSystem = player.GetComponent<HealthSystem>();
+		gunController = player.GetComponentInParent<GunController>();
+
+
 		Debug.Log("loading player...");
-		player.SetActive(true);
 
 		currentSave = saveName;
 
@@ -272,7 +274,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Data is null.");
         }
-		player.SetActive(true);
 	}
 	public void SaveSettings()
 	{
@@ -299,7 +300,7 @@ public class GameManager : MonoBehaviour
 
 			AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
 			AudioPanelUI.Instance.gun.text = data.gunVolume.ToString();
-			playerController.useSprintHold = data.useSprintHold;
+			useSprintHold = data.useSprintHold;
 
 			VideoPanelUI.Instance.screenMode.value = data.screenMode;
 			VideoPanelUI.Instance.ChangeScreenMode(data.screenMode);
