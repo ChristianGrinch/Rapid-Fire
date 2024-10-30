@@ -6,7 +6,7 @@ public class GunController : MonoBehaviour
 {
 
 	public GameObject bullet;
-	public GameObject player;
+	private GameObject player;
 	private Vector3 offset = new(0, 0, 1.25f);
 	private Rigidbody playerRb;
 
@@ -31,6 +31,7 @@ public class GunController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
 	{
+		player = GameManager.Instance.player;
 		playerRb = player.GetComponent <Rigidbody> ();
 
         audioData = GetComponent<AudioSource>();

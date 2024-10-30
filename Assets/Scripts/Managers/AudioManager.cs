@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
 
 	public AudioClip buttonClickSound;
 	private AudioSource buttonAudioSource;
+	private GameObject player;
 
 	private void Awake()
 	{
@@ -31,6 +32,7 @@ public class AudioManager : MonoBehaviour
 
 	void Start()
 	{
+		player = GameManager.Instance.player;
 		masterVolumeSlider.onValueChanged.AddListener(SetVolume);
 		masterVolumeSlider.value = masterVolume;
 		SetVolume(masterVolume);
@@ -45,13 +47,13 @@ public class AudioManager : MonoBehaviour
 
 		InitializeButtonSound();
 	}
+	
 	private void Update()
 	{
 		SetVolume(masterVolume);
 		SetMusicVolume(musicVolume);
 		SetGunVolume(gunVolume);
 	}
-
 	public void SetVolume(float newVolume)
 	{
 		masterVolume = newVolume;
@@ -87,16 +89,11 @@ public class AudioManager : MonoBehaviour
 	{
 		gunVolume = newVolume;
 
-		GameObject player = GameObject.Find("Player");
 		if(player != null)
 		{
 			AudioSource audioSource = player.GetComponent<AudioSource>();
 
 			audioSource.volume = (masterVolume / 100) * (gunVolume / 100);
-		}
-		else
-		{
-			Debug.LogWarning("Cannot find player!");
 		}
 		
 	}
