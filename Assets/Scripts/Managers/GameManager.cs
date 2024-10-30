@@ -33,25 +33,15 @@ public class GameManager : MonoBehaviour
 	public bool didSelectDifficulty = false;
 	public bool didLoadSpawnManager = false;
 	public bool didLoadPowerupManager = false;
-	public bool didAssignPlayer = false;
 
 	// References
-	public GameObject player;
+	public GameObject player; // Scripts will reference the player HERE instead of DIRECTLY referencing the player
 	public HealthSystem playerHealthSystem;
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
-	private IEnumerator WaitForPlayer()
-	{
-		while (player == null)
-		{
-			yield return null;
-		}
-		didAssignPlayer = true;
-	}
 	private void Start()
 	{
-		StartCoroutine(WaitForPlayer());
 		player = GameObject.FindWithTag("Player");
 		playerHealthSystem = player.GetComponent<HealthSystem>();
 
