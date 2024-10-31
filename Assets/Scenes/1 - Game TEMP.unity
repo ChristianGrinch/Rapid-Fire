@@ -18598,7 +18598,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1716014383}
-  - component: {fileID: 1716014384}
+  - component: {fileID: 1716014386}
+  - component: {fileID: 1716014385}
   m_Layer: 0
   m_Name: Game UI Manager
   m_TagString: Untagged
@@ -18621,7 +18622,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1716014384
+--- !u!114 &1716014385
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18630,23 +18631,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1716014382}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b72d73f4bee36fb4f8db2fc222e00b3f, type: 3}
+  m_Script: {fileID: 11500000, guid: 63fa2c5c04c8de84182c5c21b62c5a39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  game: {fileID: 0}
-  debug: {fileID: 0}
-  difficulty: {fileID: 0}
-  health: {fileID: 0}
-  lives: {fileID: 0}
-  wave: {fileID: 0}
-  ammo: {fileID: 0}
-  version: {fileID: 0}
-  ammoImage: {fileID: 0}
-  rifleAmmo: {fileID: 0}
-  pistolAmmo: {fileID: 0}
-  spawnEnemyDebug: {fileID: 0}
-  killEnemiesDebug: {fileID: 0}
-  enemySpawnCountDebug: {fileID: 0}
+  enemyCountArray: []
+  totalEnemiesToSpawn: 0
+  currentWave: 0
+  spawnBufferDistance: 4
+--- !u!114 &1716014386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716014382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76ed68e07c89459428554e304ba28561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemies:
+  - {fileID: 3643904846915297769, guid: 403c55a11ad960c48a952cbf22b38405, type: 3}
+  - {fileID: 6329172769025539485, guid: bc93f41b1fcce1941aa00fd4e16aa9b8, type: 3}
+  - {fileID: 8683618380255166290, guid: edfb1cd3be7b1b04cb48887d0528956b, type: 3}
+  - {fileID: 8543954980356892885, guid: fcaa37993dbf15f47a5331e30ba4ac14, type: 3}
+  - {fileID: 227322009373829816, guid: 6a70885e14300a24e97b4df7c7d75e28, type: 3}
+  enemyNames: []
+  enemyCountArray: []
+  totalEnemyCount: 0
+  enemyCount: 
 --- !u!1 &1725799980
 GameObject:
   m_ObjectHideFlags: 0

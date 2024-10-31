@@ -52,10 +52,10 @@ public class GameManager : MonoBehaviour
 	private EnemySpawnManager enemySpawnManager;
 	private void Start()
 	{
-		enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
+		//enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
 
 		defaultSave = SaveSystem.LoadDefaultSave();
-		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
+		
 		StartCoroutine(DelayedLoadSettings()); 
 		SettingsMenuUI.Instance.didModifySettings = false;
 	}
@@ -96,13 +96,12 @@ public class GameManager : MonoBehaviour
 		LoadPlayer(defaultSave);
 
 		UIManager.Instance.CloseAllMenus();
-        GameMenuUI.Instance.game.SetActive(true);
 
 		isGameUnpaused = true;
 		isInGame = true;
 
 		Time.timeScale = 1;
-		GameMenuUI.Instance.SetDifficultyText();
+		
 		Debug.Log(difficulty);
 	}
 	public void StartNewGame()
@@ -184,85 +183,111 @@ public class GameManager : MonoBehaviour
         SaveSystem.CreateSave(playerController, saveName);
         currentSave = saveName;
     }
-    public void LoadPlayer(string saveName)
-    {
+	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		if (scene.buildIndex == 2)  // Ensure it’s the correct scene
+		{
+			// Scene is now fully loaded; access new scene objects here
+			Debug.Log(SceneManager.GetActiveScene().name);
+
+			player = GameObject.FindWithTag("Player");
+			Debug.Log(SceneManager.GetActiveScene().name);
+
+			playerController = player.GetComponent<PlayerController>();
+			playerHealthSystem = player.GetComponent<HealthSystem>();
+			gunController = player.GetComponentInParent<GunController>();
+			enemySpawnManager = GameObject.Find("Game UI Manager").GetComponent<EnemySpawnManager>();
+			Debug.Log("Enemy spawn manager: "+enemySpawnManager);
+			enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
+
+			Debug.Log("loading player...");
+
+			// Now that the scene is loaded, initialize and load player data
+			InitializePlayerData(currentSave);
+			GameMenuUI.Instance.SetDifficultyText();
+
+			SceneManager.sceneLoaded -= OnSceneLoaded;  // Unsubscribe from the event
+		}
+	}
+
+	public void LoadPlayer(string saveName)
+	{
+		currentSave = saveName;  // Store save name for later use
+
+		// Subscribe to sceneLoaded event
+		SceneManager.sceneLoaded += OnSceneLoaded;
+
+		// Start loading the scene
 		SceneManager.LoadScene(2);
+	}
 
-		player = GameObject.FindWithTag("Player");
-		playerController = player.GetComponent<PlayerController>();
-		playerHealthSystem = player.GetComponent<HealthSystem>();
-		gunController = player.GetComponentInParent<GunController>();
+	private void InitializePlayerData(string saveName)
+	{
+		didLoadSpawnManager = true;
+		didLoadPowerupManager = true;
 
+		// Load the player data
+		SaveData data = SaveSystem.LoadGame(saveName);
 
-		Debug.Log("loading player...");
-
-		currentSave = saveName;
-
-        didLoadSpawnManager = true;
-        didLoadPowerupManager = true;
-
-        // Load the player data
-        SaveData data = SaveSystem.LoadGame(saveName);
-
-        if (data != null)
-        {
-            // Update player data
-            playerController.exp = data.exp;
-            playerController.health = data.health;
-            playerController.lives = data.lives;
-            playerController.wave = data.wave;
-            playerController.ammo = data.ammo;
+		if (data != null)
+		{
+			// Update player data
+			playerController.exp = data.exp;
+			playerController.health = data.health;
+			playerController.lives = data.lives;
+			playerController.wave = data.wave;
+			playerController.ammo = data.ammo;
 			playerController.speedPowerupCount = data.speedPowerup;
 
-            Vector3 position;
-            position.x = data.position[0];
-            position.y = data.position[1];
-            position.z = data.position[2];
-            player.transform.position = position;
+			Vector3 position;
+			position.x = data.position[0];
+			position.y = data.position[1];
+			position.z = data.position[2];
+			player.transform.position = position;
 
-            playerHealthSystem.UpdateHealth(data.health);
-            playerHealthSystem.UpdateLives(data.lives);
+			playerHealthSystem.UpdateHealth(data.health);
+			playerHealthSystem.UpdateLives(data.lives);
 
-            // Update game data
-            enemySpawnManager.currentWave = data.wave;
-            gunController.ammo = data.ammo;
+			// Update game data
+			enemySpawnManager.currentWave = data.wave;
+			gunController.ammo = data.ammo;
 
-			// Check if the save is an old save, if so, preform a modification to it so it can be compatible with current saves.
-			if(data.numberOfEnemies.Length == 4) // Handling for no iceZombie
+			// Check if the save is an old save and modify for compatibility
+			if (data.numberOfEnemies.Length == 4)
 			{
-                Debug.LogWarning("Ran save incompatiblity fixer [ICE ZOMBIE]");
+				Debug.LogWarning("Ran save incompatibility fixer [ICE ZOMBIE]");
 				int[] tempEnemies = new int[5];
-				for (int i = 0; i <= 4; i++)
+				for (int i = 0; i <= 3; i++)
 				{
 					tempEnemies[i] = data.numberOfEnemies[i];
 				}
 
-                Debug.Log("Data difficulty: " + data.difficulty);
-
-				switch (data.difficulty) // Sets the current number of ice zombies based on saved difficulty and wave
+				// Set ice zombies based on difficulty and wave
+				switch (data.difficulty)
 				{
-                    case 1:
-                        tempEnemies[4] = data.wave - 4 > 0 ? data.wave - 3 : 0; // Spawns 1 iceZombie on wave 4, then increments
-                        break;
-                    case 2:
-                        tempEnemies[4] = data.wave - 2 > 0 ? data.wave - 2 : 0; // Spawns 1 iceZombie on wave 2, then increments
-                        break;
-                    case 3:
-                        tempEnemies[4] = data.wave + 1; // Spawns iceZombie starting at wave 1 and increments
-                        break;
-                }
+					case 1:
+						tempEnemies[4] = data.wave - 4 > 0 ? data.wave - 3 : 0;
+						break;
+					case 2:
+						tempEnemies[4] = data.wave - 2 > 0 ? data.wave - 2 : 0;
+						break;
+					case 3:
+						tempEnemies[4] = data.wave + 1;
+						break;
+				}
 				data.numberOfEnemies = tempEnemies;
 			}
 
-			for(var i = 0; i < data.numberOfEnemies.Length; i++)
+			// Set enemy counts
+			for (var i = 0; i < data.numberOfEnemies.Length; i++)
 			{
 				enemyCount[i] = data.numberOfEnemies[i];
-				//Debug.Log(enemyCount[i]);
 			}
 
-            PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
-            PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
-            PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];
+			// Set powerup counts
+			PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
+			PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
+			PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];
 
 			if (data.difficulty != 0)
 			{
@@ -270,10 +295,10 @@ public class GameManager : MonoBehaviour
 				difficulty = data.difficulty;
 			}
 		}
-        else
-        {
-            Debug.LogError("Data is null.");
-        }
+		else
+		{
+			Debug.LogError("Data is null.");
+		}
 	}
 	public void SaveSettings()
 	{
