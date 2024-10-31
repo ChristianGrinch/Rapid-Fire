@@ -36,7 +36,11 @@ public class SettingsMenuUI : MonoBehaviour
 		videoLabel.onClick.AddListener(OpenVideoPanel);
 		savesLabel.onClick.AddListener(OpenSavesPanel);
 		controlsLabel.onClick.AddListener(OpenControlPanel);
-		save.onClick.AddListener(() => didSaveSettings = true);
+		save.onClick.AddListener(() => 
+		{
+			didSaveSettings = true;
+			GameManager.Instance.SaveSettings();
+		});
 		goBack.onClick.AddListener(() =>
 		{
 			if (didModifySettings && !didSaveSettings)

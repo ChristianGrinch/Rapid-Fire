@@ -39,11 +39,6 @@ public class PopupManager : MonoBehaviour
 		QuitWithoutSavingConfirm
 	}
 
-	private void Start()
-	{
-		canvas = FindAnyObjectByType<Canvas>();
-	}
-
 	public void ShowPopup(PopupType popupType)
 	{
 		AssignPopupObjects();
@@ -109,7 +104,6 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					GameManager.Instance.LoadPlayer(SavesPanelUI.Instance.currentSave);
 					GameManager.Instance.StartExistingGame();
 					ClosePopup();
 				});
@@ -221,6 +215,7 @@ public class PopupManager : MonoBehaviour
 
 	void AssignPopupObjects()
 	{
+		canvas = FindAnyObjectByType<Canvas>();
 		instantiatedPopup = Instantiate(popup, canvas.transform);
 
 		Header = instantiatedPopup.transform.Find("Header").gameObject;

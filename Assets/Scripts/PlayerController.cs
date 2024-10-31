@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
 	public int exp;
 	public int health;
 	public int lives;
-	public int wave;
 	public int[] ammo;
 	public int speedPowerupCount = 0;
 
@@ -41,7 +40,6 @@ public class PlayerController : MonoBehaviour
 		useSprintHold = GameManager.Instance.useSprintHold;
 		playerRb = GetComponent<Rigidbody>();
 		healthSystem = GetComponent<HealthSystem>();
-		enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
 		gunController = GetComponent<GunController>();
     }
 
@@ -49,7 +47,6 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		int sceneIndex = SceneManager.GetActiveScene().buildIndex;
-		Debug.Log(sceneIndex);
 		if (sceneIndex == 0)
 		{
 			gameObject.transform.position = new(0, 0.5f, 0);
@@ -57,7 +54,6 @@ public class PlayerController : MonoBehaviour
         Sprinting();
 		health = healthSystem.health;
 		lives = healthSystem.lives;
-		wave = enemySpawnManager.currentWave;
 		ammo = gunController.ammo;
 
         Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;

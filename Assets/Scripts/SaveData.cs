@@ -50,7 +50,7 @@ public class SaveData
 			ammo = player.ammo,
 
 			// Assign game data
-			wave = player.wave,
+			wave = GameManager.Instance.wave,
 			numberOfEnemies = new int[]
 			{
 				EnemyDataManager.Instance.enemyCount[0],
@@ -141,7 +141,7 @@ public class SaveData
 			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
 			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
 			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
-			useSprintHold = player.useSprintHold,
+			useSprintHold = GameManager.Instance.useSprintHold,
 			screenMode = VideoPanelUI.Instance.screenMode.value
 		};
 		return saveData;

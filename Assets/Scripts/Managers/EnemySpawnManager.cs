@@ -66,15 +66,11 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			if (GameManager.Instance.didLoadSpawnManager)
 			{
-				Debug.Log("frame number: " + Time.frameCount);
 				SpawnEnemiesOnLoad();
 				GameManager.Instance.didLoadSpawnManager = false;
-				Debug.Log("spawnenemiesonload");
 			}
 			else if(!GameManager.Instance.didLoadSpawnManager)
 			{
-				Debug.Log("frame number: " + Time.frameCount);
-				Debug.Log("spawn enemies on 0 enemy count");
 				currentWave++;
 
 				NumberOfEnemiesToSpawn();
@@ -247,7 +243,6 @@ public class EnemySpawnManager : MonoBehaviour
 
 	public void SpawnEnemiesOnLoad()
 	{
-		Debug.Log("enemy count count " + GameManager.Instance.enemyCount.Count);
 		for(var i = 0; i < GameManager.Instance.enemyCount.Count; i++)
 		{
 			for(var j = 0; j < GameManager.Instance.enemyCount[i]; j++)

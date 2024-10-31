@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 	[Header("Game Values")]
 	public static float mapSize = 50;
 	public int difficulty = 1;
+	public int wave = 0;
 	public bool isGameUnpaused = false;
 	public bool isInGame = false;
 	[Header("Saves")]
@@ -66,9 +67,10 @@ public class GameManager : MonoBehaviour
 	}
 	public void RestartGame()
 	{
+		SceneManager.sceneLoaded += OnSceneLoaded;
+
 		SceneManager.LoadScene(0);
 		UIManager.Instance.CloseAllMenus();
-		StartMenuUI.Instance.startMenu.SetActive(true);
 		EmptyInstantiatedObjects();
 
 		isInGame = false;
@@ -92,42 +94,32 @@ public class GameManager : MonoBehaviour
 	}
 	public void StartDefaultGame()
 	{
-		
 		LoadPlayer(defaultSave);
-
-		UIManager.Instance.CloseAllMenus();
 
 		isGameUnpaused = true;
 		isInGame = true;
 
 		Time.timeScale = 1;
-		
 		Debug.Log(difficulty);
 	}
 	public void StartNewGame()
 	{
 		LoadPlayer(currentSave);
 
-		UIManager.Instance.CloseAllMenus();
-        GameMenuUI.Instance.game.SetActive(true);
-
 		isGameUnpaused = true;
 		isInGame = true;
 
-		playerHealthSystem.AssignLives();
 		Time.timeScale = 1;
-        GameMenuUI.Instance.SetDifficultyText();
 		Debug.Log(difficulty);
 	}
-    public void StartExistingGame(){
-        UIManager.Instance.CloseAllMenus();
-        GameMenuUI.Instance.game.SetActive(true);
+    public void StartExistingGame()
+	{
+		LoadPlayer(SavesPanelUI.Instance.currentSave);
 
-        isGameUnpaused = true;
+		isGameUnpaused = true;
         isInGame = true;
 
         Time.timeScale = 1;
-        GameMenuUI.Instance.SetDifficultyText();
 		Debug.Log(difficulty);
 	}
 	public void PauseGame()
@@ -183,21 +175,18 @@ public class GameManager : MonoBehaviour
         SaveSystem.CreateSave(playerController, saveName);
         currentSave = saveName;
     }
-	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
 		if (scene.buildIndex == 2)  // Ensure it’s the correct scene
 		{
 			// Scene is now fully loaded; access new scene objects here
-			Debug.Log(SceneManager.GetActiveScene().name);
 
 			player = GameObject.FindWithTag("Player");
-			Debug.Log(SceneManager.GetActiveScene().name);
 
 			playerController = player.GetComponent<PlayerController>();
 			playerHealthSystem = player.GetComponent<HealthSystem>();
 			gunController = player.GetComponentInParent<GunController>();
 			enemySpawnManager = GameObject.Find("Game UI Manager").GetComponent<EnemySpawnManager>();
-			Debug.Log("Enemy spawn manager: "+enemySpawnManager);
 			enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
 
 			Debug.Log("loading player...");
@@ -205,8 +194,16 @@ public class GameManager : MonoBehaviour
 			// Now that the scene is loaded, initialize and load player data
 			InitializePlayerData(currentSave);
 			GameMenuUI.Instance.SetDifficultyText();
+			StartCoroutine(DelayedLoadSettings());
 
 			SceneManager.sceneLoaded -= OnSceneLoaded;  // Unsubscribe from the event
+		} 
+		else if (scene.buildIndex == 0)
+		{
+			StartCoroutine(DelayedLoadSettings());
+			Debug.Log("build index was 0");
+
+			SceneManager.sceneLoaded -= OnSceneLoaded;
 		}
 	}
 
@@ -235,7 +232,7 @@ public class GameManager : MonoBehaviour
 			playerController.exp = data.exp;
 			playerController.health = data.health;
 			playerController.lives = data.lives;
-			playerController.wave = data.wave;
+			wave = data.wave;
 			playerController.ammo = data.ammo;
 			playerController.speedPowerupCount = data.speedPowerup;
 
@@ -344,5 +341,6 @@ public class GameManager : MonoBehaviour
 			SaveSystem.CreateSaveSettings();
 			LoadSettings();
 		}
+		SettingsMenuUI.Instance.didModifySettings = false;
 	}
 }

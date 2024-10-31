@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundMusic : MonoBehaviour // Not my script! Thanks to https://stackoverflow.com/a/53684356 for it. 

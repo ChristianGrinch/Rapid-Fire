@@ -3805,13 +3805,6 @@ GameObject:
   m_Component:
   - component: {fileID: 411387655}
   - component: {fileID: 411387656}
-  - component: {fileID: 411387651}
-  - component: {fileID: 411387650}
-  - component: {fileID: 411387649}
-  - component: {fileID: 411387648}
-  - component: {fileID: 411387647}
-  - component: {fileID: 411387646}
-  - component: {fileID: 411387645}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -3819,146 +3812,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &411387645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 411387644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c89cb0fc8efd704bb725cbaeef70874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controlsPanel: {fileID: 168747965}
-  sprintMode: {fileID: 405726776}
---- !u!114 &411387646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 411387644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39f20615575686643b7335e21a1a0bc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  savesPanel: {fileID: 1033364408}
-  createSaveWarning: {fileID: 223149204}
-  loadWarning: {fileID: 823092391}
-  emptyLoadWarning: {fileID: 1457013202}
-  createSave: {fileID: 936067752}
-  deleteSave: {fileID: 769741428}
-  defaultSaveBtn: {fileID: 553806314}
-  loadSave: {fileID: 771669296}
-  currentSave: 
-  defaultSave: 
-  savesContentPanel: {fileID: 1759790464}
-  SavePrefab: {fileID: 6023388616657966226, guid: 84276b4c011b3f74883e0ca3b8631d85, type: 3}
-  saveNameInput: {fileID: 1277143875}
---- !u!114 &411387647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 411387644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8977050dcd21c58498c104e2bd2ee553, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  videoPanel: {fileID: 1919743738}
-  screenMode: {fileID: 564400393}
---- !u!114 &411387648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 411387644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed422a0ba27c0b14bbfc8e7ab8a98558, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioPanel: {fileID: 594199731}
-  masterVolume: {fileID: 1718100042}
-  musicVolume: {fileID: 331269299}
-  gunVolume: {fileID: 1062008383}
-  master: {fileID: 277600577}
-  music: {fileID: 1061918779}
-  gun: {fileID: 444210855}
-  masterVolumeIncrease: {fileID: 2099645804}
-  masterVolumeDecrease: {fileID: 45861256}
-  musicVolumeIncrease: {fileID: 1080120077}
-  musicVolumeDecrease: {fileID: 1480134477}
-  gunVolumeIncrease: {fileID: 1497649053}
-  gunVolumeDecrease: {fileID: 232239953}
---- !u!114 &411387649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 411387644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7a785b93304fa94f80b310c59e12f9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settingsMenu: {fileID: 1658364311}
-  goBack: {fileID: 264135858}
-  save: {fileID: 860577533}
-  audioLabel: {fileID: 2087834649}
-  videoLabel: {fileID: 1763269461}
-  savesLabel: {fileID: 1519848295}
-  controlsLabel: {fileID: 46945448}
-  didModifySettings: 0
-  didSaveSettings: 0
---- !u!114 &411387650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 411387644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a83f683b96f1545498d00c889ca82e9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  difficultyMenu: {fileID: 1842468595}
-  goBack: {fileID: 1478641414}
-  easy: {fileID: 753083569}
-  normal: {fileID: 436877006}
-  master: {fileID: 1937117231}
-  difficulty: 0
-  didSelectDifficulty: 0
---- !u!114 &411387651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 411387644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 693a6fee9f447754fa1b912465696db3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startMenu: {fileID: 704097537}
-  playDefault: {fileID: 1968562867}
-  createNewSave: {fileID: 1074293751}
-  difficultySelect: {fileID: 114360140}
-  settingsSelect: {fileID: 53929471}
-  quitGame: {fileID: 1245634228}
-  difficultySelectWarning: {fileID: 0}
-  saveNameWarning: {fileID: 2118341886}
-  defaultSaveWarning: {fileID: 1752531404}
-  playDefaultText: {fileID: 1962830285}
 --- !u!4 &411387655
 Transform:
   m_ObjectHideFlags: 0
@@ -6280,7 +6133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &704097538
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9496,6 +9349,184 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1036504846}
   m_CullTransparentMesh: 1
+--- !u!1 &1046325796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1046325804}
+  - component: {fileID: 1046325803}
+  - component: {fileID: 1046325802}
+  - component: {fileID: 1046325801}
+  - component: {fileID: 1046325800}
+  - component: {fileID: 1046325799}
+  - component: {fileID: 1046325798}
+  - component: {fileID: 1046325797}
+  m_Layer: 0
+  m_Name: UI Manager (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1046325797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046325796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c89cb0fc8efd704bb725cbaeef70874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlsPanel: {fileID: 168747965}
+  sprintMode: {fileID: 405726776}
+--- !u!114 &1046325798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046325796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39f20615575686643b7335e21a1a0bc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  savesPanel: {fileID: 1033364408}
+  createSaveWarning: {fileID: 223149204}
+  loadWarning: {fileID: 823092391}
+  emptyLoadWarning: {fileID: 1457013202}
+  createSave: {fileID: 936067752}
+  deleteSave: {fileID: 769741428}
+  defaultSaveBtn: {fileID: 553806314}
+  loadSave: {fileID: 771669296}
+  currentSave: 
+  defaultSave: 
+  savesContentPanel: {fileID: 1759790464}
+  SavePrefab: {fileID: 6023388616657966226, guid: 84276b4c011b3f74883e0ca3b8631d85, type: 3}
+  saveNameInput: {fileID: 1277143875}
+--- !u!114 &1046325799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046325796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8977050dcd21c58498c104e2bd2ee553, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  videoPanel: {fileID: 1919743738}
+  screenMode: {fileID: 564400393}
+--- !u!114 &1046325800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046325796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed422a0ba27c0b14bbfc8e7ab8a98558, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioPanel: {fileID: 594199731}
+  masterVolume: {fileID: 1718100042}
+  musicVolume: {fileID: 331269299}
+  gunVolume: {fileID: 1062008383}
+  master: {fileID: 277600577}
+  music: {fileID: 1061918779}
+  gun: {fileID: 444210855}
+  masterVolumeIncrease: {fileID: 2099645804}
+  masterVolumeDecrease: {fileID: 45861256}
+  musicVolumeIncrease: {fileID: 1080120077}
+  musicVolumeDecrease: {fileID: 1480134477}
+  gunVolumeIncrease: {fileID: 1497649053}
+  gunVolumeDecrease: {fileID: 232239953}
+--- !u!114 &1046325801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046325796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7a785b93304fa94f80b310c59e12f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsMenu: {fileID: 1658364311}
+  goBack: {fileID: 264135858}
+  save: {fileID: 860577533}
+  audioLabel: {fileID: 2087834649}
+  videoLabel: {fileID: 1763269461}
+  savesLabel: {fileID: 1519848295}
+  controlsLabel: {fileID: 46945448}
+  didModifySettings: 0
+  didSaveSettings: 0
+--- !u!114 &1046325802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046325796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83f683b96f1545498d00c889ca82e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficultyMenu: {fileID: 1842468595}
+  goBack: {fileID: 1478641414}
+  easy: {fileID: 753083569}
+  normal: {fileID: 436877006}
+  master: {fileID: 1937117231}
+  difficulty: 0
+  didSelectDifficulty: 0
+--- !u!114 &1046325803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046325796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693a6fee9f447754fa1b912465696db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMenu: {fileID: 704097537}
+  playDefault: {fileID: 1968562867}
+  createNewSave: {fileID: 1074293751}
+  difficultySelect: {fileID: 114360140}
+  settingsSelect: {fileID: 53929471}
+  quitGame: {fileID: 1245634228}
+  difficultySelectWarning: {fileID: 0}
+  saveNameWarning: {fileID: 2118341886}
+  defaultSaveWarning: {fileID: 1752531404}
+  playDefaultText: {fileID: 1962830285}
+--- !u!4 &1046325804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1046325796}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1061249127
 GameObject:
   m_ObjectHideFlags: 0
@@ -14444,6 +14475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 1
+  wave: 0
   isGameUnpaused: 0
   isInGame: 0
   defaultSave: 
@@ -19147,4 +19179,5 @@ SceneRoots:
   - {fileID: 1683899204}
   - {fileID: 1356431178}
   - {fileID: 411387655}
+  - {fileID: 1046325804}
   - {fileID: 1392092707}

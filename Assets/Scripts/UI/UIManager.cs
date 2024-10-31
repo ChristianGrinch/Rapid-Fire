@@ -86,12 +86,20 @@ public class UIManager : MonoBehaviour
 	{
 		if(SceneManager.GetActiveScene().buildIndex == 2)
 		{
-			Debug.Log("setting scene to start");
-			SceneManager.LoadScene(0);
-			CloseAllMenus();
-			StartMenuUI.Instance.startMenu.SetActive(true);
-			GameManager.Instance.isInGame = false;
-			GameManager.Instance.EmptyInstantiatedObjects();
+			if (SettingsMenuUI.Instance.settingsMenu.activeSelf)
+			{
+				PauseMenuUI.Instance.pauseMenu.SetActive(true);
+				SettingsMenuUI.Instance.settingsMenu.SetActive(false);
+			}
+			else
+			{
+				 Debug.Log("setting scene to start");
+				SceneManager.sceneLoaded += GameManager.Instance.OnSceneLoaded;
+				SceneManager.LoadScene(0);
+				CloseAllMenus();
+				GameManager.Instance.isInGame = false;
+				GameManager.Instance.EmptyInstantiatedObjects();
+			}
 		}
 		else
 		{
