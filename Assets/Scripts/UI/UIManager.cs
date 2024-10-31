@@ -42,8 +42,12 @@ public class UIManager : MonoBehaviour
 		{
 			if (isInGame)
 			{
-				CloseAllMenus();
-				PauseMenuUI.Instance.pauseMenu.SetActive(true);
+				if (SettingsMenuUI.Instance.didModifySettings && !SettingsMenuUI.Instance.didSaveSettings)
+				{
+					PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+				}
+				//CloseAllMenus();
+				//PauseMenuUI.Instance.pauseMenu.SetActive(true);
 			}
 			else
 			{

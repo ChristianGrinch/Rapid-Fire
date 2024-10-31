@@ -58,7 +58,7 @@ public class SettingsMenuUI : MonoBehaviour
 				{
 					UIManager.Instance.SwitchToStart();
 				}
-				
+				didSaveSettings = false;
 			}
 		});
 		StartCoroutine(FixModifySettingsOnLoad());
