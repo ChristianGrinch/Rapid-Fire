@@ -31,9 +31,14 @@ public class SavesPanelUI : MonoBehaviour
 	public Button deleteSave;
 	public Button defaultSaveBtn;
 	public Button loadSave;
+	[Header("Toggles")]
+	public Toggle autoSaveInterval;
+	public Toggle autoSaveOnExit;
 	[Header("Save")]
 	public string currentSave;
-	public string defaultSave;
+	public string defaultSave; 
+	public bool intervalSave = false;
+	public bool onExitSave = false;
 	[Header("Other")]
 	public Transform savesContentPanel;
 	public GameObject SavePrefab;
@@ -74,6 +79,16 @@ public class SavesPanelUI : MonoBehaviour
                 }
             }
         });
+		autoSaveInterval.onValueChanged.AddListener((bool value) => 
+		{
+			intervalSave = value;
+			SettingsMenuUI.Instance.didModifySettings = true;
+		});
+		autoSaveOnExit.onValueChanged.AddListener((bool value) => 
+		{
+			onExitSave = value;
+			SettingsMenuUI.Instance.didModifySettings = true;
+		});
     }
     public void InstantiateSaveButtons()
 	{

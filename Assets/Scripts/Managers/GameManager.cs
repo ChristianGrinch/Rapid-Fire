@@ -114,6 +114,7 @@ public class GameManager : MonoBehaviour
 	}
     public void StartExistingGame()
 	{
+		UIManager.Instance.CloseAllMenus();
 		LoadPlayer(SavesPanelUI.Instance.currentSave);
 
 		isGameUnpaused = true;
@@ -343,6 +344,23 @@ public class GameManager : MonoBehaviour
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 1;
 			}
+			SavesPanelUI.Instance.intervalSave = data.autoSaveInterval;
+			SavesPanelUI.Instance.autoSaveInterval.onValueChanged.RemoveAllListeners();
+			SavesPanelUI.Instance.autoSaveInterval.isOn = data.autoSaveInterval;
+			SavesPanelUI.Instance.autoSaveInterval.onValueChanged.AddListener((bool value) =>
+			{
+				SavesPanelUI.Instance.intervalSave = value;
+				SettingsMenuUI.Instance.didModifySettings = true;
+			});
+
+			SavesPanelUI.Instance.onExitSave = data.autoSaveOnExit;
+			SavesPanelUI.Instance.autoSaveOnExit.onValueChanged.RemoveAllListeners();
+			SavesPanelUI.Instance.autoSaveOnExit.isOn = data.autoSaveInterval;
+			SavesPanelUI.Instance.autoSaveOnExit.onValueChanged.AddListener((bool value) =>
+			{
+				SavesPanelUI.Instance.onExitSave = value;
+				SettingsMenuUI.Instance.didModifySettings = true;
+			});
 		}
 		else
 		{

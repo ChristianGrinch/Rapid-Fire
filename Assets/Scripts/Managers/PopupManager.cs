@@ -57,7 +57,15 @@ public class PopupManager : MonoBehaviour
 				actionBtnText.text = "Quit";
 				actionBtnImage.color = quitRed;
 
-				actionBtn.onClick.AddListener(() => GameManager.Instance.QuitGame());
+				actionBtn.onClick.AddListener(() =>
+				{
+					if (SavesPanelUI.Instance.onExitSave && GameManager.Instance.isInGame)
+					{
+						GameManager.Instance.SaveGame(GameManager.Instance.currentSave);
+					}
+
+					GameManager.Instance.QuitGame();
+				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.StartReturnConfirm:
@@ -68,6 +76,11 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
+					if (SavesPanelUI.Instance.onExitSave)
+					{
+						GameManager.Instance.SaveGame(GameManager.Instance.currentSave);
+					}
+					
 					UIManager.Instance.SwitchToStart();
 					ClosePopup();
                 });

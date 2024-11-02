@@ -33,9 +33,13 @@ public class UIManager : MonoBehaviour
 		{
 			GameManager.Instance.PauseGame();
 		}
-		else if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && PauseMenuUI.Instance.pauseMenu.activeSelf)
+		else if (SceneManager.GetActiveScene().buildIndex == 2)
 		{
-			GameManager.Instance.ResumeGame();
+			if(Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && PauseMenuUI.Instance.pauseMenu.activeSelf)
+			{
+				GameManager.Instance.ResumeGame();
+			}
+			
 		}
 
 		if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && SettingsMenuUI.Instance.settingsMenu.activeSelf)
