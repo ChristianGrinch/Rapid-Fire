@@ -148,15 +148,16 @@ public class SavesPanelUI : MonoBehaviour
 			AddButton(saveName);
 		}
 
-		GameManager.Instance.SaveGame(saveName);
+		GameManager.Instance.CreateSave(saveName);
 	}
 	private void AddButton(string saveName)
 	{
+		currentSave = saveName;
 		GameObject newButton = Instantiate(SavePrefab, savesContentPanel);
 		newButton.GetComponentInChildren<TMP_Text>().text = saveName;
 
 		Button btn = newButton.GetComponent<Button>();
-		btn.onClick.AddListener(() => GameManager.Instance.LoadPlayer(saveName));
+		btn.onClick.AddListener(() => GameManager.Instance.StartExistingGame());
 	}
 	public void OnSaveButtonClicked()
 	{

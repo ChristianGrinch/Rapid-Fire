@@ -29,7 +29,7 @@ public class EnemyDataManager : MonoBehaviour
 	private void Start()
 	{
 		//GameManager.Instance.enemyCount = new List<int>(new int[enemies.Length]);
-		Debug.Log("Gamemanager enemy count: " + GameManager.Instance.enemyCount.Count);
+		//Debug.Log("Gamemanager enemy count: " + GameManager.Instance.enemyCount.Count);
 		// Dynamically assign the length of the arrays based on how many enemy types exist
 		enemyNames = new string[enemies.Length];
 		enemyCount = new List<int>(new int[enemies.Length]);

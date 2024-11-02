@@ -51,32 +51,38 @@ public class EnemySpawnManager : MonoBehaviour
 		{ EnemyType.Level3, 0 },
 		{ EnemyType.Boss1, 0 },
 		{ EnemyType.IceZombie, 0 }
-	}; 
+	};
 	private void Start()
 	{
 		player = GameManager.Instance.player;
 		enemyParent = GameManager.Instance.enemies;
+
+		if (totalEnemyCount == 0 && UIManager.Instance.isGameUnpaused)
+		{
+			if (GameManager.Instance.didLoadSpawnManager)
+			{
+				Debug.Log("Spawn enemy on load ran." + " Frame: " + Time.frameCount);
+				Debug.Log("Total enemy count: " + totalEnemyCount);
+				SpawnEnemiesOnLoad();
+				GameManager.Instance.didLoadSpawnManager = false;
+			}
+		}
 	}
 	void Update()
 	{
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		totalEnemyCount = enemyCountArray.Length;
 
-		if (totalEnemyCount == 0 && UIManager.Instance.isGameUnpaused)
+		if (totalEnemyCount == 0 && UIManager.Instance.isGameUnpaused && !GameManager.Instance.didLoadSpawnManager)
 		{
-			if (GameManager.Instance.didLoadSpawnManager)
-			{
-				SpawnEnemiesOnLoad();
-				GameManager.Instance.didLoadSpawnManager = false;
-			}
-			else if(!GameManager.Instance.didLoadSpawnManager)
-			{
-				currentWave++;
+			Debug.Log("Spawn enemy on wave change ran" + " Frame: " + Time.frameCount);
+			Debug.Log("Total enemy count: " + totalEnemyCount);
+			currentWave++;
 
-				NumberOfEnemiesToSpawn();
+			NumberOfEnemiesToSpawn();
 
-				SpawnEnemyWave();
-			}
+			SpawnEnemyWave();
+
 		}
 	}
 	void NumberOfEnemiesToSpawn()
@@ -234,7 +240,7 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			for(var j = 0; j < enemy.Value; j++)
 			{
-				StartCoroutine(InstantiateEnemy(GetEnemyIndex(enemy.Key)));
+				InstantiateEnemy(GetEnemyIndex(enemy.Key));
 			}
 		}
 			
@@ -247,15 +253,14 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			for(var j = 0; j < GameManager.Instance.enemyCount[i]; j++)
 			{
-				StartCoroutine(InstantiateEnemy(i));
+				InstantiateEnemy(i);
 			}
 		}
 		StartCoroutine(EnemyDataManager.Instance.AssignEnemiesToLists());
 	}
 
-	public IEnumerator InstantiateEnemy(int type)
+	public void InstantiateEnemy(int type)
 	{
-		yield return null;
 		GameObject instantiatedEnemy = Instantiate(EnemyDataManager.Instance.enemies[type], GenerateSpawnPosition(type), Quaternion.Euler(90, 0, 0));
 
 		instantiatedEnemy.transform.parent = enemyParent.transform; // Sets parent

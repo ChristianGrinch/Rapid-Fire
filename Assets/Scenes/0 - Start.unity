@@ -9366,7 +9366,7 @@ GameObject:
   - component: {fileID: 1046325798}
   - component: {fileID: 1046325797}
   m_Layer: 0
-  m_Name: UI Manager (1)
+  m_Name: UI Scripts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9508,7 +9508,7 @@ MonoBehaviour:
   difficultySelect: {fileID: 114360140}
   settingsSelect: {fileID: 53929471}
   quitGame: {fileID: 1245634228}
-  difficultySelectWarning: {fileID: 0}
+  difficultySelectWarning: {fileID: 961418484}
   saveNameWarning: {fileID: 2118341886}
   defaultSaveWarning: {fileID: 1752531404}
   playDefaultText: {fileID: 1962830285}

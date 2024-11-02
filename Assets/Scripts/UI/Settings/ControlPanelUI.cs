@@ -30,11 +30,9 @@ public class ControlsPanelUI : MonoBehaviour
 			{
 				case 0:
 					GameManager.Instance.useSprintHold = true;
-					Debug.Log("Sprint mode set to hold");
 					break;
 				case 1:
 					GameManager.Instance.useSprintHold = false;
-					Debug.Log("Sprint mode set to toggle");
 					break;
 			}
 		});

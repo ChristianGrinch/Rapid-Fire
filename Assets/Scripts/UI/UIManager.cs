@@ -83,7 +83,7 @@ public class UIManager : MonoBehaviour
 		}
 		else
 		{
-			StartCoroutine(StartMenuUI.Instance.SaveNameWarning());
+			StartCoroutine(StartMenuUI.Instance.DifficultySelectWarning());
 		}
 	}
 	public void SwitchToStart()

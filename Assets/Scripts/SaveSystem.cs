@@ -140,8 +140,17 @@ public static class SaveSystem
         {
             byte[] readBytes = File.ReadAllBytes(path);
             string defaultSaveName = MessagePackSerializer.Deserialize<string>(readBytes);
+			if (FindSavesBool(defaultSaveName))
+			{
+				return defaultSaveName;
+			}
+			else
+			{
+				Debug.LogWarning("No default save assigned!");
+				return null;
+			}
             //Debug.Log("Loaded Default save file");
-            return defaultSaveName;
+            
         }
 
         Debug.LogWarning("No default save assigned!");

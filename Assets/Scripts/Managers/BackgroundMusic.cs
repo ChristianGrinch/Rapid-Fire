@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BackgroundMusic : MonoBehaviour // Not my script! Thanks to https://stackoverflow.com/a/53684356 for it. 
@@ -17,23 +18,27 @@ public class BackgroundMusic : MonoBehaviour // Not my script! Thanks to https:/
 
     void FixedUpdate() // changed to fixedupdate to see if it can help reduce the random stuttering when transitioning songs
     {
-        if (!audioSource.isPlaying)
-        {
-            // if random play is selected
-            if (randomPlay == true)
-            {
-                audioSource.clip = GetRandomClip();
-                audioSource.Play();
-                // if random play is not selected
-            }
-            else
-            {
-                audioSource.clip = GetNextClip();
-                audioSource.Play();
-            }
-        }
-    }
-
+		StartCoroutine(PlayAudio());
+	}
+	IEnumerator PlayAudio()
+	{
+		yield return null; 
+		if (!audioSource.isPlaying)
+		{
+			// if random play is selected
+			if (randomPlay == true)
+			{
+				audioSource.clip = GetRandomClip();
+				audioSource.Play();
+				// if random play is not selected
+			}
+			else
+			{
+				audioSource.clip = GetNextClip();
+				audioSource.Play();
+			}
+		}
+	}
     // function to get a random clip
     private AudioClip GetRandomClip()
     {

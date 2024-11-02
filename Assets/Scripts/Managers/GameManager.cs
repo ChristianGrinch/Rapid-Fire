@@ -157,7 +157,9 @@ public class GameManager : MonoBehaviour
     }
     public void DeleteSave()
     {
-        if (!string.IsNullOrEmpty(currentSave))
+		currentSave = SavesPanelUI.Instance.currentSave;
+
+		if (!string.IsNullOrEmpty(currentSave))
         {
             SaveSystem.DeleteSave(currentSave);
         }
@@ -165,7 +167,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("Save name cannot be empty!");
         }
-    }
+		currentSave = "";
+
+	}
     public void SaveGame(string saveName)
     {
         SaveSystem.SaveGame(playerController, saveName);
@@ -201,6 +205,11 @@ public class GameManager : MonoBehaviour
 		else if (scene.buildIndex == 0)
 		{
 			StartCoroutine(DelayedLoadSettings());
+			difficulty = 1;
+			didSelectDifficulty = false;
+			didLoadSpawnManager = false;
+			didLoadPowerupManager = false;
+			SavesPanelUI.Instance.InstantiateSaveButtons();
 			Debug.Log("build index was 0");
 
 			SceneManager.sceneLoaded -= OnSceneLoaded;

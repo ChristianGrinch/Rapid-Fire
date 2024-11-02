@@ -89,6 +89,7 @@ public class SettingsMenuUI : MonoBehaviour
 	{
 		if (!GameManager.Instance.isInGame)
 		{
+			SavesPanelUI.Instance.InstantiateSaveButtons();
 			CloseAllSettingsPanels();
 			SavesPanelUI.Instance.savesPanel.SetActive(true);
 		}
