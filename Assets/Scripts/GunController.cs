@@ -81,7 +81,8 @@ public class GunController : MonoBehaviour
 
 					if (Input.GetMouseButtonDown(0) && TryUseAmmo(0))
 					{
-                        audioData.Play();
+						audioData.clip = audioClip;
+						audioData.Play();
 
                         SetBulletStats(shootBullet);
                         InstantiateBullet(yRotation);
@@ -97,7 +98,8 @@ public class GunController : MonoBehaviour
 
 					if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(currentGun))
 					{
-                        audioData.Play();
+						audioData.clip = audioClip;
+						audioData.Play();
 
 						SetBulletStats(shootBullet);
                         InstantiateBullet(yRotation);
