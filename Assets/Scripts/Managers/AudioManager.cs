@@ -6,18 +6,6 @@ using UnityEngine.UI;
 public class AudioManager : MonoBehaviour
 {
 	public static AudioManager Instance { get; private set; }
-
-	public Slider masterVolumeSlider;
-	public Slider musicVolumeSlider;
-	public Slider gunVolumeSlider;  
-	private float masterVolume = 100;
-	private float musicVolume = 100;
-	private float gunVolume = 100;
-
-	public AudioClip buttonClickSound;
-	private AudioSource buttonAudioSource;
-	private GameObject player;
-
 	private void Awake()
 	{
 		if (Instance == null)
@@ -30,19 +18,28 @@ public class AudioManager : MonoBehaviour
 		}
 	}
 
+	private float masterVolume = 100;
+	private float musicVolume = 100;
+	private float gunVolume = 100;
+
+	public AudioClip buttonClickSound;
+	private AudioSource buttonAudioSource;
+	private GameObject player;
+
 	void Start()
 	{
 		player = GameManager.Instance.player;
-		masterVolumeSlider.onValueChanged.AddListener(SetVolume);
-		masterVolumeSlider.value = masterVolume;
+
+		AudioPanelUI.Instance.masterVolume.onValueChanged.AddListener(SetVolume);
+		AudioPanelUI.Instance.masterVolume.value = masterVolume;
 		SetVolume(masterVolume);
 
-		musicVolumeSlider.onValueChanged.AddListener(SetMusicVolume);
-		musicVolumeSlider.value = musicVolume;
+		AudioPanelUI.Instance.musicVolume.onValueChanged.AddListener(SetMusicVolume);
+		AudioPanelUI.Instance.musicVolume.value = musicVolume;
 		SetMusicVolume(musicVolume);
 
-		gunVolumeSlider.onValueChanged.AddListener(SetGunVolume);
-		gunVolumeSlider.value = gunVolume;
+		AudioPanelUI.Instance.gunVolume.onValueChanged.AddListener(SetGunVolume);
+		AudioPanelUI.Instance.gunVolume.value = gunVolume;
 		SetGunVolume(gunVolume);
 
 		InitializeButtonSound();

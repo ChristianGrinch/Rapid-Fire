@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance { get; private set; }
+	//public static GameObject SettingsUIManager { get; private set; }
+	//public static GameObject SettingsCanvas { get; private set; }
     void Awake()
     {
         if (Instance == null)
@@ -14,7 +16,19 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
+
+		//if (SettingsUIManager == null)
+		//{
+		//	SettingsUIManager = GameObject.Find("Settings UI Manager");
+		//	DontDestroyOnLoad(gameObject);
+		//}
+
+		//if (SettingsCanvas == null)
+		//{
+		//	SettingsCanvas = GameObject.Find("Settings Canvas");
+		//	DontDestroyOnLoad(gameObject);
+		//}
+	}
 	public bool isGameUnpaused = false;
 	public bool isInGame = false;
 
@@ -62,7 +76,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void CloseAllMenus()
 	{
-		Canvas canvas = FindAnyObjectByType<Canvas>();
+		Canvas canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 		int childCount = canvas.transform.childCount;
 
 		for (int i = 0; i < childCount; i++)
@@ -70,6 +84,7 @@ public class UIManager : MonoBehaviour
 			Transform child = canvas.transform.GetChild(i);
 			child.gameObject.SetActive(false);
 		}
+		GameObject.Find("Settings Canvas").GetComponent<Canvas>().transform.GetChild(0).gameObject.SetActive(false); // Also closes settings menu since its in a separate canvas
 	}
 	public void CloseAllSettingsPanels() // bad cuz hard coded unlike closeallmenus but i could care less right now
 	{

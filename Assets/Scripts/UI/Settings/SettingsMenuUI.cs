@@ -11,6 +11,7 @@ public class SettingsMenuUI : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+			DontDestroyOnLoad(gameObject);
         }
         else
         {
