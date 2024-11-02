@@ -1,20 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+	public static PlayerController Instance { get; private set; }
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
 	private Rigidbody playerRb;
     public float speed = 8;
 	public float jumpForce = 20;
 	public int exp;
 	public int health;
 	public int lives;
-	public int wave;
 	public int[] ammo;
 	public int speedPowerupCount = 0;
 
-	public GameObject gameManager;
+	private GameObject gameManager;
 	private HealthSystem healthSystem;
 	private EnemySpawnManager enemySpawnManager;
 	private GunController gunController;
@@ -26,19 +36,24 @@ public class PlayerController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
+		gameManager = GameObject.Find("Game Manager");
+		useSprintHold = GameManager.Instance.useSprintHold;
 		playerRb = GetComponent<Rigidbody>();
 		healthSystem = GetComponent<HealthSystem>();
-		enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
 		gunController = GetComponent<GunController>();
     }
 
 	// Update is called once per frame
 	void Update()
 	{
+		int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+		if (sceneIndex == 0)
+		{
+			gameObject.transform.position = new(0, 0.5f, 0);
+		}
         Sprinting();
 		health = healthSystem.health;
 		lives = healthSystem.lives;
-		wave = enemySpawnManager.currentWave;
 		ammo = gunController.ammo;
 
         Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;

@@ -26,6 +26,8 @@ public class SaveData
 	[Key(23)] public bool useSprintHold;
 	[Key(24)] public int screenMode;
 	[Key(25)] public string defaultSaveName;
+	[Key(26)] public bool autoSaveInterval;
+	[Key(27)] public bool autoSaveOnExit;
 
 	// Parameterless constructor
 	public SaveData() { }
@@ -50,7 +52,7 @@ public class SaveData
 			ammo = player.ammo,
 
 			// Assign game data
-			wave = player.wave,
+			wave = GameManager.Instance.wave,
 			numberOfEnemies = new int[]
 			{
 				EnemyDataManager.Instance.enemyCount[0],
@@ -141,8 +143,11 @@ public class SaveData
 			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
 			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
 			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
-			useSprintHold = player.useSprintHold,
-			screenMode = VideoPanelUI.Instance.screenMode.value
+			useSprintHold = GameManager.Instance.useSprintHold,
+			screenMode = VideoPanelUI.Instance.screenMode.value,
+			autoSaveInterval = SavesPanelUI.Instance.autoSaveInterval,
+			autoSaveOnExit = SavesPanelUI.Instance.autoSaveOnExit,
+
 		};
 		return saveData;
 	}
@@ -155,6 +160,8 @@ public class SaveData
 		saveData.gunVolume = 30;
 		saveData.useSprintHold = true;
 		saveData.screenMode = 0; // Exclusive fullscreen
+		saveData.autoSaveInterval = false;
+		saveData.autoSaveOnExit = false;
 
 		return saveData;
 	}

@@ -17,8 +17,8 @@ public class PowerupManager : MonoBehaviour
     private float spawnInterval = 30;
     private float nextSpawnTime = 30;
 
-    public GameObject powerupParent;
-    public GameObject ammoParent;
+    private GameObject powerupParent;
+	private GameObject ammoParent;
    
     private int newWave = 1;
 
@@ -42,6 +42,9 @@ public class PowerupManager : MonoBehaviour
 	private void Start()
 	{
 		player = GameManager.Instance.player;
+		powerupParent = GameManager.Instance.powerups;
+		ammoParent = GameManager.Instance.ammo;
+
 		audioData = GetComponent<AudioSource>();
 		playerController = player.GetComponent<PlayerController>();
 	}

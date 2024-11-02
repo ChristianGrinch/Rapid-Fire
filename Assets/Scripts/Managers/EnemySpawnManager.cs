@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,7 +19,7 @@ public class EnemySpawnManager : MonoBehaviour
         }
     }
 	//AddNewEnemy: Tag that describes what needs to be modified at a location for new enemy types.
-	public GameObject enemyParent;
+	private GameObject enemyParent;
 	private GameObject player;
 
 	public GameObject[] enemyCountArray;
@@ -51,31 +51,38 @@ public class EnemySpawnManager : MonoBehaviour
 		{ EnemyType.Level3, 0 },
 		{ EnemyType.Boss1, 0 },
 		{ EnemyType.IceZombie, 0 }
-	}; 
+	};
 	private void Start()
 	{
 		player = GameManager.Instance.player;
+		enemyParent = GameManager.Instance.enemies;
+
+		if (totalEnemyCount == 0 && UIManager.Instance.isGameUnpaused)
+		{
+			if (GameManager.Instance.didLoadSpawnManager)
+			{
+				Debug.Log("Spawn enemy on load ran." + " Frame: " + Time.frameCount);
+				Debug.Log("Total enemy count: " + totalEnemyCount);
+				SpawnEnemiesOnLoad();
+				GameManager.Instance.didLoadSpawnManager = false;
+			}
+		}
 	}
 	void Update()
 	{
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		totalEnemyCount = enemyCountArray.Length;
 
-		if (totalEnemyCount == 0 && UIManager.Instance.isGameUnpaused)
+		if (totalEnemyCount == 0 && UIManager.Instance.isGameUnpaused && !GameManager.Instance.didLoadSpawnManager)
 		{
-			if (GameManager.Instance.didLoadSpawnManager)
-			{
-				SpawnEnemiesOnLoad();
-				GameManager.Instance.didLoadSpawnManager = false;
-			}
-			else
-			{
-				currentWave++;
+			Debug.Log("Spawn enemy on wave change ran" + " Frame: " + Time.frameCount);
+			Debug.Log("Total enemy count: " + totalEnemyCount);
+			currentWave++;
 
-				NumberOfEnemiesToSpawn();
+			NumberOfEnemiesToSpawn();
 
-				SpawnEnemyWave();
-			}
+			SpawnEnemyWave();
+
 		}
 	}
 	void NumberOfEnemiesToSpawn()

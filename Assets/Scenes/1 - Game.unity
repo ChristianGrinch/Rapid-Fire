@@ -13639,7 +13639,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 7521591830871287964, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
-  player: {fileID: 883152918}
   bulletParent: {fileID: 1411573813}
   gunObjects:
   - {fileID: 728698975}
@@ -14588,7 +14587,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e757c902ba0c844aa8296c2269d1957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
 --- !u!1 &967993771
 GameObject:
   m_ObjectHideFlags: 0
@@ -21719,7 +21717,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyParent: {fileID: 1061023598}
-  player: {fileID: 883152918}
   enemyCountArray: []
   totalEnemiesToSpawn: 0
   currentWave: 0
@@ -21736,7 +21733,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df36cf79e30f09546a9748362b361154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 883152918}
   isGameUnpaused: 0
   isInGame: 0
 --- !u!4 &1606568286

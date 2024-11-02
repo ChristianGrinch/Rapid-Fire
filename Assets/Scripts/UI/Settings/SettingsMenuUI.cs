@@ -11,6 +11,7 @@ public class SettingsMenuUI : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+			DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -36,7 +37,11 @@ public class SettingsMenuUI : MonoBehaviour
 		videoLabel.onClick.AddListener(OpenVideoPanel);
 		savesLabel.onClick.AddListener(OpenSavesPanel);
 		controlsLabel.onClick.AddListener(OpenControlPanel);
-		save.onClick.AddListener(() => didSaveSettings = true);
+		save.onClick.AddListener(() => 
+		{
+			didSaveSettings = true;
+			GameManager.Instance.SaveSettings();
+		});
 		goBack.onClick.AddListener(() =>
 		{
 			if (didModifySettings && !didSaveSettings)
@@ -45,7 +50,16 @@ public class SettingsMenuUI : MonoBehaviour
 			} 
 			else
 			{
-				UIManager.Instance.SwitchToStart();
+				if (GameManager.Instance.isInGame)
+				{
+					UIManager.Instance.CloseAllMenus();
+					PauseMenuUI.Instance.pauseMenu.SetActive(true);
+				}
+				else
+				{
+					UIManager.Instance.SwitchToStart();
+				}
+				didSaveSettings = false;
 			}
 		});
 		StartCoroutine(FixModifySettingsOnLoad());
@@ -76,6 +90,7 @@ public class SettingsMenuUI : MonoBehaviour
 	{
 		if (!GameManager.Instance.isInGame)
 		{
+			SavesPanelUI.Instance.InstantiateSaveButtons();
 			CloseAllSettingsPanels();
 			SavesPanelUI.Instance.savesPanel.SetActive(true);
 		}

@@ -10,7 +10,7 @@ public class GunController : MonoBehaviour
 	private Vector3 offset = new(0, 0, 1.25f);
 	private Rigidbody playerRb;
 
-	public GameObject bulletParent;
+	private GameObject bulletParent;
  	public GameObject[] gunObjects;
 
     public GunType currentGun = GunType.Pistol;
@@ -31,6 +31,7 @@ public class GunController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
 	{
+		bulletParent = GameManager.Instance.bullets;
 		player = GameManager.Instance.player;
 		playerRb = player.GetComponent <Rigidbody> ();
 
@@ -80,7 +81,8 @@ public class GunController : MonoBehaviour
 
 					if (Input.GetMouseButtonDown(0) && TryUseAmmo(0))
 					{
-                        audioData.Play();
+						audioData.clip = audioClip;
+						audioData.Play();
 
                         SetBulletStats(shootBullet);
                         InstantiateBullet(yRotation);
@@ -96,7 +98,8 @@ public class GunController : MonoBehaviour
 
 					if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(currentGun))
 					{
-                        audioData.Play();
+						audioData.clip = audioClip;
+						audioData.Play();
 
 						SetBulletStats(shootBullet);
                         InstantiateBullet(yRotation);

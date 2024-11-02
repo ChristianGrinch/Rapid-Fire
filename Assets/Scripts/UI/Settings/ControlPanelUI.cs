@@ -20,13 +20,8 @@ public class ControlsPanelUI : MonoBehaviour
 	[Header("Other")]
 	public TMP_Dropdown sprintMode;
 
-	private GameObject player;
-	private PlayerController playerController;
-
 	private void Start()
 	{
-		player = GameManager.Instance.player;
-		playerController = player.GetComponent<PlayerController>();
 
 		sprintMode.onValueChanged.AddListener((int value) =>
 		{
@@ -34,12 +29,10 @@ public class ControlsPanelUI : MonoBehaviour
 			switch (value)
 			{
 				case 0:
-					playerController.useSprintHold = true;
-					Debug.Log("Sprint mode set to hold");
+					GameManager.Instance.useSprintHold = true;
 					break;
 				case 1:
-					playerController.useSprintHold = false;
-					Debug.Log("Sprint mode set to toggle");
+					GameManager.Instance.useSprintHold = false;
 					break;
 			}
 		});

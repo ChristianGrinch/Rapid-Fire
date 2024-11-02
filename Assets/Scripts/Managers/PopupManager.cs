@@ -39,11 +39,6 @@ public class PopupManager : MonoBehaviour
 		QuitWithoutSavingConfirm
 	}
 
-	private void Start()
-	{
-		canvas = FindAnyObjectByType<Canvas>();
-	}
-
 	public void ShowPopup(PopupType popupType)
 	{
 		AssignPopupObjects();
@@ -62,7 +57,15 @@ public class PopupManager : MonoBehaviour
 				actionBtnText.text = "Quit";
 				actionBtnImage.color = quitRed;
 
-				actionBtn.onClick.AddListener(() => GameManager.Instance.QuitGame());
+				actionBtn.onClick.AddListener(() =>
+				{
+					if (SavesPanelUI.Instance.onExitSave && GameManager.Instance.isInGame)
+					{
+						GameManager.Instance.SaveGame(GameManager.Instance.currentSave);
+					}
+
+					GameManager.Instance.QuitGame();
+				});
 				cancelBtn.onClick.AddListener(() => ClosePopup());
 				break;
 			case PopupType.StartReturnConfirm:
@@ -73,8 +76,12 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
+					if (SavesPanelUI.Instance.onExitSave)
+					{
+						GameManager.Instance.SaveGame(GameManager.Instance.currentSave);
+					}
+					
 					UIManager.Instance.SwitchToStart();
-					GameManager.Instance.RestartGame();
 					ClosePopup();
                 });
 				cancelBtn.onClick.AddListener(() => ClosePopup());
@@ -110,7 +117,6 @@ public class PopupManager : MonoBehaviour
 
 				actionBtn.onClick.AddListener(() =>
 				{
-					GameManager.Instance.LoadPlayer(SavesPanelUI.Instance.currentSave);
 					GameManager.Instance.StartExistingGame();
 					ClosePopup();
 				});
@@ -222,6 +228,7 @@ public class PopupManager : MonoBehaviour
 
 	void AssignPopupObjects()
 	{
+		canvas = FindAnyObjectByType<Canvas>();
 		instantiatedPopup = Instantiate(popup, canvas.transform);
 
 		Header = instantiatedPopup.transform.Find("Header").gameObject;

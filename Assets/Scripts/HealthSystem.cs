@@ -41,6 +41,8 @@ public class HealthSystem : MonoBehaviour
 		if(lives <= 0 && gameObject.name == "Player")
 		{
 			gameObject.SetActive(false);
+			GameManager.Instance.GameOver();
+			Time.timeScale = 0;
 		}
 
 		if(health <= 0 && gameObject.name == "Player" & lives > 0)

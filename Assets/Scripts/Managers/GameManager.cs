@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 		if (Instance == null)
 		{
 			Instance = this;
+			DontDestroyOnLoad(gameObject);
 		}
 		else
 		{
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
 	[Header("Game Values")]
 	public static float mapSize = 50;
 	public int difficulty = 1;
+	public int wave = 0;
 	public bool isGameUnpaused = false;
 	public bool isInGame = false;
 	[Header("Saves")]
@@ -33,7 +35,16 @@ public class GameManager : MonoBehaviour
 	public bool didSelectDifficulty = false;
 	public bool didLoadSpawnManager = false;
 	public bool didLoadPowerupManager = false;
+	[Header("Instantiated Objects")]
+	public GameObject instantiatedObjects;
+	public GameObject enemies;
+	public GameObject bullets;
+	public GameObject powerups;
+	public GameObject ammo;
+	[Header("Tertiary stuff")]
+	public bool useSprintHold = true;
 
+	[Header("Other")]
 	// References
 	public GameObject player; // Scripts will reference the player HERE instead of DIRECTLY referencing the player
 	public HealthSystem playerHealthSystem;
@@ -42,16 +53,10 @@ public class GameManager : MonoBehaviour
 	private EnemySpawnManager enemySpawnManager;
 	private void Start()
 	{
-		player = GameObject.FindWithTag("Player");
-		playerHealthSystem = player.GetComponent<HealthSystem>();
-
-		enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
+		//enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
 
 		defaultSave = SaveSystem.LoadDefaultSave();
 		
-		gunController = player.GetComponent<GunController>();
-		playerController = player.GetComponent<PlayerController>();
-		enemySpawnManager = this.GetComponentInParent<EnemySpawnManager>();
 		StartCoroutine(DelayedLoadSettings()); 
 		SettingsMenuUI.Instance.didModifySettings = false;
 	}
@@ -62,48 +67,60 @@ public class GameManager : MonoBehaviour
 	}
 	public void RestartGame()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        isInGame = false;
+		SceneManager.sceneLoaded += OnSceneLoaded;
+
+		SceneManager.LoadScene(0);
+		UIManager.Instance.CloseAllMenus();
+		EmptyInstantiatedObjects();
+
+		isInGame = false;
         isGameUnpaused = false;
+	}
+	public void EmptyInstantiatedObjects()
+	{
+		Transform parentTransform = instantiatedObjects.transform;
+
+		for(var i = 0; i < parentTransform.childCount; i++)
+		{
+			Transform childTransform = parentTransform.GetChild(i);
+			GameObject childObject = childTransform.gameObject;
+			for(var j = 0; j < childTransform.childCount; j++)
+			{
+				Transform grandChildTransform = childTransform.GetChild(j);
+				GameObject grandChildObject = grandChildTransform.gameObject;
+				Destroy(grandChildObject);
+			}
+		}
 	}
 	public void StartDefaultGame()
 	{
 		LoadPlayer(defaultSave);
 
-		UIManager.Instance.CloseAllMenus();
-        GameMenuUI.Instance.game.SetActive(true);
-
 		isGameUnpaused = true;
 		isInGame = true;
 
 		Time.timeScale = 1;
-		GameMenuUI.Instance.SetDifficultyText();
 		Debug.Log(difficulty);
 	}
 	public void StartNewGame()
 	{
 		LoadPlayer(currentSave);
 
-		UIManager.Instance.CloseAllMenus();
-        GameMenuUI.Instance.game.SetActive(true);
-
 		isGameUnpaused = true;
 		isInGame = true;
 
-		playerHealthSystem.AssignLives();
 		Time.timeScale = 1;
-        GameMenuUI.Instance.SetDifficultyText();
 		Debug.Log(difficulty);
 	}
-    public void StartExistingGame(){
-        UIManager.Instance.CloseAllMenus();
-        GameMenuUI.Instance.game.SetActive(true);
+    public void StartExistingGame()
+	{
+		UIManager.Instance.CloseAllMenus();
+		LoadPlayer(SavesPanelUI.Instance.currentSave);
 
-        isGameUnpaused = true;
+		isGameUnpaused = true;
         isInGame = true;
 
         Time.timeScale = 1;
-        GameMenuUI.Instance.SetDifficultyText();
 		Debug.Log(difficulty);
 	}
 	public void PauseGame()
@@ -141,7 +158,9 @@ public class GameManager : MonoBehaviour
     }
     public void DeleteSave()
     {
-        if (!string.IsNullOrEmpty(currentSave))
+		currentSave = SavesPanelUI.Instance.currentSave;
+
+		if (!string.IsNullOrEmpty(currentSave))
         {
             SaveSystem.DeleteSave(currentSave);
         }
@@ -149,7 +168,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("Save name cannot be empty!");
         }
-    }
+		currentSave = "";
+
+	}
     public void SaveGame(string saveName)
     {
         SaveSystem.SaveGame(playerController, saveName);
@@ -159,75 +180,121 @@ public class GameManager : MonoBehaviour
         SaveSystem.CreateSave(playerController, saveName);
         currentSave = saveName;
     }
-    public void LoadPlayer(string saveName)
-    {
-        currentSave = saveName;
+	public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		if (scene.buildIndex == 2)  // Ensure it’s the correct scene
+		{
+			// Scene is now fully loaded; access new scene objects here
 
-        didLoadSpawnManager = true;
-        didLoadPowerupManager = true;
+			player = GameObject.FindWithTag("Player");
 
-        // Load the player data
-        SaveData data = SaveSystem.LoadGame(saveName);
+			playerController = player.GetComponent<PlayerController>();
+			playerHealthSystem = player.GetComponent<HealthSystem>();
+			gunController = player.GetComponentInParent<GunController>();
+			enemySpawnManager = GameObject.Find("Game UI Manager").GetComponent<EnemySpawnManager>();
+			enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
 
-        if (data != null)
-        {
-            // Update player data
-            playerController.exp = data.exp;
-            playerController.health = data.health;
-            playerController.lives = data.lives;
-            playerController.wave = data.wave;
-            playerController.ammo = data.ammo;
+			Debug.Log("loading player...");
+
+			// Now that the scene is loaded, initialize and load player data
+			InitializePlayerData(currentSave);
+			GameMenuUI.Instance.SetDifficultyText();
+			StartCoroutine(DelayedLoadSettings());
+
+			SceneManager.sceneLoaded -= OnSceneLoaded;  // Unsubscribe from the event
+		} 
+		else if (scene.buildIndex == 0)
+		{
+			StartCoroutine(DelayedLoadSettings());
+			difficulty = 1;
+			didSelectDifficulty = false;
+			didLoadSpawnManager = false;
+			didLoadPowerupManager = false;
+			SavesPanelUI.Instance.InstantiateSaveButtons();
+			Debug.Log("build index was 0");
+
+			SceneManager.sceneLoaded -= OnSceneLoaded;
+		}
+	}
+
+	public void LoadPlayer(string saveName)
+	{
+		currentSave = saveName;  // Store save name for later use
+
+		// Subscribe to sceneLoaded event
+		SceneManager.sceneLoaded += OnSceneLoaded;
+
+		// Start loading the scene
+		SceneManager.LoadScene(2);
+	}
+
+	private void InitializePlayerData(string saveName)
+	{
+		didLoadSpawnManager = true;
+		didLoadPowerupManager = true;
+
+		// Load the player data
+		SaveData data = SaveSystem.LoadGame(saveName);
+
+		if (data != null)
+		{
+			// Update player data
+			playerController.exp = data.exp;
+			playerController.health = data.health;
+			playerController.lives = data.lives;
+			wave = data.wave;
+			playerController.ammo = data.ammo;
 			playerController.speedPowerupCount = data.speedPowerup;
 
-            Vector3 position;
-            position.x = data.position[0];
-            position.y = data.position[1];
-            position.z = data.position[2];
-            player.transform.position = position;
+			Vector3 position;
+			position.x = data.position[0];
+			position.y = data.position[1];
+			position.z = data.position[2];
+			player.transform.position = position;
 
-            playerHealthSystem.UpdateHealth(data.health);
-            playerHealthSystem.UpdateLives(data.lives);
+			playerHealthSystem.UpdateHealth(data.health);
+			playerHealthSystem.UpdateLives(data.lives);
 
-            // Update game data
-            enemySpawnManager.currentWave = data.wave;
-            gunController.ammo = data.ammo;
+			// Update game data
+			enemySpawnManager.currentWave = data.wave;
+			gunController.ammo = data.ammo;
 
-			// Check if the save is an old save, if so, preform a modification to it so it can be compatible with current saves.
-			if(data.numberOfEnemies.Length == 4) // Handling for no iceZombie
+			// Check if the save is an old save and modify for compatibility
+			if (data.numberOfEnemies.Length == 4)
 			{
-                Debug.LogWarning("Ran save incompatiblity fixer [ICE ZOMBIE]");
+				Debug.LogWarning("Ran save incompatibility fixer [ICE ZOMBIE]");
 				int[] tempEnemies = new int[5];
-				for (int i = 0; i <= 4; i++)
+				for (int i = 0; i <= 3; i++)
 				{
 					tempEnemies[i] = data.numberOfEnemies[i];
 				}
 
-                Debug.Log("Data difficulty: " + data.difficulty);
-
-				switch (data.difficulty) // Sets the current number of ice zombies based on saved difficulty and wave
+				// Set ice zombies based on difficulty and wave
+				switch (data.difficulty)
 				{
-                    case 1:
-                        tempEnemies[4] = data.wave - 4 > 0 ? data.wave - 3 : 0; // Spawns 1 iceZombie on wave 4, then increments
-                        break;
-                    case 2:
-                        tempEnemies[4] = data.wave - 2 > 0 ? data.wave - 2 : 0; // Spawns 1 iceZombie on wave 2, then increments
-                        break;
-                    case 3:
-                        tempEnemies[4] = data.wave + 1; // Spawns iceZombie starting at wave 1 and increments
-                        break;
-                }
+					case 1:
+						tempEnemies[4] = data.wave - 4 > 0 ? data.wave - 3 : 0;
+						break;
+					case 2:
+						tempEnemies[4] = data.wave - 2 > 0 ? data.wave - 2 : 0;
+						break;
+					case 3:
+						tempEnemies[4] = data.wave + 1;
+						break;
+				}
 				data.numberOfEnemies = tempEnemies;
 			}
 
-			for(var i = 0; i < data.numberOfEnemies.Length; i++)
+			// Set enemy counts
+			for (var i = 0; i < data.numberOfEnemies.Length; i++)
 			{
 				enemyCount[i] = data.numberOfEnemies[i];
-				//Debug.Log(enemyCount[i]);
 			}
 
-            PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
-            PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
-            PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];
+			// Set powerup counts
+			PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
+			PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
+			PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];
 
 			if (data.difficulty != 0)
 			{
@@ -235,11 +302,11 @@ public class GameManager : MonoBehaviour
 				difficulty = data.difficulty;
 			}
 		}
-        else
-        {
-            Debug.LogError("Data is null.");
-        }
-    }
+		else
+		{
+			Debug.LogError("Data is null.");
+		}
+	}
 	public void SaveSettings()
 	{
 		SaveSystem.SaveSettings(playerController);
@@ -251,6 +318,7 @@ public class GameManager : MonoBehaviour
 	}
 	public void LoadSettings()
 	{
+		
 		SaveData data = SaveSystem.LoadSettings();
 
 		if (data != null)
@@ -264,7 +332,7 @@ public class GameManager : MonoBehaviour
 
 			AudioPanelUI.Instance.gunVolume.value = data.gunVolume;
 			AudioPanelUI.Instance.gun.text = data.gunVolume.ToString();
-			playerController.useSprintHold = data.useSprintHold;
+			useSprintHold = data.useSprintHold;
 
 			VideoPanelUI.Instance.screenMode.value = data.screenMode;
 			VideoPanelUI.Instance.ChangeScreenMode(data.screenMode);
@@ -276,6 +344,23 @@ public class GameManager : MonoBehaviour
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 1;
 			}
+			SavesPanelUI.Instance.intervalSave = data.autoSaveInterval;
+			SavesPanelUI.Instance.autoSaveInterval.onValueChanged.RemoveAllListeners();
+			SavesPanelUI.Instance.autoSaveInterval.isOn = data.autoSaveInterval;
+			SavesPanelUI.Instance.autoSaveInterval.onValueChanged.AddListener((bool value) =>
+			{
+				SavesPanelUI.Instance.intervalSave = value;
+				SettingsMenuUI.Instance.didModifySettings = true;
+			});
+
+			SavesPanelUI.Instance.onExitSave = data.autoSaveOnExit;
+			SavesPanelUI.Instance.autoSaveOnExit.onValueChanged.RemoveAllListeners();
+			SavesPanelUI.Instance.autoSaveOnExit.isOn = data.autoSaveInterval;
+			SavesPanelUI.Instance.autoSaveOnExit.onValueChanged.AddListener((bool value) =>
+			{
+				SavesPanelUI.Instance.onExitSave = value;
+				SettingsMenuUI.Instance.didModifySettings = true;
+			});
 		}
 		else
 		{
@@ -283,5 +368,6 @@ public class GameManager : MonoBehaviour
 			SaveSystem.CreateSaveSettings();
 			LoadSettings();
 		}
+		SettingsMenuUI.Instance.didModifySettings = false;
 	}
 }

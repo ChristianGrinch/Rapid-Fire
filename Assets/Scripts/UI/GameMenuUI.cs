@@ -107,7 +107,7 @@ public class GameMenuUI : MonoBehaviour
 	}
     public void KillAllEnemiesDebug()
     {
-        GameObject parent = EnemySpawnManager.Instance.enemyParent;
+        GameObject parent = GameManager.Instance.enemies;
         int childCount = parent.transform.childCount;
         for (var i = 0; i < childCount; i++)
         {
