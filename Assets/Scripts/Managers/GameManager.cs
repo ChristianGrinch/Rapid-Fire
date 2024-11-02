@@ -60,7 +60,11 @@ public class GameManager : MonoBehaviour
 		StartCoroutine(DelayedLoadSettings()); 
 		SettingsMenuUI.Instance.didModifySettings = false;
 	}
-    public void GameOver()
+	private void Update()
+	{
+		Debug.Log("Gamemanager wave: " + wave);
+	}
+	public void GameOver()
 	{
 		RestartMenuUI.Instance.ShowRestartMenu();
 		isGameUnpaused = false;
@@ -71,26 +75,9 @@ public class GameManager : MonoBehaviour
 
 		SceneManager.LoadScene(0);
 		UIManager.Instance.CloseAllMenus();
-		EmptyInstantiatedObjects();
 
 		isInGame = false;
         isGameUnpaused = false;
-	}
-	public void EmptyInstantiatedObjects()
-	{
-		Transform parentTransform = instantiatedObjects.transform;
-
-		for(var i = 0; i < parentTransform.childCount; i++)
-		{
-			Transform childTransform = parentTransform.GetChild(i);
-			GameObject childObject = childTransform.gameObject;
-			for(var j = 0; j < childTransform.childCount; j++)
-			{
-				Transform grandChildTransform = childTransform.GetChild(j);
-				GameObject grandChildObject = grandChildTransform.gameObject;
-				Destroy(grandChildObject);
-			}
-		}
 	}
 	public void StartDefaultGame()
 	{
@@ -182,7 +169,7 @@ public class GameManager : MonoBehaviour
     }
 	public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		if (scene.buildIndex == 2)  // Ensure it’s the correct scene
+		if (scene.buildIndex == 1)  // Ensure it’s the correct scene
 		{
 			// Scene is now fully loaded; access new scene objects here
 
@@ -191,8 +178,14 @@ public class GameManager : MonoBehaviour
 			playerController = player.GetComponent<PlayerController>();
 			playerHealthSystem = player.GetComponent<HealthSystem>();
 			gunController = player.GetComponentInParent<GunController>();
-			enemySpawnManager = GameObject.Find("Game UI Manager").GetComponent<EnemySpawnManager>();
+			enemySpawnManager = GameObject.Find("Enemy Manager").GetComponent<EnemySpawnManager>();
 			enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
+
+			instantiatedObjects = GameObject.Find("Instantiated Objects");
+			enemies = instantiatedObjects.transform.Find("Enemies").gameObject;
+			bullets = instantiatedObjects.transform.Find("Bullets").gameObject;
+			powerups = instantiatedObjects.transform.Find("Powerups").gameObject;
+			ammo = instantiatedObjects.transform.Find("Ammo Piles").gameObject;
 
 			Debug.Log("loading player...");
 
@@ -225,7 +218,7 @@ public class GameManager : MonoBehaviour
 		SceneManager.sceneLoaded += OnSceneLoaded;
 
 		// Start loading the scene
-		SceneManager.LoadScene(2);
+		SceneManager.LoadScene(1);
 	}
 
 	private void InitializePlayerData(string saveName)

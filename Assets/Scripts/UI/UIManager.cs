@@ -64,8 +64,11 @@ public class UIManager : MonoBehaviour
 				{
 					PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
 				}
-				//CloseAllMenus();
-				//PauseMenuUI.Instance.pauseMenu.SetActive(true);
+				else
+				{
+					CloseAllMenus();
+					PauseMenuUI.Instance.pauseMenu.SetActive(true);
+				}
 			}
 			else
 			{
@@ -107,7 +110,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void SwitchToStart()
 	{
-		if(SceneManager.GetActiveScene().buildIndex == 2)
+		if(SceneManager.GetActiveScene().buildIndex == 1)
 		{
 			if (SettingsMenuUI.Instance.settingsMenu.activeSelf)
 			{
@@ -121,7 +124,6 @@ public class UIManager : MonoBehaviour
 				SceneManager.LoadScene(0);
 				CloseAllMenus();
 				GameManager.Instance.isInGame = false;
-				GameManager.Instance.EmptyInstantiatedObjects();
 			}
 		}
 		else

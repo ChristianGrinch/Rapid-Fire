@@ -75,14 +75,13 @@ public class EnemySpawnManager : MonoBehaviour
 
 		if (totalEnemyCount == 0 && UIManager.Instance.isGameUnpaused && !GameManager.Instance.didLoadSpawnManager)
 		{
-			Debug.Log("Spawn enemy on wave change ran" + " Frame: " + Time.frameCount);
-			Debug.Log("Total enemy count: " + totalEnemyCount);
 			currentWave++;
 
 			NumberOfEnemiesToSpawn();
 
 			SpawnEnemyWave();
 
+			GameManager.Instance.wave = currentWave;
 		}
 	}
 	void NumberOfEnemiesToSpawn()

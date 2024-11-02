@@ -79,8 +79,9 @@ public class PopupManager : MonoBehaviour
 					if (SavesPanelUI.Instance.onExitSave)
 					{
 						GameManager.Instance.SaveGame(GameManager.Instance.currentSave);
+						Debug.Log("awhh");
 					}
-					
+					Debug.Log("haha");
 					UIManager.Instance.SwitchToStart();
 					ClosePopup();
                 });
