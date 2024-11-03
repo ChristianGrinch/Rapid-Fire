@@ -229,7 +229,7 @@ public class PopupManager : MonoBehaviour
 
 	void AssignPopupObjects()
 	{
-		canvas = FindAnyObjectByType<Canvas>();
+		canvas = GameObject.Find("Settings Canvas").GetComponent<Canvas>();
 		instantiatedPopup = Instantiate(popup, canvas.transform);
 
 		Header = instantiatedPopup.transform.Find("Header").gameObject;

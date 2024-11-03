@@ -26,7 +26,7 @@ public class SaveData
 	[Key(23)] public bool useSprintHold;
 	[Key(24)] public int screenMode;
 	[Key(25)] public string defaultSaveName;
-	[Key(26)] public bool autoSaveInterval;
+	[Key(26)] public int autoSaveInterval;
 	[Key(27)] public bool autoSaveOnExit;
 
 	// Parameterless constructor
@@ -145,8 +145,8 @@ public class SaveData
 			gunVolume = (int)AudioPanelUI.Instance.gunVolume.value,
 			useSprintHold = GameManager.Instance.useSprintHold,
 			screenMode = VideoPanelUI.Instance.screenMode.value,
-			autoSaveInterval = SavesPanelUI.Instance.autoSaveInterval,
-			autoSaveOnExit = SavesPanelUI.Instance.autoSaveOnExit,
+			autoSaveInterval = SavesPanelUI.Instance.autoSaveIntervalDropdown.value,
+			autoSaveOnExit = SavesPanelUI.Instance.autoSaveOnExitToggle,
 
 		};
 		return saveData;
@@ -160,7 +160,7 @@ public class SaveData
 		saveData.gunVolume = 30;
 		saveData.useSprintHold = true;
 		saveData.screenMode = 0; // Exclusive fullscreen
-		saveData.autoSaveInterval = false;
+		saveData.autoSaveInterval = 0;
 		saveData.autoSaveOnExit = false;
 
 		return saveData;

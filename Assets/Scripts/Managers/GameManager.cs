@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
 	public GameObject ammo;
 	[Header("Tertiary stuff")]
 	public bool useSprintHold = true;
+	
 
 	[Header("Other")]
 	// References
@@ -51,6 +52,8 @@ public class GameManager : MonoBehaviour
 	private GunController gunController;
 	private PlayerController playerController;
 	private EnemySpawnManager enemySpawnManager;
+	public int saveInterval;
+	public bool isRunningSaveInterval;
 	private void Start()
 	{
 		//enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
@@ -59,10 +62,14 @@ public class GameManager : MonoBehaviour
 		
 		StartCoroutine(DelayedLoadSettings()); 
 		SettingsMenuUI.Instance.didModifySettings = false;
+		
 	}
 	private void Update()
 	{
-		Debug.Log("Gamemanager wave: " + wave);
+		if (saveInterval != 0 && !isRunningSaveInterval && isInGame)
+		{
+			StartCoroutine(WaitIntervalSave(saveInterval));
+		}
 	}
 	public void GameOver()
 	{
@@ -158,6 +165,23 @@ public class GameManager : MonoBehaviour
 		currentSave = "";
 
 	}
+	IEnumerator WaitIntervalSave(int interval)
+	{
+		isRunningSaveInterval = true;
+		Debug.LogWarning("INTERVAL AUTOSAVE RUNNING. Interval is: " + interval);
+		yield return new WaitForSeconds(interval * 60);
+		Debug.LogWarning("INTERVAL AUTOSAVE DONE. Interval is: " + interval + ". Saving.");
+		if (isInGame)
+		{
+			SaveGame(currentSave);
+		}
+		else
+		{
+			Debug.LogWarning("Aborting interval save! Player not in game");
+		}
+		
+		isRunningSaveInterval = false;
+	}
     public void SaveGame(string saveName)
     {
         SaveSystem.SaveGame(playerController, saveName);
@@ -180,6 +204,7 @@ public class GameManager : MonoBehaviour
 			gunController = player.GetComponentInParent<GunController>();
 			enemySpawnManager = GameObject.Find("Enemy Manager").GetComponent<EnemySpawnManager>();
 			enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
+			saveInterval = SavesPanelUI.Instance.saveInterval;
 
 			instantiatedObjects = GameObject.Find("Instantiated Objects");
 			enemies = instantiatedObjects.transform.Find("Enemies").gameObject;
@@ -337,19 +362,19 @@ public class GameManager : MonoBehaviour
 			{
 				ControlsPanelUI.Instance.sprintMode.value = 1;
 			}
-			SavesPanelUI.Instance.intervalSave = data.autoSaveInterval;
-			SavesPanelUI.Instance.autoSaveInterval.onValueChanged.RemoveAllListeners();
-			SavesPanelUI.Instance.autoSaveInterval.isOn = data.autoSaveInterval;
-			SavesPanelUI.Instance.autoSaveInterval.onValueChanged.AddListener((bool value) =>
+			SavesPanelUI.Instance.saveInterval = data.autoSaveInterval;
+			SavesPanelUI.Instance.autoSaveIntervalDropdown.onValueChanged.RemoveAllListeners();
+			SavesPanelUI.Instance.autoSaveIntervalDropdown.value = data.autoSaveInterval;
+			SavesPanelUI.Instance.autoSaveIntervalDropdown.onValueChanged.AddListener((int value) =>
 			{
-				SavesPanelUI.Instance.intervalSave = value;
+				SavesPanelUI.Instance.saveInterval = value;
 				SettingsMenuUI.Instance.didModifySettings = true;
 			});
 
 			SavesPanelUI.Instance.onExitSave = data.autoSaveOnExit;
-			SavesPanelUI.Instance.autoSaveOnExit.onValueChanged.RemoveAllListeners();
-			SavesPanelUI.Instance.autoSaveOnExit.isOn = data.autoSaveInterval;
-			SavesPanelUI.Instance.autoSaveOnExit.onValueChanged.AddListener((bool value) =>
+			SavesPanelUI.Instance.autoSaveOnExitToggle.onValueChanged.RemoveAllListeners();
+			SavesPanelUI.Instance.autoSaveOnExitToggle.isOn = data.autoSaveOnExit;
+			SavesPanelUI.Instance.autoSaveOnExitToggle.onValueChanged.AddListener((bool value) =>
 			{
 				SavesPanelUI.Instance.onExitSave = value;
 				SettingsMenuUI.Instance.didModifySettings = true;

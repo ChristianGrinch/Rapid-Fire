@@ -30,6 +30,7 @@ public class GameMenuUI : MonoBehaviour
 	public Image ammoImage;
 	public Sprite rifleAmmo;
 	public Sprite pistolAmmo;
+	public Image saveIcon;
 	[Header("Debug Elements")]
 	public Button spawnEnemyDebug;
 	public Button killEnemiesDebug;

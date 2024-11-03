@@ -72,7 +72,14 @@ public class UIManager : MonoBehaviour
 			}
 			else
 			{
-				SwitchToStart();
+				if (SettingsMenuUI.Instance.didModifySettings && !SettingsMenuUI.Instance.didSaveSettings)
+				{
+					PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+				}
+				else
+				{
+					SwitchToStart();
+				}
 			}
 			
 		}
@@ -119,7 +126,6 @@ public class UIManager : MonoBehaviour
 			}
 			else
 			{
-				 Debug.Log("setting scene to start");
 				SceneManager.sceneLoaded += GameManager.Instance.OnSceneLoaded;
 				SceneManager.LoadScene(0);
 				CloseAllMenus();
@@ -128,16 +134,8 @@ public class UIManager : MonoBehaviour
 		}
 		else
 		{
-			if (isInGame)
-			{
-				PauseMenuUI.Instance.pauseMenu.SetActive(true);
-				SettingsMenuUI.Instance.settingsMenu.SetActive(false);
-			}
-			else
-			{
-				CloseAllMenus();
-				StartMenuUI.Instance.startMenu.SetActive(true);
-			}
+			CloseAllMenus();
+			StartMenuUI.Instance.startMenu.SetActive(true);
 		}
 		
 	}

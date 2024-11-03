@@ -31,13 +31,13 @@ public class SavesPanelUI : MonoBehaviour
 	public Button deleteSave;
 	public Button defaultSaveBtn;
 	public Button loadSave;
-	[Header("Toggles")]
-	public Toggle autoSaveInterval;
-	public Toggle autoSaveOnExit;
+	[Header("Auto save")]
+	public TMP_Dropdown autoSaveIntervalDropdown;
+	public Toggle autoSaveOnExitToggle;
 	[Header("Save")]
 	public string currentSave;
 	public string defaultSave; 
-	public bool intervalSave = false;
+	public int saveInterval;
 	public bool onExitSave = false;
 	[Header("Other")]
 	public Transform savesContentPanel;
@@ -79,12 +79,36 @@ public class SavesPanelUI : MonoBehaviour
                 }
             }
         });
-		autoSaveInterval.onValueChanged.AddListener((bool value) => 
+		autoSaveIntervalDropdown.onValueChanged.AddListener((int value) => 
 		{
-			intervalSave = value;
+			switch (value)
+			{
+				case 0:
+					saveInterval = 0;
+					break;
+				case 1:
+					saveInterval = 1;
+					break;
+				case 2:
+					saveInterval = 2;
+					break;
+				case 3:
+					saveInterval = 3;
+					break;
+				case 4:
+					saveInterval = 5;
+					break;
+				case 5:
+					saveInterval = 10;
+					break;
+				case 6:
+					saveInterval = 15;
+					break;
+			}
+			GameManager.Instance.saveInterval = saveInterval;
 			SettingsMenuUI.Instance.didModifySettings = true;
 		});
-		autoSaveOnExit.onValueChanged.AddListener((bool value) => 
+		autoSaveOnExitToggle.onValueChanged.AddListener((bool value) => 
 		{
 			onExitSave = value;
 			SettingsMenuUI.Instance.didModifySettings = true;

@@ -47,6 +47,7 @@ public class SettingsMenuUI : MonoBehaviour
 			if (didModifySettings && !didSaveSettings)
 			{
 				PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+				Debug.Log("ran this bro");
 			} 
 			else
 			{
