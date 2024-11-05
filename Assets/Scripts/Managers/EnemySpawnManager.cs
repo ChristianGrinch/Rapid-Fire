@@ -1,8 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 using UnityEngine.AI;
+public enum EnemyType //AddNewEnemy: Add type
+{
+	Level1,
+	Level2,
+	Level3,
+	Boss1,
+	IceZombie
+}
 
 public class EnemySpawnManager : MonoBehaviour
 {
@@ -34,15 +43,8 @@ public class EnemySpawnManager : MonoBehaviour
 	private float mapSize = GameManager.mapSize;
 	int boss1ToSpawn = 0;
 
-	private enum EnemyType //AddNewEnemy: Add type
-	{
-		Level1,
-		Level2,
-		Level3,
-		Boss1,
-		IceZombie
-	}
-	private Dictionary<EnemyType, int> enemiesToSpawn = new() //AddNewEnemy: Add type and default value at wave 1 (i think for the last part? lowk dont know)
+	
+	public Dictionary<EnemyType, int> enemiesToSpawn = new() //AddNewEnemy: Add type and default value at wave 1 (i think for the last part? lowk dont know)
 	{
 		{ EnemyType.Level1, 0 },
 		{ EnemyType.Level2, 0 },
@@ -281,4 +283,41 @@ public class EnemySpawnManager : MonoBehaviour
 			default: return -1; // Handle the case if there's an unknown enemy type
 		}
 	}
+	public EnemyData GetEnemyPositions()
+	{
+		List<Vector3> enemyPositions = new();
+		List<EnemyType> enemyTypes = new();
+		foreach (var enemy in enemyCountArray)
+		{
+			enemyPositions.Add(enemy.transform.position);
+
+			switch (enemy.name)
+			{
+				case "Enemy 1":
+					enemyTypes.Add(EnemyType.Level1);
+					break;
+				case "Enemy 2":
+					enemyTypes.Add(EnemyType.Level2);
+					break;
+				case "Enemy 3":
+					enemyTypes.Add(EnemyType.Level3);
+					break;
+				case "Boss 1":
+					enemyTypes.Add(EnemyType.Boss1);
+					break;
+				case "Ice Zombie":
+					enemyTypes.Add(EnemyType.IceZombie);
+					break;
+				default:
+					Debug.LogWarning("Unrecognized enemy name: " + enemy.name);
+					break;
+			}
+		}
+		return new EnemyData { Positions = enemyPositions, Types = enemyTypes };
+	}
+}
+public class EnemyData
+{
+	public List<Vector3> Positions { get; set; }
+	public List<EnemyType> Types { get; set; }
 }

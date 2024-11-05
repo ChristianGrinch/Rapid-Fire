@@ -36,6 +36,7 @@ public class GameMenuUI : MonoBehaviour
 	public Button killEnemiesDebug;
 	public TMP_InputField enemySpawnCountDebug;
 	private int numberOfEnemiesDebug;
+	public Button getEnemyData;
 
     // References
     private GameObject player;
@@ -105,6 +106,22 @@ public class GameMenuUI : MonoBehaviour
 		});
 		killEnemiesDebug.onClick.AddListener(KillAllEnemiesDebug);
 		enemySpawnCountDebug.onEndEdit.AddListener((string str) => { Debug.Log(str); numberOfEnemiesDebug = int.Parse(str); });
+		getEnemyData.onClick.AddListener(() =>
+		{
+			var saveData = new SaveData();
+			var positionsAsFloats = saveData.ConvertVector3ToFloat();
+			EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyPositions();
+			for(var i = 0; i < enemyData.Positions.Count; i++)
+			{
+				//Debug.Log(enemyData.Positions[i]);
+				//Debug.Log(enemyData.Types[i]);
+
+				Debug.Log(positionsAsFloats[i][0] + " X");
+				Debug.Log(positionsAsFloats[i][1] + " Y");
+				Debug.Log(positionsAsFloats[i][2] + " Z");
+			}
+			
+		});
 	}
     public void KillAllEnemiesDebug()
     {

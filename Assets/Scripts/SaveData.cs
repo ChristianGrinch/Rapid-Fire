@@ -18,7 +18,7 @@ public class SaveData
 	[Key(11)] public int[] numberOfEnemies = { 0, 0, 0, 0, 0 };
 	[Key(12)] public int[] numberOfPowerups = { 0, 0, 0 };
 	[Key(13)] public int difficulty;
-	[Key(14)] public List<float[]> enemyPositions;
+	[Key(14)] public List<List<float>> enemyPositions;
 
 	// Settings data
 	[Key(20)] public int masterVolume;
@@ -69,6 +69,7 @@ public class SaveData
 				PowerupManager.Instance.speedPowerups
 			},
 			difficulty = GameManager.Instance.difficulty,
+			enemyPositions = ConvertVector3ToFloat()
 		};
 		return saveData;
 	}
@@ -165,5 +166,22 @@ public class SaveData
 		saveData.autoSaveOnExit = false;
 
 		return saveData;
+	}
+	public static List<List<float>> ConvertVector3ToFloat()
+	{
+		List<Vector3> positions = EnemySpawnManager.Instance.GetEnemyPositions().Positions;
+		List<List<float>> positionsAsFloats = new();
+
+		for(var i = 0; i < positions.Count; i++)
+		{
+			List<float> positionAsFloat = new();
+
+			positionAsFloat.Add(positions[i].x);
+			positionAsFloat.Add(positions[i].y);
+			positionAsFloat.Add(positions[i].z);
+
+			positionsAsFloats.Add(positionAsFloat);
+		}
+		return positionsAsFloats;
 	}
 }
