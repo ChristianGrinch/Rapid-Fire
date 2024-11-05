@@ -72,10 +72,14 @@ public class SettingsMenuUI : MonoBehaviour
 	}
 	public void CloseAllSettingsPanels() // bad cuz hard coded unlike closeallmenus but i could care less right now
 	{
-		AudioPanelUI.Instance.audioPanel.SetActive(false);
-		VideoPanelUI.Instance.videoPanel.SetActive(false);
-		SavesPanelUI.Instance.savesPanel.SetActive(false);
-		ControlsPanelUI.Instance.controlsPanel.SetActive(false);
+		GameObject panels = settingsMenu.transform.Find("Panels").gameObject;
+		int childCount = panels.transform.childCount;
+
+		for (int i = 0; i < childCount; i++)
+		{
+			Transform child = panels.transform.GetChild(i);
+			child.gameObject.SetActive(false);
+		}
 	}
 	public void OpenAudioPanel()
 	{
