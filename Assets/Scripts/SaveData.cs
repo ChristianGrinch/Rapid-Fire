@@ -1,6 +1,6 @@
 using UnityEngine;
 using MessagePack;
-using UnityEngine.Rendering;
+using System.Collections.Generic;
 
 [MessagePackObject]
 public class SaveData
@@ -18,6 +18,7 @@ public class SaveData
 	[Key(11)] public int[] numberOfEnemies = { 0, 0, 0, 0, 0 };
 	[Key(12)] public int[] numberOfPowerups = { 0, 0, 0 };
 	[Key(13)] public int difficulty;
+	[Key(14)] public List<float[]> enemyPositions;
 
 	// Settings data
 	[Key(20)] public int masterVolume;

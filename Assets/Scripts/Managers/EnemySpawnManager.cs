@@ -32,8 +32,6 @@ public class EnemySpawnManager : MonoBehaviour
 
 	private Vector3 lastBossSpawnPos;
 	private float mapSize = GameManager.mapSize;
-
-	private bool runningAssignEnemiesToLists;
 	int boss1ToSpawn = 0;
 
 	private enum EnemyType //AddNewEnemy: Add type
