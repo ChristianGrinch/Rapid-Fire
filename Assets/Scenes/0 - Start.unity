@@ -13287,8 +13287,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 301275416}
   m_HandleRect: {fileID: 301275415}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.305
+  m_Value: 1.0000001
+  m_Size: 0.30500004
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16022,7 +16022,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1671506974
 RectTransform:

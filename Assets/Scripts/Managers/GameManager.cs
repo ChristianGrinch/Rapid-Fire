@@ -206,6 +206,8 @@ public class GameManager : MonoBehaviour
 			enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
 			saveInterval = SavesPanelUI.Instance.saveInterval;
 
+			AudioManager.Instance.player = player;
+
 			instantiatedObjects = GameObject.Find("Instantiated Objects");
 			enemies = instantiatedObjects.transform.Find("Enemies").gameObject;
 			bullets = instantiatedObjects.transform.Find("Bullets").gameObject;

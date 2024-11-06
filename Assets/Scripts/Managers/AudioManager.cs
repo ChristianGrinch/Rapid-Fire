@@ -24,12 +24,10 @@ public class AudioManager : MonoBehaviour
 
 	public AudioClip buttonClickSound;
 	private AudioSource buttonAudioSource;
-	private GameObject player;
+	public GameObject player;
 
 	void Start()
 	{
-		player = GameManager.Instance.player;
-
 		AudioPanelUI.Instance.masterVolume.onValueChanged.AddListener(SetVolume);
 		AudioPanelUI.Instance.masterVolume.value = masterVolume;
 		SetVolume(masterVolume);
@@ -85,12 +83,13 @@ public class AudioManager : MonoBehaviour
 	public void SetGunVolume(float newVolume)
 	{
 		gunVolume = newVolume;
-
+		Debug.Log(player);
 		if(player != null)
 		{
 			AudioSource audioSource = player.GetComponent<AudioSource>();
 
 			audioSource.volume = (masterVolume / 100) * (gunVolume / 100);
+			Debug.Log(audioSource.volume);
 		}
 		
 	}
