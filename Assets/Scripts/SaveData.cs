@@ -19,7 +19,8 @@ public class SaveData
 	[Key(12)] public int[] numberOfPowerups = { 0, 0, 0 };
 	[Key(13)] public int difficulty;
 	[Key(14)] public List<List<float>> enemyPositions;
-	[Key(15)] public List<int> enemyTypes;
+	[Key(15)] public List<EnemyType> enemyTypes;
+	[Key(16)] public List<int> enemyHealths;
 
 	// Settings data
 	[Key(20)] public int masterVolume;
@@ -38,6 +39,9 @@ public class SaveData
 	public static SaveData AssignData(PlayerController player)
 	{
 		Debug.Log(EnemyDataManager.Instance.enemyCount[0]);
+
+		EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyData();
+
 		SaveData saveData = new SaveData
 		{
 			// Assign player data
@@ -70,11 +74,9 @@ public class SaveData
 				PowerupManager.Instance.speedPowerups
 			},
 			difficulty = GameManager.Instance.difficulty,
-			enemyPositions = ConvertVector3ToFloat(),
-			enemyTypes = new List<int>
-			{
-
-			}
+			enemyPositions = ConvertVector3ToFloat(enemyData.Positions),
+			enemyTypes = enemyData.Types,
+			enemyHealths = enemyData.Healths,
 		};
 		return saveData;
 	}
@@ -143,7 +145,7 @@ public class SaveData
         return saveData;
     }
 
-	public static SaveData AssignSettingsData(PlayerController player)
+	public static SaveData AssignSettingsData()
 	{
 		SaveData saveData = new SaveData
 		{
@@ -172,9 +174,8 @@ public class SaveData
 
 		return saveData;
 	}
-	public static List<List<float>> ConvertVector3ToFloat()
+	public static List<List<float>> ConvertVector3ToFloat(List<Vector3> positions)
 	{
-		List<Vector3> positions = EnemySpawnManager.Instance.GetEnemyPositions().Positions;
 		List<List<float>> positionsAsFloats = new();
 
 		for(var i = 0; i < positions.Count; i++)
@@ -189,44 +190,5 @@ public class SaveData
 			positionsAsFloats.Add(positionAsFloat);
 		}
 		return positionsAsFloats;
-	}
-	public static List<int> GetEnemyTypes()
-	{
-		List<EnemyType> types = EnemySpawnManager.Instance.GetEnemyPositions().Types;
-		List<int> enemyTypes = new();
-
-		for(var i = 0; i < types.Count; i++)
-		{
-			Debug.Log(types[i].ToString());
-			switch (types[i].ToString())
-			{
-				case "Enemy 1":
-					EnsureListSize(enemyTypes, 1);
-					enemyTypes[0]++;
-					break;
-				case "Enemy 2":
-					EnsureListSize(enemyTypes, 2);
-					enemyTypes[1]++;
-					break;
-				case "Enemy 3":
-					EnsureListSize(enemyTypes, 3);
-					enemyTypes[2]++;
-					break;
-				case "Boss 1":
-					EnsureListSize(enemyTypes, 4);
-					enemyTypes[3]++;
-					break;
-				case "Ice Zombie":
-					EnsureListSize(enemyTypes, 5);
-					enemyTypes[4]++;
-					break;
-			}
-				
-		}
-		return enemyTypes;
-	}
-	static void EnsureListSize(List<int> list, int size)
-	{
-		while (list.Count < size) list.Add(0);
 	}
 }

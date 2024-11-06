@@ -43,6 +43,10 @@ public class GameManager : MonoBehaviour
 	public GameObject ammo;
 	[Header("Tertiary stuff")]
 	public bool useSprintHold = true;
+
+	public List<EnemyType> savedEnemiesTypes;
+	public List<Vector3> savedEnemiesPositions;
+	public List<int> savedEnemiesHealths;
 	
 
 	[Header("Other")]
@@ -306,10 +310,20 @@ public class GameManager : MonoBehaviour
 			}
 
 			// Set enemy counts
-			for (var i = 0; i < data.numberOfEnemies.Length; i++)
+			//for (var i = 0; i < data.numberOfEnemies.Length; i++)
+			//{
+			//	enemyCount[i] = data.numberOfEnemies[i];
+			//}
+			// Set enemy data
+			savedEnemiesTypes = data.enemyTypes;
+			for(var i = 0; i < data.enemyPositions.Count; i++)
 			{
-				enemyCount[i] = data.numberOfEnemies[i];
+				var x = data.enemyPositions[i][0];
+				var y = data.enemyPositions[i][0];
+				var z = data.enemyPositions[i][0];
+				savedEnemiesPositions.Add(ConvertFloatsToVector3(x, y, z));
 			}
+			savedEnemiesHealths = data.enemyHealths;
 
 			// Set powerup counts
 			PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
@@ -327,9 +341,19 @@ public class GameManager : MonoBehaviour
 			Debug.LogError("Data is null.");
 		}
 	}
+	public Vector3 ConvertFloatsToVector3(float x, float y, float z)
+	{
+		Vector3 position = new()
+		{
+			x = x,
+			y = y,
+			z = z
+		};
+		return position;
+	}
 	public void SaveSettings()
 	{
-		SaveSystem.SaveSettings(playerController);
+		SaveSystem.SaveSettings();
 	}
 	private IEnumerator DelayedLoadSettings()
 	{

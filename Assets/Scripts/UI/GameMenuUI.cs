@@ -108,8 +108,8 @@ public class GameMenuUI : MonoBehaviour
 		enemySpawnCountDebug.onEndEdit.AddListener((string str) => { Debug.Log(str); numberOfEnemiesDebug = int.Parse(str); });
 		getEnemyData.onClick.AddListener(() =>
 		{
-			var positionsAsFloats = SaveData.ConvertVector3ToFloat();
-			EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyPositions();
+			var positionsAsFloats = SaveData.ConvertVector3ToFloat(EnemySpawnManager.Instance.GetEnemyData().Positions);
+			EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyData();
 			for(var i = 0; i < enemyData.Positions.Count; i++)
 			{
 				//Debug.Log(enemyData.Positions[i]);
