@@ -113,7 +113,7 @@ public class GameMenuUI : MonoBehaviour
 			for(var i = 0; i < enemyData.Positions.Count; i++)
 			{
 				//Debug.Log(enemyData.Positions[i]);
-				//Debug.Log(enemyData.Types[i]);
+				Debug.Log(enemyData.Types[i]);
 
 				Debug.Log(positionsAsFloats[i][0] + " X");
 				Debug.Log(positionsAsFloats[i][1] + " Y");

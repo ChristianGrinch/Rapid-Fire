@@ -83,13 +83,11 @@ public class AudioManager : MonoBehaviour
 	public void SetGunVolume(float newVolume)
 	{
 		gunVolume = newVolume;
-		Debug.Log(player);
 		if(player != null)
 		{
 			AudioSource audioSource = player.GetComponent<AudioSource>();
 
 			audioSource.volume = (masterVolume / 100) * (gunVolume / 100);
-			Debug.Log(audioSource.volume);
 		}
 		
 	}

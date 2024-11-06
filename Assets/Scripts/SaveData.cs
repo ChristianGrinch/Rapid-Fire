@@ -19,6 +19,7 @@ public class SaveData
 	[Key(12)] public int[] numberOfPowerups = { 0, 0, 0 };
 	[Key(13)] public int difficulty;
 	[Key(14)] public List<List<float>> enemyPositions;
+	[Key(15)] public List<int> enemyTypes;
 
 	// Settings data
 	[Key(20)] public int masterVolume;
@@ -69,7 +70,11 @@ public class SaveData
 				PowerupManager.Instance.speedPowerups
 			},
 			difficulty = GameManager.Instance.difficulty,
-			enemyPositions = ConvertVector3ToFloat()
+			enemyPositions = ConvertVector3ToFloat(),
+			enemyTypes = new List<int>
+			{
+
+			}
 		};
 		return saveData;
 	}
@@ -174,14 +179,54 @@ public class SaveData
 
 		for(var i = 0; i < positions.Count; i++)
 		{
-			List<float> positionAsFloat = new();
-
-			positionAsFloat.Add(positions[i].x);
-			positionAsFloat.Add(positions[i].y);
-			positionAsFloat.Add(positions[i].z);
+			List<float> positionAsFloat = new()
+			{
+				positions[i].x,
+				positions[i].y,
+				positions[i].z
+			};
 
 			positionsAsFloats.Add(positionAsFloat);
 		}
 		return positionsAsFloats;
+	}
+	public static List<int> GetEnemyTypes()
+	{
+		List<EnemyType> types = EnemySpawnManager.Instance.GetEnemyPositions().Types;
+		List<int> enemyTypes = new();
+
+		for(var i = 0; i < types.Count; i++)
+		{
+			Debug.Log(types[i].ToString());
+			switch (types[i].ToString())
+			{
+				case "Enemy 1":
+					EnsureListSize(enemyTypes, 1);
+					enemyTypes[0]++;
+					break;
+				case "Enemy 2":
+					EnsureListSize(enemyTypes, 2);
+					enemyTypes[1]++;
+					break;
+				case "Enemy 3":
+					EnsureListSize(enemyTypes, 3);
+					enemyTypes[2]++;
+					break;
+				case "Boss 1":
+					EnsureListSize(enemyTypes, 4);
+					enemyTypes[3]++;
+					break;
+				case "Ice Zombie":
+					EnsureListSize(enemyTypes, 5);
+					enemyTypes[4]++;
+					break;
+			}
+				
+		}
+		return enemyTypes;
+	}
+	static void EnsureListSize(List<int> list, int size)
+	{
+		while (list.Count < size) list.Add(0);
 	}
 }
