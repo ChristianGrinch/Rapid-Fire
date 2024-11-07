@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour
     }
     public void CreateSave(string saveName)
     {
-        SaveSystem.CreateSave(playerController, saveName);
+        SaveSystem.CreateSave(saveName);
         currentSave = saveName;
     }
 	public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -315,16 +315,18 @@ public class GameManager : MonoBehaviour
 			//	enemyCount[i] = data.numberOfEnemies[i];
 			//}
 			// Set enemy data
-			savedEnemiesTypes = data.enemyTypes;
-			for(var i = 0; i < data.enemyPositions.Count; i++)
+			if (data.enemyTypes.Count > 0)
 			{
-				var x = data.enemyPositions[i][0];
-				var y = data.enemyPositions[i][0];
-				var z = data.enemyPositions[i][0];
-				savedEnemiesPositions.Add(ConvertFloatsToVector3(x, y, z));
+				savedEnemiesTypes = data.enemyTypes;
+				for (var i = 0; i < data.enemyPositions.Count; i++)
+				{
+					var x = data.enemyPositions[i][0];
+					var y = data.enemyPositions[i][1];
+					var z = data.enemyPositions[i][2];
+					savedEnemiesPositions.Add(ConvertFloatsToVector3(x, y, z));
+				}
+				savedEnemiesHealths = data.enemyHealths;
 			}
-			savedEnemiesHealths = data.enemyHealths;
-
 			// Set powerup counts
 			PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
 			PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];

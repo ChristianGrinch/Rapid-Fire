@@ -64,7 +64,6 @@ public class EnemySpawnManager : MonoBehaviour
 				Debug.Log("Spawn enemy on load ran." + " Frame: " + Time.frameCount);
 				Debug.Log("Total enemy count: " + totalEnemyCount);
 				SpawnEnemiesOnLoad();
-				GameManager.Instance.didLoadSpawnManager = false;
 			}
 		}
 	}
@@ -251,28 +250,36 @@ public class EnemySpawnManager : MonoBehaviour
 		List<EnemyType> enemyTypes = GameManager.Instance.savedEnemiesTypes;
 		List<Vector3> enemyPositions = GameManager.Instance.savedEnemiesPositions;
 		List<int> enemyHealths = GameManager.Instance.savedEnemiesHealths;
-		for(var i = 0; i < enemyTypes.Count; i++)
+		if(enemyTypes.Count > 0)
 		{
-			int enemyIndex = new();
-			switch (enemyTypes[i])
+			for (var i = 0; i < enemyTypes.Count; i++)
 			{
-				case EnemyType.Level1:
-					enemyIndex = 0;
-					break;
-				case EnemyType.Level2:
-					enemyIndex = 1;
-					break;
-				case EnemyType.Level3:
-					enemyIndex = 2;
-					break;
-				case EnemyType.Boss1:
-					enemyIndex = 3;
-					break;
-				case EnemyType.IceZombie:
-					enemyIndex = 4;
-					break;
+				Debug.Log("x: " + enemyPositions[i][0] + " y:" + enemyPositions[i][1] + " z:" + enemyPositions[i][2]);
+				int enemyIndex = new();
+				switch (enemyTypes[i])
+				{
+					case EnemyType.Level1:
+						enemyIndex = 0;
+						break;
+					case EnemyType.Level2:
+						enemyIndex = 1;
+						break;
+					case EnemyType.Level3:
+						enemyIndex = 2;
+						break;
+					case EnemyType.Boss1:
+						enemyIndex = 3;
+						break;
+					case EnemyType.IceZombie:
+						enemyIndex = 4;
+						break;
+				}
+				GameObject enemy = Instantiate(EnemyDataManager.Instance.enemies[enemyIndex], enemyPositions[i], Quaternion.Euler(90, 0, 0));
+				enemy.transform.parent = enemyParent.transform;
+				enemy.name = EnemyDataManager.Instance.enemies[enemyIndex].name;
+
+				enemy.GetComponent<HealthSystem>().health = enemyHealths[i];
 			}
-			GameObject enemy = Instantiate(EnemyDataManager.Instance.enemies[enemyIndex], enemyPositions[i], Quaternion.Euler(90, 0 ,0));
 		}
 		//for(var i = 0; i < GameManager.Instance.enemyCount.Count; i++)
 		//{
@@ -282,6 +289,8 @@ public class EnemySpawnManager : MonoBehaviour
 		//	}
 		//}
 		StartCoroutine(EnemyDataManager.Instance.AssignEnemiesToLists());
+
+		GameManager.Instance.didLoadSpawnManager = false;
 	}
 
 	public void InstantiateEnemy(int type)

@@ -19,9 +19,9 @@ public static class SaveSystem
         File.WriteAllBytes(path, bytes);
 		Debug.Log("Saved file with length: " + bytes.Length + " bytes.");
 	}
-    public static void CreateSave(PlayerController player, string saveName)
+    public static void CreateSave(string saveName)
     {
-        SaveData saveData = SaveData.CreateDefaultData(player, GameManager.Instance.difficulty);
+        SaveData saveData = SaveData.CreateDefaultData(GameManager.Instance.difficulty);
         byte[] bytes = MessagePackSerializer.Serialize(saveData);
         string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
 

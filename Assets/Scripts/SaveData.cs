@@ -42,7 +42,7 @@ public class SaveData
 
 		EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyData();
 
-		SaveData saveData = new SaveData
+		SaveData saveData = new()
 		{
 			// Assign player data
 			exp = player.exp,
@@ -81,7 +81,7 @@ public class SaveData
 		return saveData;
 	}
 
-	public static SaveData CreateDefaultData(PlayerController player, int difficulty)
+	public static SaveData CreateDefaultData(int difficulty)
 	{
 		if(difficulty == 0)
 		{
@@ -141,8 +141,11 @@ public class SaveData
 		}
 		saveData.numberOfPowerups = new[] {0, 0, 0};
 		saveData.difficulty = difficulty;
+		saveData.enemyTypes = new();
+		saveData.enemyPositions = new();
+		saveData.enemyHealths = new();
 
-        return saveData;
+		return saveData;
     }
 
 	public static SaveData AssignSettingsData()
