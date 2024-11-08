@@ -78,6 +78,11 @@ public class SaveData
 			enemyTypes = enemyData.Types,
 			enemyHealths = enemyData.Healths,
 		};
+		for(var i = 0; i < enemyData.Types.Count; i++)
+		{
+			Debug.Log("enemy position X in SaveData: " + saveData.enemyPositions[i][0]);
+		}
+		
 		return saveData;
 	}
 
@@ -158,7 +163,7 @@ public class SaveData
 			useSprintHold = GameManager.Instance.useSprintHold,
 			screenMode = VideoPanelUI.Instance.screenMode.value,
 			autoSaveInterval = SavesPanelUI.Instance.autoSaveIntervalDropdown.value,
-			autoSaveOnExit = SavesPanelUI.Instance.autoSaveOnExitToggle,
+			autoSaveOnExit = SavesPanelUI.Instance.onExitSave,
 
 		};
 		return saveData;

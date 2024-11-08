@@ -317,9 +317,11 @@ public class GameManager : MonoBehaviour
 			// Set enemy data
 			if (data.enemyTypes.Count > 0)
 			{
+				Debug.Log("Ran 1.");
 				savedEnemiesTypes = data.enemyTypes;
 				for (var i = 0; i < data.enemyPositions.Count; i++)
 				{
+					Debug.Log("enemy position X in gamemanager: "+data.enemyPositions[i][0]);
 					var x = data.enemyPositions[i][0];
 					var y = data.enemyPositions[i][1];
 					var z = data.enemyPositions[i][2];
@@ -391,22 +393,10 @@ public class GameManager : MonoBehaviour
 				ControlsPanelUI.Instance.sprintMode.value = 1;
 			}
 			SavesPanelUI.Instance.saveInterval = data.autoSaveInterval;
-			SavesPanelUI.Instance.autoSaveIntervalDropdown.onValueChanged.RemoveAllListeners();
 			SavesPanelUI.Instance.autoSaveIntervalDropdown.value = data.autoSaveInterval;
-			SavesPanelUI.Instance.autoSaveIntervalDropdown.onValueChanged.AddListener((int value) =>
-			{
-				SavesPanelUI.Instance.saveInterval = value;
-				SettingsMenuUI.Instance.didModifySettings = true;
-			});
 
 			SavesPanelUI.Instance.onExitSave = data.autoSaveOnExit;
-			SavesPanelUI.Instance.autoSaveOnExitToggle.onValueChanged.RemoveAllListeners();
 			SavesPanelUI.Instance.autoSaveOnExitToggle.isOn = data.autoSaveOnExit;
-			SavesPanelUI.Instance.autoSaveOnExitToggle.onValueChanged.AddListener((bool value) =>
-			{
-				SavesPanelUI.Instance.onExitSave = value;
-				SettingsMenuUI.Instance.didModifySettings = true;
-			});
 		}
 		else
 		{

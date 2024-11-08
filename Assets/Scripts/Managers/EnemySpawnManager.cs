@@ -260,6 +260,7 @@ public class EnemySpawnManager : MonoBehaviour
 				{
 					case EnemyType.Level1:
 						enemyIndex = 0;
+
 						break;
 					case EnemyType.Level2:
 						enemyIndex = 1;
