@@ -317,11 +317,11 @@ public class GameManager : MonoBehaviour
 			// Set enemy data
 			if (data.enemyTypes.Count > 0)
 			{
-				Debug.Log("Ran 1.");
+				savedEnemiesPositions = new();
 				savedEnemiesTypes = data.enemyTypes;
 				for (var i = 0; i < data.enemyPositions.Count; i++)
 				{
-					Debug.Log("enemy position X in gamemanager: "+data.enemyPositions[i][0]);
+					Debug.Log("GAMEMANAGER x: " + data.enemyPositions[i][0] + " y:" + data.enemyPositions[i][1] + " z:" + data.enemyPositions[i][2]);
 					var x = data.enemyPositions[i][0];
 					var y = data.enemyPositions[i][1];
 					var z = data.enemyPositions[i][2];

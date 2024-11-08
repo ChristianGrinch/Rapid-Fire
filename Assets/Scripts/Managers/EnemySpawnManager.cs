@@ -254,7 +254,7 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			for (var i = 0; i < enemyTypes.Count; i++)
 			{
-				Debug.Log("x: " + enemyPositions[i][0] + " y:" + enemyPositions[i][1] + " z:" + enemyPositions[i][2]);
+				Debug.Log("ENEMYSPAWNMANAGER x: " + enemyPositions[i][0] + " y:" + enemyPositions[i][1] + " z:" + enemyPositions[i][2]);
 				int enemyIndex = new();
 				switch (enemyTypes[i])
 				{
