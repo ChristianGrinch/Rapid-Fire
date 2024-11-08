@@ -278,8 +278,7 @@ public class EnemySpawnManager : MonoBehaviour
 				GameObject enemy = Instantiate(EnemyDataManager.Instance.enemies[enemyIndex], enemyPositions[i], Quaternion.Euler(90, 0, 0));
 				enemy.transform.parent = enemyParent.transform;
 				enemy.name = EnemyDataManager.Instance.enemies[enemyIndex].name;
-
-				enemy.GetComponent<HealthSystem>().health = enemyHealths[i];
+				StartCoroutine(DelayedSetEnemyHealth(enemy, enemyHealths, i));
 			}
 		}
 		//for(var i = 0; i < GameManager.Instance.enemyCount.Count; i++)
@@ -292,6 +291,14 @@ public class EnemySpawnManager : MonoBehaviour
 		StartCoroutine(EnemyDataManager.Instance.AssignEnemiesToLists());
 
 		GameManager.Instance.didLoadSpawnManager = false;
+	}
+	IEnumerator DelayedSetEnemyHealth(GameObject enemy, List<int> enemyHealths, int i)
+	{
+		yield return null;
+		HealthSystem healthSystem = enemy.GetComponent<HealthSystem>();
+		Debug.Log("enemy health: " + healthSystem.health + "enemy health at index: " + enemyHealths[i]);
+		healthSystem.health = enemyHealths[i];
+		Debug.Log("enemy health: " + healthSystem.health + "enemy health at index: " + enemyHealths[i]);
 	}
 
 	public void InstantiateEnemy(int type)
