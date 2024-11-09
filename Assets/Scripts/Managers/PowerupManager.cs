@@ -1,12 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-
+public enum PowerupType
+{
+	Ammo,
+	Health,
+	Speed
+}
 public class PowerupManager : MonoBehaviour
 {
-    public GameObject ammo;
+	public static PowerupManager Instance { get; private set; }
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
+	public GameObject ammo;
     public GameObject heartPowerup;
     public GameObject speedPowerup;
 
@@ -39,6 +55,8 @@ public class PowerupManager : MonoBehaviour
 	public AudioClip powerupExpireSound;
 	private AudioSource audioData;
 	public bool runningSpeedPowerup;
+
+	public GameObject[] powerups;
 	private void Start()
 	{
 		player = GameManager.Instance.player;
@@ -50,7 +68,8 @@ public class PowerupManager : MonoBehaviour
 	}
 	void Update()
     {
-        randomSpawnPos = new(randomXPos, 1, randomZPos);
+		powerups = GameObject.FindGameObjectsWithTag("Powerup");
+		randomSpawnPos = new(randomXPos, 1, randomZPos);
         int currentWave = EnemySpawnManager.Instance.currentWave;
         if (UIManager.Instance.isGameUnpaused)
         {
@@ -96,26 +115,26 @@ public class PowerupManager : MonoBehaviour
         didLoad = true;
         isLoading = true;
 
-        for (int i = 0; i < ammunition; i++)
-        {
-            randomSpawnPos = GenerateRandomPos();
-            InstantiateObject(ammo, randomSpawnPos, ammoParent);
-        }
-        for (int i = 0; i < heartPowerups; i++)
-        {
-            randomSpawnPos = GenerateRandomPos();
-            InstantiateObject(heartPowerup, randomSpawnPos, powerupParent);
-        }
-        for (int i = 0; i < speedPowerups; i++)
-        {
-            randomSpawnPos = GenerateRandomPos();
-            InstantiateObject(speedPowerup, randomSpawnPos, powerupParent);
-        }
+		List<PowerupType> powerupTypes = GameManager.Instance.savedPowerupTypes;
+		List<Vector3> powerupPositions = GameManager.Instance.savedPowerupPositions;
 
+		for(var i = 0; i < powerupTypes.Count; i++)
+		{
+			switch (powerupTypes[i])
+			{
+				case PowerupType.Ammo:
+					InstantiateObject(ammo, powerupPositions[i], ammoParent);
+					break;
+				case PowerupType.Health:
+					InstantiateObject(heartPowerup, powerupPositions[i], ammoParent);
+					break;
+				case PowerupType.Speed:
+					InstantiateObject(speedPowerup, powerupPositions[i], ammoParent);
+					break;
+			}
+		}
         isLoading = false;
-
     }
-
     void AssignPowerupsToList(GameObject objectToSpawn)
     {
         if (objectToSpawn.name == "Ammo")
@@ -131,7 +150,6 @@ public class PowerupManager : MonoBehaviour
             speedPowerups++;
         }
     }
-
     void InstantiateObject(GameObject objectToSpawn, Vector3 spawnPos, GameObject objectParent)
     {
         GameObject instantiatedObject = Instantiate(objectToSpawn, spawnPos, Quaternion.Euler(90, 0, 0));
@@ -142,7 +160,6 @@ public class PowerupManager : MonoBehaviour
             AssignPowerupsToList(objectToSpawn);
         }  
     }
-
     Vector3 GenerateRandomPos()
     {
         Vector3 randomSpawnPos = GetRandomNavMeshPosition();
@@ -174,20 +191,35 @@ public class PowerupManager : MonoBehaviour
 		speedPowerups--;
 		runningSpeedPowerup = false;
 	}
-	// Singleton code -----
-	public static PowerupManager Instance { get; private set; }
+	public PowerupData GetPowerupData()
+	{
+		List<Vector3> powerupPositions = new();
+		List<PowerupType> powerupTypes = new();
+		foreach (var powerup in powerups)
+		{
+			powerupPositions.Add(powerup.transform.position);
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    // End singleton code -----
+			switch (powerup.name)
+			{
+				case "Ammo":
+					powerupTypes.Add(PowerupType.Ammo);
+					break;
+				case "Powerup Heart":
+					powerupTypes.Add(PowerupType.Health);
+					break;
+				case "SpeedPowerup":
+					powerupTypes.Add(PowerupType.Speed);
+					break;
+				default:
+					Debug.LogWarning("Unrecognized powerup name: " + powerup.name);
+					break;
+			}
+		}
+		return new PowerupData { Positions = powerupPositions, Types = powerupTypes};
+	}
+}
+public class PowerupData
+{
+	public List<Vector3> Positions { get; set; }
+	public List<PowerupType> Types { get; set; }
 }

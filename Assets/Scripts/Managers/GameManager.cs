@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
 	public List<EnemyType> savedEnemiesTypes;
 	public List<Vector3> savedEnemiesPositions;
 	public List<int> savedEnemiesHealths;
+	public List<PowerupType> savedPowerupTypes;
+	public List<Vector3> savedPowerupPositions;
 	
 
 	[Header("Other")]
@@ -324,6 +326,18 @@ public class GameManager : MonoBehaviour
 				savedEnemiesHealths = data.enemyHealths;
 			}
 			// Set powerup counts
+			if(data.powerupTypes.Count > 0)
+			{
+				savedPowerupPositions = new();
+				savedPowerupTypes = data.powerupTypes;
+				for(var i = 0; i < data.powerupPositions.Count; i++)
+				{
+					var x = data.powerupPositions[i][0];
+					var y = data.powerupPositions[i][1];
+					var z = data.powerupPositions[i][2];
+					savedPowerupPositions.Add(ConvertFloatsToVector3(x, y, z));
+				}
+			}
 			PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
 			PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
 			PowerupManager.Instance.speedPowerups = data.numberOfPowerups[2];

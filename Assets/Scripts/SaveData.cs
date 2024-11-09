@@ -21,6 +21,8 @@ public class SaveData
 	[Key(14)] public List<List<float>> enemyPositions;
 	[Key(15)] public List<EnemyType> enemyTypes;
 	[Key(16)] public List<int> enemyHealths;
+	[Key(17)] public List<List<float>> powerupPositions;
+	[Key(18)] public List<PowerupType> powerupTypes;
 
 	// Settings data
 	[Key(20)] public int masterVolume;
@@ -41,7 +43,8 @@ public class SaveData
 		Debug.Log(EnemyDataManager.Instance.enemyCount[0]);
 
 		EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyData();
-
+		PowerupData powerupData = PowerupManager.Instance.GetPowerupData();
+		Debug.Log("powerup data: " + powerupData);
 		SaveData saveData = new()
 		{
 			// Assign player data
@@ -77,6 +80,9 @@ public class SaveData
 			enemyPositions = ConvertVector3ToFloat(enemyData.Positions),
 			enemyTypes = enemyData.Types,
 			enemyHealths = enemyData.Healths,
+
+			powerupPositions = ConvertVector3ToFloat(powerupData.Positions),
+			powerupTypes = powerupData.Types,
 		};
 		
 		return saveData;
@@ -142,9 +148,13 @@ public class SaveData
 		}
 		saveData.numberOfPowerups = new[] {0, 0, 0};
 		saveData.difficulty = difficulty;
+
 		saveData.enemyTypes = new();
 		saveData.enemyPositions = new();
 		saveData.enemyHealths = new();
+
+		saveData.powerupPositions = new();
+		saveData.powerupTypes = new();
 
 		return saveData;
     }
