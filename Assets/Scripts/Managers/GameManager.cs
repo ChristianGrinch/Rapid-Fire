@@ -43,6 +43,10 @@ public class GameManager : MonoBehaviour
 	public GameObject ammo;
 	[Header("Tertiary stuff")]
 	public bool useSprintHold = true;
+
+	public List<EnemyType> savedEnemiesTypes;
+	public List<Vector3> savedEnemiesPositions;
+	public List<int> savedEnemiesHealths;
 	
 
 	[Header("Other")]
@@ -188,7 +192,7 @@ public class GameManager : MonoBehaviour
     }
     public void CreateSave(string saveName)
     {
-        SaveSystem.CreateSave(playerController, saveName);
+        SaveSystem.CreateSave(saveName);
         currentSave = saveName;
     }
 	public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -205,6 +209,8 @@ public class GameManager : MonoBehaviour
 			enemySpawnManager = GameObject.Find("Enemy Manager").GetComponent<EnemySpawnManager>();
 			enemyCount = new List<int>(new int[EnemyDataManager.Instance.enemies.Length]);
 			saveInterval = SavesPanelUI.Instance.saveInterval;
+
+			AudioManager.Instance.player = player;
 
 			instantiatedObjects = GameObject.Find("Instantiated Objects");
 			enemies = instantiatedObjects.transform.Find("Enemies").gameObject;
@@ -304,11 +310,19 @@ public class GameManager : MonoBehaviour
 			}
 
 			// Set enemy counts
-			for (var i = 0; i < data.numberOfEnemies.Length; i++)
+			if (data.enemyTypes.Count > 0)
 			{
-				enemyCount[i] = data.numberOfEnemies[i];
+				savedEnemiesPositions = new();
+				savedEnemiesTypes = data.enemyTypes;
+				for (var i = 0; i < data.enemyPositions.Count; i++)
+				{
+					var x = data.enemyPositions[i][0];
+					var y = data.enemyPositions[i][1];
+					var z = data.enemyPositions[i][2];
+					savedEnemiesPositions.Add(ConvertFloatsToVector3(x, y, z));
+				}
+				savedEnemiesHealths = data.enemyHealths;
 			}
-
 			// Set powerup counts
 			PowerupManager.Instance.ammunition = data.numberOfPowerups[0];
 			PowerupManager.Instance.heartPowerups = data.numberOfPowerups[1];
@@ -325,9 +339,19 @@ public class GameManager : MonoBehaviour
 			Debug.LogError("Data is null.");
 		}
 	}
+	public Vector3 ConvertFloatsToVector3(float x, float y, float z)
+	{
+		Vector3 position = new()
+		{
+			x = x,
+			y = y,
+			z = z
+		};
+		return position;
+	}
 	public void SaveSettings()
 	{
-		SaveSystem.SaveSettings(playerController);
+		SaveSystem.SaveSettings();
 	}
 	private IEnumerator DelayedLoadSettings()
 	{
@@ -336,12 +360,10 @@ public class GameManager : MonoBehaviour
 	}
 	public void LoadSettings()
 	{
-		
 		SaveData data = SaveSystem.LoadSettings();
 
 		if (data != null)
 		{
-			Debug.Log("data not null.");
 			AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
 			AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
@@ -363,26 +385,14 @@ public class GameManager : MonoBehaviour
 				ControlsPanelUI.Instance.sprintMode.value = 1;
 			}
 			SavesPanelUI.Instance.saveInterval = data.autoSaveInterval;
-			SavesPanelUI.Instance.autoSaveIntervalDropdown.onValueChanged.RemoveAllListeners();
 			SavesPanelUI.Instance.autoSaveIntervalDropdown.value = data.autoSaveInterval;
-			SavesPanelUI.Instance.autoSaveIntervalDropdown.onValueChanged.AddListener((int value) =>
-			{
-				SavesPanelUI.Instance.saveInterval = value;
-				SettingsMenuUI.Instance.didModifySettings = true;
-			});
 
 			SavesPanelUI.Instance.onExitSave = data.autoSaveOnExit;
-			SavesPanelUI.Instance.autoSaveOnExitToggle.onValueChanged.RemoveAllListeners();
 			SavesPanelUI.Instance.autoSaveOnExitToggle.isOn = data.autoSaveOnExit;
-			SavesPanelUI.Instance.autoSaveOnExitToggle.onValueChanged.AddListener((bool value) =>
-			{
-				SavesPanelUI.Instance.onExitSave = value;
-				SettingsMenuUI.Instance.didModifySettings = true;
-			});
 		}
 		else
 		{
-			Debug.Log("data null.");
+			Debug.LogWarning("Settings data null!");
 			SaveSystem.CreateSaveSettings();
 			LoadSettings();
 		}

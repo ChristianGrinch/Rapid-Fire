@@ -1,6 +1,6 @@
 using UnityEngine;
 using MessagePack;
-using UnityEngine.Rendering;
+using System.Collections.Generic;
 
 [MessagePackObject]
 public class SaveData
@@ -18,6 +18,9 @@ public class SaveData
 	[Key(11)] public int[] numberOfEnemies = { 0, 0, 0, 0, 0 };
 	[Key(12)] public int[] numberOfPowerups = { 0, 0, 0 };
 	[Key(13)] public int difficulty;
+	[Key(14)] public List<List<float>> enemyPositions;
+	[Key(15)] public List<EnemyType> enemyTypes;
+	[Key(16)] public List<int> enemyHealths;
 
 	// Settings data
 	[Key(20)] public int masterVolume;
@@ -36,7 +39,10 @@ public class SaveData
 	public static SaveData AssignData(PlayerController player)
 	{
 		Debug.Log(EnemyDataManager.Instance.enemyCount[0]);
-		SaveData saveData = new SaveData
+
+		EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyData();
+
+		SaveData saveData = new()
 		{
 			// Assign player data
 			exp = player.exp,
@@ -68,18 +74,22 @@ public class SaveData
 				PowerupManager.Instance.speedPowerups
 			},
 			difficulty = GameManager.Instance.difficulty,
+			enemyPositions = ConvertVector3ToFloat(enemyData.Positions),
+			enemyTypes = enemyData.Types,
+			enemyHealths = enemyData.Healths,
 		};
+		
 		return saveData;
 	}
 
-	public static SaveData CreateDefaultData(PlayerController player, int difficulty)
+	public static SaveData CreateDefaultData(int difficulty)
 	{
 		if(difficulty == 0)
 		{
 			difficulty = 1; // Sets to easy mode by default
 		}
 
-		SaveData saveData = new SaveData();
+		SaveData saveData = new();
 
 		// Assign player data
 		saveData.exp = 0;
@@ -132,13 +142,16 @@ public class SaveData
 		}
 		saveData.numberOfPowerups = new[] {0, 0, 0};
 		saveData.difficulty = difficulty;
+		saveData.enemyTypes = new();
+		saveData.enemyPositions = new();
+		saveData.enemyHealths = new();
 
-        return saveData;
+		return saveData;
     }
 
-	public static SaveData AssignSettingsData(PlayerController player)
+	public static SaveData AssignSettingsData()
 	{
-		SaveData saveData = new SaveData
+		SaveData saveData = new()
 		{
 			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
 			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
@@ -146,23 +159,41 @@ public class SaveData
 			useSprintHold = GameManager.Instance.useSprintHold,
 			screenMode = VideoPanelUI.Instance.screenMode.value,
 			autoSaveInterval = SavesPanelUI.Instance.autoSaveIntervalDropdown.value,
-			autoSaveOnExit = SavesPanelUI.Instance.autoSaveOnExitToggle,
+			autoSaveOnExit = SavesPanelUI.Instance.onExitSave,
 
 		};
 		return saveData;
 	}
 	public static SaveData CreateDefaultSettings()
 	{
-		SaveData saveData = new SaveData();
-		
-		saveData.masterVolume = 50;
-		saveData.musicVolume = 50;
-		saveData.gunVolume = 30;
-		saveData.useSprintHold = true;
-		saveData.screenMode = 0; // Exclusive fullscreen
-		saveData.autoSaveInterval = 0;
-		saveData.autoSaveOnExit = false;
+		SaveData saveData = new()
+		{
+			masterVolume = 50,
+			musicVolume = 50,
+			gunVolume = 30,
+			useSprintHold = true,
+			screenMode = 0, // Exclusive fullscreen
+			autoSaveInterval = 0,
+			autoSaveOnExit = false
+		};
 
 		return saveData;
+	}
+	public static List<List<float>> ConvertVector3ToFloat(List<Vector3> positions)
+	{
+		List<List<float>> positionsAsFloats = new();
+
+		for(var i = 0; i < positions.Count; i++)
+		{
+			List<float> positionAsFloat = new()
+			{
+				positions[i].x,
+				positions[i].y,
+				positions[i].z
+			};
+
+			positionsAsFloats.Add(positionAsFloat);
+		}
+		return positionsAsFloats;
 	}
 }

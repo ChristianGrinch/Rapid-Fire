@@ -1,8 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 using UnityEngine.AI;
+public enum EnemyType //AddNewEnemy: Add type
+{
+	Level1,
+	Level2,
+	Level3,
+	Boss1,
+	IceZombie
+}
 
 public class EnemySpawnManager : MonoBehaviour
 {
@@ -32,19 +41,10 @@ public class EnemySpawnManager : MonoBehaviour
 
 	private Vector3 lastBossSpawnPos;
 	private float mapSize = GameManager.mapSize;
-
-	private bool runningAssignEnemiesToLists;
 	int boss1ToSpawn = 0;
 
-	private enum EnemyType //AddNewEnemy: Add type
-	{
-		Level1,
-		Level2,
-		Level3,
-		Boss1,
-		IceZombie
-	}
-	private Dictionary<EnemyType, int> enemiesToSpawn = new() //AddNewEnemy: Add type and default value at wave 1 (i think for the last part? lowk dont know)
+	
+	public Dictionary<EnemyType, int> enemiesToSpawn = new() //AddNewEnemy: Add type and default value at wave 1 (i think for the last part? lowk dont know)
 	{
 		{ EnemyType.Level1, 0 },
 		{ EnemyType.Level2, 0 },
@@ -64,7 +64,6 @@ public class EnemySpawnManager : MonoBehaviour
 				Debug.Log("Spawn enemy on load ran." + " Frame: " + Time.frameCount);
 				Debug.Log("Total enemy count: " + totalEnemyCount);
 				SpawnEnemiesOnLoad();
-				GameManager.Instance.didLoadSpawnManager = false;
 			}
 		}
 	}
@@ -224,8 +223,7 @@ public class EnemySpawnManager : MonoBehaviour
 			UnityEngine.Random.Range(-mapSize, mapSize)
 		);
 
-		NavMeshHit hit;
-		if(NavMesh.SamplePosition(randomPosition, out hit, 4, NavMesh.AllAreas)) 
+		if(NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 4, NavMesh.AllAreas)) 
 			// the 4 was orginally the spawnBufferDistance, but modifying this number so that the enemies would spawn further away from the player,
 			// actually breaks it. so i hardcoded this instead and modified it for the use case above (while loop)
 		{
@@ -248,14 +246,46 @@ public class EnemySpawnManager : MonoBehaviour
 
 	public void SpawnEnemiesOnLoad()
 	{
-		for(var i = 0; i < GameManager.Instance.enemyCount.Count; i++)
+		List<EnemyType> enemyTypes = GameManager.Instance.savedEnemiesTypes;
+		List<Vector3> enemyPositions = GameManager.Instance.savedEnemiesPositions;
+		List<int> enemyHealths = GameManager.Instance.savedEnemiesHealths;
+		if(enemyTypes.Count > 0)
 		{
-			for(var j = 0; j < GameManager.Instance.enemyCount[i]; j++)
+			for (var i = 0; i < enemyTypes.Count; i++)
 			{
-				InstantiateEnemy(i);
+				int enemyIndex = new();
+				switch (enemyTypes[i])
+				{
+					case EnemyType.Level1:
+						enemyIndex = 0;
+						break;
+					case EnemyType.Level2:
+						enemyIndex = 1;
+						break;
+					case EnemyType.Level3:
+						enemyIndex = 2;
+						break;
+					case EnemyType.Boss1:
+						enemyIndex = 3;
+						break;
+					case EnemyType.IceZombie:
+						enemyIndex = 4;
+						break;
+				}
+				GameObject enemy = Instantiate(EnemyDataManager.Instance.enemies[enemyIndex], enemyPositions[i], Quaternion.Euler(90, 0, 0));
+				enemy.transform.parent = enemyParent.transform;
+				enemy.name = EnemyDataManager.Instance.enemies[enemyIndex].name;
+				StartCoroutine(DelayedSetEnemyHealth(enemy, enemyHealths, i));
 			}
 		}
 		StartCoroutine(EnemyDataManager.Instance.AssignEnemiesToLists());
+		GameManager.Instance.didLoadSpawnManager = false;
+	}
+	IEnumerator DelayedSetEnemyHealth(GameObject enemy, List<int> enemyHealths, int i)
+	{
+		yield return null;
+		HealthSystem healthSystem = enemy.GetComponent<HealthSystem>();
+		healthSystem.health = enemyHealths[i];
 	}
 
 	public void InstantiateEnemy(int type)
@@ -283,4 +313,48 @@ public class EnemySpawnManager : MonoBehaviour
 			default: return -1; // Handle the case if there's an unknown enemy type
 		}
 	}
+	public EnemyData GetEnemyData()
+	{
+		List<Vector3> enemyPositions = new();
+		List<EnemyType> enemyTypes = new();
+		List<int> enemyHealths = new();
+		foreach (var enemy in enemyCountArray)
+		{
+			enemyPositions.Add(enemy.transform.position);
+
+			switch (enemy.name)
+			{
+				case "Enemy 1":
+					enemyTypes.Add(EnemyType.Level1);
+					enemyHealths.Add(enemy.GetComponent<HealthSystem>().health);
+					break;
+				case "Enemy 2":
+					enemyTypes.Add(EnemyType.Level2);
+					enemyHealths.Add(enemy.GetComponent<HealthSystem>().health);
+					break;
+				case "Enemy 3":
+					enemyTypes.Add(EnemyType.Level3);
+					enemyHealths.Add(enemy.GetComponent<HealthSystem>().health);
+					break;
+				case "Boss 1":
+					enemyTypes.Add(EnemyType.Boss1);
+					enemyHealths.Add(enemy.GetComponent<HealthSystem>().health);
+					break;
+				case "Ice Zombie":
+					enemyTypes.Add(EnemyType.IceZombie);
+					enemyHealths.Add(enemy.GetComponent<HealthSystem>().health);
+					break;
+				default:
+					Debug.LogWarning("Unrecognized enemy name: " + enemy.name);
+					break;
+			}
+		}
+		return new EnemyData { Positions = enemyPositions, Types = enemyTypes, Healths = enemyHealths };
+	}
+}
+public class EnemyData
+{
+	public List<Vector3> Positions { get; set; }
+	public List<EnemyType> Types { get; set; }
+	public List<int> Healths { get; set; }
 }

@@ -19,9 +19,9 @@ public static class SaveSystem
         File.WriteAllBytes(path, bytes);
 		Debug.Log("Saved file with length: " + bytes.Length + " bytes.");
 	}
-    public static void CreateSave(PlayerController player, string saveName)
+    public static void CreateSave(string saveName)
     {
-        SaveData saveData = SaveData.CreateDefaultData(player, GameManager.Instance.difficulty);
+        SaveData saveData = SaveData.CreateDefaultData(GameManager.Instance.difficulty);
         byte[] bytes = MessagePackSerializer.Serialize(saveData);
         string path = Path.Combine(Application.persistentDataPath, saveName + ".svf");
 
@@ -156,11 +156,11 @@ public static class SaveSystem
         Debug.LogWarning("No default save assigned!");
         return null;
     }
-	public static void SaveSettings(PlayerController player)
+	public static void SaveSettings()
 	{
 		string path = Path.Combine(Application.persistentDataPath, "Settings" + ".ssvf"); // Settings SaVeFile
 
-		byte[] bytes = MessagePackSerializer.Serialize(SaveData.AssignSettingsData(player));
+		byte[] bytes = MessagePackSerializer.Serialize(SaveData.AssignSettingsData());
 
 		File.WriteAllBytes(path, bytes);
 		Debug.Log("Saved .ssvf");
