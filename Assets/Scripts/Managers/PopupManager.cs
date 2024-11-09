@@ -7,6 +7,19 @@ using UnityEngine.UI;
 public class PopupManager : MonoBehaviour
 {
 	public static PopupManager Instance { get; private set; }
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
+
+	public bool isPopupOpen = false;
 
 	public GameObject popup;
 	public GameObject nameInput;
@@ -54,6 +67,8 @@ public class PopupManager : MonoBehaviour
 			switch (popupType)
 			{
 				case PopupType.QuitGameConfirm:
+					isPopupOpen = true;
+
 					header.text = "Quit game?";
 					information.text = "You will lose any unsaved progress.";
 					actionBtnText.text = "Quit";
@@ -71,6 +86,8 @@ public class PopupManager : MonoBehaviour
 					cancelBtn.onClick.AddListener(() => ClosePopup());
 					break;
 				case PopupType.StartReturnConfirm:
+					isPopupOpen = true;
+
 					header.text = "Return to Start Menu?";
 					information.text = "You will lose any unsaved progress.";
 					actionBtnText.text = "Quit";
@@ -90,6 +107,8 @@ public class PopupManager : MonoBehaviour
 					cancelBtn.onClick.AddListener(() => ClosePopup());
 					break;
 				case PopupType.DeleteSaveConfirm:
+					isPopupOpen = true;
+
 					header.text = $"Delete save? ({SavesPanelUI.Instance.currentSave})";
 					information.text = "This cannot be undone.";
 					actionBtnText.text = "Delete";
@@ -112,6 +131,8 @@ public class PopupManager : MonoBehaviour
 					cancelBtn.onClick.AddListener(() => ClosePopup());
 					break;
 				case PopupType.PlaySaveConfirm:
+					isPopupOpen = true;
+
 					header.text = $"Play selected save? ({SavesPanelUI.Instance.currentSave})";
 
 					information.text = "This will immediately start the game.";
@@ -126,6 +147,8 @@ public class PopupManager : MonoBehaviour
 					cancelBtn.onClick.AddListener(() => ClosePopup());
 					break;
 				case PopupType.CreateSavePopup:
+					isPopupOpen = true;
+
 					rectTransform.sizeDelta = new(500, 350);
 
 					GameObject nameInputField = Instantiate(nameInput);
@@ -198,6 +221,8 @@ public class PopupManager : MonoBehaviour
 					cancelBtn.onClick.AddListener(() => ClosePopup());
 					break;
 				case PopupType.QuitWithoutSavingConfirm:
+					isPopupOpen = true;
+
 					header.text = "Return without saving?";
 
 					information.text = "You have unsaved changes.";
@@ -223,12 +248,13 @@ public class PopupManager : MonoBehaviour
 					break;
 			}
 		}
-		
 	}
 
 	public void ClosePopup()
 	{
 		Destroy(instantiatedPopup);
+		isPopupOpen = false;
+
 	}
 
 	void AssignPopupObjects()
@@ -249,16 +275,5 @@ public class PopupManager : MonoBehaviour
 		cancelBtn = Footer.transform.Find("Cancel Button").GetComponent<Button>();
 		cancelBtnText = cancelBtn.GetComponentInChildren<TMP_Text>();
 		line = Body.transform.Find("Image").GetComponent<Image>();
-	}
-	void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
 	}
 }

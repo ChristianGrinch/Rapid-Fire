@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
 	}
-	public bool isGameUnpaused = false;
+	public bool isGamePaused = false;
 	public bool isInGame = false;
 
 	void Start()
@@ -26,29 +26,39 @@ public class UIManager : MonoBehaviour
 	}
 	void Update()
 	{
-		isGameUnpaused = GameManager.Instance.isGameUnpaused;
+		isGamePaused = GameManager.Instance.isGamePaused;
 		isInGame = GameManager.Instance.isInGame;
 
-		if (Input.GetKeyDown(KeyCode.Escape) && isGameUnpaused)
+		if (Input.GetKeyDown(KeyCode.Escape)) GoBackCheck();
+	}
+	public void GoBackCheck()
+	{
+		if (!isGamePaused)
 		{
 			GameManager.Instance.PauseGame();
-		}
-		else if (SceneManager.GetActiveScene().buildIndex == 1)
-		{
-			if(Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && PauseMenuUI.Instance.pauseMenu.activeSelf)
-			{
-				GameManager.Instance.ResumeGame();
-			}
-			
+			return;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Escape) && !isGameUnpaused && SettingsMenuUI.Instance.settingsMenu.activeSelf)
+		if(SceneManager.GetActiveScene().buildIndex == 1) // This needs to be here to prevent it from throwing an error since the PauseMenuUI doesn't exist yet
+		{
+			if (!PopupManager.Instance.isPopupOpen)
+			{
+				if (isGamePaused && PauseMenuUI.Instance.pauseMenu.activeSelf)
+				{
+					GameManager.Instance.ResumeGame();
+					return;
+				}
+			}
+		}
+
+		if (isGamePaused && SettingsMenuUI.Instance.settingsMenu.activeSelf)
 		{
 			if (isInGame)
 			{
 				if (SettingsMenuUI.Instance.didModifySettings && !SettingsMenuUI.Instance.didSaveSettings)
 				{
 					PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+					return;
 				}
 				else
 				{
@@ -61,13 +71,13 @@ public class UIManager : MonoBehaviour
 				if (SettingsMenuUI.Instance.didModifySettings && !SettingsMenuUI.Instance.didSaveSettings)
 				{
 					PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+					return;
 				}
 				else
 				{
 					SwitchToStart();
 				}
 			}
-			
 		}
 	}
 	public void CloseAllMenus()

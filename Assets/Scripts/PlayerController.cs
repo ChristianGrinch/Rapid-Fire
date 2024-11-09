@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //Debug.DrawRay(rayOrigin, rayDirection, Color.blue, 5);
-			if (Physics.Raycast(ray, rayDistance) && GameManager.Instance.isGameUnpaused)
+			if (Physics.Raycast(ray, rayDistance) && !GameManager.Instance.isGamePaused)
             {
 				if(hit.collider.gameObject.layer == LayerMask.NameToLayer("MoveableObject")){
                     Debug.Log("hit a moveable object. no jump :p");
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (UIManager.Instance.isGameUnpaused)
+		if (!UIManager.Instance.isGamePaused)
 		{
 			MovePlayer();
 			RotatePlayer();

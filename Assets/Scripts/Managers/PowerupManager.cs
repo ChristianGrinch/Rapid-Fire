@@ -71,7 +71,7 @@ public class PowerupManager : MonoBehaviour
 		powerups = GameObject.FindGameObjectsWithTag("Powerup");
 		randomSpawnPos = new(randomXPos, 1, randomZPos);
         int currentWave = EnemySpawnManager.Instance.currentWave;
-        if (UIManager.Instance.isGameUnpaused)
+        if (!GameManager.Instance.isGamePaused)
         {
             if (GameManager.Instance.didLoadPowerupManager)
             {

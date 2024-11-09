@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 	public static float mapSize = 50;
 	public int difficulty = 1;
 	public int wave = 0;
-	public bool isGameUnpaused = false;
+	public bool isGamePaused = true;
 	public bool isInGame = false;
 	[Header("Saves")]
 	public string defaultSave;
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
 	public void GameOver()
 	{
 		RestartMenuUI.Instance.ShowRestartMenu();
-		isGameUnpaused = false;
+		isGamePaused = true;
 	}
 	public void RestartGame()
 	{
@@ -90,13 +90,13 @@ public class GameManager : MonoBehaviour
 		UIManager.Instance.CloseAllMenus();
 
 		isInGame = false;
-        isGameUnpaused = false;
+        isGamePaused = true;
 	}
 	public void StartDefaultGame()
 	{
 		LoadPlayer(defaultSave);
 
-		isGameUnpaused = true;
+		isGamePaused = false;
 		isInGame = true;
 
 		Time.timeScale = 1;
@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
 	{
 		LoadPlayer(currentSave);
 
-		isGameUnpaused = true;
+		isGamePaused = false;
 		isInGame = true;
 
 		Time.timeScale = 1;
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
 		UIManager.Instance.CloseAllMenus();
 		LoadPlayer(SavesPanelUI.Instance.currentSave);
 
-		isGameUnpaused = true;
+		isGamePaused = false;
         isInGame = true;
 
         Time.timeScale = 1;
@@ -125,14 +125,14 @@ public class GameManager : MonoBehaviour
 	}
 	public void PauseGame()
 	{
-		isGameUnpaused = false;
+		isGamePaused = true;
 		PauseMenuUI.Instance.pauseMenu.SetActive(true);
 		Time.timeScale = 0;
 	    PauseMenuUI.Instance.saveGame.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{
-		isGameUnpaused = true;
+		isGamePaused = false;
 		PauseMenuUI.Instance.pauseMenu.SetActive(false);
         GameMenuUI.Instance.game.SetActive(true);
 		Time.timeScale = 1;
