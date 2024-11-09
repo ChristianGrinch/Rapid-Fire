@@ -78,10 +78,6 @@ public class SaveData
 			enemyTypes = enemyData.Types,
 			enemyHealths = enemyData.Healths,
 		};
-		for(var i = 0; i < enemyData.Types.Count; i++)
-		{
-			Debug.Log("enemy position X in SaveData: " + saveData.enemyPositions[i][0]);
-		}
 		
 		return saveData;
 	}
@@ -93,7 +89,7 @@ public class SaveData
 			difficulty = 1; // Sets to easy mode by default
 		}
 
-		SaveData saveData = new SaveData();
+		SaveData saveData = new();
 
 		// Assign player data
 		saveData.exp = 0;
@@ -155,7 +151,7 @@ public class SaveData
 
 	public static SaveData AssignSettingsData()
 	{
-		SaveData saveData = new SaveData
+		SaveData saveData = new()
 		{
 			masterVolume = (int)AudioPanelUI.Instance.masterVolume.value,
 			musicVolume = (int)AudioPanelUI.Instance.musicVolume.value,
@@ -170,15 +166,16 @@ public class SaveData
 	}
 	public static SaveData CreateDefaultSettings()
 	{
-		SaveData saveData = new SaveData();
-		
-		saveData.masterVolume = 50;
-		saveData.musicVolume = 50;
-		saveData.gunVolume = 30;
-		saveData.useSprintHold = true;
-		saveData.screenMode = 0; // Exclusive fullscreen
-		saveData.autoSaveInterval = 0;
-		saveData.autoSaveOnExit = false;
+		SaveData saveData = new()
+		{
+			masterVolume = 50,
+			musicVolume = 50,
+			gunVolume = 30,
+			useSprintHold = true,
+			screenMode = 0, // Exclusive fullscreen
+			autoSaveInterval = 0,
+			autoSaveOnExit = false
+		};
 
 		return saveData;
 	}

@@ -310,18 +310,12 @@ public class GameManager : MonoBehaviour
 			}
 
 			// Set enemy counts
-			//for (var i = 0; i < data.numberOfEnemies.Length; i++)
-			//{
-			//	enemyCount[i] = data.numberOfEnemies[i];
-			//}
-			// Set enemy data
 			if (data.enemyTypes.Count > 0)
 			{
 				savedEnemiesPositions = new();
 				savedEnemiesTypes = data.enemyTypes;
 				for (var i = 0; i < data.enemyPositions.Count; i++)
 				{
-					Debug.Log("GAMEMANAGER x: " + data.enemyPositions[i][0] + " y:" + data.enemyPositions[i][1] + " z:" + data.enemyPositions[i][2]);
 					var x = data.enemyPositions[i][0];
 					var y = data.enemyPositions[i][1];
 					var z = data.enemyPositions[i][2];
@@ -366,12 +360,10 @@ public class GameManager : MonoBehaviour
 	}
 	public void LoadSettings()
 	{
-		
 		SaveData data = SaveSystem.LoadSettings();
 
 		if (data != null)
 		{
-			Debug.Log("data not null.");
 			AudioPanelUI.Instance.masterVolume.value = data.masterVolume;
 			AudioPanelUI.Instance.master.text = data.masterVolume.ToString();
 
@@ -400,7 +392,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			Debug.Log("data null.");
+			Debug.LogWarning("Settings data null!");
 			SaveSystem.CreateSaveSettings();
 			LoadSettings();
 		}

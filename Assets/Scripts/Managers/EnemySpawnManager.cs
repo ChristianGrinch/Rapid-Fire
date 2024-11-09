@@ -223,8 +223,7 @@ public class EnemySpawnManager : MonoBehaviour
 			UnityEngine.Random.Range(-mapSize, mapSize)
 		);
 
-		NavMeshHit hit;
-		if(NavMesh.SamplePosition(randomPosition, out hit, 4, NavMesh.AllAreas)) 
+		if(NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 4, NavMesh.AllAreas)) 
 			// the 4 was orginally the spawnBufferDistance, but modifying this number so that the enemies would spawn further away from the player,
 			// actually breaks it. so i hardcoded this instead and modified it for the use case above (while loop)
 		{
@@ -254,13 +253,11 @@ public class EnemySpawnManager : MonoBehaviour
 		{
 			for (var i = 0; i < enemyTypes.Count; i++)
 			{
-				Debug.Log("ENEMYSPAWNMANAGER x: " + enemyPositions[i][0] + " y:" + enemyPositions[i][1] + " z:" + enemyPositions[i][2]);
 				int enemyIndex = new();
 				switch (enemyTypes[i])
 				{
 					case EnemyType.Level1:
 						enemyIndex = 0;
-
 						break;
 					case EnemyType.Level2:
 						enemyIndex = 1;
@@ -281,24 +278,14 @@ public class EnemySpawnManager : MonoBehaviour
 				StartCoroutine(DelayedSetEnemyHealth(enemy, enemyHealths, i));
 			}
 		}
-		//for(var i = 0; i < GameManager.Instance.enemyCount.Count; i++)
-		//{
-		//	for(var j = 0; j < GameManager.Instance.enemyCount[i]; j++)
-		//	{
-		//		InstantiateEnemy(i);
-		//	}
-		//}
 		StartCoroutine(EnemyDataManager.Instance.AssignEnemiesToLists());
-
 		GameManager.Instance.didLoadSpawnManager = false;
 	}
 	IEnumerator DelayedSetEnemyHealth(GameObject enemy, List<int> enemyHealths, int i)
 	{
 		yield return null;
 		HealthSystem healthSystem = enemy.GetComponent<HealthSystem>();
-		Debug.Log("enemy health: " + healthSystem.health + "enemy health at index: " + enemyHealths[i]);
 		healthSystem.health = enemyHealths[i];
-		Debug.Log("enemy health: " + healthSystem.health + "enemy health at index: " + enemyHealths[i]);
 	}
 
 	public void InstantiateEnemy(int type)
