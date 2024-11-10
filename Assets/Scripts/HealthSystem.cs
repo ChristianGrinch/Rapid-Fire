@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthSystem : MonoBehaviour
 {
@@ -9,11 +7,29 @@ public class HealthSystem : MonoBehaviour
 	public int health = 100;
 	public int maxHealth = 200;
 	public int lives;
+	public Image healthBar;
+	public GameObject healthBarPrefab;
+	public GameObject healthBarGameObject;
+	public Canvas worldSpaceCanvas;
 
 	private bool didAssignLives = false;
+	private void Start()
+	{
+		healthBarPrefab = HealthBarManager.Instance.GetHealthBarPrefab();
+		Debug.Log(healthBarPrefab);
+		healthBarGameObject = Instantiate(healthBarPrefab, worldSpaceCanvas.transform);
+		healthBarGameObject.transform.localPosition = new Vector3(0, 2, 0);
 
+		healthBar = healthBarGameObject.transform.Find("Health").GetComponent<Image>();
+	}
+	private void Update()
+	{
+		Vector3 targetPos = gameObject.transform.position + new Vector3(0, 2, 0);
+		healthBarGameObject.transform.position = targetPos;
+	}
 	public void UpdateHealth(int newHealth)
 	{
+		healthBar.fillAmount = health / 100f;
 		if (newHealth <= maxHealth || gameObject.CompareTag("Enemy")) // Makes sure health never goes above 200
 		{
 			health = newHealth;

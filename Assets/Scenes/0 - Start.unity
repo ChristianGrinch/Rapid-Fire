@@ -3315,7 +3315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df36cf79e30f09546a9748362b361154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGameUnpaused: 0
+  isGamePaused: 0
   isInGame: 0
 --- !u!1 &418516207
 GameObject:
@@ -8562,41 +8562,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 932384053}
   m_CullTransparentMesh: 1
---- !u!1 &950344478
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 950344479}
-  m_Layer: 5
-  m_Name: Shop Menu
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &950344479
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 950344478}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1356431178}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &961418484
 GameObject:
   m_ObjectHideFlags: 0
@@ -12296,7 +12261,6 @@ RectTransform:
   m_Children:
   - {fileID: 704097538}
   - {fileID: 1842468596}
-  - {fileID: 950344479}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -16069,6 +16033,7 @@ GameObject:
   - component: {fileID: 1683899203}
   - component: {fileID: 1683899202}
   - component: {fileID: 1683899200}
+  - component: {fileID: 1683899205}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -16090,7 +16055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficulty: 1
   wave: 0
-  isGameUnpaused: 0
+  isGamePaused: 1
   isInGame: 0
   defaultSave: 
   currentSave: 
@@ -16104,6 +16069,11 @@ MonoBehaviour:
   powerups: {fileID: 0}
   ammo: {fileID: 0}
   useSprintHold: 1
+  savedEnemiesTypes: 
+  savedEnemiesPositions: []
+  savedEnemiesHealths: 
+  savedPowerupTypes: 
+  savedPowerupPositions: []
   player: {fileID: 0}
   playerHealthSystem: {fileID: 0}
   saveInterval: 0
@@ -16218,6 +16188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonClickSound: {fileID: 8300000, guid: 8382157704801084192a80d8b3493473, type: 3}
+  player: {fileID: 0}
 --- !u!114 &1683899203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16230,6 +16201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb36fb0441ef9a84a856a7735836931b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPopupOpen: 0
   popup: {fileID: 2995332234101614325, guid: 2d2626c8378f51f4782203f9779f3d9f, type: 3}
   nameInput: {fileID: 1723171340997216101, guid: b06fc98933fc72e4191cc4cd33a61b98, type: 3}
 --- !u!4 &1683899204
@@ -16247,6 +16219,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1683899205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683899195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc2afc96914f6d345961d74a20af317d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarPrefab: {fileID: 8454119464513406646, guid: 1d7f27df286cb1f4e8911432f2d2179a, type: 3}
 --- !u!1 &1691929261
 GameObject:
   m_ObjectHideFlags: 0
