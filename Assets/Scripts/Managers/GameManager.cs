@@ -70,6 +70,10 @@ public class GameManager : MonoBehaviour
 		SettingsMenuUI.Instance.didModifySettings = false;
 		
 	}
+	public static int GetActiveScene()
+	{
+		return SceneManager.GetActiveScene().buildIndex;
+	}
 	private void Update()
 	{
 		if (saveInterval != 0 && !isRunningSaveInterval && isInGame)

@@ -3,17 +3,17 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance { get; private set; }
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
 			DontDestroyOnLoad(gameObject);
 		}
-        else
-        {
-            Destroy(gameObject);
-        }
+		else
+		{
+			Destroy(gameObject);
+		}
 	}
 	public bool isGamePaused = false;
 	public bool isInGame = false;
@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
 			return;
 		}
 
-		if(SceneManager.GetActiveScene().buildIndex == 1) // This needs to be here to prevent it from throwing an error since the PauseMenuUI doesn't exist yet
+		if(GameManager.GetActiveScene() == 1) // This needs to be here to prevent it from throwing an error since the PauseMenuUI doesn't exist yet
 		{
 			if (!PopupManager.Instance.isPopupOpen)
 			{
@@ -106,7 +106,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void SwitchToStart()
 	{
-		if(SceneManager.GetActiveScene().buildIndex == 1)
+		if(GameManager.GetActiveScene() == 1)
 		{
 			if (SettingsMenuUI.Instance.settingsMenu.activeSelf)
 			{
@@ -132,6 +132,6 @@ public class UIManager : MonoBehaviour
 	{
 		CloseAllMenus();
 		SettingsMenuUI.Instance.settingsMenu.SetActive(true);
-        SettingsMenuUI.Instance.OpenAudioPanel(); // Sets Audio Panel to "default" opened save, so that the save panel isn't open while in game.
-    }
+		SettingsMenuUI.Instance.OpenAudioPanel(); // Sets Audio Panel to "default" opened save, so that the save panel isn't open while in game.
+	}
 }

@@ -46,8 +46,7 @@ public class PlayerController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		int sceneIndex = SceneManager.GetActiveScene().buildIndex;
-		if (sceneIndex == 0)
+		if (GameManager.GetActiveScene() == 0)
 		{
 			gameObject.transform.position = new(0, 0.5f, 0);
 		}
