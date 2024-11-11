@@ -13252,7 +13252,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 301275415}
   m_Direction: 2
   m_Value: 1.0000001
-  m_Size: 0.30500004
+  m_Size: 0.305
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16232,6 +16232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBarPrefab: {fileID: 8454119464513406646, guid: 1d7f27df286cb1f4e8911432f2d2179a, type: 3}
+  canvas: {fileID: 0}
 --- !u!1 &1691929261
 GameObject:
   m_ObjectHideFlags: 0

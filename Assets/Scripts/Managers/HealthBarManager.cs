@@ -20,7 +20,7 @@ public class HealthBarManager : MonoBehaviour
 	{
 		return healthBarPrefab;
 	}
-	public GameObject GetCanvas()
+	public Canvas GetCanvas()
 	{
 		return canvas;
 	}
