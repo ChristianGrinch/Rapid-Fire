@@ -19,6 +19,8 @@ public class GameMenuUI : MonoBehaviour
     [Header("Menu")]
     public GameObject game;
     public GameObject debug;
+	[Header("Buttons")]
+	public Button shop;
     [Header("Text")]
     public TMP_Text difficulty;
     public TMP_Text health;
@@ -53,6 +55,8 @@ public class GameMenuUI : MonoBehaviour
         enemySpawnManager = gameManager.GetComponent<EnemySpawnManager>();
 		version.text = "Version: " + Application.version;
 		DebugLogic();
+
+		shop.onClick.AddListener(() => ShopUI.Instance.OpenShop());
 	}
     private void Update()
     {

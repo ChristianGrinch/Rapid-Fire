@@ -30,6 +30,17 @@ public class UIManager : MonoBehaviour
 		isInGame = GameManager.Instance.isInGame;
 
 		if (Input.GetKeyDown(KeyCode.Escape)) GoBackCheck();
+		if (Input.GetKeyDown(KeyCode.H))
+		{
+			if (ShopUI.Instance.isShopOpen)
+			{
+				ShopUI.Instance.CloseShop();
+			}
+			else
+			{
+				ShopUI.Instance.OpenShop();
+			}
+		}
 	}
 	public void GoBackCheck()
 	{
@@ -43,11 +54,17 @@ public class UIManager : MonoBehaviour
 		{
 			if (!PopupManager.Instance.isPopupOpen)
 			{
+				if (isGamePaused && ShopUI.Instance.shopMenu.activeSelf)
+				{
+					ShopUI.Instance.CloseShop();
+					return;
+				}
 				if (isGamePaused && PauseMenuUI.Instance.pauseMenu.activeSelf)
 				{
 					GameManager.Instance.ResumeGame();
 					return;
 				}
+				
 			}
 		}
 

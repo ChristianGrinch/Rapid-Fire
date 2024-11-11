@@ -207,6 +207,7 @@ public class GameManager : MonoBehaviour
 		{
 			// Scene is now fully loaded; access new scene objects here
 
+			ShopUI.Instance.CloseShop();
 			player = GameObject.FindWithTag("Player");
 
 			playerController = player.GetComponent<PlayerController>();
