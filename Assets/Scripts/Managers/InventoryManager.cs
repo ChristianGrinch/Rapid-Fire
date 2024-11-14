@@ -12,17 +12,25 @@ public class InventoryManager : MonoBehaviour
 	public GameObject slotPrefab;
 	public GameObject inventory;
 	public GameObject HUD;
-
+	[Header("Render Textures")]
+	public RenderTexture pistolRT;
+	public RenderTexture assaultRifleRT;
+	[Header("Other")]
 	public Button button;
 
-	public void Start()
+	private void Start()
 	{
 		CreateSlots();
 		AssignSlots();
 		button.onClick.AddListener(() =>
 		{
-			slots[4].GetComponent<SlotData>().SetSlotData(3);
+			slots[4].GetComponent<SlotData>().SetSlotData(0);
+			slots[5].GetComponent<SlotData>().SetSlotData(1);
 		});
+	}
+	private void Update()
+	{
+		DisplayImage();
 	}
 	void CreateSlots()
 	{
@@ -58,7 +66,34 @@ public class InventoryManager : MonoBehaviour
 	}
 	void DisplayImage()
 	{
-
+		foreach (var slot in slots)
+		{
+			SlotData slotData = slot.GetComponent<SlotData>();
+			switch (slotData.itemType)
+			{
+				case ItemDataType.Gun:
+					switch (slotData.gunType)
+					{
+						case GunType.Pistol:
+							slot.GetComponentInChildren<RawImage>().texture = pistolRT;
+							Debug.Log("Set slot image to pistol");
+							break;
+						case GunType.AssaultRifle:
+							slot.GetComponentInChildren<RawImage>().texture = assaultRifleRT;
+							Debug.Log("Set slot image to assault rifle");
+							break;
+					}
+					break;
+				case ItemDataType.Powerup:
+					break;
+				case ItemDataType.Armor:
+					break;
+				case ItemDataType.None:
+					break;
+				default:
+					break;
+			}
+		}
 	}
 }
 public class InventoryData

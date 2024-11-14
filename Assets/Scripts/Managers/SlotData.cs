@@ -4,9 +4,9 @@ public class SlotData : MonoBehaviour
 {
 	public ItemDataType itemType;
 
-	public GunType? gunType;
-	public PowerupType? powerupType;
-	public ArmorType? armorType;
+	public GunType gunType;
+	public PowerupType powerupType;
+	public ArmorType armorType;
 	public enum ItemDataType
 	{
 		Gun,
@@ -17,20 +17,23 @@ public class SlotData : MonoBehaviour
 	public enum GunType
 	{
 		Pistol,
-		AssaultRifle
+		AssaultRifle,
+		None
 	}
 	public enum PowerupType
 	{
 		Ammo,
 		Health,
-		Speed
+		Speed,
+		None
 	}
 	public enum ArmorType
 	{
 		Helmet,
 		Chestplate,
 		Leggings,
-		Boots
+		Boots,
+		None
 	}
 	public void SetSlotData(int num)
 	{
@@ -61,8 +64,8 @@ public class SlotData : MonoBehaviour
 	public void NullifyData()
 	{
 		itemType = ItemDataType.None;
-		gunType = null;
-		powerupType = null;
-		armorType = null;
+		gunType = GunType.None;
+		powerupType = PowerupType.None;
+		armorType = ArmorType.None;
 	}
 }
