@@ -1,6 +1,7 @@
 using UnityEngine;
 using MessagePack;
 using System.Collections.Generic;
+using static SlotData;
 
 [MessagePackObject]
 public class SaveData

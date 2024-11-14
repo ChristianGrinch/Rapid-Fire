@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static ItemData;
+using static SlotData;
 
 public class PowerupManager : MonoBehaviour
 {

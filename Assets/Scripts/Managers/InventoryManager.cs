@@ -1,10 +1,46 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static ItemData;
+using UnityEngine.UI;
+using static SlotData;
 public class InventoryManager : MonoBehaviour
 {
-	
+	public int slotCount = (6 * 4) + 5; // Column x Row inventory slots plus 5 HUD slots
+	private List<GameObject> slots;
+	[Header("Game objects")]
+	public GameObject inventory;
+	public GameObject HUD;
+
+	public Button button;
+
+	void Start()
+	{
+		InitializeSlots();
+		button.onClick.AddListener(() =>
+		{
+			slots[4].GetComponent<SlotData>().SetSlotData(3);
+		});
+	}
+	void InitializeSlots()
+	{
+		slots = new(slotCount);
+		foreach (Transform slot in inventory.transform)
+		{
+			slots.Add(slot.gameObject);
+		}
+		foreach (Transform slot in HUD.transform)
+		{
+			slots.Add(slot.gameObject);
+		}
+		foreach(var slot in slots)
+		{
+			slot.GetComponent<SlotData>().NullifyData();
+		}
+	}
+	void DisplayImage()
+	{
+
+	}
 }
 public class InventoryData
 {

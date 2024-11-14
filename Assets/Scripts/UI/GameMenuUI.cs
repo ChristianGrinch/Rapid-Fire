@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static SlotData;
 
 public class GameMenuUI : MonoBehaviour
 {
@@ -60,11 +61,11 @@ public class GameMenuUI : MonoBehaviour
 	}
     private void Update()
     {
-		if(gunController.currentGun == GunController.GunType.Pistol)
+		if(gunController.currentGun == GunType.Pistol)
 		{
 			ammoImage.sprite = pistolAmmo;
 		} 
-		else if(gunController.currentGun == GunController.GunType.AssaultRifle)
+		else if(gunController.currentGun == GunType.AssaultRifle)
 		{
 			ammoImage.sprite = rifleAmmo;
 		}

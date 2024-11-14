@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static ItemData;
+using static SlotData;
 
 public class GunController : MonoBehaviour
 {
