@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ItemData;
 
 public class GunController : MonoBehaviour
 {
@@ -21,12 +22,6 @@ public class GunController : MonoBehaviour
 
     public AudioClip audioClip;
     AudioSource audioData;
-
-	public enum GunType
-	{
-		Pistol,
-		AssaultRifle
-	}
 
     // Start is called before the first frame update
     void Start()

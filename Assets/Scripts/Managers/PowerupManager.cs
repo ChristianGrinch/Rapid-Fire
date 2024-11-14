@@ -2,12 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public enum PowerupType
-{
-	Ammo,
-	Health,
-	Speed
-}
+using static ItemData;
+
 public class PowerupManager : MonoBehaviour
 {
 	public static PowerupManager Instance { get; private set; }

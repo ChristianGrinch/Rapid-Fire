@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static ItemData;
 
 public class ShopUI : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class ShopUI : MonoBehaviour
 	[Header("Other")]
 	public bool isShopOpen;
 	public TMP_Text exp;
-	public List<GunTypes> ownedGuns;
+	public List<GunType> ownedGuns;
 	public List<PowerupType> ownedPowerups;
 	public enum ButtonType
 	{
