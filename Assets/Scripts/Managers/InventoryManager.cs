@@ -75,12 +75,20 @@ public class InventoryManager : MonoBehaviour
 					switch (slotData.gunType)
 					{
 						case GunType.Pistol:
-							slot.GetComponentInChildren<RawImage>().texture = pistolRT;
-							Debug.Log("Set slot image to pistol");
+							RawImage rawImage = slot.GetComponentInChildren<RawImage>();
+							rawImage.texture = pistolRT;
+
+							Color color = rawImage.color;
+							color.a = 1f;
+							rawImage.color = color;
 							break;
 						case GunType.AssaultRifle:
-							slot.GetComponentInChildren<RawImage>().texture = assaultRifleRT;
-							Debug.Log("Set slot image to assault rifle");
+							rawImage = slot.GetComponentInChildren<RawImage>();
+							rawImage.texture = assaultRifleRT;
+
+							color = rawImage.color;
+							color.a = 1f;
+							rawImage.color = color;
 							break;
 					}
 					break;

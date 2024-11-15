@@ -136,6 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 0
+  gunType: 0
+  powerupType: 0
+  armorType: 0
 --- !u!1 &560947680298587866
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,7 +285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4783821764519171621}
   - component: {fileID: 3505566967026641058}
-  - component: {fileID: 1382194403136202114}
+  - component: {fileID: 3364640286701171258}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -317,7 +320,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906293427449441463}
   m_CullTransparentMesh: 1
---- !u!114 &1382194403136202114
+--- !u!114 &3364640286701171258
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -330,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

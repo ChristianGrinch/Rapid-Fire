@@ -10347,6 +10347,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemType: 0
+  gunType: 0
+  powerupType: 0
+  armorType: 0
 --- !u!4 &1550925950
 Transform:
   m_ObjectHideFlags: 0
