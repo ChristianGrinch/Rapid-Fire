@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -62,7 +63,23 @@ public class InventoryManager : MonoBehaviour
 		foreach(var slot in slots)
 		{
 			slot.GetComponent<SlotData>().NullifyData();
+			slot.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(DragSlot(slot)));
 		}
+	}
+	IEnumerator DragSlot(GameObject slot)
+	{
+		Vector3 originalPos = slot.transform.position;
+		GridLayoutGroup gridLayoutGroup = inventory.GetComponent<GridLayoutGroup>();
+
+		gridLayoutGroup.enabled = false;
+
+		while (Input.GetMouseButton(0))
+		{
+			slot.transform.position = Input.mousePosition;
+			yield return null;
+		}
+		slot.transform.position = originalPos;
+		gridLayoutGroup.enabled = true;
 	}
 	void DisplayImage()
 	{
