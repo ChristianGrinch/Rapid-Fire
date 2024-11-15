@@ -6,6 +6,18 @@ using UnityEngine.UI;
 using static SlotData;
 public class InventoryManager : MonoBehaviour
 {
+	public static InventoryManager Instance { get; private set; }
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
 	public int slotCount = (6 * 4) + 5; // Column x Row inventory slots plus 5 HUD slots
 	private List<GameObject> slots;
 	[Header("Game objects")]
@@ -18,7 +30,6 @@ public class InventoryManager : MonoBehaviour
 	public RenderTexture assaultRifleRT;
 	[Header("Other")]
 	public Button button;
-
 	private void Start()
 	{
 		CreateSlots();
@@ -63,17 +74,25 @@ public class InventoryManager : MonoBehaviour
 		foreach(var slot in slots)
 		{
 			slot.GetComponent<SlotData>().NullifyData();
-			slot.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(DragSlot(slot)));
 		}
 	}
 	IEnumerator DragSlot(GameObject slot)
 	{
+		Debug.Log("Ran DragSlot");
 		Vector3 originalPos = slot.transform.position;
 		GridLayoutGroup gridLayoutGroup = inventory.GetComponent<GridLayoutGroup>();
 
-		gridLayoutGroup.enabled = false;
+		if(gridLayoutGroup != null)
+		{
 
-		while (Input.GetMouseButton(0))
+			gridLayoutGroup.enabled = false;
+		}
+		else
+		{
+			Debug.LogError("Grid layout group is NULL!");
+		}
+
+		for(var i = 0; i < 1000; i++)
 		{
 			slot.transform.position = Input.mousePosition;
 			yield return null;
