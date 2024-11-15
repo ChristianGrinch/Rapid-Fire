@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 20231910788832448}
   - component: {fileID: 5603466310273505434}
   - component: {fileID: 668415097320629769}
+  - component: {fileID: 8225821639550638843}
   m_Layer: 5
   m_Name: Slot 5
   m_TagString: Untagged
@@ -139,6 +140,18 @@ MonoBehaviour:
   gunType: 0
   powerupType: 0
   armorType: 0
+--- !u!114 &8225821639550638843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281414015864610686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1014fe07758e24eb3883f7c04ff8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &560947680298587866
 GameObject:
   m_ObjectHideFlags: 0
