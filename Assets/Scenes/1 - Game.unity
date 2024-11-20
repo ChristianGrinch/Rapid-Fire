@@ -3937,6 +3937,7 @@ GameObject:
   - component: {fileID: 522063739}
   - component: {fileID: 522063738}
   - component: {fileID: 522063743}
+  - component: {fileID: 522063744}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -4047,6 +4048,21 @@ MonoBehaviour:
   exp: {fileID: 1053080239}
   ownedGuns: 
   ownedPowerups: 
+--- !u!114 &522063744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522063732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b747143043aea094eb558cbcbd765c67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryMenu: {fileID: 1267937152}
+  slots: []
+  isInventoryOpen: 0
 --- !u!1 &526941647
 GameObject:
   m_ObjectHideFlags: 0
@@ -10378,6 +10394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotCount: 29
+  slots: []
   HUDSlots:
   - {fileID: 8545642425078708494, guid: ea32ad3bf46a66f4384b4664189d52cf, type: 3}
   - {fileID: 6816735652214286073, guid: 94504235e744aa742ae780fe1ffc1a7a, type: 3}

@@ -19,7 +19,7 @@ public class InventoryManager : MonoBehaviour
 		}
 	}
 	public int slotCount = (6 * 4) + 5; // Column x Row inventory slots plus 5 HUD slots
-	private List<GameObject> slots;
+	public List<GameObject> slots;
 	[Header("Game objects")]
 	public List<GameObject> HUDSlots = new(5);
 	public GameObject slotPrefab;

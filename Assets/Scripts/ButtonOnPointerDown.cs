@@ -4,10 +4,11 @@ using UnityEngine.UI;
 
 // None of this is my code. Thanks ChatGPT!
 
-public class ButtonOnPointerDown : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class ButtonOnPointerDown : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler, IPointerEnterHandler
 {
 	private Vector3 originalPos;
 	private GridLayoutGroup gridLayoutGroup;
+	private Vector3 hoverSlotPos;
 
 	void Start()
 	{
@@ -48,5 +49,11 @@ public class ButtonOnPointerDown : MonoBehaviour, IPointerDownHandler, IPointerU
 		{
 			gridLayoutGroup.enabled = true;
 		}
+	}
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		Debug.Log("t");
+		string slotNum = gameObject.name.Split(char.Parse(" "))[1];
+		Debug.Log("slot num: " + slotNum);
 	}
 }
