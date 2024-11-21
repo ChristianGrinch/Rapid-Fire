@@ -22,6 +22,11 @@ public class InventoryUI : MonoBehaviour
 	public List<Button> slots;
 	[Header("Other")]
 	public bool isInventoryOpen;
+	public Vector3 hoveredSlotPos;
+	public Vector3 originalSlotPos;
+	public int originalSlotNum;
+	public int hoveredSlotNum;
+	public GameObject grid;
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.E))

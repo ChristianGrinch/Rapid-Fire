@@ -4063,6 +4063,8 @@ MonoBehaviour:
   inventoryMenu: {fileID: 1267937152}
   slots: []
   isInventoryOpen: 0
+  hoveredSlotPos: {x: 0, y: 0, z: 0}
+  grid: {fileID: 1535174581}
 --- !u!1 &526941647
 GameObject:
   m_ObjectHideFlags: 0
