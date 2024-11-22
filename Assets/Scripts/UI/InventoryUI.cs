@@ -22,10 +22,11 @@ public class InventoryUI : MonoBehaviour
 	public List<Button> slots;
 	[Header("Other")]
 	public bool isInventoryOpen;
+	[Header("Tertiary variables")]
 	public Vector3 hoveredSlotPos;
 	public Vector3 originalSlotPos;
 	public int originalSlotNum;
-	public int hoveredSlotNum;
+	public int hoveredSlotNum = -1;
 	public GameObject grid;
 	private void Update()
 	{

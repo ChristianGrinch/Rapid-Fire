@@ -25,43 +25,59 @@ public class ButtonOnPointerDown : MonoBehaviour, IPointerDownHandler, IPointerU
 	public void OnPointerDown(PointerEventData eventData)
 	{
 		// Store the original position
-		InventoryUI.Instance.originalSlotPos = transform.position;
+		originalPos = transform.position;
 		InventoryUI.Instance.originalSlotNum = int.Parse(gameObject.name.Split(char.Parse(" "))[1]);
-		Debug.Log("transfomr position "+transform.position);
 	}
 
 	public void OnDrag(PointerEventData eventData)
 	{
 		isDragging = true;
 		// Move the object with the mouse
-		transform.position = Input.mousePosition;
+		//transform.position = Input.mousePosition;
 	}
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		if(InventoryUI.Instance.hoveredSlotNum != -1 && isDragging)
 		{
-			//isDragging = false;
-			//Vector3 intialTransformPos = InventoryUI.Instance.originalSlotPos;
-			//Vector3 initalHoveredSlotPos = InventoryUI.Instance.hoveredSlotPos;
-			//GameObject slot = GameObject.Find("Slot " + slotNum);
-			//if(slot != null)
-			//{
-			//	slot.transform.position = intialTransformPos;
-			//}
-			//else
-			//{
-			//	Debug.LogError("Slot is NULL!");
-			//}
-			//transform.position = initalHoveredSlotPos;
-			transform.SetSiblingIndex(InventoryUI.Instance.hoveredSlotNum);
-			GameObject.Find("Slot " + InventoryUI.Instance.hoveredSlotNum).transform.SetSiblingIndex(InventoryUI.Instance.originalSlotNum);
+			Debug.LogWarning("If inside onpoinerup ran.");
+			isDragging = false;
+			Transform originalSlot = transform;
+			Transform hoveredSlot = GameObject.Find("Slot " + InventoryUI.Instance.hoveredSlotNum).transform;
+			Debug.Log(hoveredSlot);
+			if (hoveredSlot == null)
+			{
+				Debug.LogError("Hovered slot is NULL!");
+			}
+
+			int originalIndex = originalSlot.GetSiblingIndex();
+			int hoveredIndex = hoveredSlot.GetSiblingIndex();
+
+			hoveredSlot.SetSiblingIndex(originalIndex);
+			originalSlot.SetSiblingIndex(hoveredIndex);
+
+			gridLayoutGroup.enabled = false;
+			gridLayoutGroup.enabled = true;
+		}
+		else if(isDragging)
+		{
+			if(originalPos != Vector3.zero)
+			{
+				transform.position = originalPos;
+			}
+			else
+			{
+				Debug.LogError("Original pos is NULL!");
+			}
+			
 		}
 	}
 	public void OnPointerEnter(PointerEventData eventData)
 	{
+		Debug.Log("slot entered");
 		if(isDragging == false)
 		{
+			Debug.Log("Set hovered slot num");
 			InventoryUI.Instance.hoveredSlotNum = int.Parse(gameObject.name.Split(char.Parse(" "))[1]);
 			InventoryUI.Instance.hoveredSlotPos = transform.position;
 		}
