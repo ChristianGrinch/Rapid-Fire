@@ -33,7 +33,7 @@ public class ButtonOnPointerDown : MonoBehaviour, IPointerDownHandler, IPointerU
 	{
 		isDragging = true;
 		// Move the object with the mouse
-		//transform.position = Input.mousePosition;
+		transform.position = Input.mousePosition;
 	}
 
 	public void OnPointerUp(PointerEventData eventData)
@@ -56,6 +56,7 @@ public class ButtonOnPointerDown : MonoBehaviour, IPointerDownHandler, IPointerU
 			hoveredSlot.SetSiblingIndex(originalIndex);
 			originalSlot.SetSiblingIndex(hoveredIndex);
 
+			// Must be disabled and reenabled in order to "reset" the dragged slot position
 			gridLayoutGroup.enabled = false;
 			gridLayoutGroup.enabled = true;
 		}

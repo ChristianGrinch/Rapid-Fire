@@ -30,6 +30,17 @@ public class InventoryManager : MonoBehaviour
 	public RenderTexture assaultRifleRT;
 	[Header("Other")]
 	public Button button;
+	public GridLayoutGroup gridLayoutGroup;
+
+	[Header("Selected Slot")] // the slot that you are wanting to swap the dragged slot with
+	public GameObject selectedSlot;
+	public int selectedSlotNumber = -1;
+	public int selectedSlotIndex = -1;
+
+	[Header("Hovered Slot")]
+	public GameObject hoveredSlot;
+	public int hoveredSlotNumber = -1;
+	public int hoveredSlotIndex = -1;
 	private void Start()
 	{
 		CreateSlots();
@@ -39,6 +50,8 @@ public class InventoryManager : MonoBehaviour
 			slots[4].GetComponent<SlotData>().SetSlotData(0);
 			slots[5].GetComponent<SlotData>().SetSlotData(1);
 		});
+
+		gridLayoutGroup = inventory.GetComponent<GridLayoutGroup>();
 	}
 	private void Update()
 	{
