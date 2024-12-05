@@ -22,6 +22,7 @@ public class InventoryUI : MonoBehaviour
 	public List<Button> slots;
 	[Header("Other")]
 	public bool isInventoryOpen;
+	public GameObject invPlayerCamera;
 	[Header("Tertiary variables")]
 	public Vector3 hoveredSlotPos;
 	public Vector3 originalSlotPos;
@@ -44,6 +45,7 @@ public class InventoryUI : MonoBehaviour
 					break;
 			}
 		}
+		invPlayerCamera.transform.position = new(PlayerController.Instance.transform.position.x - 2.5f, PlayerController.Instance.transform.position.y, PlayerController.Instance.transform.position.z + 2.5f);
 	}
 	public void OpenInventory()
 	{
