@@ -85,8 +85,6 @@ GameObject:
   - component: {fileID: 6446915286836546067}
   - component: {fileID: 4536916955306140510}
   - component: {fileID: 8197482925147745904}
-  - component: {fileID: -8779837840356257069}
-  - component: {fileID: 8426502132626636547}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -208,31 +206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54a321e6c016944783ed48447bd57b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 0
-  gunType: 0
-  powerupType: 0
-  armorType: 0
---- !u!114 &-8779837840356257069
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7311629748336618378}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee1014fe07758e24eb3883f7c04ff8dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8426502132626636547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7311629748336618378}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f865393271bfc134d8896b9113d18fa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  itemType: 3
+  gunType: 2
+  powerupType: 3
+  armorType: 4
+  powerupCounts: 

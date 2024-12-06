@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SlotData : MonoBehaviour
@@ -7,6 +8,7 @@ public class SlotData : MonoBehaviour
 	public GunType gunType;
 	public PowerupType powerupType;
 	public ArmorType armorType;
+	public List<int> powerupCounts = new() { 0, 0, 0 };
 	public enum ItemDataType
 	{
 		Gun,
