@@ -287,6 +287,9 @@ public class GameManager : MonoBehaviour
 			playerHealthSystem.UpdateHealth(data.health);
 			playerHealthSystem.UpdateLives(data.lives);
 
+			InventoryManager.Instance.ownedPrimaries = data.ownedPrimaries;
+			InventoryManager.Instance.ownedSecondaries = data.ownedSecondaries;
+
 			// Update game data
 			enemySpawnManager.currentWave = data.wave;
 			gunController.ammo = data.ammo;

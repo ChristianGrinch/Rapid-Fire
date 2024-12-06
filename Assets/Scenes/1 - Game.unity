@@ -13369,6 +13369,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f852dc8469a81934ab43fcda9274d776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownedPrimaries: 
+  ownedSecondaries: 
+  storageContainer: {fileID: 0}
+  slotPrefab: {fileID: 7311629748336618378, guid: 978a4909375aafa4b8489e200d2e6714, type: 3}
+  instantiatedSlot: {fileID: 0}
+  slotImage: {fileID: 0}
 --- !u!1 &1552565988
 GameObject:
   m_ObjectHideFlags: 0

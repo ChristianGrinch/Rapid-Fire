@@ -3,6 +3,18 @@ using UnityEngine.UI;
 
 public class WeaponsUI : MonoBehaviour
 {
+	public static WeaponsUI Instance { get; private set; }
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
 	[Header("Slots")]
 	public GameObject primary;
 	public Button primaryBtn;
@@ -44,13 +56,15 @@ public class WeaponsUI : MonoBehaviour
 	}
 	private void OpenPrimary()
 	{
-		if(instantiatedWeapons != null)
+		if (instantiatedWeapons != null)
 		{
 			CloseSecondary();
 		}
 		isPrimaryOpen = true;
 		instantiatedWeapons = Instantiate(weaponsPrefab, weaponsParent.transform);
 		instantiatedWeapons.transform.localPosition = new(-155, 50, 0);
+		instantiatedWeapons.name = "Primary Container";
+		InventoryManager.Instance.FindStorageContainer(instantiatedWeapons.name, weaponsParent);
 	}
 	private void ClosePrimary()
 	{
@@ -66,6 +80,8 @@ public class WeaponsUI : MonoBehaviour
 		isSecondaryOpen = true;
 		instantiatedWeapons = Instantiate(weaponsPrefab, weaponsParent.transform);
 		instantiatedWeapons.transform.localPosition = new(-155, -75, 0);
+		instantiatedWeapons.name = "Secondary Container";
+		InventoryManager.Instance.FindStorageContainer(instantiatedWeapons.name, weaponsParent);
 	}
 	private void CloseSecondary()
 	{

@@ -13,6 +13,8 @@ public class SaveData
 	[Key(3)] public float[] position;
 	[Key(4)] public int[] ammo;
 	[Key(5)] public int speedPowerup;
+	[Key(6)] public List<PrimaryType> ownedPrimaries;
+	[Key(7)] public List<SecondaryType> ownedSecondaries;
 
 	// Game data
 	[Key(10)] public int wave;
@@ -60,6 +62,8 @@ public class SaveData
 				player.transform.position.z
 			},
 			ammo = player.ammo,
+			ownedPrimaries = InventoryManager.Instance.ownedPrimaries,
+			ownedSecondaries = InventoryManager.Instance.ownedSecondaries,
 
 			// Assign game data
 			wave = GameManager.Instance.wave,
@@ -119,6 +123,8 @@ public class SaveData
         saveData.position = new float[3] { 0, 0.5f, 0};
 		saveData.ammo = new[] { 30, 50 };
 		saveData.speedPowerup = 0;
+		saveData.ownedPrimaries = new() { PrimaryType.None };
+		saveData.ownedSecondaries = new() { SecondaryType.Pistol };
 
 		// Assign game data
 		saveData.wave = 1;

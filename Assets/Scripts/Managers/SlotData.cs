@@ -11,31 +11,41 @@ public class SlotData : MonoBehaviour
 	public List<int> powerupCounts = new() { 0, 0, 0 };
 	public enum ItemDataType
 	{
+		None,
 		Gun,
 		Powerup,
 		Armor,
-		None
 	}
 	public enum GunType
 	{
+		None,
 		Pistol,
 		AssaultRifle,
-		None
+	}
+	public enum PrimaryType
+	{
+		None,
+		AssaultRifle
+	}
+	public enum SecondaryType
+	{
+		None,
+		Pistol
 	}
 	public enum PowerupType
 	{
+		None,
 		Ammo,
 		Health,
 		Speed,
-		None
 	}
 	public enum ArmorType
 	{
+		None,
 		Helmet,
 		Chestplate,
 		Leggings,
 		Boots,
-		None
 	}
 	public void SetSlotData(int num)
 	{
