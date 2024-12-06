@@ -6,10 +6,11 @@ public class WeaponsUI : MonoBehaviour
 	[Header("Slots")]
 	public GameObject primary;
 	public Button primaryBtn;
+
 	public GameObject secondary;
 	public Button secondaryBtn;
 	[Header("Other")]
-	public GameObject weapons;
+	public GameObject weaponsPrefab;
 	public GameObject instantiatedWeapons;
 	public GameObject weaponsParent;
 	public bool isPrimaryOpen;
@@ -48,7 +49,7 @@ public class WeaponsUI : MonoBehaviour
 			CloseSecondary();
 		}
 		isPrimaryOpen = true;
-		instantiatedWeapons = Instantiate(weapons, weaponsParent.transform);
+		instantiatedWeapons = Instantiate(weaponsPrefab, weaponsParent.transform);
 		instantiatedWeapons.transform.localPosition = new(-155, 50, 0);
 	}
 	private void ClosePrimary()
@@ -63,7 +64,7 @@ public class WeaponsUI : MonoBehaviour
 			ClosePrimary();
 		}
 		isSecondaryOpen = true;
-		instantiatedWeapons = Instantiate(weapons, weaponsParent.transform);
+		instantiatedWeapons = Instantiate(weaponsPrefab, weaponsParent.transform);
 		instantiatedWeapons.transform.localPosition = new(-155, -75, 0);
 	}
 	private void CloseSecondary()
