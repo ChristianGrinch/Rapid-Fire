@@ -36,7 +36,13 @@ public class InventoryManager : MonoBehaviour
 			{
 				instantiatedSlot = Instantiate(slotPrefab, storageContainer.transform);
 
-				if(primary == PrimaryType.AssaultRifle) instantiatedSlot.GetComponent<RawImage>().texture = InventoryUI.Instance.assaultRifleRT;
+				if(primary == PrimaryType.AssaultRifle)
+				{
+					RawImage rawImage = instantiatedSlot.GetComponent<RawImage>();
+					rawImage.texture = InventoryUI.Instance.assaultRifleRT;
+					rawImage.color = new(255, 255, 255, 255);
+				}
+
 				Debug.Log("Ran primary");
 			}
 		} 
@@ -48,7 +54,6 @@ public class InventoryManager : MonoBehaviour
 
 				if (secondary == SecondaryType.Pistol) 
 				{
-					Debug.Log(instantiatedSlot);
 					RawImage rawImage = instantiatedSlot.GetComponentInChildren<RawImage>();
 					rawImage.texture = InventoryUI.Instance.pistolRT;
 					rawImage.color =  new(255, 255, 255, 255);
