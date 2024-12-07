@@ -18,9 +18,9 @@ public class SlotData : MonoBehaviour
 	}
 	public enum GunType
 	{
-		None,
 		Pistol,
 		AssaultRifle,
+		None
 	}
 	public enum PrimaryType
 	{
