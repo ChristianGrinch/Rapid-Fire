@@ -16,7 +16,7 @@ public class SaveData
 	[Key(5)] public int speedPowerup;
 	[Key(6)] public List<PrimaryType> ownedPrimaries;
 	[Key(7)] public List<SecondaryType> ownedSecondaries;
-	[Key(8)] public List<GunType> selectedGuns;
+	[Key(8)] public List<ItemData> selectedGuns;
 
 	// Game data
 	[Key(10)] public int wave;
@@ -70,6 +70,7 @@ public class SaveData
 			ammo = slotAmmo,
 			ownedPrimaries = InventoryManager.Instance.ownedPrimaries,
 			ownedSecondaries = InventoryManager.Instance.ownedSecondaries,
+			selectedGuns = InventoryManager.Instance.selectedGuns,
 
 			// Assign game data
 			wave = GameManager.Instance.wave,
@@ -131,6 +132,11 @@ public class SaveData
 		saveData.speedPowerup = 0;
 		saveData.ownedPrimaries = new() { PrimaryType.None };
 		saveData.ownedSecondaries = new() { SecondaryType.Pistol };
+		saveData.selectedGuns[0] = new()
+		{
+			itemType = ItemDataType.Secondary,
+			secondaryType = SecondaryType.Pistol
+		};
 
 		// Assign game data
 		saveData.wave = 1;

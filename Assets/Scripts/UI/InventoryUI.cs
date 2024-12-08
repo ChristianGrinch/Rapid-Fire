@@ -71,6 +71,8 @@ public class InventoryUI : MonoBehaviour
 	public void CloseInventory()
 	{
 		inventoryMenu.SetActive(false);
+		WeaponsUI.Instance.CloseContainers();
+		Destroy(EquipmentUI.Instance.instantiatedEquipment);
 	}
 	public void DisplayImage()
 	{

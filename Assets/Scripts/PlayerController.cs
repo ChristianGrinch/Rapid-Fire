@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
 	public int exp;
 	public int health;
 	public int lives;
-	public int[] ammo;
 	public int speedPowerupCount = 0;
 
 	private GameObject gameManager;
@@ -53,7 +52,6 @@ public class PlayerController : MonoBehaviour
         Sprinting();
 		health = healthSystem.health;
 		lives = healthSystem.lives;
-		ammo = gunController.ammo;
 
         Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
         Vector3 rayDirection = Vector3.down;

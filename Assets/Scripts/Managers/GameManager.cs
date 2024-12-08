@@ -290,10 +290,10 @@ public class GameManager : MonoBehaviour
 
 			InventoryManager.Instance.ownedPrimaries = data.ownedPrimaries;
 			InventoryManager.Instance.ownedSecondaries = data.ownedSecondaries;
+			InventoryManager.Instance.selectedGuns = data.selectedGuns;
 
 			// Update game data
 			enemySpawnManager.currentWave = data.wave;
-			gunController.ammo = data.ammo;
 
 			// Check if the save is an old save and modify for compatibility
 			if (data.numberOfEnemies.Length == 4)

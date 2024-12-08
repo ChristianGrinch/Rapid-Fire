@@ -66,6 +66,11 @@ public class WeaponsUI : MonoBehaviour
 		instantiatedWeapons.name = "Primary Container";
 		InventoryManager.Instance.FindStorageContainer(instantiatedWeapons.name, weaponsParent);
 	}
+	public void CloseContainers()
+	{
+		ClosePrimary();
+		CloseSecondary();
+	}
 	private void ClosePrimary()
 	{
 		isPrimaryOpen = false;

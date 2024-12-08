@@ -1,3 +1,4 @@
+using MessagePack;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,44 +40,19 @@ public class SlotData : MonoBehaviour
 		Leggings,
 		Boots,
 	}
-	//public void SetSlotData(int num)
-	//{
-	//	switch (num)
-	//	{
-	//		case 0:
-	//			NullifyData();
-	//			itemType = ItemDataType.Gun;
-	//			gunType = GunType.Pistol;
-	//			break;
-	//		case 1:
-	//			NullifyData();
-	//			itemType = ItemDataType.Gun;
-	//			gunType = GunType.AssaultRifle;
-	//			break;
-	//		case 2:
-	//			NullifyData();
-	//			itemType = ItemDataType.Powerup;
-	//			powerupType = PowerupType.Ammo;
-	//			break;
-	//		case 3:
-	//			NullifyData();
-	//			itemType = ItemDataType.Armor;
-	//			armorType = ArmorType.Boots;
-	//			break;
-	//	}
-	//}
 	public void NullifyData()
 	{
 		itemData = new ItemData();
 	}
 }
 [System.Serializable]
+[MessagePackObject]
 public class ItemData
 {
-	public SlotData.ItemDataType itemType;
-	public SlotData.PrimaryType primaryType;
-	public SlotData.SecondaryType secondaryType;
-	public SlotData.PowerupType powerupType;
-	public SlotData.ArmorType armorType;
-	public int ammo;
+	[Key(0)] public SlotData.ItemDataType itemType;
+	[Key(1)] public SlotData.PrimaryType primaryType;
+	[Key(2)] public SlotData.SecondaryType secondaryType;
+	[Key(3)] public SlotData.PowerupType powerupType;
+	[Key(4)] public SlotData.ArmorType armorType;
+	[Key(5)] public int ammo;
 }

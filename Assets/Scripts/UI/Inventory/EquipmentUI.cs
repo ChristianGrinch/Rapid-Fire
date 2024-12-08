@@ -4,6 +4,18 @@ using static SlotData;
 
 public class EquipmentUI : MonoBehaviour
 {
+	public static EquipmentUI Instance { get; private set; }
+	void Awake()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
 	[Header("Slots")]
 	public GameObject helmet;
 	public Button helemetBtn;

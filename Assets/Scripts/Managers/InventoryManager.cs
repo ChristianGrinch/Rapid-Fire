@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static SlotData;
+using static GunController;
 public class InventoryManager : MonoBehaviour
 {
 	public static InventoryManager Instance { get; private set; }
@@ -19,11 +20,22 @@ public class InventoryManager : MonoBehaviour
 	[Header("Player owned weapons")]
 	public List<PrimaryType> ownedPrimaries;
 	public List<SecondaryType> ownedSecondaries;
+	public List<ItemData> selectedGuns;
 	[Header("Other")]
 	public GameObject storageContainer;
 	public GameObject slotPrefab;
 	public GameObject instantiatedSlot;
 	public RawImage slotImage;
+	private bool loadingSelectedGuns;
+	private void Start()
+	{
+		foreach(var gun in selectedGuns)
+		{
+			loadingSelectedGuns = true;
+			SetSlotData(gun);
+		}
+		loadingSelectedGuns = false;
+	}
 	public void FindStorageContainer(string name, GameObject parent)
 	{
 		storageContainer = parent.transform.Find(name).gameObject;
@@ -100,6 +112,7 @@ public class InventoryManager : MonoBehaviour
 						primaryData.itemType = ItemDataType.Primary;
 						primaryData.primaryType = PrimaryType.AssaultRifle;
 						InventoryUI.Instance.DisplayImage();
+						if(!loadingSelectedGuns) selectedGuns.Add(primaryData);
 						break;
 				}
 				break;
@@ -113,6 +126,7 @@ public class InventoryManager : MonoBehaviour
 						secondaryData.itemType = ItemDataType.Secondary;
 						secondaryData.secondaryType = SecondaryType.Pistol;
 						InventoryUI.Instance.DisplayImage();
+						if (!loadingSelectedGuns) selectedGuns.Add(secondaryData);
 						break;
 				}
 				break;
