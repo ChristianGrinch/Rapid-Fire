@@ -2,6 +2,7 @@ using UnityEngine;
 using MessagePack;
 using System.Collections.Generic;
 using static SlotData;
+using static GunController;
 
 [MessagePackObject]
 public class SaveData
@@ -15,6 +16,7 @@ public class SaveData
 	[Key(5)] public int speedPowerup;
 	[Key(6)] public List<PrimaryType> ownedPrimaries;
 	[Key(7)] public List<SecondaryType> ownedSecondaries;
+	[Key(8)] public List<GunType> selectedGuns;
 
 	// Game data
 	[Key(10)] public int wave;
@@ -43,11 +45,15 @@ public class SaveData
 	// Factory method to create SaveData from PlayerController
 	public static SaveData AssignData(PlayerController player)
 	{
-		Debug.Log(EnemyDataManager.Instance.enemyCount[0]);
-
 		EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyData();
 		PowerupData powerupData = PowerupManager.Instance.GetPowerupData();
-		Debug.Log("powerup data: " + powerupData);
+
+		int[] slotAmmo =
+		{
+			WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData.ammo,
+			WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData.ammo
+		};
+
 		SaveData saveData = new()
 		{
 			// Assign player data
@@ -61,7 +67,7 @@ public class SaveData
 				player.transform.position.y,
 				player.transform.position.z
 			},
-			ammo = player.ammo,
+			ammo = slotAmmo,
 			ownedPrimaries = InventoryManager.Instance.ownedPrimaries,
 			ownedSecondaries = InventoryManager.Instance.ownedSecondaries,
 

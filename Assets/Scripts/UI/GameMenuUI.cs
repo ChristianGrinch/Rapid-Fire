@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static SlotData;
+using static GunController;
 
 public class GameMenuUI : MonoBehaviour
 {
@@ -72,7 +72,11 @@ public class GameMenuUI : MonoBehaviour
         wave.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
         health.text = $"Health: {healthSystem.health}";
         lives.text = $"Lives: {healthSystem.lives}";
-        ammo.text = $"{gunController.ammo[gunController.currentGunInt]}";
+		//TODO: cyhange to primary/secondary, not guntype
+		int currentAmmo = gunController.currentGun == GunType.AssaultRifle ? WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData.ammo : WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData.ammo;
+
+		ammo.text = currentAmmo.ToString();
+
         if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Tab)) // very hard to trigger. must press all 3 at exactly the same time
         {
             if (debug.activeSelf)

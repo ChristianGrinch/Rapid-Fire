@@ -1,10 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static SlotData;
 
 public class GunController : MonoBehaviour
 {
+	public enum GunType
+	{
+		Pistol,
+		AssaultRifle,
+		None
+	}
 
 	public GameObject bullet;
 	private GameObject player;
@@ -12,38 +16,38 @@ public class GunController : MonoBehaviour
 	private Rigidbody playerRb;
 
 	private GameObject bulletParent;
- 	public GameObject[] gunObjects;
+	public GameObject[] gunObjects;
 
-    public GunType currentGun = GunType.Pistol;
+	public GunType currentGun;
 	public int currentGunInt;
-    private float fireRate = 0.1f;
+	private float fireRate = 0.1f;
 	private float nextFireTime = 0f;
-    public int[] ammo = new int[] { 20, 40 };  // ammo[0] = pistol ammo, ammo[1] = assault rifle ammo
+	public int[] ammo = new int[] { 20, 40 };  // ammo[0] = pistol ammo, ammo[1] = assault rifle ammo
 
-    public AudioClip audioClip;
-    AudioSource audioData;
+	public AudioClip audioClip;
+	AudioSource audioData;
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	void Start()
 	{
 		bulletParent = GameManager.Instance.bullets;
 		player = GameManager.Instance.player;
 		playerRb = player.GetComponent <Rigidbody> ();
 
-        audioData = GetComponent<AudioSource>();
+		audioData = GetComponent<AudioSource>();
 		audioData.clip = audioClip;
-    }
+	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		if (!UIManager.Instance.isGamePaused)
 		{
-            ChangeCurrentGun();
+			ChangeCurrentGun();
 
-            ShootGun();
-        }
-    }
+			ShootGun();
+		}
+	}
 
 	void ChangeCurrentGun()
 	{
@@ -54,14 +58,14 @@ public class GunController : MonoBehaviour
 		} else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			currentGun = GunType.AssaultRifle;
-            currentGunInt = 1;
-        }
+			currentGunInt = 1;
+		}
 	}
 
 	void ShootGun()
 	{
-        
-        ShootBullet shootBullet = bullet.GetComponent<ShootBullet>();
+		
+		ShootBullet shootBullet = bullet.GetComponent<ShootBullet>();
 
 		float yRotation = playerRb.rotation.eulerAngles.y;
 
@@ -69,41 +73,40 @@ public class GunController : MonoBehaviour
 
 		switch (currentGun)
 		{
-			case GunType.Pistol:
-				{
-					gunObjects[0].SetActive(true);
-					gunObjects[1].SetActive(false);
-
-					if (Input.GetMouseButtonDown(0) && TryUseAmmo(0))
-					{
-						audioData.clip = audioClip;
-						audioData.Play();
-
-                        SetBulletStats(shootBullet);
-                        InstantiateBullet(yRotation);
-                    }
-
-					break;
-				}
-
 			case GunType.AssaultRifle:
+			{
+				gunObjects[0].SetActive(false);
+				gunObjects[1].SetActive(true);
+
+				if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(ItemDataType.Primary))
 				{
-					gunObjects[0].SetActive(false);
-					gunObjects[1].SetActive(true);
+					audioData.clip = audioClip;
+					audioData.Play();
 
-					if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(currentGun))
-					{
-						audioData.clip = audioClip;
-						audioData.Play();
+					SetBulletStats(shootBullet);
+					InstantiateBullet(yRotation);
 
-						SetBulletStats(shootBullet);
-                        InstantiateBullet(yRotation);
-
-                        nextFireTime = Time.time + fireRate;  // Reset next fire time
-					}
-
-					break;
+					nextFireTime = Time.time + fireRate;  // Reset next fire time
 				}
+
+				break;
+			}
+			case GunType.Pistol:
+			{
+				gunObjects[0].SetActive(true);
+				gunObjects[1].SetActive(false);
+
+				if (Input.GetMouseButtonDown(0) && TryUseAmmo(ItemDataType.Secondary))
+				{
+					audioData.clip = audioClip;
+					audioData.Play();
+
+					SetBulletStats(shootBullet);
+					InstantiateBullet(yRotation);
+				}
+
+				break;
+			}
 		}
 
 	}
@@ -133,43 +136,64 @@ public class GunController : MonoBehaviour
 
 		shootBullet.UpdateStats(bulletDamage, bulletRange, bulletSpeed);
 	}
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Ammo"))
-        {
-            CollectAmmo();
-            Destroy(other.gameObject);
-        }
-    }
-    void CollectAmmo()
+	private void OnTriggerEnter(Collider other)
 	{
-		ammo[0] += 10;
-        ammo[1] += 15;
+		if (other.gameObject.CompareTag("Ammo"))
+		{
+			CollectAmmo();
+			Destroy(other.gameObject);
+		}
+	}
+	void CollectAmmo()
+	{
+		WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData.ammo += 10;
+		WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData.ammo += 15;
 	}
 
-	bool TryUseAmmo(GunType gunType)
+	bool TryUseAmmo(ItemDataType itemDataType)
 	{
 		// Make sure the inventory is closed before shooting
 		if (InventoryUI.Instance.inventoryMenu.activeSelf) return false;
-
-		int gunIndex = (int)gunType;
-
-		if (ammo[gunIndex] > 0)
+		if (itemDataType == ItemDataType.Primary)
 		{
-			ammo[gunIndex]--;
-            return true;
+			ItemData itemData = WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData;
+			int ammo = itemData.ammo;
+			if(ammo > 0)
+			{
+				itemData.ammo--;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if (itemDataType == ItemDataType.Secondary)
+		{
+			ItemData itemData = WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData;
+			int ammo = itemData.ammo;
+			if (ammo > 0)
+			{
+				itemData.ammo--;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
-            return false;
+			// Return false incase the provided data type is NOT a weapon
+			Debug.LogError("Tried to use ammo on a non-weapon data type!");
+			return false;
 		}
-
 	}
 
 	void InstantiateBullet(float yRotation)
 	{
-        Vector3 spawnPosition = player.transform.TransformPoint(offset);
-        GameObject instantiatedBullet = Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
-        instantiatedBullet.transform.parent = bulletParent.transform; // Sets parent
-    }
+		Vector3 spawnPosition = player.transform.TransformPoint(offset);
+		GameObject instantiatedBullet = Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
+		instantiatedBullet.transform.parent = bulletParent.transform; // Sets parent
+	}
 }

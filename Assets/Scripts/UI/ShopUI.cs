@@ -41,7 +41,6 @@ public class ShopUI : MonoBehaviour
 	[Header("Other")]
 	public bool isShopOpen;
 	public TMP_Text exp;
-	public List<GunType> ownedGuns;
 	public List<PowerupType> ownedPowerups;
 	public enum ButtonType
 	{

@@ -14,12 +14,6 @@ public class SlotData : MonoBehaviour
 		Powerup,
 		Armor,
 	}
-	public enum GunType
-	{
-		Pistol,
-		AssaultRifle,
-		None
-	}
 	public enum PrimaryType
 	{
 		None,
@@ -80,9 +74,9 @@ public class SlotData : MonoBehaviour
 public class ItemData
 {
 	public SlotData.ItemDataType itemType;
-	public SlotData.GunType gunType;
 	public SlotData.PrimaryType primaryType;
 	public SlotData.SecondaryType secondaryType;
 	public SlotData.PowerupType powerupType;
 	public SlotData.ArmorType armorType;
+	public int ammo;
 }
