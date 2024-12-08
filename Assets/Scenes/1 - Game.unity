@@ -5347,6 +5347,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryMenu: {fileID: 1267937152}
+  slots:
+  - {fileID: 19098686}
+  - {fileID: 739412266}
+  - {fileID: 1766421623}
+  - {fileID: 1270293690}
+  - {fileID: 762809598}
+  - {fileID: 161470837}
+  - {fileID: 41514428}
+  - {fileID: 201085998}
+  - {fileID: 133650325}
+  - {fileID: 1288094213}
   heartPowerup: {fileID: 41514428}
   speedPowerup: {fileID: 201085998}
   ammoPowerup: {fileID: 133650325}
@@ -11537,6 +11548,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7952922891835383521, guid: 978a4909375aafa4b8489e200d2e6714, type: 3}
   m_PrefabInstance: {fileID: 1288094211}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1288094213 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7311629748336618378, guid: 978a4909375aafa4b8489e200d2e6714, type: 3}
+  m_PrefabInstance: {fileID: 1288094211}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1346421564
 GameObject:
   m_ObjectHideFlags: 0
@@ -13337,10 +13353,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54a321e6c016944783ed48447bd57b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 0
-  gunType: 0
-  powerupType: 0
-  armorType: 0
+  itemData:
+    itemType: 0
+    gunType: 0
+    primaryType: 0
+    secondaryType: 0
+    powerupType: 0
+    armorType: 0
   powerupCounts: 
 --- !u!4 &1550925950
 Transform:

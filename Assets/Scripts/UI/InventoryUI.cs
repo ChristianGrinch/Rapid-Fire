@@ -22,6 +22,7 @@ public class InventoryUI : MonoBehaviour
 	public GameObject inventoryMenu;
 
 	[Header("Slots")]
+	public List<GameObject> slots;
 	public GameObject heartPowerup;
 	public GameObject speedPowerup;
 	public GameObject ammoPowerup;
@@ -71,43 +72,39 @@ public class InventoryUI : MonoBehaviour
 	{
 		inventoryMenu.SetActive(false);
 	}
-	//void DisplayImage()
-	//{
-	//	foreach (var slot in slots)
-	//	{
-	//		SlotData slotData = slot.GetComponent<SlotData>();
-	//		switch (slotData.itemType)
-	//		{
-	//			case ItemDataType.Gun:
-	//				switch (slotData.gunType)
-	//				{
-	//					case GunType.Pistol:
-	//						RawImage rawImage = slot.GetComponentInChildren<RawImage>();
-	//						rawImage.texture = pistolRT;
+	public void DisplayImage()
+	{
+		foreach (var slot in slots)
+		{
+			ItemData itemData = slot.GetComponent<SlotData>().itemData;
+			switch (itemData.itemType)
+			{
+				case ItemDataType.Primary:
+					// Add a switch here when more primary types are added, same with secondary and so on
+					RawImage rawImage = slot.GetComponentInChildren<RawImage>();
+					rawImage.texture = assaultRifleRT;
 
-	//						Color color = rawImage.color;
-	//						color.a = 1f;
-	//						rawImage.color = color;
-	//						break;
-	//					case GunType.AssaultRifle:
-	//						rawImage = slot.GetComponentInChildren<RawImage>();
-	//						rawImage.texture = assaultRifleRT;
+					Color color = rawImage.color;
+					color.a = 1f;
+					rawImage.color = color;
+					break;
+				case ItemDataType.Secondary:
+					rawImage = slot.GetComponentInChildren<RawImage>();
+					rawImage.texture = pistolRT;
 
-	//						color = rawImage.color;
-	//						color.a = 1f;
-	//						rawImage.color = color;
-	//						break;
-	//				}
-	//				break;
-	//			case ItemDataType.Powerup:
-	//				break;
-	//			case ItemDataType.Armor:
-	//				break;
-	//			case ItemDataType.None:
-	//				break;
-	//			default:
-	//				break;
-	//		}
-	//	}
-	//}
+					color = rawImage.color;
+					color.a = 1f;
+					rawImage.color = color;
+					break;
+				case ItemDataType.Powerup:
+					break;
+				case ItemDataType.Armor:
+					break;
+				case ItemDataType.None:
+					break;
+				default:
+					break;
+			}
+		}
+	}
 }

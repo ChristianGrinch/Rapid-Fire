@@ -149,6 +149,9 @@ public class GunController : MonoBehaviour
 
 	bool TryUseAmmo(GunType gunType)
 	{
+		// Make sure the inventory is closed before shooting
+		if (InventoryUI.Instance.inventoryMenu.activeSelf) return false;
+
 		int gunIndex = (int)gunType;
 
 		if (ammo[gunIndex] > 0)
