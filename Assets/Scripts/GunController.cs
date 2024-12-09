@@ -82,7 +82,7 @@ public class GunController : MonoBehaviour
 					audioData.clip = audioClip;
 					audioData.Play();
 
-					SetBulletStats(shootBullet);
+					SetBulletStats(shootBullet, ItemDataType.pri);
 					InstantiateBullet(yRotation);
 
 					nextFireTime = Time.time + fireRate;  // Reset next fire time
@@ -100,7 +100,7 @@ public class GunController : MonoBehaviour
 					audioData.clip = audioClip;
 					audioData.Play();
 
-					SetBulletStats(shootBullet);
+					SetBulletStats(shootBullet, ItemDataType.Secondary);
 					InstantiateBullet(yRotation);
 				}
 
@@ -110,29 +110,23 @@ public class GunController : MonoBehaviour
 
 	}
 
-	void SetBulletStats(ShootBullet shootBullet)
+	void SetBulletStats(ShootBullet shootBullet, ItemDataType itemDataType)
 	{
-		float bulletSpeed;
-		int bulletDamage;
-		int bulletRange;
-
-		switch (currentGun)
+		float bulletSpeed = -1;
+		int bulletDamage = -1;
+		int bulletRange = -1;
+		if(itemDataType == ItemDataType.Primary)
 		{
-			case GunType.Pistol:
-				bulletSpeed = 1f;
-				bulletDamage = 10;
-				bulletRange = 50;
-				break;
-
-			case GunType.AssaultRifle:
-				bulletSpeed = 1.5f;
-				bulletDamage = 8;
-				bulletRange = 75;
-				break;
-			default:
-				return;
+			bulletSpeed = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.bulletSpeed;
+			bulletDamage = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.damage;
+			bulletRange = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.range;
+		} 
+		else if(itemDataType == ItemDataType.Secondary)
+		{
+			bulletSpeed = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.bulletSpeed;
+			bulletDamage = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.damage;
+			bulletRange = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.range;
 		}
-
 		shootBullet.UpdateStats(bulletDamage, bulletRange, bulletSpeed);
 	}
 	private void OnTriggerEnter(Collider other)
@@ -145,8 +139,17 @@ public class GunController : MonoBehaviour
 	}
 	void CollectAmmo()
 	{
-		WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData.ammo += 10;
-		WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData.ammo += 15;
+		if (InventoryManager.Instance.selectedGuns[0].itemType != ItemDataType.None)
+		{
+			WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData.ammo += 10;
+			InventoryManager.Instance.selectedGuns[0] = WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData;
+		}
+
+		if (InventoryManager.Instance.selectedGuns[1].itemType != ItemDataType.None)
+		{
+			WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData.ammo += 15;
+			InventoryManager.Instance.selectedGuns[1] = WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData;
+		}
 	}
 
 	bool TryUseAmmo(ItemDataType itemDataType)
@@ -160,10 +163,12 @@ public class GunController : MonoBehaviour
 			if(ammo > 0)
 			{
 				itemData.ammo--;
+				InventoryManager.Instance.selectedGuns[0].ammo = itemData.ammo;
 				return true;
 			}
 			else
 			{
+				InventoryManager.Instance.selectedGuns[0].ammo = itemData.ammo;
 				return false;
 			}
 		}
@@ -174,10 +179,12 @@ public class GunController : MonoBehaviour
 			if (ammo > 0)
 			{
 				itemData.ammo--;
+				InventoryManager.Instance.selectedGuns[1].ammo = itemData.ammo;
 				return true;
 			}
 			else
 			{
+				InventoryManager.Instance.selectedGuns[1].ammo = itemData.ammo;
 				return false;
 			}
 		}

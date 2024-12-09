@@ -14,9 +14,9 @@ public class SaveData
 	[Key(3)] public float[] position;
 	[Key(4)] public int[] ammo;
 	[Key(5)] public int speedPowerup;
-	[Key(6)] public List<PrimaryType> ownedPrimaries;
-	[Key(7)] public List<SecondaryType> ownedSecondaries;
-	[Key(8)] public List<ItemData> selectedGuns;
+	[Key(6)] public List<ItemData> ownedPrimaries = new();
+	[Key(7)] public List<ItemData> ownedSecondaries = new();
+	[Key(8)] public List<ItemData> selectedGuns = new();
 
 	// Game data
 	[Key(10)] public int wave;
@@ -130,13 +130,27 @@ public class SaveData
         saveData.position = new float[3] { 0, 0.5f, 0};
 		saveData.ammo = new[] { 30, 50 };
 		saveData.speedPowerup = 0;
-		saveData.ownedPrimaries = new() { PrimaryType.None };
-		saveData.ownedSecondaries = new() { SecondaryType.Pistol };
-		saveData.selectedGuns[0] = new()
+		saveData.ownedPrimaries.Add(new ItemData
+		{
+			itemType = ItemDataType.Primary,
+			primaryType = PrimaryType.None
+		});
+		saveData.ownedSecondaries.Add(new ItemData
 		{
 			itemType = ItemDataType.Secondary,
 			secondaryType = SecondaryType.Pistol
-		};
+		});
+		// because no primary is owned when first starting the game
+		saveData.selectedGuns.Add(new ItemData
+		{
+			itemType = ItemDataType.None
+		});
+		saveData.selectedGuns.Add(new ItemData
+		{
+			itemType = ItemDataType.Secondary,
+			secondaryType = SecondaryType.Pistol,
+			ammo = 50
+		});
 
 		// Assign game data
 		saveData.wave = 1;

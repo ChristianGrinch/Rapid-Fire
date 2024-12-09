@@ -56,4 +56,5 @@ public class ItemData
 	[Key(3)] public SlotData.PowerupType powerupType;
 	[Key(4)] public SlotData.ArmorType armorType;
 	[Key(5)] public int ammo;
+	[Key(6)] public GameObject gameObject;
 }

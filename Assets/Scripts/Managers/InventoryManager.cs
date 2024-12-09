@@ -18,9 +18,9 @@ public class InventoryManager : MonoBehaviour
 		}
 	}
 	[Header("Player owned weapons")]
-	public List<PrimaryType> ownedPrimaries;
-	public List<SecondaryType> ownedSecondaries;
-	public List<ItemData> selectedGuns;
+	public List<ItemData> ownedPrimaries;
+	public List<ItemData> ownedSecondaries;
+	public List<ItemData> selectedGuns = new(2);
 	[Header("Other")]
 	public GameObject storageContainer;
 	public GameObject slotPrefab;
@@ -48,17 +48,18 @@ public class InventoryManager : MonoBehaviour
 			foreach (var primary in ownedPrimaries)
 			{
 				// Makes sure not to render an empty slot
-				if (primary == PrimaryType.None) break;
+				if (primary.primaryType == PrimaryType.None) break;
 
 				instantiatedSlot = Instantiate(slotPrefab, storageContainer.transform);
 
-				if(primary == PrimaryType.AssaultRifle)
+				if(primary.primaryType == PrimaryType.AssaultRifle)
 				{
 					// Specify all of the data that will be assigned to the slot:
 					ItemData newItemData = new()
 					{
 						itemType = ItemDataType.Primary,
-						primaryType = PrimaryType.AssaultRifle
+						primaryType = PrimaryType.AssaultRifle,
+						ammo = primary.ammo
 					};
 
 					instantiatedSlot.GetComponent<Button>().onClick.AddListener(() => SetSlotData(newItemData));
@@ -71,18 +72,19 @@ public class InventoryManager : MonoBehaviour
 		{
 			foreach (var secondary in ownedSecondaries)
 			{
-				if (secondary == SecondaryType.None) break;
+				if (secondary.secondaryType == SecondaryType.None) break;
 
 				instantiatedSlot = Instantiate(slotPrefab, storageContainer.transform);
 
-				switch (secondary)
+				switch (secondary.secondaryType)
 				{
 					case SecondaryType.Pistol:
 						{
 							ItemData newItemData = new()
 							{
 								itemType = ItemDataType.Secondary,
-								secondaryType = SecondaryType.Pistol
+								secondaryType = SecondaryType.Pistol,
+								ammo = secondary.ammo
 							};
 
 							instantiatedSlot.GetComponent<Button>().onClick.AddListener(() => SetSlotData(newItemData));
@@ -95,7 +97,8 @@ public class InventoryManager : MonoBehaviour
 							ItemData newItemData = new()
 							{
 								itemType = ItemDataType.Secondary,
-								secondaryType = SecondaryType.SubMachineGun
+								secondaryType = SecondaryType.SubMachineGun,
+								ammo = secondary.ammo
 							};
 
 							instantiatedSlot.GetComponent<Button>().onClick.AddListener(() => SetSlotData(newItemData));
@@ -123,7 +126,7 @@ public class InventoryManager : MonoBehaviour
 					case PrimaryType.AssaultRifle:
 						primaryData.primaryType = PrimaryType.AssaultRifle;
 						InventoryUI.Instance.DisplayImage();
-						if(!loadingSelectedGuns && !selectedGuns.Contains(primaryData)) selectedGuns.Add(primaryData);
+						if(!loadingSelectedGuns && selectedGuns[0].primaryType != PrimaryType.AssaultRifle) selectedGuns.Add(primaryData);
 						break;
 				}
 				break;
@@ -136,12 +139,12 @@ public class InventoryManager : MonoBehaviour
 					case SecondaryType.Pistol:
 						secondaryData.secondaryType = SecondaryType.Pistol;
 						InventoryUI.Instance.DisplayImage();
-						if (!loadingSelectedGuns && !selectedGuns.Contains(secondaryData)) selectedGuns.Add(secondaryData);
+						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.Pistol) selectedGuns.Add(secondaryData);
 						break;
 					case SecondaryType.SubMachineGun:
 						secondaryData.secondaryType = SecondaryType.SubMachineGun;
 						InventoryUI.Instance.DisplayImage();
-						if (!loadingSelectedGuns && !selectedGuns.Contains(secondaryData)) selectedGuns.Add(secondaryData);
+						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.SubMachineGun) selectedGuns.Add(secondaryData);
 						break;
 				}
 				break;
