@@ -34,6 +34,7 @@ public class InventoryUI : MonoBehaviour
 	[Header("Render Textures")]
 	public RenderTexture pistolRT;
 	public RenderTexture assaultRifleRT;
+	public RenderTexture subMachineGunRT;
 
 	[Header("Other")]
 	public bool isInventoryOpen;
@@ -82,21 +83,38 @@ public class InventoryUI : MonoBehaviour
 			switch (itemData.itemType)
 			{
 				case ItemDataType.Primary:
-					// Add a switch here when more primary types are added, same with secondary and so on
-					RawImage rawImage = slot.GetComponentInChildren<RawImage>();
-					rawImage.texture = assaultRifleRT;
+					switch (itemData.primaryType)
+					{
+						case PrimaryType.AssaultRifle:
+							RawImage rawImage = slot.GetComponentInChildren<RawImage>();
+							rawImage.texture = assaultRifleRT;
 
-					Color color = rawImage.color;
-					color.a = 1f;
-					rawImage.color = color;
+							Color color = rawImage.color;
+							color.a = 1f;
+							rawImage.color = color;
+							break;
+					}
 					break;
 				case ItemDataType.Secondary:
-					rawImage = slot.GetComponentInChildren<RawImage>();
-					rawImage.texture = pistolRT;
+					switch (itemData.secondaryType)
+					{
+						case SecondaryType.Pistol:
+							RawImage rawImage = slot.GetComponentInChildren<RawImage>();
+							rawImage.texture = pistolRT;
 
-					color = rawImage.color;
-					color.a = 1f;
-					rawImage.color = color;
+							Color color = rawImage.color;
+							color.a = 1f;
+							rawImage.color = color;
+							break;
+						case SecondaryType.SubMachineGun:
+							rawImage = slot.GetComponentInChildren<RawImage>();
+							rawImage.texture = subMachineGunRT;
+
+							color = rawImage.color;
+							color.a = 1f;
+							rawImage.color = color;
+							break;
+					}
 					break;
 				case ItemDataType.Powerup:
 					break;

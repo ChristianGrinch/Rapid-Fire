@@ -23,7 +23,8 @@ public class SlotData : MonoBehaviour
 	public enum SecondaryType
 	{
 		None,
-		Pistol
+		Pistol,
+		SubMachineGun,
 	}
 	public enum PowerupType
 	{
