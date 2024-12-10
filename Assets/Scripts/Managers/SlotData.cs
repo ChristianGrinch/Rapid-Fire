@@ -57,4 +57,5 @@ public class ItemData
 	[Key(4)] public SlotData.ArmorType armorType;
 	[Key(5)] public int ammo;
 	[Key(6)] public GameObject gameObject;
+	[Key(7)] public GunController.GunType gunType;
 }

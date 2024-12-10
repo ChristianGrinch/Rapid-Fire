@@ -7,6 +7,7 @@ public class GunController : MonoBehaviour
 	{
 		Pistol,
 		AssaultRifle,
+		SubMachineGun,
 		None
 	}
 
@@ -16,7 +17,6 @@ public class GunController : MonoBehaviour
 	private Rigidbody playerRb;
 
 	private GameObject bulletParent;
-	public GameObject[] gunObjects;
 
 	public GunType currentGun;
 	public int currentGunInt;
@@ -42,28 +42,27 @@ public class GunController : MonoBehaviour
 	{
 		if (!UIManager.Instance.isGamePaused)
 		{
-			ChangeCurrentGun();
-
 			ShootGun();
 		}
 	}
 
-	void ChangeCurrentGun()
+	void ChangeCurrentGun(GameObject gameObject)
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			currentGun = GunType.Pistol;
+			currentGun = InventoryManager.Instance.selectedGuns[0].gunType;
 			currentGunInt = 0;
-		} else if (Input.GetKeyDown(KeyCode.Alpha2))
+			Instantiate(gameObject, player.transform);
+		} 
+		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			currentGun = GunType.AssaultRifle;
+			currentGun = InventoryManager.Instance.selectedGuns[1].gunType;
 			currentGunInt = 1;
 		}
 	}
 
 	void ShootGun()
 	{
-		
 		ShootBullet shootBullet = bullet.GetComponent<ShootBullet>();
 
 		float yRotation = playerRb.rotation.eulerAngles.y;
@@ -74,15 +73,13 @@ public class GunController : MonoBehaviour
 		{
 			case GunType.AssaultRifle:
 			{
-				gunObjects[0].SetActive(false);
-				gunObjects[1].SetActive(true);
 
 				if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(ItemDataType.Primary))
 				{
 					audioData.clip = audioClip;
 					audioData.Play();
 
-					SetBulletStats(shootBullet, ItemDataType.pri);
+					SetBulletStats(shootBullet, ItemDataType.Primary);
 					InstantiateBullet(yRotation);
 
 					nextFireTime = Time.time + fireRate;  // Reset next fire time
@@ -92,8 +89,6 @@ public class GunController : MonoBehaviour
 			}
 			case GunType.Pistol:
 			{
-				gunObjects[0].SetActive(true);
-				gunObjects[1].SetActive(false);
 
 				if (Input.GetMouseButtonDown(0) && TryUseAmmo(ItemDataType.Secondary))
 				{
@@ -112,21 +107,12 @@ public class GunController : MonoBehaviour
 
 	void SetBulletStats(ShootBullet shootBullet, ItemDataType itemDataType)
 	{
-		float bulletSpeed = -1;
-		int bulletDamage = -1;
-		int bulletRange = -1;
-		if(itemDataType == ItemDataType.Primary)
-		{
-			bulletSpeed = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.bulletSpeed;
-			bulletDamage = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.damage;
-			bulletRange = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.range;
-		} 
-		else if(itemDataType == ItemDataType.Secondary)
-		{
-			bulletSpeed = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.bulletSpeed;
-			bulletDamage = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.damage;
-			bulletRange = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.range;
-		}
+		float bulletSpeed = player.GetComponentInChildren<GunData>().gunStats.bulletSpeed;
+		int bulletDamage = player.GetComponentInChildren<GunData>().gunStats.damage;
+		int bulletRange = player.GetComponentInChildren<GunData>().gunStats.range;
+		//bulletSpeed = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.bulletSpeed;
+		//bulletDamage = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.damage;
+		//bulletRange = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.range;
 		shootBullet.UpdateStats(bulletDamage, bulletRange, bulletSpeed);
 	}
 	private void OnTriggerEnter(Collider other)

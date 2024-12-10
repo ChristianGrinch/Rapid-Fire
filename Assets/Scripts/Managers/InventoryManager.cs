@@ -59,6 +59,7 @@ public class InventoryManager : MonoBehaviour
 					{
 						itemType = ItemDataType.Primary,
 						primaryType = PrimaryType.AssaultRifle,
+						gunType = GunType.AssaultRifle,
 						ammo = primary.ammo
 					};
 
@@ -84,6 +85,7 @@ public class InventoryManager : MonoBehaviour
 							{
 								itemType = ItemDataType.Secondary,
 								secondaryType = SecondaryType.Pistol,
+								gunType = GunType.Pistol,
 								ammo = secondary.ammo
 							};
 
@@ -98,6 +100,7 @@ public class InventoryManager : MonoBehaviour
 							{
 								itemType = ItemDataType.Secondary,
 								secondaryType = SecondaryType.SubMachineGun,
+								gunType = GunType.SubMachineGun,
 								ammo = secondary.ammo
 							};
 
