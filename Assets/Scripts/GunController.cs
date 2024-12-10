@@ -5,10 +5,10 @@ public class GunController : MonoBehaviour
 {
 	public enum GunType
 	{
+		None,
 		Pistol,
 		AssaultRifle,
-		SubMachineGun,
-		None
+		SubMachineGun
 	}
 
 	public GameObject bullet;

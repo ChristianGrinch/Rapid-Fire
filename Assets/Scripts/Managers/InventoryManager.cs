@@ -129,7 +129,7 @@ public class InventoryManager : MonoBehaviour
 					case PrimaryType.AssaultRifle:
 						primaryData.primaryType = PrimaryType.AssaultRifle;
 						InventoryUI.Instance.DisplayImage();
-						if(!loadingSelectedGuns && selectedGuns[0].primaryType != PrimaryType.AssaultRifle) selectedGuns.Add(primaryData);
+						if(!loadingSelectedGuns && selectedGuns[0].primaryType != PrimaryType.AssaultRifle) selectedGuns[0] = primaryData;
 						break;
 				}
 				break;
@@ -142,12 +142,12 @@ public class InventoryManager : MonoBehaviour
 					case SecondaryType.Pistol:
 						secondaryData.secondaryType = SecondaryType.Pistol;
 						InventoryUI.Instance.DisplayImage();
-						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.Pistol) selectedGuns.Add(secondaryData);
+						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.Pistol) selectedGuns[1] = secondaryData;
 						break;
 					case SecondaryType.SubMachineGun:
 						secondaryData.secondaryType = SecondaryType.SubMachineGun;
 						InventoryUI.Instance.DisplayImage();
-						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.SubMachineGun) selectedGuns.Add(secondaryData);
+						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.SubMachineGun) selectedGuns[1] = secondaryData;
 						break;
 				}
 				break;
