@@ -26,6 +26,9 @@ public class GunController : MonoBehaviour
 	public AudioClip audioClip;
 	AudioSource audioData;
 
+	private GameObject instantiatedPrimary;
+	private GameObject instantiatedSecondary;
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -42,22 +45,29 @@ public class GunController : MonoBehaviour
 	{
 		if (!UIManager.Instance.isGamePaused)
 		{
+			ChangeCurrentGun();
+
 			ShootGun();
 		}
 	}
 
-	void ChangeCurrentGun(GameObject gameObject)
+	void ChangeCurrentGun()
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
+			if (instantiatedPrimary != null) return;
+			Destroy(instantiatedSecondary);
 			currentGun = InventoryManager.Instance.selectedGuns[0].gunType;
 			currentGunInt = 0;
-			Instantiate(gameObject, player.transform);
+			instantiatedPrimary = Instantiate(InventoryManager.Instance.selectedGuns[0].gameObject, player.transform);
 		} 
 		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
+			if (instantiatedSecondary != null) return;
+			Destroy(instantiatedPrimary);
 			currentGun = InventoryManager.Instance.selectedGuns[1].gunType;
 			currentGunInt = 1;
+			instantiatedSecondary = Instantiate(InventoryManager.Instance.selectedGuns[1].gameObject, player.transform);
 		}
 	}
 
@@ -73,7 +83,7 @@ public class GunController : MonoBehaviour
 		{
 			case GunType.AssaultRifle:
 			{
-
+				if (instantiatedPrimary == null) return;
 				if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(ItemDataType.Primary))
 				{
 					audioData.clip = audioClip;
@@ -89,7 +99,7 @@ public class GunController : MonoBehaviour
 			}
 			case GunType.Pistol:
 			{
-
+				if (instantiatedSecondary == null) return;
 				if (Input.GetMouseButtonDown(0) && TryUseAmmo(ItemDataType.Secondary))
 				{
 					audioData.clip = audioClip;

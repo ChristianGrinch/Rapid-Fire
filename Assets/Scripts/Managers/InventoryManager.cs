@@ -130,6 +130,7 @@ public class InventoryManager : MonoBehaviour
 						primaryData.primaryType = PrimaryType.AssaultRifle;
 						InventoryUI.Instance.DisplayImage();
 						if(!loadingSelectedGuns && selectedGuns[0].primaryType != PrimaryType.AssaultRifle) selectedGuns.Add(primaryData);
+						selectedGuns[0].gameObject = FindGameObject(primaryData.gunType);
 						break;
 				}
 				break;
@@ -143,11 +144,13 @@ public class InventoryManager : MonoBehaviour
 						secondaryData.secondaryType = SecondaryType.Pistol;
 						InventoryUI.Instance.DisplayImage();
 						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.Pistol) selectedGuns.Add(secondaryData);
+						selectedGuns[1].gameObject = FindGameObject(secondaryData.gunType);
 						break;
 					case SecondaryType.SubMachineGun:
 						secondaryData.secondaryType = SecondaryType.SubMachineGun;
 						InventoryUI.Instance.DisplayImage();
 						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.SubMachineGun) selectedGuns.Add(secondaryData);
+						selectedGuns[1].gameObject = FindGameObject(secondaryData.gunType);
 						break;
 				}
 				break;
@@ -164,5 +167,40 @@ public class InventoryManager : MonoBehaviour
 		RawImage rawImage = instantiatedSlot.GetComponentInChildren<RawImage>();
 		rawImage.texture = renderTexture;
 		rawImage.color = new(255, 255, 255, 255);
+	}
+	public GameObject FindGameObject(GunType gunType)
+	{
+		string weaponsPath = "Resources/Weapons";
+		string primaryPath = weaponsPath + "/Primary";
+		string secondaryPath = weaponsPath + "/Secondary";
+		string path = "";
+
+		switch (gunType)
+		{
+			case GunType.Pistol:
+				path = secondaryPath + "/Pistol/Pistol Level 1.prefab";
+				break;
+
+			case GunType.AssaultRifle:
+				path = primaryPath + "/Assault Rifle/Assault Rifle Level 1";
+				break;
+
+			case GunType.SubMachineGun:
+				path = secondaryPath + "/Sub Machine Gun/Sub Machine Gun Level 1";
+				break;
+
+			default:
+				Debug.LogError("Invalid gun type!");
+				return null;
+		}
+
+		GameObject gunPrefab = Resources.Load<GameObject>(path);
+
+		if (gunPrefab == null)
+		{
+			Debug.LogError($"Gun prefab not found at path: {path}");
+		}
+
+		return gunPrefab;
 	}
 }
