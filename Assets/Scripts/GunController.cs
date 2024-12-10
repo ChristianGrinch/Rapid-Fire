@@ -42,22 +42,25 @@ public class GunController : MonoBehaviour
 	{
 		if (!UIManager.Instance.isGamePaused)
 		{
+			ChangeCurrentGun();
+
 			ShootGun();
 		}
 	}
 
-	void ChangeCurrentGun(GameObject gameObject)
+	void ChangeCurrentGun()
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
 			currentGun = InventoryManager.Instance.selectedGuns[0].gunType;
 			currentGunInt = 0;
-			Instantiate(gameObject, player.transform);
+			Instantiate(InventoryManager.Instance.selectedGuns[0].gameObject, player.transform);
 		} 
 		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			currentGun = InventoryManager.Instance.selectedGuns[1].gunType;
 			currentGunInt = 1;
+			Instantiate(InventoryManager.Instance.selectedGuns[1].gameObject, player.transform);
 		}
 	}
 
