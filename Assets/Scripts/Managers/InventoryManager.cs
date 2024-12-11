@@ -27,6 +27,7 @@ public class InventoryManager : MonoBehaviour
 	public GameObject instantiatedSlot;
 	public RawImage slotImage;
 	private bool loadingSelectedGuns;
+	public WeaponsDatabase weaponsDatabase;
 	private void Start()
 	{
 		foreach(var gun in selectedGuns)
@@ -60,7 +61,8 @@ public class InventoryManager : MonoBehaviour
 						itemType = ItemDataType.Primary,
 						primaryType = PrimaryType.AssaultRifle,
 						gunType = GunType.AssaultRifle,
-						ammo = primary.ammo
+						ammo = primary.ammo,
+						gameObject = weaponsDatabase.FindGameObjects("Weapons/Primary/Assault Rifle")[0]
 					};
 
 					instantiatedSlot.GetComponent<Button>().onClick.AddListener(() => SetSlotData(newItemData));
@@ -86,7 +88,8 @@ public class InventoryManager : MonoBehaviour
 								itemType = ItemDataType.Secondary,
 								secondaryType = SecondaryType.Pistol,
 								gunType = GunType.Pistol,
-								ammo = secondary.ammo
+								ammo = secondary.ammo,
+								gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Pistol")[0]
 							};
 
 							instantiatedSlot.GetComponent<Button>().onClick.AddListener(() => SetSlotData(newItemData));
@@ -101,7 +104,8 @@ public class InventoryManager : MonoBehaviour
 								itemType = ItemDataType.Secondary,
 								secondaryType = SecondaryType.SubMachineGun,
 								gunType = GunType.SubMachineGun,
-								ammo = secondary.ammo
+								ammo = secondary.ammo,
+								gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Sub Machine Gun")[0]
 							};
 
 							instantiatedSlot.GetComponent<Button>().onClick.AddListener(() => SetSlotData(newItemData));
@@ -130,7 +134,7 @@ public class InventoryManager : MonoBehaviour
 						primaryData.primaryType = PrimaryType.AssaultRifle;
 						InventoryUI.Instance.DisplayImage();
 						if(!loadingSelectedGuns && selectedGuns[0].primaryType != PrimaryType.AssaultRifle) selectedGuns.Add(primaryData);
-						selectedGuns[0].gameObject = FindGameObject(primaryData.gunType);
+						selectedGuns[0].gameObject = weaponsDatabase.FindGameObjects("Weapons/Primary/Assault Rifle")[0];
 						break;
 				}
 				break;
@@ -144,13 +148,13 @@ public class InventoryManager : MonoBehaviour
 						secondaryData.secondaryType = SecondaryType.Pistol;
 						InventoryUI.Instance.DisplayImage();
 						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.Pistol) selectedGuns.Add(secondaryData);
-						selectedGuns[1].gameObject = FindGameObject(secondaryData.gunType);
+						selectedGuns[1].gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Pistol")[0];
 						break;
 					case SecondaryType.SubMachineGun:
 						secondaryData.secondaryType = SecondaryType.SubMachineGun;
 						InventoryUI.Instance.DisplayImage();
 						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.SubMachineGun) selectedGuns.Add(secondaryData);
-						selectedGuns[1].gameObject = FindGameObject(secondaryData.gunType);
+						selectedGuns[1].gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Sub Machine Gun")[0];
 						break;
 				}
 				break;

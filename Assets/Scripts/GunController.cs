@@ -26,8 +26,8 @@ public class GunController : MonoBehaviour
 	public AudioClip audioClip;
 	AudioSource audioData;
 
-	private GameObject instantiatedPrimary;
-	private GameObject instantiatedSecondary;
+	public GameObject instantiatedPrimary;
+	public GameObject instantiatedSecondary;
 
 	// Start is called before the first frame update
 	void Start()
@@ -55,7 +55,11 @@ public class GunController : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			if (instantiatedPrimary != null) return;
+			// If no secondary is selected then return
+			if (InventoryManager.Instance.selectedGuns[0].gameObject == null) return;
+			// If a secondary has been equipped but the new one to be equipped is different
+			if (instantiatedPrimary != null && instantiatedPrimary != InventoryManager.Instance.selectedGuns[0].gameObject) Destroy(instantiatedPrimary);
+			// Destory other gun type when swapping
 			Destroy(instantiatedSecondary);
 			currentGun = InventoryManager.Instance.selectedGuns[0].gunType;
 			currentGunInt = 0;
@@ -63,7 +67,11 @@ public class GunController : MonoBehaviour
 		} 
 		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			if (instantiatedSecondary != null) return;
+			// If no secondary is selected then return
+			if (InventoryManager.Instance.selectedGuns[1].gameObject == null) return;
+			// If a secondary has been equipped but the new one to be equipped is different
+			if (instantiatedSecondary != null && instantiatedSecondary != InventoryManager.Instance.selectedGuns[1].gameObject) Destroy(instantiatedSecondary);
+			// Destory other gun type when swapping
 			Destroy(instantiatedPrimary);
 			currentGun = InventoryManager.Instance.selectedGuns[1].gunType;
 			currentGunInt = 1;
