@@ -147,12 +147,14 @@ public class InventoryManager : MonoBehaviour
 					case SecondaryType.Pistol:
 						secondaryData.secondaryType = SecondaryType.Pistol;
 						InventoryUI.Instance.DisplayImage();
+
 						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.Pistol) selectedGuns.Add(secondaryData);
 						selectedGuns[1].gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Pistol")[0];
 						break;
 					case SecondaryType.SubMachineGun:
 						secondaryData.secondaryType = SecondaryType.SubMachineGun;
 						InventoryUI.Instance.DisplayImage();
+
 						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.SubMachineGun) selectedGuns.Add(secondaryData);
 						selectedGuns[1].gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Sub Machine Gun")[0];
 						break;
