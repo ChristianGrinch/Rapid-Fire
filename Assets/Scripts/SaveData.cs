@@ -133,21 +133,11 @@ public class SaveData
 			secondaryType = SecondaryType.Pistol,
 			ammo = 50
 		});
+		// to prevent index out of range or whtvr error
 		while (saveData.selectedGuns.Count < 2)
 		{
 			saveData.selectedGuns.Add(new ItemData());
 		}
-		// because no primary is owned when first starting the game
-		saveData.selectedGuns[0] = new()
-		{
-			itemType = ItemDataType.None
-		};
-		saveData.selectedGuns[1] = new()
-		{
-			itemType = ItemDataType.Secondary,
-			secondaryType = SecondaryType.Pistol,
-			ammo = 50
-		};
 
 		// Assign game data
 		saveData.wave = 1;

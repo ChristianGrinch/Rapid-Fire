@@ -1441,9 +1441,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 7521591830871287964, guid: 9523405a33ae5e64b90432c21b1304f3, type: 3}
-  currentGun: 0
+  currentGunData:
+    itemType: 0
+    primaryType: 0
+    secondaryType: 0
+    powerupType: 0
+    armorType: 0
+    ammo: 0
+    isWeaponAutomatic: 0
+    gameObject: {fileID: 0}
+    gunType: 0
   currentGunInt: 0
   audioClip: {fileID: 8300000, guid: 7dcbe26250f1a9b4f8a79a5223254032, type: 3}
+  instantiatedPrimary: {fileID: 0}
+  instantiatedSecondary: {fileID: 0}
 --- !u!54 &187840213
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12584,7 +12595,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1550925950}
-  - component: {fileID: 1550925949}
   - component: {fileID: 1550925951}
   m_Layer: 0
   m_Name: Slot Manager
@@ -12593,28 +12603,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1550925949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1550925948}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e54a321e6c016944783ed48447bd57b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemData:
-    itemType: 0
-    primaryType: 0
-    secondaryType: 0
-    powerupType: 0
-    armorType: 0
-    ammo: 0
-    gameObject: {fileID: 0}
-    gunType: 0
-  powerupCounts: 
 --- !u!4 &1550925950
 Transform:
   m_ObjectHideFlags: 0

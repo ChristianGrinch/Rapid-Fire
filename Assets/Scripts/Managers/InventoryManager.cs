@@ -129,26 +129,22 @@ public class InventoryManager : MonoBehaviour
 	public void SetSlotData(ItemData newItemData)
 	{
 		Debug.Log("SetSlotData ran.");
-		ItemData itemData;
 		switch (newItemData.itemType)
 		{
 			case ItemDataType.None:
 				break;
 			case ItemDataType.Primary:
+				selectedGuns[0].itemType = ItemDataType.Primary;
 				switch (newItemData.primaryType)
 				{
 					case PrimaryType.AssaultRifle:
 						if (loadingSelectedGuns && selectedGuns[0].itemType == ItemDataType.None) return;
-						itemData = new ItemData
-						{
-							itemType = ItemDataType.Primary,
-							primaryType = PrimaryType.AssaultRifle,
-							gunType = GunType.AssaultRifle,
-							gameObject = weaponsDatabase.FindGameObjects("Weapons/Primary/Assault Rifle")[0],
-							isWeaponAutomatic = true
+						// used for when loading the game for the first time and the data for the slot is saved, but the gameobject is not due to msgpack not being able to serialize gameobjects
+						if (newItemData.gameObject == null) newItemData.gameObject = weaponsDatabase.FindGameObjects("Weapons/Primary/Assault Rifle")[0];
 
-						};
-						selectedGuns[0] = itemData;
+						selectedGuns[0] = newItemData;
+						// must also set data for the visible slots because the primary/secondary data is needed to display items accordingly
+						WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData = newItemData;
 						InventoryUI.Instance.DisplayImage();
 						break;
 				}
@@ -160,28 +156,18 @@ public class InventoryManager : MonoBehaviour
 				{
 					case SecondaryType.Pistol:
 						if (loadingSelectedGuns && selectedGuns[0].itemType == ItemDataType.None) return;
-						itemData = new ItemData
-						{
-							itemType = ItemDataType.Secondary,
-							secondaryType = SecondaryType.Pistol,
-							gunType = GunType.Pistol,
-							gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Pistol")[0],
-							isWeaponAutomatic = false
-						};
-						selectedGuns[1] = itemData;
+						if (newItemData.gameObject == null) newItemData.gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Pistol")[0];
+
+						selectedGuns[1] = newItemData;
+						WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData = newItemData;
 						InventoryUI.Instance.DisplayImage();
 						break;
 					case SecondaryType.SubMachineGun:
 						if (loadingSelectedGuns && selectedGuns[0].itemType == ItemDataType.None) return;
-						itemData = new ItemData
-						{
-							itemType = ItemDataType.Secondary,
-							secondaryType = SecondaryType.SubMachineGun,
-							gunType = GunType.SubMachineGun,
-							gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Sub Machine Gun")[0],
-							isWeaponAutomatic = true
-						};
-						selectedGuns[1] = itemData;
+						if (newItemData.gameObject == null) newItemData.gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Sub Machine Gun")[0];
+
+						selectedGuns[1] = newItemData;
+						WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData = newItemData;
 						InventoryUI.Instance.DisplayImage();
 						break;
 				}

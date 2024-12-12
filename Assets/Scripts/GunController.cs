@@ -55,9 +55,9 @@ public class GunController : MonoBehaviour
 		if (currentGunData.gunType == GunType.None) currentGunData = InventoryManager.Instance.selectedGuns[0];
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			// If no secondary is selected then return
+			// If no primary is selected then return
 			if (InventoryManager.Instance.selectedGuns[0].gameObject == null) return;
-			// If a secondary has been equipped but the new one to be equipped is different
+			// If a primary has been equipped but the new one to be equipped is different, destroy the existing primary
 			if (instantiatedPrimary != null && instantiatedPrimary != InventoryManager.Instance.selectedGuns[0].gameObject) Destroy(instantiatedPrimary);
 			// Destory other gun type when swapping
 			Destroy(instantiatedSecondary);
@@ -67,11 +67,8 @@ public class GunController : MonoBehaviour
 		} 
 		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			// If no secondary is selected then return
 			if (InventoryManager.Instance.selectedGuns[1].gameObject == null) return;
-			// If a secondary has been equipped but the new one to be equipped is different
 			if (instantiatedSecondary != null && instantiatedSecondary != InventoryManager.Instance.selectedGuns[1].gameObject) Destroy(instantiatedSecondary);
-			// Destory other gun type when swapping
 			Destroy(instantiatedPrimary);
 			currentGunData = InventoryManager.Instance.selectedGuns[1];
 			currentGunInt = 1;
