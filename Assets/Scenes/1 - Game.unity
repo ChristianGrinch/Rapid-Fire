@@ -12649,6 +12649,7 @@ MonoBehaviour:
   slotPrefab: {fileID: 7311629748336618378, guid: 978a4909375aafa4b8489e200d2e6714, type: 3}
   instantiatedSlot: {fileID: 0}
   slotImage: {fileID: 0}
+  weaponsDatabase: {fileID: 11400000, guid: 84bc446c9068430489b0f028189600df, type: 2}
 --- !u!1 &1552565988
 GameObject:
   m_ObjectHideFlags: 0
