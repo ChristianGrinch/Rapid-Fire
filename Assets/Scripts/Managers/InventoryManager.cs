@@ -20,22 +20,23 @@ public class InventoryManager : MonoBehaviour
 	[Header("Player owned weapons")]
 	public List<ItemData> ownedPrimaries;
 	public List<ItemData> ownedSecondaries;
-	public List<ItemData> selectedGuns = new(2);
+	public List<ItemData> selectedGuns = new(2)
+	{
+		new ItemData(),
+		new ItemData()
+	};
 	[Header("Other")]
 	public GameObject storageContainer;
 	public GameObject slotPrefab;
 	public GameObject instantiatedSlot;
 	public RawImage slotImage;
-	private bool loadingSelectedGuns;
 	public WeaponsDatabase weaponsDatabase;
 	private void Start()
 	{
 		foreach(var gun in selectedGuns)
 		{
-			loadingSelectedGuns = true;
 			SetSlotData(gun);
 		}
-		loadingSelectedGuns = false;
 	}
 	public void FindStorageContainer(string name, GameObject parent)
 	{
@@ -125,37 +126,33 @@ public class InventoryManager : MonoBehaviour
 			case ItemDataType.None:
 				break;
 			case ItemDataType.Primary:
-				ItemData primaryData = WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData;
-				primaryData.itemType = ItemDataType.Primary;
+				selectedGuns[0].itemType = ItemDataType.Primary;
 
 				switch (newItemData.primaryType)
 				{
 					case PrimaryType.AssaultRifle:
-						primaryData.primaryType = PrimaryType.AssaultRifle;
+						selectedGuns[0].primaryType = PrimaryType.AssaultRifle;
 						InventoryUI.Instance.DisplayImage();
-						if(!loadingSelectedGuns && selectedGuns[0].primaryType != PrimaryType.AssaultRifle) selectedGuns.Add(primaryData);
+						selectedGuns[0].gunType = GunType.AssaultRifle;
 						selectedGuns[0].gameObject = weaponsDatabase.FindGameObjects("Weapons/Primary/Assault Rifle")[0];
 						break;
 				}
 				break;
 			case ItemDataType.Secondary:
-				ItemData secondaryData = WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData;
-				secondaryData.itemType = ItemDataType.Secondary;
+				selectedGuns[1].itemType = ItemDataType.Secondary;
 
 				switch (newItemData.secondaryType)
 				{
 					case SecondaryType.Pistol:
-						secondaryData.secondaryType = SecondaryType.Pistol;
+						selectedGuns[1].secondaryType = SecondaryType.Pistol;
 						InventoryUI.Instance.DisplayImage();
-
-						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.Pistol) selectedGuns.Add(secondaryData);
+						selectedGuns[1].gunType = GunType.Pistol;
 						selectedGuns[1].gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Pistol")[0];
 						break;
 					case SecondaryType.SubMachineGun:
-						secondaryData.secondaryType = SecondaryType.SubMachineGun;
+						selectedGuns[1].secondaryType = SecondaryType.SubMachineGun;
 						InventoryUI.Instance.DisplayImage();
-
-						if (!loadingSelectedGuns && selectedGuns[1].secondaryType != SecondaryType.SubMachineGun) selectedGuns.Add(secondaryData);
+						selectedGuns[1].gunType = GunType.SubMachineGun;
 						selectedGuns[1].gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Sub Machine Gun")[0];
 						break;
 				}

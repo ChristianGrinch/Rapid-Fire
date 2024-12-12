@@ -73,7 +73,15 @@ public class GameMenuUI : MonoBehaviour
         health.text = $"Health: {healthSystem.health}";
         lives.text = $"Lives: {healthSystem.lives}";
 		//TODO: cyhange to primary/secondary, not guntype
-		int currentAmmo = gunController.currentGun == GunType.AssaultRifle ? WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData.ammo : WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData.ammo;
+		int currentAmmo;
+		if (gunController.currentGun == GunType.AssaultRifle)
+		{
+			currentAmmo = InventoryManager.Instance.selectedGuns[0].ammo;
+		}
+		else
+		{
+			currentAmmo = InventoryManager.Instance.selectedGuns[1].ammo;
+		}
 
 		ammo.text = currentAmmo.ToString();
 

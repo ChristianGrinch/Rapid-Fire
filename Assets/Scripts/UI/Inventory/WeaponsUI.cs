@@ -31,6 +31,8 @@ public class WeaponsUI : MonoBehaviour
 	{
 		primaryBtn.onClick.AddListener(TogglePrimary);
 		secondaryBtn.onClick.AddListener(ToggleSecondary);
+		primary.GetComponent<SlotData>().itemData = InventoryManager.Instance.selectedGuns[0];
+		secondary.GetComponent<SlotData>().itemData = InventoryManager.Instance.selectedGuns[1];
 	}
 	private void TogglePrimary()
 	{

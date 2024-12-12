@@ -90,7 +90,7 @@ public class GunController : MonoBehaviour
 		switch (currentGun)
 		{
 			case GunType.AssaultRifle:
-			{
+				{
 				if (instantiatedPrimary == null) return;
 				if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(ItemDataType.Primary))
 				{
@@ -104,9 +104,9 @@ public class GunController : MonoBehaviour
 				}
 
 				break;
-			}
+				}
 			case GunType.Pistol:
-			{
+				{
 				if (instantiatedSecondary == null) return;
 				if (Input.GetMouseButtonDown(0) && TryUseAmmo(ItemDataType.Secondary))
 				{
@@ -118,7 +118,7 @@ public class GunController : MonoBehaviour
 				}
 
 				break;
-			}
+				}
 		}
 
 	}
@@ -145,14 +145,12 @@ public class GunController : MonoBehaviour
 	{
 		if (InventoryManager.Instance.selectedGuns[0].itemType != ItemDataType.None)
 		{
-			WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData.ammo += 10;
-			InventoryManager.Instance.selectedGuns[0] = WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData;
+			InventoryManager.Instance.selectedGuns[0].ammo += 10;
 		}
 
 		if (InventoryManager.Instance.selectedGuns[1].itemType != ItemDataType.None)
 		{
-			WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData.ammo += 15;
-			InventoryManager.Instance.selectedGuns[1] = WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData;
+			InventoryManager.Instance.selectedGuns[1].ammo += 15;
 		}
 	}
 
@@ -162,33 +160,29 @@ public class GunController : MonoBehaviour
 		if (InventoryUI.Instance.inventoryMenu.activeSelf) return false;
 		if (itemDataType == ItemDataType.Primary)
 		{
-			ItemData itemData = WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData;
+			ItemData itemData = InventoryManager.Instance.selectedGuns[0];
 			int ammo = itemData.ammo;
 			if(ammo > 0)
 			{
 				itemData.ammo--;
-				InventoryManager.Instance.selectedGuns[0].ammo = itemData.ammo;
 				return true;
 			}
 			else
 			{
-				InventoryManager.Instance.selectedGuns[0].ammo = itemData.ammo;
 				return false;
 			}
 		}
 		else if (itemDataType == ItemDataType.Secondary)
 		{
-			ItemData itemData = WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData;
+			ItemData itemData = InventoryManager.Instance.selectedGuns[1];
 			int ammo = itemData.ammo;
 			if (ammo > 0)
 			{
 				itemData.ammo--;
-				InventoryManager.Instance.selectedGuns[1].ammo = itemData.ammo;
 				return true;
 			}
 			else
 			{
-				InventoryManager.Instance.selectedGuns[1].ammo = itemData.ammo;
 				return false;
 			}
 		}

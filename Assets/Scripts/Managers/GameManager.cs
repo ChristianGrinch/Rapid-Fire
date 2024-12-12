@@ -275,8 +275,6 @@ public class GameManager : MonoBehaviour
 			playerController.health = data.health;
 			playerController.lives = data.lives;
 			wave = data.wave;
-			WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData.ammo = data.ammo[0];
-			WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData.ammo = data.ammo[1];
 			playerController.speedPowerupCount = data.speedPowerup;
 
 			Vector3 position;
