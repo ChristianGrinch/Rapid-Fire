@@ -167,6 +167,7 @@ public class PowerupManager : MonoBehaviour
 	{
 		runningSpeedPowerup = true;
 		playerController.speedPowerupCount--;
+		InventoryManager.Instance.SetSlotData(new ItemData { itemType = ItemDataType.Powerup, powerupType = PowerupType.Speed });
 
 		// Apply speed boost
 		player.GetComponent<PlayerController>().speed = 150;

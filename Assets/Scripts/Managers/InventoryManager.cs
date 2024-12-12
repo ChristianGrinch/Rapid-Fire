@@ -173,7 +173,23 @@ public class InventoryManager : MonoBehaviour
 				}
 				break;
 			case ItemDataType.Powerup:
+				PowerupsUI powerupsUI = PowerupsUI.Instance;
 
+				switch (newItemData.powerupType)
+				{
+					case PowerupType.Ammo:
+						powerupsUI.ammoCount.text = powerupsUI.ammoSlotData.powerupCounts[2].ToString();
+						break;
+					case PowerupType.Health:
+						powerupsUI.healthCount.text = powerupsUI.healthSlotData.powerupCounts[0].ToString();
+						break;
+					case PowerupType.Speed:
+						Debug.Log("ran speed setslotdata");
+						powerupsUI.speedSlotData.powerupCounts[1] = PlayerController.Instance.speedPowerupCount;
+						powerupsUI.speedCount.text = powerupsUI.speedSlotData.powerupCounts[1].ToString();
+						InventoryUI.Instance.DisplayImage();
+						break;
+				}
 				break;
 			case ItemDataType.Armor:
 

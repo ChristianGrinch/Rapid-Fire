@@ -151,19 +151,19 @@ public class GunController : MonoBehaviour
 	{
 		if (InventoryManager.Instance.selectedGuns[0].itemType != ItemDataType.None)
 		{
-			InventoryManager.Instance.selectedGuns[0].ammo += 10;
+			InventoryManager.Instance.selectedGuns[0].ammo += 16;
 		}
 
 		if (InventoryManager.Instance.selectedGuns[1].itemType != ItemDataType.None)
 		{
-			InventoryManager.Instance.selectedGuns[1].ammo += 15;
+			InventoryManager.Instance.selectedGuns[1].ammo += 10;
 		}
 	}
 
 	bool TryUseAmmo(ItemDataType itemDataType)
 	{
-		// Make sure the inventory is closed before shooting
-		if (InventoryUI.Instance.inventoryMenu.activeSelf) return false;
+		// Make sure the inventory and shop are closed before shooting
+		if (InventoryUI.Instance.inventoryMenu.activeSelf || ShopUI.Instance.shopMenu.activeSelf) return false;
 		if (itemDataType == ItemDataType.Primary)
 		{
 			ItemData itemData = InventoryManager.Instance.selectedGuns[0];

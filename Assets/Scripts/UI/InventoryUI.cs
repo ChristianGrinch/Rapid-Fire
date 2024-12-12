@@ -23,18 +23,12 @@ public class InventoryUI : MonoBehaviour
 
 	[Header("Slots")]
 	public List<GameObject> slots;
-	public GameObject heartPowerup;
-	public GameObject speedPowerup;
-	public GameObject ammoPowerup;
-
-	public TMP_Text heartPowerupCount;
-	public TMP_Text speedPowerupCount;
-	public TMP_Text ammoPowerupCount;
-
 	[Header("Render Textures")]
 	public RenderTexture pistolRT;
 	public RenderTexture assaultRifleRT;
 	public RenderTexture subMachineGunRT;
+
+	public RenderTexture speedPowerupRT;
 
 	[Header("Other")]
 	public bool isInventoryOpen;
@@ -42,11 +36,6 @@ public class InventoryUI : MonoBehaviour
 
 	private void Update()
 	{
-		//TODO: make only run when the value is updated
-		heartPowerupCount.text = heartPowerup.GetComponent<SlotData>().powerupCounts[0].ToString();
-		speedPowerupCount.text = speedPowerup.GetComponent<SlotData>().powerupCounts[1].ToString();
-		ammoPowerupCount.text = ammoPowerup.GetComponent<SlotData>().powerupCounts[2].ToString();
-
 		//DisplayImage();
 
 		if (Input.GetKeyDown(KeyCode.E))
@@ -68,6 +57,7 @@ public class InventoryUI : MonoBehaviour
 	public void OpenInventory()
 	{
 		inventoryMenu.SetActive(true);
+		PowerupsUI.Instance.UpdateCounts();
 	}
 	public void CloseInventory()
 	{
@@ -117,6 +107,17 @@ public class InventoryUI : MonoBehaviour
 					}
 					break;
 				case ItemDataType.Powerup:
+					switch (itemData.powerupType)
+					{
+						case PowerupType.Speed:
+							RawImage rawImage = slot.GetComponentInChildren<RawImage>();
+							rawImage.texture = speedPowerupRT;
+
+							Color color = rawImage.color;
+							color.a = 1f;
+							rawImage.color = color;
+							break;
+					}
 					break;
 				case ItemDataType.Armor:
 					break;

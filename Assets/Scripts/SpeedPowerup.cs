@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static SlotData;
 
 public class SpeedPowerup : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class SpeedPowerup : MonoBehaviour
 	private IEnumerator PlayerCollide()
 	{
 		playerController.speedPowerupCount++;
+		InventoryManager.Instance.SetSlotData(new ItemData { itemType = ItemDataType.Powerup, powerupType = PowerupType.Speed });
 
 		audioData.clip = powerupCollectSound;
 		audioData.volume = 0.3f;
