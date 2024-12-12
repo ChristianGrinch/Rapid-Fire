@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static GunController;
+using static SlotData;
 
 public class GameMenuUI : MonoBehaviour
 {
@@ -61,11 +62,11 @@ public class GameMenuUI : MonoBehaviour
 	}
     private void Update()
     {
-		if(gunController.currentGun == GunType.Pistol)
+		if(gunController.currentGunData.gunType == GunType.Pistol)
 		{
 			ammoImage.sprite = pistolAmmo;
 		} 
-		else if(gunController.currentGun == GunType.AssaultRifle)
+		else if(gunController.currentGunData.gunType == GunType.AssaultRifle)
 		{
 			ammoImage.sprite = rifleAmmo;
 		}
@@ -74,7 +75,7 @@ public class GameMenuUI : MonoBehaviour
         lives.text = $"Lives: {healthSystem.lives}";
 		//TODO: cyhange to primary/secondary, not guntype
 		int currentAmmo;
-		if (gunController.currentGun == GunType.AssaultRifle)
+		if (gunController.currentGunData.itemType == ItemDataType.Primary)
 		{
 			currentAmmo = InventoryManager.Instance.selectedGuns[0].ammo;
 		}
