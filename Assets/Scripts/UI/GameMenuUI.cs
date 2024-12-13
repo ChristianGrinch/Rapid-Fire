@@ -73,7 +73,7 @@ public class GameMenuUI : MonoBehaviour
         wave.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
         health.text = $"Health: {healthSystem.health}";
         lives.text = $"Lives: {healthSystem.lives}";
-		//TODO: cyhange to primary/secondary, not guntype
+
 		int currentAmmo;
 		if (gunController.currentGunData.itemType == ItemDataType.Primary)
 		{

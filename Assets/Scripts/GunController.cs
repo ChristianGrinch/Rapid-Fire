@@ -44,42 +44,35 @@ public class GunController : MonoBehaviour
 	{
 		if (!UIManager.Instance.isGamePaused)
 		{
-			ChangeCurrentGun();
-
+			if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeCurrentGun(0);
+			if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeCurrentGun(1);
 			ShootGun();
 		}
 	}
-
-	void ChangeCurrentGun()
+	void ChangeCurrentGun(int index)
 	{
-		if (currentGunData.gunType == GunType.None) currentGunData = InventoryManager.Instance.selectedGuns[0];
-		if (Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			// If no primary is selected then return
-			if (InventoryManager.Instance.selectedGuns[0].gameObject == null) return;
-			// If a primary has been equipped but the new one to be equipped is different, destroy the existing primary
-			if (instantiatedPrimary != null && instantiatedPrimary != InventoryManager.Instance.selectedGuns[0].gameObject) Destroy(instantiatedPrimary);
-			// Destory other gun type when swapping
-			Destroy(instantiatedSecondary);
-			currentGunData = InventoryManager.Instance.selectedGuns[0];
-			currentGunInt = 0;
-			instantiatedPrimary = Instantiate(InventoryManager.Instance.selectedGuns[0].gameObject, player.transform);
-		} 
-		else if (Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			if (InventoryManager.Instance.selectedGuns[1].gameObject == null) return;
-			if (instantiatedSecondary != null && instantiatedSecondary != InventoryManager.Instance.selectedGuns[1].gameObject) Destroy(instantiatedSecondary);
-			Destroy(instantiatedPrimary);
-			currentGunData = InventoryManager.Instance.selectedGuns[1];
-			currentGunInt = 1;
-			instantiatedSecondary = Instantiate(InventoryManager.Instance.selectedGuns[1].gameObject, player.transform);
-		}
-	}
+		GameObject instantiatedWeapon = index == 0 ? instantiatedPrimary : instantiatedSecondary;
+		GameObject otherWeapon = index == 0 ? instantiatedSecondary : instantiatedPrimary;
+		
+		// If no weapon of the corresponding index is selected, return
+		if (InventoryManager.Instance.selectedGuns[index].gameObject == null) return;
 
+		// If the new weapon to equip is different, destory the existing one
+		if (instantiatedWeapon != null && instantiatedWeapon != InventoryManager.Instance.selectedGuns[index].gameObject)
+			Destroy(instantiatedWeapon);
+
+		Destroy(otherWeapon);
+		currentGunData = InventoryManager.Instance.selectedGuns[index];
+		currentGunInt = index;
+		
+		if (index == 0)
+			instantiatedPrimary = Instantiate(currentGunData.gameObject, player.transform);
+		else
+			instantiatedSecondary = Instantiate(currentGunData.gameObject, player.transform);
+	}
 	void ShootGun()
 	{
 		ShootBullet shootBullet = bullet.GetComponent<ShootBullet>();
-
 		float yRotation = playerRb.rotation.eulerAngles.y;
 
 		if (yRotation < 0) yRotation += 360;
@@ -120,22 +113,15 @@ public class GunController : MonoBehaviour
 
 	void SetBulletStats(ShootBullet shootBullet, ItemDataType itemDataType)
 	{
-		float bulletSpeed;
-		int bulletDamage;
-		int bulletRange;
 		switch (itemDataType)
 		{
 			case ItemDataType.Primary:
-				bulletSpeed = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.bulletSpeed;
-				bulletDamage = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.damage;
-				bulletRange = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.range;
-				shootBullet.UpdateStats(bulletDamage, bulletRange, bulletSpeed);
+				GunStats primaryData = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats;
+				shootBullet.UpdateStats(primaryData.damage, primaryData.range, primaryData.bulletSpeed);
 				return;
 			case ItemDataType.Secondary:
-				bulletSpeed = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.bulletSpeed;
-				bulletDamage = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.damage;
-				bulletRange = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats.range;
-				shootBullet.UpdateStats(bulletDamage, bulletRange, bulletSpeed);
+				GunStats secondaryData = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats;
+				shootBullet.UpdateStats(secondaryData.damage, secondaryData.range, secondaryData.bulletSpeed);
 				return;
 		}
 	}

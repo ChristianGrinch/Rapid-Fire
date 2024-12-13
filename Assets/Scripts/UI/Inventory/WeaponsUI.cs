@@ -21,6 +21,9 @@ public class WeaponsUI : MonoBehaviour
 
 	public GameObject secondary;
 	public Button secondaryBtn;
+	[Header("Slot data")]
+	public SlotData primaryData;
+	public SlotData secondaryData;
 	[Header("Other")]
 	public GameObject weaponsPrefab;
 	public GameObject instantiatedWeapons;
@@ -29,10 +32,13 @@ public class WeaponsUI : MonoBehaviour
 	public bool isSecondaryOpen;
 	private void Start()
 	{
+		primaryData = primary.GetComponent<SlotData>();
+		secondaryData = secondary.GetComponent<SlotData>();
+
 		primaryBtn.onClick.AddListener(TogglePrimary);
 		secondaryBtn.onClick.AddListener(ToggleSecondary);
-		primary.GetComponent<SlotData>().itemData = InventoryManager.Instance.selectedGuns[0];
-		secondary.GetComponent<SlotData>().itemData = InventoryManager.Instance.selectedGuns[1];
+		primaryData.itemData = InventoryManager.Instance.selectedGuns[0];
+		secondaryData.itemData = InventoryManager.Instance.selectedGuns[1];
 	}
 	private void TogglePrimary()
 	{

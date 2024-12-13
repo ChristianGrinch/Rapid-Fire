@@ -144,7 +144,7 @@ public class InventoryManager : MonoBehaviour
 
 						selectedGuns[0] = newItemData;
 						// must also set data for the visible slots because the primary/secondary data is needed to display items accordingly
-						WeaponsUI.Instance.primary.GetComponent<SlotData>().itemData = newItemData;
+						WeaponsUI.Instance.primaryData.itemData = newItemData;
 						InventoryUI.Instance.DisplayImage();
 						break;
 				}
@@ -159,7 +159,7 @@ public class InventoryManager : MonoBehaviour
 						if (newItemData.gameObject == null) newItemData.gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Pistol")[0];
 
 						selectedGuns[1] = newItemData;
-						WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData = newItemData;
+						WeaponsUI.Instance.secondaryData.itemData = newItemData;
 						InventoryUI.Instance.DisplayImage();
 						break;
 					case SecondaryType.SubMachineGun:
@@ -167,7 +167,7 @@ public class InventoryManager : MonoBehaviour
 						if (newItemData.gameObject == null) newItemData.gameObject = weaponsDatabase.FindGameObjects("Weapons/Secondary/Sub Machine Gun")[0];
 
 						selectedGuns[1] = newItemData;
-						WeaponsUI.Instance.secondary.GetComponent<SlotData>().itemData = newItemData;
+						WeaponsUI.Instance.secondaryData.itemData = newItemData;
 						InventoryUI.Instance.DisplayImage();
 						break;
 				}
@@ -201,40 +201,5 @@ public class InventoryManager : MonoBehaviour
 		RawImage rawImage = instantiatedSlot.GetComponentInChildren<RawImage>();
 		rawImage.texture = renderTexture;
 		rawImage.color = new(255, 255, 255, 255);
-	}
-	public GameObject FindGameObject(GunType gunType)
-	{
-		string weaponsPath = "Resources/Weapons";
-		string primaryPath = weaponsPath + "/Primary";
-		string secondaryPath = weaponsPath + "/Secondary";
-		string path = "";
-
-		switch (gunType)
-		{
-			case GunType.Pistol:
-				path = secondaryPath + "/Pistol/Pistol Level 1.prefab";
-				break;
-
-			case GunType.AssaultRifle:
-				path = primaryPath + "/Assault Rifle/Assault Rifle Level 1";
-				break;
-
-			case GunType.SubMachineGun:
-				path = secondaryPath + "/Sub Machine Gun/Sub Machine Gun Level 1";
-				break;
-
-			default:
-				Debug.LogError("Invalid gun type!");
-				return null;
-		}
-
-		GameObject gunPrefab = Resources.Load<GameObject>(path);
-
-		if (gunPrefab == null)
-		{
-			Debug.LogError($"Gun prefab not found at path: {path}");
-		}
-
-		return gunPrefab;
 	}
 }
