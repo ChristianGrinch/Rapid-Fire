@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static SlotData;
 
 public class GameManager : MonoBehaviour
 {
@@ -274,7 +275,6 @@ public class GameManager : MonoBehaviour
 			playerController.health = data.health;
 			playerController.lives = data.lives;
 			wave = data.wave;
-			playerController.ammo = data.ammo;
 			playerController.speedPowerupCount = data.speedPowerup;
 
 			Vector3 position;
@@ -286,9 +286,12 @@ public class GameManager : MonoBehaviour
 			playerHealthSystem.UpdateHealth(data.health);
 			playerHealthSystem.UpdateLives(data.lives);
 
+			InventoryManager.Instance.ownedPrimaries = data.ownedPrimaries;
+			InventoryManager.Instance.ownedSecondaries = data.ownedSecondaries;
+			InventoryManager.Instance.selectedGuns = data.selectedGuns;
+
 			// Update game data
 			enemySpawnManager.currentWave = data.wave;
-			gunController.ammo = data.ammo;
 
 			// Check if the save is an old save and modify for compatibility
 			if (data.numberOfEnemies.Length == 4)

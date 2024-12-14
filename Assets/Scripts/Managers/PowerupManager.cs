@@ -2,12 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public enum PowerupType
-{
-	Ammo,
-	Health,
-	Speed
-}
+using static SlotData;
+
 public class PowerupManager : MonoBehaviour
 {
 	public static PowerupManager Instance { get; private set; }
@@ -171,6 +167,7 @@ public class PowerupManager : MonoBehaviour
 	{
 		runningSpeedPowerup = true;
 		playerController.speedPowerupCount--;
+		InventoryManager.Instance.SetSlotData(new ItemData { itemType = ItemDataType.Powerup, powerupType = PowerupType.Speed });
 
 		// Apply speed boost
 		player.GetComponent<PlayerController>().speed = 150;

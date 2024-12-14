@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static SlotData;
 
 public class ShopUI : MonoBehaviour
 {
@@ -40,7 +41,6 @@ public class ShopUI : MonoBehaviour
 	[Header("Other")]
 	public bool isShopOpen;
 	public TMP_Text exp;
-	public List<GunTypes> ownedGuns;
 	public List<PowerupType> ownedPowerups;
 	public enum ButtonType
 	{
@@ -48,22 +48,6 @@ public class ShopUI : MonoBehaviour
 		Powerup,
 		Upgrade
 	}
-	public enum GunTypes
-	{
-		Pistol,
-		AssaultRifle,
-	}
-	public enum GunUpgrades
-	{
-		Speed,
-		Range,
-		Damage
-	}
-	public Dictionary<GunTypes, List<GunUpgrades>> gunUpgrades = new()
-	{
-		{ GunTypes.Pistol, new List<GunUpgrades> { GunUpgrades.Speed, GunUpgrades.Range, GunUpgrades.Damage } },
-		{ GunTypes.AssaultRifle, new List<GunUpgrades> { GunUpgrades.Speed, GunUpgrades.Range, GunUpgrades.Damage } }
-	};
 	private void Start()
 	{
 		EmptyContent();

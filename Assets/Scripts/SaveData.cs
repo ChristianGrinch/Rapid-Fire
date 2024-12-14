@@ -1,6 +1,8 @@
 using UnityEngine;
 using MessagePack;
 using System.Collections.Generic;
+using static SlotData;
+using static GunController;
 
 [MessagePackObject]
 public class SaveData
@@ -10,8 +12,10 @@ public class SaveData
 	[Key(1)] public int health;
 	[Key(2)] public int lives;
 	[Key(3)] public float[] position;
-	[Key(4)] public int[] ammo;
 	[Key(5)] public int speedPowerup;
+	[Key(6)] public List<ItemData> ownedPrimaries = new();
+	[Key(7)] public List<ItemData> ownedSecondaries = new();
+	[Key(8)] public List<ItemData> selectedGuns = new(2);
 
 	// Game data
 	[Key(10)] public int wave;
@@ -40,11 +44,9 @@ public class SaveData
 	// Factory method to create SaveData from PlayerController
 	public static SaveData AssignData(PlayerController player)
 	{
-		Debug.Log(EnemyDataManager.Instance.enemyCount[0]);
-
 		EnemyData enemyData = EnemySpawnManager.Instance.GetEnemyData();
 		PowerupData powerupData = PowerupManager.Instance.GetPowerupData();
-		Debug.Log("powerup data: " + powerupData);
+
 		SaveData saveData = new()
 		{
 			// Assign player data
@@ -58,7 +60,9 @@ public class SaveData
 				player.transform.position.y,
 				player.transform.position.z
 			},
-			ammo = player.ammo,
+			ownedPrimaries = InventoryManager.Instance.ownedPrimaries,
+			ownedSecondaries = InventoryManager.Instance.ownedSecondaries,
+			selectedGuns = InventoryManager.Instance.selectedGuns,
 
 			// Assign game data
 			wave = GameManager.Instance.wave,
@@ -116,8 +120,24 @@ public class SaveData
                 break;
         }
         saveData.position = new float[3] { 0, 0.5f, 0};
-		saveData.ammo = new[] { 30, 50 };
 		saveData.speedPowerup = 0;
+		saveData.ownedPrimaries.Add(new ItemData
+		{
+			itemType = ItemDataType.Primary,
+			primaryType = PrimaryType.None,
+			ammo = 30
+		});
+		saveData.ownedSecondaries.Add(new ItemData
+		{
+			itemType = ItemDataType.Secondary,
+			secondaryType = SecondaryType.Pistol,
+			ammo = 50
+		});
+		// to prevent index out of range or whtvr error
+		while (saveData.selectedGuns.Count < 2)
+		{
+			saveData.selectedGuns.Add(new ItemData());
+		}
 
 		// Assign game data
 		saveData.wave = 1;

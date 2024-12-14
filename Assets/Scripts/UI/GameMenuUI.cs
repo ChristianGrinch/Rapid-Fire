@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static GunController;
+using static SlotData;
 
 public class GameMenuUI : MonoBehaviour
 {
@@ -60,18 +62,30 @@ public class GameMenuUI : MonoBehaviour
 	}
     private void Update()
     {
-		if(gunController.currentGun == GunController.GunType.Pistol)
+		if(gunController.currentGunData.gunType == GunType.Pistol)
 		{
 			ammoImage.sprite = pistolAmmo;
 		} 
-		else if(gunController.currentGun == GunController.GunType.AssaultRifle)
+		else if(gunController.currentGunData.gunType == GunType.AssaultRifle)
 		{
 			ammoImage.sprite = rifleAmmo;
 		}
         wave.text = $"Wave {EnemySpawnManager.Instance.currentWave}";
         health.text = $"Health: {healthSystem.health}";
         lives.text = $"Lives: {healthSystem.lives}";
-        ammo.text = $"{gunController.ammo[gunController.currentGunInt]}";
+
+		int currentAmmo;
+		if (gunController.currentGunData.itemType == ItemDataType.Primary)
+		{
+			currentAmmo = InventoryManager.Instance.selectedGuns[0].ammo;
+		}
+		else
+		{
+			currentAmmo = InventoryManager.Instance.selectedGuns[1].ammo;
+		}
+
+		ammo.text = currentAmmo.ToString();
+
         if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Tab)) // very hard to trigger. must press all 3 at exactly the same time
         {
             if (debug.activeSelf)
