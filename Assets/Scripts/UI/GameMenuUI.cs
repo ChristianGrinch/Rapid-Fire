@@ -23,6 +23,7 @@ public class GameMenuUI : MonoBehaviour
     public GameObject debug;
 	[Header("Buttons")]
 	public Button shop;
+	public Button inventory;
     [Header("Text")]
     public TMP_Text difficulty;
     public TMP_Text health;
@@ -59,6 +60,7 @@ public class GameMenuUI : MonoBehaviour
 		DebugLogic();
 
 		shop.onClick.AddListener(() => ShopUI.Instance.OpenShop());
+		inventory.onClick.AddListener(() => InventoryUI.Instance.OpenInventory());
 	}
     private void Update()
     {

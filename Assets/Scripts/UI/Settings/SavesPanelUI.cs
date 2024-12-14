@@ -26,6 +26,7 @@ public class SavesPanelUI : MonoBehaviour
 	public GameObject createSaveWarning;
 	public GameObject loadWarning;
 	public GameObject emptyLoadWarning;
+	public GameObject wrongVersionError;
 	[Header("Buttons")]
 	public Button createSave;
 	public Button deleteSave;
@@ -64,19 +65,19 @@ public class SavesPanelUI : MonoBehaviour
             if (GameManager.Instance.isInGame)
             {
                 Debug.Log("Cannot load save while game is active.");
-                loadWarning.gameObject.SetActive(true);
+                loadWarning.SetActive(true);
             }
             else
             {
                 Debug.Log(currentSave);
-                if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
-                {
-                    PopupManager.Instance.ShowPopup(PopupManager.PopupType.PlaySaveConfirm);
-                }
-                else
-                {
-                    StartCoroutine(ShowLoadWarning());
-                }
+				if (!string.IsNullOrEmpty(currentSave) && SaveSystem.FindSavesBool(currentSave))
+				{
+					PopupManager.Instance.ShowPopup(PopupManager.PopupType.PlaySaveConfirm);
+				}
+				else
+				{
+					StartCoroutine(ShowLoadWarning());
+				}
             }
         });
 		autoSaveIntervalDropdown.onValueChanged.AddListener((int value) => 
@@ -231,4 +232,10 @@ public class SavesPanelUI : MonoBehaviour
         emptyLoadWarning.SetActive(false);
 
     }
+	public IEnumerator ShowVersionError()
+	{
+		wrongVersionError.SetActive(true);
+		yield return new WaitForSeconds(10);
+		wrongVersionError.SetActive(false);
+	}
 }

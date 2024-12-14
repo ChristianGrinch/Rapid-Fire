@@ -44,11 +44,9 @@ public class InventoryUI : MonoBehaviour
 			{
 				case false:
 					OpenInventory();
-					isInventoryOpen = true;
 					break;
 				case true:
 					CloseInventory();
-					isInventoryOpen = false;
 					break;
 			}
 		}
@@ -56,6 +54,7 @@ public class InventoryUI : MonoBehaviour
 	}
 	public void OpenInventory()
 	{
+		isInventoryOpen = true;
 		inventoryMenu.SetActive(true);
 		PowerupsUI.Instance.UpdateCounts();
 	}
@@ -64,6 +63,7 @@ public class InventoryUI : MonoBehaviour
 		inventoryMenu.SetActive(false);
 		WeaponsUI.Instance.CloseContainers();
 		Destroy(EquipmentUI.Instance.instantiatedEquipment);
+		isInventoryOpen = false;
 	}
 	public void DisplayImage()
 	{
