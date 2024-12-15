@@ -1,5 +1,28 @@
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+public enum Menus
+{	
+	// Sorted by where they first appear (ex: settings in start scene because the first time settings is encountered is in the settings scene)
+	// Start Scene
+	Start,
+	Difficulty,
+	Settings,
+	// Game Scene
+	Game,
+	Shop,
+	Restart,
+	Pause
+}
+public enum Panels
+{
+	// Settings
+	Audio,
+	Video,
+	Saves,
+	Controls
+}
 public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance { get; private set; }
@@ -18,11 +41,24 @@ public class UIManager : MonoBehaviour
 	public bool isGamePaused = false;
 	public bool isInGame = false;
 
+	public Dictionary<Menus, bool> menusStatus = new();
+	public Dictionary<Panels, bool> panelsStatus = new();
+
 	void Start()
 	{
 		SwitchToStart();
 		SavesPanelUI.Instance.InstantiateSaveButtons();
 		AudioPanelUI.Instance.InitializeVolume();
+
+		foreach (Menus menu in System.Enum.GetValues(typeof(Menus)))
+		{
+			menusStatus[menu] = false;
+		}
+
+		foreach (Panels panel in System.Enum.GetValues(typeof(Panels)))
+		{
+			panelsStatus[panel] = false;
+		}
 	}
 	void Update()
 	{
@@ -32,7 +68,7 @@ public class UIManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape)) GoBackCheck();
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			if (ShopUI.Instance.isShopOpen)
+			if (IsMenuOpen(Menus.Shop))
 			{
 				ShopUI.Instance.CloseShop();
 			}
@@ -41,6 +77,36 @@ public class UIManager : MonoBehaviour
 				ShopUI.Instance.OpenShop();
 			}
 		}
+	}
+	public void SetMenuStatus(Menus menu, bool menuStatus)
+	{
+		if (menusStatus.ContainsKey(menu))
+		{
+			menusStatus[menu] = menuStatus;
+		}
+	}
+	public void SetPanelStatus(Panels panel, bool panelStatus)
+	{
+		if (panelsStatus.ContainsKey(panel))
+		{
+			panelsStatus[panel] = panelStatus;
+		}
+	}
+	public bool IsMenuOpen(Menus menu)
+	{
+		if (menusStatus.ContainsKey(menu))
+		{
+			return menusStatus[menu];
+		}
+		return false;
+	}
+	public bool IsPanelOpen(Panels panel)
+	{
+		if (panelsStatus.ContainsKey(panel))
+		{
+			return panelsStatus[panel];
+		}
+		return false;
 	}
 	public void GoBackCheck()
 	{

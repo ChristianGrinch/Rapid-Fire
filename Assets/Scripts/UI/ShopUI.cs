@@ -39,7 +39,6 @@ public class ShopUI : MonoBehaviour
 	private Image prefabImage;
 	private TMP_Text prefabText;
 	[Header("Other")]
-	public bool isShopOpen;
 	public TMP_Text exp;
 	public List<PowerupType> ownedPowerups;
 	public enum ButtonType
@@ -57,8 +56,8 @@ public class ShopUI : MonoBehaviour
 	}
 	public void OpenShop()
 	{
+		UIManager.Instance.SetMenuStatus(Menus.Shop, true);
 		exp.text = $"EXP: {PlayerController.Instance.exp}";
-		isShopOpen = true;
 		GameManager.Instance.PauseGame();
 		shopMenu.SetActive(true);
 		EmptyContent();
@@ -69,7 +68,7 @@ public class ShopUI : MonoBehaviour
 	}
 	public void CloseShop()
 	{
-		isShopOpen = false;
+		UIManager.Instance.SetMenuStatus(Menus.Shop, false);
 		shopMenu.SetActive(false);
 		GameManager.Instance.ResumeGame();
 	}

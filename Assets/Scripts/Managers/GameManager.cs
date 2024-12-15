@@ -81,6 +81,10 @@ public class GameManager : MonoBehaviour
 		{
 			StartCoroutine(WaitIntervalSave(saveInterval));
 		}
+		if (!Application.isFocused && !isGamePaused)
+		{
+			PauseGame();
+		}
 	}
 	public void GameOver()
 	{
