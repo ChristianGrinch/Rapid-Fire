@@ -149,7 +149,7 @@ public class GunController : MonoBehaviour
 	bool TryUseAmmo(ItemDataType itemDataType)
 	{
 		// Make sure the inventory and shop are closed before shooting
-		if (InventoryUI.Instance.inventoryMenu.activeSelf || ShopUI.Instance.shopMenu.activeSelf) return false;
+		if (UIManager.Instance.IsMenuOpen(Menus.Inventory) || UIManager.Instance.IsMenuOpen(Menus.Shop)) return false;
 		if (itemDataType == ItemDataType.Primary)
 		{
 			ItemData itemData = InventoryManager.Instance.selectedGuns[0];

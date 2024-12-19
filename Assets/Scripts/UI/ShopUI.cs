@@ -59,7 +59,7 @@ public class ShopUI : MonoBehaviour
 		UIManager.Instance.SetMenuStatus(Menus.Shop, true);
 		exp.text = $"EXP: {PlayerController.Instance.exp}";
 		GameManager.Instance.PauseGame();
-		shopMenu.SetActive(true);
+		//shopMenu.SetActive(true);
 		EmptyContent();
 	}
 	public void BuyItem()
@@ -69,7 +69,7 @@ public class ShopUI : MonoBehaviour
 	public void CloseShop()
 	{
 		UIManager.Instance.SetMenuStatus(Menus.Shop, false);
-		shopMenu.SetActive(false);
+		//shopMenu.SetActive(false);
 		GameManager.Instance.ResumeGame();
 	}
 	public void EmptyContent()

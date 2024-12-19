@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static SlotData;
@@ -135,15 +136,15 @@ public class GameManager : MonoBehaviour
 	public void PauseGame()
 	{
 		isGamePaused = true;
-		PauseMenuUI.Instance.pauseMenu.SetActive(true);
+		UIManager.Instance.SetMenuStatus(Menus.Pause, true);
 		Time.timeScale = 0;
 	    PauseMenuUI.Instance.saveGame.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{
 		isGamePaused = false;
-		PauseMenuUI.Instance.pauseMenu.SetActive(false);
-        GameMenuUI.Instance.game.SetActive(true);
+		UIManager.Instance.SetMenuStatus(Menus.Pause, false);
+		UIManager.Instance.SetMenuStatus(Menus.Game, true);
 		Time.timeScale = 1;
 	}
 	public void QuitGame()
@@ -211,6 +212,14 @@ public class GameManager : MonoBehaviour
 		if (scene.buildIndex == 1)  // Ensure it’s the correct scene
 		{
 			// Scene is now fully loaded; access new scene objects here
+			if(UIManager.Instance.menuGameobjects.Count != Enum.GetNames(typeof(Menus)).Length)
+			{
+				UIManager.Instance.menuGameobjects.Add(GameMenuUI.Instance.game);
+				UIManager.Instance.menuGameobjects.Add(ShopUI.Instance.shopMenu);
+				UIManager.Instance.menuGameobjects.Add(RestartMenuUI.Instance.restartMenu);
+				UIManager.Instance.menuGameobjects.Add(PauseMenuUI.Instance.pauseMenu);
+				UIManager.Instance.menuGameobjects.Add(InventoryUI.Instance.inventoryMenu);
+			}
 
 			ShopUI.Instance.CloseShop();
 			player = GameObject.FindWithTag("Player");

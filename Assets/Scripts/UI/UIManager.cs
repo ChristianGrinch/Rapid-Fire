@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,7 +14,8 @@ public enum Menus
 	Game,
 	Shop,
 	Restart,
-	Pause
+	Pause,
+	Inventory
 }
 public enum Panels
 {
@@ -41,8 +43,10 @@ public class UIManager : MonoBehaviour
 	public bool isGamePaused = false;
 	public bool isInGame = false;
 
-	public Dictionary<Menus, bool> menusStatus = new();
+	public Dictionary<Menus, bool> menusStatus = new(); // True means its open, false means its closed
 	public Dictionary<Panels, bool> panelsStatus = new();
+	public List<GameObject> menuGameobjects;
+	public List<GameObject> panelGameObjects;
 
 	void Start()
 	{
@@ -59,6 +63,20 @@ public class UIManager : MonoBehaviour
 		{
 			panelsStatus[panel] = false;
 		}
+		menuGameobjects = new()
+		{
+			StartMenuUI.Instance.startMenu,
+			DifficultyMenuUI.Instance.difficultyMenu,
+			SettingsMenuUI.Instance.settingsMenu
+		};
+		panelGameObjects = new()
+		{
+			AudioPanelUI.Instance.audioPanel,
+			VideoPanelUI.Instance.videoPanel,
+			SavesPanelUI.Instance.savesPanel,
+			ControlsPanelUI.Instance.controlsPanel
+		};
+		SetMenuStatus(Menus.Start, true);
 	}
 	void Update()
 	{
@@ -83,6 +101,15 @@ public class UIManager : MonoBehaviour
 		if (menusStatus.ContainsKey(menu))
 		{
 			menusStatus[menu] = menuStatus;
+			try
+			{
+				Debug.Log("in try: " +menuGameobjects.Count);
+				menuGameobjects[(int)menu].SetActive(menuStatus); // breaks when game restarts for some reason
+			}
+			catch
+			{
+				Debug.Log("in catch: " +menuGameobjects.Count);
+			}
 		}
 	}
 	public void SetPanelStatus(Panels panel, bool panelStatus)
@@ -90,6 +117,7 @@ public class UIManager : MonoBehaviour
 		if (panelsStatus.ContainsKey(panel))
 		{
 			panelsStatus[panel] = panelStatus;
+			panelGameObjects[(int)panel].SetActive(panelStatus);
 		}
 	}
 	public bool IsMenuOpen(Menus menu)
@@ -120,12 +148,12 @@ public class UIManager : MonoBehaviour
 		{
 			if (!PopupManager.Instance.isPopupOpen)
 			{
-				if (isGamePaused && ShopUI.Instance.shopMenu.activeSelf)
+				if (isGamePaused && IsMenuOpen(Menus.Shop))
 				{
 					ShopUI.Instance.CloseShop();
 					return;
 				}
-				if (isGamePaused && PauseMenuUI.Instance.pauseMenu.activeSelf)
+				if (isGamePaused && IsMenuOpen(Menus.Pause))
 				{
 					GameManager.Instance.ResumeGame();
 					return;
@@ -134,7 +162,7 @@ public class UIManager : MonoBehaviour
 			}
 		}
 
-		if (isGamePaused && SettingsMenuUI.Instance.settingsMenu.activeSelf)
+		if (isGamePaused && IsMenuOpen(Menus.Settings))
 		{
 			if (isInGame)
 			{
@@ -146,7 +174,7 @@ public class UIManager : MonoBehaviour
 				else
 				{
 					CloseAllMenus();
-					PauseMenuUI.Instance.pauseMenu.SetActive(true);
+					SetMenuStatus(Menus.Pause, true);
 				}
 			}
 			else
@@ -174,13 +202,18 @@ public class UIManager : MonoBehaviour
 			child.gameObject.SetActive(false);
 		}
 		GameObject.Find("Settings Canvas").GetComponent<Canvas>().transform.GetChild(0).gameObject.SetActive(false); // Also closes settings menu since its in a separate canvas
+
+		foreach(var menu in menusStatus.ToList()) // Unsure if this works or not, but hopefully it does
+		{
+			menusStatus[menu.Key] = false;
+		}
 	}
 	public void OpenDifficultyScreen()
 	{
 		if (!GameManager.Instance.didSelectDifficulty)
 		{
-			StartMenuUI.Instance.startMenu.SetActive(false);
-			DifficultyMenuUI.Instance.difficultyMenu.SetActive(true);
+			SetMenuStatus(Menus.Start, false);
+			SetMenuStatus(Menus.Difficulty, true);
 		}
 		else
 		{
@@ -191,10 +224,10 @@ public class UIManager : MonoBehaviour
 	{
 		if(GameManager.GetActiveScene() == 1)
 		{
-			if (SettingsMenuUI.Instance.settingsMenu.activeSelf)
+			if (IsMenuOpen(Menus.Settings))
 			{
-				PauseMenuUI.Instance.pauseMenu.SetActive(true);
-				SettingsMenuUI.Instance.settingsMenu.SetActive(false);
+				SetMenuStatus(Menus.Pause, true);
+				SetMenuStatus(Menus.Settings, false);
 			}
 			else
 			{
@@ -207,14 +240,14 @@ public class UIManager : MonoBehaviour
 		else
 		{
 			CloseAllMenus();
-			StartMenuUI.Instance.startMenu.SetActive(true);
+			SetMenuStatus(Menus.Start, true);
 		}
 		
 	}
 	public void OpenSettings()
 	{
 		CloseAllMenus();
-		SettingsMenuUI.Instance.settingsMenu.SetActive(true);
+		SetMenuStatus(Menus.Settings, true);
 		SettingsMenuUI.Instance.OpenAudioPanel(); // Sets Audio Panel to "default" opened save, so that the save panel isn't open while in game.
 	}
 }
