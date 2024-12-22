@@ -50,33 +50,11 @@ public class UIManager : MonoBehaviour
 
 	void Start()
 	{
-		SwitchToStart();
 		SavesPanelUI.Instance.InstantiateSaveButtons();
 		AudioPanelUI.Instance.InitializeVolume();
 
-		foreach (Menus menu in System.Enum.GetValues(typeof(Menus)))
-		{
-			menusStatus[menu] = false;
-		}
-
-		foreach (Panels panel in System.Enum.GetValues(typeof(Panels)))
-		{
-			panelsStatus[panel] = false;
-		}
-		menuGameobjects = new()
-		{
-			StartMenuUI.Instance.startMenu,
-			DifficultyMenuUI.Instance.difficultyMenu,
-			SettingsMenuUI.Instance.settingsMenu
-		};
-		panelGameObjects = new()
-		{
-			AudioPanelUI.Instance.audioPanel,
-			VideoPanelUI.Instance.videoPanel,
-			SavesPanelUI.Instance.savesPanel,
-			ControlsPanelUI.Instance.controlsPanel
-		};
-		SetMenuStatus(Menus.Start, true);
+		InitializeMenus();
+		InitializePanels();
 	}
 	void Update()
 	{
@@ -95,6 +73,35 @@ public class UIManager : MonoBehaviour
 				ShopUI.Instance.OpenShop();
 			}
 		}
+	}
+	public void InitializeMenus()
+	{
+		foreach (Menus menu in System.Enum.GetValues(typeof(Menus)))
+		{
+			menusStatus[menu] = false;
+		}
+		menuGameobjects = new()
+		{
+			StartMenuUI.Instance.startMenu,
+			DifficultyMenuUI.Instance.difficultyMenu,
+			SettingsMenuUI.Instance.settingsMenu
+		};
+
+		SetMenuStatus(Menus.Start, true); // Make sure start menu is open when game opens
+	}
+	public void InitializePanels()
+	{
+		foreach (Panels panel in System.Enum.GetValues(typeof(Panels)))
+		{
+			panelsStatus[panel] = false;
+		}
+		panelGameObjects = new()
+		{
+			AudioPanelUI.Instance.audioPanel,
+			VideoPanelUI.Instance.videoPanel,
+			SavesPanelUI.Instance.savesPanel,
+			ControlsPanelUI.Instance.controlsPanel
+		};
 	}
 	public void SetMenuStatus(Menus menu, bool menuStatus)
 	{
@@ -242,7 +249,6 @@ public class UIManager : MonoBehaviour
 			CloseAllMenus();
 			SetMenuStatus(Menus.Start, true);
 		}
-		
 	}
 	public void OpenSettings()
 	{
