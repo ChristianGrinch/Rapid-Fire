@@ -1,12 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public enum Menus
-{	
-	// Sorted by where they first appear (ex: settings in start scene because the first time settings is encountered is in the settings scene)
+public enum InterfaceElements
+{
 	// Start Scene
+	None,
 	Start,
 	Difficulty,
 	Settings,
@@ -15,15 +15,18 @@ public enum Menus
 	Shop,
 	Restart,
 	Pause,
-	Inventory
-}
-public enum Panels
-{
-	// Settings
+	Inventory,
+	// Settings : Panels
 	Audio,
 	Video,
 	Saves,
 	Controls
+}
+[Serializable]
+public class Interface
+{
+	public InterfaceElements interfaceEl = InterfaceElements.None;
+	public GameObject gameObject = new();
 }
 public class UIManager : MonoBehaviour
 {
@@ -43,18 +46,16 @@ public class UIManager : MonoBehaviour
 	public bool isGamePaused = false;
 	public bool isInGame = false;
 
-	public Dictionary<Menus, bool> menusStatus = new(); // True means its open, false means its closed
-	public Dictionary<Panels, bool> panelsStatus = new();
 	public List<GameObject> menuGameobjects;
 	public List<GameObject> panelGameObjects;
+	public List<Interface> interfaces = new(Enum.GetNames(typeof(InterfaceElements)).Length); // Number of interfaces (list) is set to the number of InterfaceElements (enum)
+	public List<InterfaceElements> navigationHistory;
 
 	void Start()
 	{
 		SavesPanelUI.Instance.InstantiateSaveButtons();
 		AudioPanelUI.Instance.InitializeVolume();
-
-		InitializeMenus();
-		InitializePanels();
+		InitializeInterfaces();
 	}
 	void Update()
 	{
@@ -64,7 +65,7 @@ public class UIManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape)) GoBackCheck();
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			if (IsMenuOpen(Menus.Shop))
+			if (IsInterfaceOpen(InterfaceElements.Shop))
 			{
 				ShopUI.Instance.CloseShop();
 			}
@@ -74,74 +75,56 @@ public class UIManager : MonoBehaviour
 			}
 		}
 	}
-	public void InitializeMenus()
+	public void InitializeInterfaces()
 	{
-		foreach (Menus menu in System.Enum.GetValues(typeof(Menus)))
+		int i = 0;
+		var enumValues = Enum.GetValues(typeof(InterfaceElements)); // Cache it so it isnt called a million times in the loop
+		foreach (var interfaceEl in interfaces)
 		{
-			menusStatus[menu] = false;
+			interfaceEl.interfaceEl = (InterfaceElements)enumValues.GetValue(i);
+			i++;
 		}
-		menuGameobjects = new()
+	}
+	public bool IsInterfaceOpen(InterfaceElements interfaceEl)
+	{
+		return navigationHistory.Contains(interfaceEl);
+	}
+	public void OpenInterface(InterfaceElements interfaceEl)
+	{
+		if (!navigationHistory.Contains(interfaceEl))
 		{
-			StartMenuUI.Instance.startMenu,
-			DifficultyMenuUI.Instance.difficultyMenu,
-			SettingsMenuUI.Instance.settingsMenu
-		};
+			navigationHistory.Add(interfaceEl);
 
-		SetMenuStatus(Menus.Start, true); // Make sure start menu is open when game opens
-	}
-	public void InitializePanels()
-	{
-		foreach (Panels panel in System.Enum.GetValues(typeof(Panels)))
-		{
-			panelsStatus[panel] = false;
-		}
-		panelGameObjects = new()
-		{
-			AudioPanelUI.Instance.audioPanel,
-			VideoPanelUI.Instance.videoPanel,
-			SavesPanelUI.Instance.savesPanel,
-			ControlsPanelUI.Instance.controlsPanel
-		};
-	}
-	public void SetMenuStatus(Menus menu, bool menuStatus)
-	{
-		if (menusStatus.ContainsKey(menu))
-		{
-			menusStatus[menu] = menuStatus;
-			try
+			Interface interfaceToInstantiate = null;
+			foreach (var interfaceObj in interfaces)
 			{
-				Debug.Log("in try: " +menuGameobjects.Count);
-				menuGameobjects[(int)menu].SetActive(menuStatus); // breaks when game restarts for some reason
+				if (interfaceObj.interfaceEl == interfaceEl)
+				{
+					interfaceToInstantiate = interfaceObj;
+					break;
+				}
 			}
-			catch
+			Instantiate(interfaceToInstantiate.gameObject);
+		}
+	}
+	public void CloseInterface(InterfaceElements interfaceEl)
+	{
+		if (navigationHistory.Contains(interfaceEl))
+		{
+			navigationHistory.Remove(interfaceEl);
+
+			if(interfaceEl == InterfaceElements.Settings)
 			{
-				Debug.Log("in catch: " +menuGameobjects.Count);
+				CloseAllSettingsPanels();
 			}
 		}
 	}
-	public void SetPanelStatus(Panels panel, bool panelStatus)
+	public void CloseAllSettingsPanels()
 	{
-		if (panelsStatus.ContainsKey(panel))
-		{
-			panelsStatus[panel] = panelStatus;
-			panelGameObjects[(int)panel].SetActive(panelStatus);
-		}
-	}
-	public bool IsMenuOpen(Menus menu)
-	{
-		if (menusStatus.ContainsKey(menu))
-		{
-			return menusStatus[menu];
-		}
-		return false;
-	}
-	public bool IsPanelOpen(Panels panel)
-	{
-		if (panelsStatus.ContainsKey(panel))
-		{
-			return panelsStatus[panel];
-		}
-		return false;
+		navigationHistory.Remove(InterfaceElements.Audio);
+		navigationHistory.Remove(InterfaceElements.Video);
+		navigationHistory.Remove(InterfaceElements.Saves);
+		navigationHistory.Remove(InterfaceElements.Controls);
 	}
 	public void GoBackCheck()
 	{
@@ -155,12 +138,12 @@ public class UIManager : MonoBehaviour
 		{
 			if (!PopupManager.Instance.isPopupOpen)
 			{
-				if (isGamePaused && IsMenuOpen(Menus.Shop))
+				if (isGamePaused && IsInterfaceOpen(InterfaceElements.Shop))
 				{
 					ShopUI.Instance.CloseShop();
 					return;
 				}
-				if (isGamePaused && IsMenuOpen(Menus.Pause))
+				if (isGamePaused && IsInterfaceOpen(InterfaceElements.Shop))
 				{
 					GameManager.Instance.ResumeGame();
 					return;
@@ -169,7 +152,7 @@ public class UIManager : MonoBehaviour
 			}
 		}
 
-		if (isGamePaused && IsMenuOpen(Menus.Settings))
+		if (isGamePaused && IsInterfaceOpen(InterfaceElements.Settings))
 		{
 			if (isInGame)
 			{
@@ -181,7 +164,7 @@ public class UIManager : MonoBehaviour
 				else
 				{
 					CloseAllMenus();
-					SetMenuStatus(Menus.Pause, true);
+					OpenInterface(InterfaceElements.Pause);
 				}
 			}
 			else
@@ -210,17 +193,17 @@ public class UIManager : MonoBehaviour
 		}
 		GameObject.Find("Settings Canvas").GetComponent<Canvas>().transform.GetChild(0).gameObject.SetActive(false); // Also closes settings menu since its in a separate canvas
 
-		foreach(var menu in menusStatus.ToList()) // Unsure if this works or not, but hopefully it does
-		{
-			menusStatus[menu.Key] = false;
-		}
+		//foreach(var menu in menusStatus.ToList()) // Unsure if this works or not, but hopefully it does
+		//{
+		//	menusStatus[menu.Key] = false;
+		//}
+		navigationHistory = new();
 	}
 	public void OpenDifficultyScreen()
 	{
 		if (!GameManager.Instance.didSelectDifficulty)
 		{
-			SetMenuStatus(Menus.Start, false);
-			SetMenuStatus(Menus.Difficulty, true);
+			OpenInterface(InterfaceElements.Difficulty);
 		}
 		else
 		{
@@ -231,10 +214,10 @@ public class UIManager : MonoBehaviour
 	{
 		if(GameManager.GetActiveScene() == 1)
 		{
-			if (IsMenuOpen(Menus.Settings))
+			if (IsInterfaceOpen(InterfaceElements.Settings))
 			{
-				SetMenuStatus(Menus.Pause, true);
-				SetMenuStatus(Menus.Settings, false);
+				// Game > Pause > Settings
+				CloseInterface(InterfaceElements.Settings);
 			}
 			else
 			{
@@ -247,13 +230,13 @@ public class UIManager : MonoBehaviour
 		else
 		{
 			CloseAllMenus();
-			SetMenuStatus(Menus.Start, true);
+			OpenInterface(InterfaceElements.Start);
 		}
 	}
 	public void OpenSettings()
 	{
-		CloseAllMenus();
-		SetMenuStatus(Menus.Settings, true);
+		OpenInterface(InterfaceElements.Settings);
+		OpenInterface(InterfaceElements.Audio);
 		SettingsMenuUI.Instance.OpenAudioPanel(); // Sets Audio Panel to "default" opened save, so that the save panel isn't open while in game.
 	}
 }

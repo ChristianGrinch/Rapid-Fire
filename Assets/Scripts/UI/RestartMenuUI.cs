@@ -28,6 +28,6 @@ public class RestartMenuUI : MonoBehaviour
     }
     public void ShowRestartMenu() 
     {
-		UIManager.Instance.SetMenuStatus(Menus.Restart, true);
+		UIManager.Instance.OpenInterface(InterfaceElements.Restart);
     }
 }

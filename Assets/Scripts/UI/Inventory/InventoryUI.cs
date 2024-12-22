@@ -55,12 +55,12 @@ public class InventoryUI : MonoBehaviour
 	public void OpenInventory()
 	{
 		isInventoryOpen = true;
-		UIManager.Instance.SetMenuStatus(Menus.Inventory, true);
+		UIManager.Instance.OpenInterface(InterfaceElements.Inventory);
 		PowerupsUI.Instance.UpdateCounts();
 	}
 	public void CloseInventory()
 	{
-		UIManager.Instance.SetMenuStatus(Menus.Inventory, false);
+		UIManager.Instance.CloseInterface(InterfaceElements.Inventory);
 		WeaponsUI.Instance.CloseContainers();
 		Destroy(EquipmentUI.Instance.instantiatedEquipment);
 		isInventoryOpen = false;

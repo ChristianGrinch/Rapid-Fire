@@ -136,15 +136,14 @@ public class GameManager : MonoBehaviour
 	public void PauseGame()
 	{
 		isGamePaused = true;
-		UIManager.Instance.SetMenuStatus(Menus.Pause, true);
+		UIManager.Instance.OpenInterface(InterfaceElements.Pause);
 		Time.timeScale = 0;
 	    PauseMenuUI.Instance.saveGame.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{
 		isGamePaused = false;
-		UIManager.Instance.SetMenuStatus(Menus.Pause, false);
-		UIManager.Instance.SetMenuStatus(Menus.Game, true);
+		UIManager.Instance.CloseInterface(InterfaceElements.Pause);
 		Time.timeScale = 1;
 	}
 	public void QuitGame()
@@ -212,7 +211,7 @@ public class GameManager : MonoBehaviour
 		if (scene.buildIndex == 1)  // Ensure it’s the correct scene
 		{
 			// Scene is now fully loaded; access new scene objects here
-			if(UIManager.Instance.menuGameobjects.Count != Enum.GetNames(typeof(Menus)).Length)
+			if(UIManager.Instance.menuGameobjects.Count != Enum.GetNames(typeof(InterfaceElements)).Length - 4) // minus four because 4 panels exist
 			{
 				UIManager.Instance.menuGameobjects.Add(GameMenuUI.Instance.game);
 				UIManager.Instance.menuGameobjects.Add(ShopUI.Instance.shopMenu);
