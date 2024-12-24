@@ -61,7 +61,7 @@ public class UIManager : MonoBehaviour
 		isInGame = GameManager.Instance.isInGame;
 
 		if (Input.GetKeyDown(KeyCode.Escape)) GoBackCheck();
-		if (Input.GetKeyDown(KeyCode.H))
+		if (Input.GetKeyDown(KeyCode.H) && !IsGamePaused())
 		{
 			if (IsInterfaceOpen(InterfaceElements.Shop))
 			{
@@ -177,12 +177,6 @@ public class UIManager : MonoBehaviour
 	}
 	public void GoBackCheck()
 	{
-		if (!isGamePaused)
-		{
-			GameManager.Instance.PauseGame();
-			return;
-		}
-
 		if(GameManager.GetActiveScene() == 1) // This needs to be here to prevent it from throwing an error since the PauseMenuUI doesn't exist yet
 		{
 			if (!PopupManager.Instance.isPopupOpen)
@@ -287,5 +281,9 @@ public class UIManager : MonoBehaviour
 		OpenInterface(InterfaceElements.Settings);
 		OpenInterface(InterfaceElements.Audio);
 		SettingsMenuUI.Instance.OpenAudioPanel(); // Sets Audio Panel to "default" opened save, so that the save panel isn't open while in game.
+	}
+	public bool IsGamePaused()
+	{
+		return IsInterfaceOpen(InterfaceElements.Pause);
 	}
 }

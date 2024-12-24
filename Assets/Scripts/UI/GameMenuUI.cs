@@ -64,7 +64,18 @@ public class GameMenuUI : MonoBehaviour
 	}
     private void Update()
     {
-		if(gunController.currentGunData.gunType == GunType.Pistol)
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (UIManager.Instance.IsGamePaused())
+			{
+				GameManager.Instance.ResumeGame();
+			}
+			else
+			{
+				GameManager.Instance.PauseGame();
+			}
+		}
+		if (gunController.currentGunData.gunType == GunType.Pistol)
 		{
 			ammoImage.sprite = pistolAmmo;
 		} 
