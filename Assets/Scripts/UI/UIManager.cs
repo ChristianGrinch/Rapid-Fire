@@ -78,17 +78,20 @@ public class UIManager : MonoBehaviour
 		InitializeInterfaceGameobjects();
 		int i = 0;
 		var enumValues = Enum.GetValues(typeof(InterfaceElements)); // Cache it so it isnt called a million times in the loop
-		for(var j = 0; j < Enum.GetNames(typeof(InterfaceElements)).Length; j++)
+		if(interfaces.Count == 0)
 		{
-			interfaces.Add(new Interface());
+			for (var j = 0; j < Enum.GetNames(typeof(InterfaceElements)).Length; j++)
+			{
+				interfaces.Add(new Interface());
+			}
 		}
 		Debug.Log(interfaces.Count);
 		foreach (var interfaceEl in interfaces)
 		{
-			if (interfaceEl.gameObject != null) break;
 			interfaceEl.interfaceEl = (InterfaceElements)enumValues.GetValue(i);
 			try 
 			{
+				Debug.Log("Ran try");
 				interfaceEl.gameObject = i < menuGameobjects.Count ? menuGameobjects[i] : panelGameObjects[i - menuGameobjects.Count];
 			}
 			catch (Exception ex)
@@ -97,7 +100,15 @@ public class UIManager : MonoBehaviour
 			}
 			i++;
 		}
-		navigationHistory.Add(InterfaceElements.Start);
+		if (navigationHistory.Contains(InterfaceElements.Start))
+		{
+			navigationHistory.Clear();
+			navigationHistory.Add(InterfaceElements.Game);
+		}
+		else
+		{
+			navigationHistory.Add(InterfaceElements.Start);
+		}
 	}
 	public void InitializeInterfaceGameobjects()
 	{
@@ -122,16 +133,16 @@ public class UIManager : MonoBehaviour
 		{
 			navigationHistory.Add(interfaceEl);
 
-			Interface interfaceToInstantiate = null;
+			Interface interfaceToOpen = null;
 			foreach (var interfaceObj in interfaces)
 			{
 				if (interfaceObj.interfaceEl == interfaceEl)
 				{
-					interfaceToInstantiate = interfaceObj;
+					interfaceToOpen = interfaceObj;
 					break;
 				}
 			}
-			interfaceToInstantiate.gameObject.SetActive(true);
+			interfaceToOpen.gameObject.SetActive(true);
 		}
 	}
 	public void CloseInterface(InterfaceElements interfaceEl)
@@ -140,7 +151,18 @@ public class UIManager : MonoBehaviour
 		{
 			navigationHistory.Remove(interfaceEl);
 
-			if(interfaceEl == InterfaceElements.Settings)
+			Interface interfaceToClose = null;
+			foreach (var interfaceObj in interfaces)
+			{
+				if (interfaceObj.interfaceEl == interfaceEl)
+				{
+					interfaceToClose = interfaceObj;
+					break;
+				}
+			}
+			interfaceToClose.gameObject.SetActive(false);
+
+			if (interfaceEl == InterfaceElements.Settings)
 			{
 				CloseAllSettingsPanels();
 			}

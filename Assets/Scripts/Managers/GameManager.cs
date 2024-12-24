@@ -211,14 +211,12 @@ public class GameManager : MonoBehaviour
 		if (scene.buildIndex == 1)  // Ensure it’s the correct scene
 		{
 			// Scene is now fully loaded; access new scene objects here
-			if(UIManager.Instance.menuGameobjects.Count != Enum.GetNames(typeof(InterfaceElements)).Length - 4) // minus four because 4 panels exist
-			{
-				UIManager.Instance.menuGameobjects.Add(GameMenuUI.Instance.game);
-				UIManager.Instance.menuGameobjects.Add(ShopUI.Instance.shopMenu);
-				UIManager.Instance.menuGameobjects.Add(RestartMenuUI.Instance.restartMenu);
-				UIManager.Instance.menuGameobjects.Add(PauseMenuUI.Instance.pauseMenu);
-				UIManager.Instance.menuGameobjects.Add(InventoryUI.Instance.inventoryMenu);
-			}
+			UIManager.Instance.menuGameobjects[3] = GameMenuUI.Instance.game;
+			UIManager.Instance.menuGameobjects[4] = ShopUI.Instance.shopMenu;
+			UIManager.Instance.menuGameobjects[5] = RestartMenuUI.Instance.restartMenu;
+			UIManager.Instance.menuGameobjects[6] = PauseMenuUI.Instance.pauseMenu;
+			UIManager.Instance.menuGameobjects[7] = InventoryUI.Instance.inventoryMenu;
+			UIManager.Instance.InitializeInterfaces();
 
 			ShopUI.Instance.CloseShop();
 			player = GameObject.FindWithTag("Player");
