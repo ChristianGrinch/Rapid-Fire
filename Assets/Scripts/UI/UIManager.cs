@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public enum InterfaceElements
 {
 	// Start Scene
-	None,
 	Start,
 	Difficulty,
 	Settings,
@@ -25,8 +23,8 @@ public enum InterfaceElements
 [Serializable]
 public class Interface
 {
-	public InterfaceElements interfaceEl = InterfaceElements.None;
-	public GameObject gameObject = new();
+	public InterfaceElements interfaceEl;
+	public GameObject gameObject;
 }
 public class UIManager : MonoBehaviour
 {
@@ -77,13 +75,42 @@ public class UIManager : MonoBehaviour
 	}
 	public void InitializeInterfaces()
 	{
+		InitializeInterfaceGameobjects();
 		int i = 0;
 		var enumValues = Enum.GetValues(typeof(InterfaceElements)); // Cache it so it isnt called a million times in the loop
+		for(var j = 0; j < Enum.GetNames(typeof(InterfaceElements)).Length; j++)
+		{
+			interfaces.Add(new Interface());
+		}
+		Debug.Log(interfaces.Count);
 		foreach (var interfaceEl in interfaces)
 		{
+			if (interfaceEl.gameObject != null) break;
 			interfaceEl.interfaceEl = (InterfaceElements)enumValues.GetValue(i);
+			try 
+			{
+				interfaceEl.gameObject = i < menuGameobjects.Count ? menuGameobjects[i] : panelGameObjects[i - menuGameobjects.Count];
+			}
+			catch (Exception ex)
+			{
+				Debug.Log("Caught an error: " + ex.Message);
+			}
 			i++;
 		}
+		navigationHistory.Add(InterfaceElements.Start);
+	}
+	public void InitializeInterfaceGameobjects()
+	{
+		while (menuGameobjects.Count < 8) menuGameobjects.Add(null);
+		menuGameobjects[0] = StartMenuUI.Instance.startMenu;
+		menuGameobjects[1] = DifficultyMenuUI.Instance.difficultyMenu;
+		menuGameobjects[2] = SettingsMenuUI.Instance.settingsMenu;
+
+		while (panelGameObjects.Count < 4) panelGameObjects.Add(null);
+		panelGameObjects[0] = AudioPanelUI.Instance.audioPanel;
+		panelGameObjects[1] = VideoPanelUI.Instance.videoPanel;
+		panelGameObjects[2] = SavesPanelUI.Instance.savesPanel;
+		panelGameObjects[3] = ControlsPanelUI.Instance.controlsPanel;
 	}
 	public bool IsInterfaceOpen(InterfaceElements interfaceEl)
 	{
@@ -91,7 +118,7 @@ public class UIManager : MonoBehaviour
 	}
 	public void OpenInterface(InterfaceElements interfaceEl)
 	{
-		if (!navigationHistory.Contains(interfaceEl))
+		if (!navigationHistory.Contains(interfaceEl)) // Only open if the interface isn't already open
 		{
 			navigationHistory.Add(interfaceEl);
 
@@ -104,7 +131,7 @@ public class UIManager : MonoBehaviour
 					break;
 				}
 			}
-			Instantiate(interfaceToInstantiate.gameObject);
+			interfaceToInstantiate.gameObject.SetActive(true);
 		}
 	}
 	public void CloseInterface(InterfaceElements interfaceEl)
