@@ -194,35 +194,6 @@ public class UIManager : MonoBehaviour
 				
 			}
 		}
-
-		if (isGamePaused && IsInterfaceOpen(InterfaceElements.Settings))
-		{
-			if (isInGame)
-			{
-				if (SettingsMenuUI.Instance.didModifySettings && !SettingsMenuUI.Instance.didSaveSettings)
-				{
-					PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
-					return;
-				}
-				else
-				{
-					CloseAllMenus();
-					OpenInterface(InterfaceElements.Pause);
-				}
-			}
-			else
-			{
-				if (SettingsMenuUI.Instance.didModifySettings && !SettingsMenuUI.Instance.didSaveSettings)
-				{
-					PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
-					return;
-				}
-				else
-				{
-					SwitchToStart();
-				}
-			}
-		}
 	}
 	public void CloseAllMenus()
 	{

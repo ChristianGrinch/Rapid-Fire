@@ -68,10 +68,12 @@ public class GameMenuUI : MonoBehaviour
 		{
 			if (UIManager.Instance.IsGamePaused())
 			{
+				Debug.Log("game is paused");
 				GameManager.Instance.ResumeGame();
 			}
 			else
 			{
+				Debug.Log("game is not paused");
 				GameManager.Instance.PauseGame();
 			}
 		}

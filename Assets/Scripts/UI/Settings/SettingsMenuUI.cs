@@ -31,6 +31,13 @@ public class SettingsMenuUI : MonoBehaviour
 	[Header("Other")]
 	public bool didModifySettings = false;
 	public bool didSaveSettings = false;
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			GoBackCheck();
+		}
+	}
 	private void Start()
 	{
 		audioLabel.onClick.AddListener(OpenAudioPanel);
@@ -42,28 +49,29 @@ public class SettingsMenuUI : MonoBehaviour
 			didSaveSettings = true;
 			GameManager.Instance.SaveSettings();
 		});
-		goBack.onClick.AddListener(() =>
+		goBack.onClick.AddListener(GoBackCheck);
+		StartCoroutine(FixModifySettingsOnLoad());
+	}
+	private void GoBackCheck()
+	{
+		if (didModifySettings && !didSaveSettings)
 		{
-			if (didModifySettings && !didSaveSettings)
+			PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+			Debug.Log("ran this bro");
+		}
+		else
+		{
+			if (GameManager.Instance.isInGame)
 			{
-				PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
-				Debug.Log("ran this bro");
-			} 
+				UIManager.Instance.CloseInterface(InterfaceElements.Settings);
+				UIManager.Instance.OpenInterface(InterfaceElements.Pause);
+			}
 			else
 			{
-				if (GameManager.Instance.isInGame)
-				{
-					UIManager.Instance.CloseAllMenus();
-					UIManager.Instance.OpenInterface(InterfaceElements.Pause);
-				}
-				else
-				{
-					UIManager.Instance.SwitchToStart();
-				}
-				didSaveSettings = false;
+				UIManager.Instance.SwitchToStart();
 			}
-		});
-		StartCoroutine(FixModifySettingsOnLoad());
+			didSaveSettings = false;
+		}
 	}
 	IEnumerator FixModifySettingsOnLoad()
 	{
