@@ -58,13 +58,13 @@ public class ShopUI : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			// && 
 			if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Shop))
 			{
 				CloseShop();
 			}
 			else if(!UIManager.Instance.IsGamePaused())
 			{
+				if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Inventory)) UIManager.Instance.CloseInterface(InterfaceElements.Inventory);
 				OpenShop();
 			}
 		}
@@ -74,7 +74,6 @@ public class ShopUI : MonoBehaviour
 		UIManager.Instance.OpenInterface(InterfaceElements.Shop);
 		exp.text = $"EXP: {PlayerController.Instance.exp}";
 		GameManager.Instance.PauseGame();
-		//shopMenu.SetActive(true);
 		EmptyContent();
 	}
 	public void BuyItem()
@@ -84,7 +83,6 @@ public class ShopUI : MonoBehaviour
 	public void CloseShop()
 	{
 		UIManager.Instance.CloseInterface(InterfaceElements.Shop);
-		//shopMenu.SetActive(false);
 		GameManager.Instance.ResumeGame();
 	}
 	public void EmptyContent()

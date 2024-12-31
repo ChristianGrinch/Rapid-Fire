@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static SlotData;
@@ -31,28 +30,25 @@ public class InventoryUI : MonoBehaviour
 	public RenderTexture speedPowerupRT;
 
 	[Header("Other")]
-	public bool isInventoryOpen;
 	public GameObject invPlayerCamera;
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.E) && !UIManager.Instance.IsGamePaused())
+		if (Input.GetKeyDown(KeyCode.E))
 		{
-			switch (isInventoryOpen)
+			if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Inventory))
+			{ 
+				CloseInventory();
+			}
+			else if (!UIManager.Instance.IsGamePaused())
 			{
-				case false:
-					OpenInventory();
-					break;
-				case true:
-					CloseInventory();
-					break;
+				OpenInventory();
 			}
 		}
 		invPlayerCamera.transform.position = new(PlayerController.Instance.transform.position.x - 2.5f, PlayerController.Instance.transform.position.y, PlayerController.Instance.transform.position.z + 2.5f);
 	}
 	public void OpenInventory()
 	{
-		isInventoryOpen = true;
 		UIManager.Instance.OpenInterface(InterfaceElements.Inventory);
 		PowerupsUI.Instance.UpdateCounts();
 	}
@@ -61,7 +57,6 @@ public class InventoryUI : MonoBehaviour
 		UIManager.Instance.CloseInterface(InterfaceElements.Inventory);
 		WeaponsUI.Instance.CloseContainers();
 		Destroy(EquipmentUI.Instance.instantiatedEquipment);
-		isInventoryOpen = false;
 	}
 	public void DisplayImage()
 	{

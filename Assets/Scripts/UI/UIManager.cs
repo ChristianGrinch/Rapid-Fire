@@ -80,15 +80,6 @@ public class UIManager : MonoBehaviour
 			}
 			i++;
 		}
-		if (navigationHistory.Contains(InterfaceElements.Start))
-		{
-			navigationHistory.Clear();
-			navigationHistory.Add(InterfaceElements.Game);
-		}
-		else
-		{
-			navigationHistory.Add(InterfaceElements.Start);
-		}
 	}
 	public void InitializeInterfaceGameobjects()
 	{
@@ -183,6 +174,10 @@ public class UIManager : MonoBehaviour
 		{
 			StartCoroutine(StartMenuUI.Instance.DifficultySelectWarning());
 		}
+	}
+	public void GoBackCheck(InterfaceElements interfaceElement)
+	{
+		if (IsInterfaceOpen(interfaceElement)) CloseInterface(interfaceElement);
 	}
 	public void SwitchToStart()
 	{
