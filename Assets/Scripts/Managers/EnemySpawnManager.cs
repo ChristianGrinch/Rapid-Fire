@@ -56,7 +56,7 @@ public class EnemySpawnManager : MonoBehaviour
 		player = GameManager.Instance.player;
 		enemyParent = GameManager.Instance.enemies;
 
-		if (totalEnemyCount == 0 && !UIManager.Instance.isGamePaused)
+		if (totalEnemyCount == 0 && !UIManager.Instance.IsGamePaused())
 		{
 			if (GameManager.Instance.didLoadSpawnManager)
 			{
@@ -71,7 +71,7 @@ public class EnemySpawnManager : MonoBehaviour
 		enemyCountArray = GameObject.FindGameObjectsWithTag("Enemy");
 		totalEnemyCount = enemyCountArray.Length;
 
-		if (totalEnemyCount == 0 && !UIManager.Instance.isGamePaused && !GameManager.Instance.didLoadSpawnManager)
+		if (totalEnemyCount == 0 && !UIManager.Instance.IsGamePaused() && !GameManager.Instance.didLoadSpawnManager)
 		{
 			currentWave++;
 

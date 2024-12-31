@@ -66,13 +66,14 @@ public class GameMenuUI : MonoBehaviour
     {
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			if (UIManager.Instance.IsGamePaused())
+			if (UIManager.Instance.IsGamePaused() && !UIManager.Instance.IsInterfaceOpen(InterfaceElements.Shop))
 			{
 				Debug.Log("game is paused");
 				GameManager.Instance.ResumeGame();
 			}
 			else
 			{
+				if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Inventory)) UIManager.Instance.CloseInterface(InterfaceElements.Inventory);
 				Debug.Log("game is not paused");
 				GameManager.Instance.PauseGame();
 			}

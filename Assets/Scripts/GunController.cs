@@ -42,7 +42,7 @@ public class GunController : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (!UIManager.Instance.isGamePaused)
+		if (!UIManager.Instance.IsGamePaused())
 		{
 			if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeCurrentGun(0);
 			if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeCurrentGun(1);

@@ -61,15 +61,7 @@ public class SettingsMenuUI : MonoBehaviour
 		}
 		else
 		{
-			if (GameManager.Instance.isInGame)
-			{
-				UIManager.Instance.CloseInterface(InterfaceElements.Settings);
-				UIManager.Instance.OpenInterface(InterfaceElements.Pause);
-			}
-			else
-			{
-				UIManager.Instance.SwitchToStart();
-			}
+			UIManager.Instance.CloseInterface(InterfaceElements.Settings);
 			didSaveSettings = false;
 		}
 	}

@@ -41,8 +41,6 @@ public class UIManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 	}
-	public bool isGamePaused = false;
-	public bool isInGame = false;
 
 	public List<GameObject> menuGameobjects;
 	public List<GameObject> panelGameObjects;
@@ -54,11 +52,6 @@ public class UIManager : MonoBehaviour
 		SavesPanelUI.Instance.InstantiateSaveButtons();
 		AudioPanelUI.Instance.InitializeVolume();
 		InitializeInterfaces();
-	}
-	void Update()
-	{
-		isGamePaused = GameManager.Instance.isGamePaused;
-		isInGame = GameManager.Instance.isInGame;
 	}
 	public void InitializeInterfaces()
 	{
@@ -112,9 +105,7 @@ public class UIManager : MonoBehaviour
 	}
 	public bool IsInterfaceOpen(InterfaceElements interfaceEl)
 	{
-		var t = navigationHistory.Contains(interfaceEl);
-		Debug.Log(t);
-		return t;
+		return navigationHistory.Contains(interfaceEl);
 	}
 	public void OpenInterface(InterfaceElements interfaceEl)
 	{
