@@ -36,8 +36,6 @@ public class InventoryUI : MonoBehaviour
 
 	private void Update()
 	{
-		//DisplayImage();
-
 		if (Input.GetKeyDown(KeyCode.E) && !UIManager.Instance.IsGamePaused())
 		{
 			switch (isInventoryOpen)

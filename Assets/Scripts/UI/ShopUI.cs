@@ -54,6 +54,21 @@ public class ShopUI : MonoBehaviour
 		powerupBtn.onClick.AddListener(EmptyContent);
 		upgradeBtn.onClick.AddListener(EmptyContent);
 	}
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.H))
+		{
+			// && 
+			if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Shop))
+			{
+				CloseShop();
+			}
+			else if(!UIManager.Instance.IsGamePaused())
+			{
+				OpenShop();
+			}
+		}
+	}
 	public void OpenShop()
 	{
 		UIManager.Instance.OpenInterface(InterfaceElements.Shop);

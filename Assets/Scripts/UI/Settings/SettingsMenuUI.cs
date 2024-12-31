@@ -35,7 +35,7 @@ public class SettingsMenuUI : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			GoBackCheck();
+			if(UIManager.Instance.IsInterfaceOpen(InterfaceElements.Settings)) GoBackCheck();
 		}
 	}
 	private void Start()

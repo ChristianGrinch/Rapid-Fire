@@ -59,19 +59,6 @@ public class UIManager : MonoBehaviour
 	{
 		isGamePaused = GameManager.Instance.isGamePaused;
 		isInGame = GameManager.Instance.isInGame;
-
-		if (Input.GetKeyDown(KeyCode.Escape)) GoBackCheck();
-		if (Input.GetKeyDown(KeyCode.H) && !IsGamePaused())
-		{
-			if (IsInterfaceOpen(InterfaceElements.Shop))
-			{
-				ShopUI.Instance.CloseShop();
-			}
-			else
-			{
-				ShopUI.Instance.OpenShop();
-			}
-		}
 	}
 	public void InitializeInterfaces()
 	{
@@ -125,7 +112,9 @@ public class UIManager : MonoBehaviour
 	}
 	public bool IsInterfaceOpen(InterfaceElements interfaceEl)
 	{
-		return navigationHistory.Contains(interfaceEl);
+		var t = navigationHistory.Contains(interfaceEl);
+		Debug.Log(t);
+		return t;
 	}
 	public void OpenInterface(InterfaceElements interfaceEl)
 	{
@@ -174,26 +163,6 @@ public class UIManager : MonoBehaviour
 		navigationHistory.Remove(InterfaceElements.Video);
 		navigationHistory.Remove(InterfaceElements.Saves);
 		navigationHistory.Remove(InterfaceElements.Controls);
-	}
-	public void GoBackCheck()
-	{
-		if(GameManager.GetActiveScene() == 1) // This needs to be here to prevent it from throwing an error since the PauseMenuUI doesn't exist yet
-		{
-			if (!PopupManager.Instance.isPopupOpen)
-			{
-				if (isGamePaused && IsInterfaceOpen(InterfaceElements.Shop))
-				{
-					ShopUI.Instance.CloseShop();
-					return;
-				}
-				if (isGamePaused && IsInterfaceOpen(InterfaceElements.Shop))
-				{
-					GameManager.Instance.ResumeGame();
-					return;
-				}
-				
-			}
-		}
 	}
 	public void CloseAllMenus()
 	{
