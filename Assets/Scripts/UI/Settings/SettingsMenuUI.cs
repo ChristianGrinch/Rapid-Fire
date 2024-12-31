@@ -31,6 +31,13 @@ public class SettingsMenuUI : MonoBehaviour
 	[Header("Other")]
 	public bool didModifySettings = false;
 	public bool didSaveSettings = false;
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if(UIManager.Instance.IsInterfaceOpen(InterfaceElements.Settings)) GoBackCheck();
+		}
+	}
 	private void Start()
 	{
 		audioLabel.onClick.AddListener(OpenAudioPanel);
@@ -42,28 +49,21 @@ public class SettingsMenuUI : MonoBehaviour
 			didSaveSettings = true;
 			GameManager.Instance.SaveSettings();
 		});
-		goBack.onClick.AddListener(() =>
-		{
-			if (didModifySettings && !didSaveSettings)
-			{
-				PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
-				Debug.Log("ran this bro");
-			} 
-			else
-			{
-				if (GameManager.Instance.isInGame)
-				{
-					UIManager.Instance.CloseAllMenus();
-					UIManager.Instance.SetMenuStatus(Menus.Pause, true);
-				}
-				else
-				{
-					UIManager.Instance.SwitchToStart();
-				}
-				didSaveSettings = false;
-			}
-		});
+		goBack.onClick.AddListener(GoBackCheck);
 		StartCoroutine(FixModifySettingsOnLoad());
+	}
+	private void GoBackCheck()
+	{
+		if (didModifySettings && !didSaveSettings)
+		{
+			PopupManager.Instance.ShowPopup(PopupManager.PopupType.QuitWithoutSavingConfirm);
+			Debug.Log("ran this bro");
+		}
+		else
+		{
+			UIManager.Instance.CloseInterface(InterfaceElements.Settings);
+			didSaveSettings = false;
+		}
 	}
 	IEnumerator FixModifySettingsOnLoad()
 	{
@@ -80,16 +80,17 @@ public class SettingsMenuUI : MonoBehaviour
 			Transform child = panels.transform.GetChild(i);
 			child.gameObject.SetActive(false);
 		}
+		UIManager.Instance.CloseAllSettingsPanels();
 	}
 	public void OpenAudioPanel()
 	{
 		CloseAllSettingsPanels();
-		UIManager.Instance.SetPanelStatus(Panels.Audio, true);
+		UIManager.Instance.OpenInterface(InterfaceElements.Audio);
 	}
 	public void OpenVideoPanel()
 	{
 		CloseAllSettingsPanels();
-		UIManager.Instance.SetPanelStatus(Panels.Video, true);
+		UIManager.Instance.OpenInterface(InterfaceElements.Video);
 	}
 	public void OpenSavesPanel()
 	{
@@ -97,12 +98,12 @@ public class SettingsMenuUI : MonoBehaviour
 		{
 			SavesPanelUI.Instance.InstantiateSaveButtons();
 			CloseAllSettingsPanels();
-			UIManager.Instance.SetPanelStatus(Panels.Saves, true);
+			UIManager.Instance.OpenInterface(InterfaceElements.Saves);
 		}
 	}
 	public void OpenControlPanel()
 	{
 		CloseAllSettingsPanels();
-		UIManager.Instance.SetPanelStatus(Panels.Controls, true);
+		UIManager.Instance.OpenInterface(InterfaceElements.Controls);
 	}
 }

@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (!UIManager.Instance.isGamePaused)
+		if (!UIManager.Instance.IsGamePaused())
 		{
 			MovePlayer();
 			RotatePlayer();

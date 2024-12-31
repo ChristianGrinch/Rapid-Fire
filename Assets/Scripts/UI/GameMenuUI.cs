@@ -64,7 +64,21 @@ public class GameMenuUI : MonoBehaviour
 	}
     private void Update()
     {
-		if(gunController.currentGunData.gunType == GunType.Pistol)
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			if (UIManager.Instance.IsGamePaused() && !UIManager.Instance.IsInterfaceOpen(InterfaceElements.Shop))
+			{
+				Debug.Log("game is paused");
+				GameManager.Instance.ResumeGame();
+			}
+			else
+			{
+				if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Inventory)) UIManager.Instance.CloseInterface(InterfaceElements.Inventory);
+				Debug.Log("game is not paused");
+				GameManager.Instance.PauseGame();
+			}
+		}
+		if (gunController.currentGunData.gunType == GunType.Pistol)
 		{
 			ammoImage.sprite = pistolAmmo;
 		} 

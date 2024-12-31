@@ -30,7 +30,7 @@ public class DifficultyMenuUI : MonoBehaviour
 
     void Start()
     {
-        goBack.onClick.AddListener(() => UIManager.Instance.SwitchToStart());
+        goBack.onClick.AddListener(() => UIManager.Instance.GoBackCheck(InterfaceElements.Difficulty));
         easy.onClick.AddListener(() =>
         {
             difficulty = 1;
@@ -54,7 +54,14 @@ public class DifficultyMenuUI : MonoBehaviour
             Debug.Log("Difficulty set to: " + difficulty);
         });
     }
-    void SetGameManagerValues()
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			UIManager.Instance.GoBackCheck(InterfaceElements.Difficulty);
+		}
+	}
+	void SetGameManagerValues()
     {
         GameManager.Instance.didSelectDifficulty = didSelectDifficulty;
         GameManager.Instance.difficulty = difficulty;

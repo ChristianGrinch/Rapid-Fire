@@ -54,12 +54,26 @@ public class ShopUI : MonoBehaviour
 		powerupBtn.onClick.AddListener(EmptyContent);
 		upgradeBtn.onClick.AddListener(EmptyContent);
 	}
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.H))
+		{
+			if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Shop))
+			{
+				CloseShop();
+			}
+			else if(!UIManager.Instance.IsGamePaused())
+			{
+				if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Inventory)) UIManager.Instance.CloseInterface(InterfaceElements.Inventory);
+				OpenShop();
+			}
+		}
+	}
 	public void OpenShop()
 	{
-		UIManager.Instance.SetMenuStatus(Menus.Shop, true);
+		UIManager.Instance.OpenInterface(InterfaceElements.Shop);
 		exp.text = $"EXP: {PlayerController.Instance.exp}";
 		GameManager.Instance.PauseGame();
-		//shopMenu.SetActive(true);
 		EmptyContent();
 	}
 	public void BuyItem()
@@ -68,8 +82,7 @@ public class ShopUI : MonoBehaviour
 	}
 	public void CloseShop()
 	{
-		UIManager.Instance.SetMenuStatus(Menus.Shop, false);
-		//shopMenu.SetActive(false);
+		UIManager.Instance.CloseInterface(InterfaceElements.Shop);
 		GameManager.Instance.ResumeGame();
 	}
 	public void EmptyContent()

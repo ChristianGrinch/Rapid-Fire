@@ -136,15 +136,14 @@ public class GameManager : MonoBehaviour
 	public void PauseGame()
 	{
 		isGamePaused = true;
-		UIManager.Instance.SetMenuStatus(Menus.Pause, true);
+		UIManager.Instance.OpenInterface(InterfaceElements.Pause);
 		Time.timeScale = 0;
 	    PauseMenuUI.Instance.saveGame.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{
 		isGamePaused = false;
-		UIManager.Instance.SetMenuStatus(Menus.Pause, false);
-		UIManager.Instance.SetMenuStatus(Menus.Game, true);
+		UIManager.Instance.CloseInterface(InterfaceElements.Pause);
 		Time.timeScale = 1;
 	}
 	public void QuitGame()
@@ -209,17 +208,18 @@ public class GameManager : MonoBehaviour
     }
 	public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		if (scene.buildIndex == 1)  // Ensure it’s the correct scene
+		if (scene.buildIndex == 1)
 		{
 			// Scene is now fully loaded; access new scene objects here
-			if(UIManager.Instance.menuGameobjects.Count != Enum.GetNames(typeof(Menus)).Length)
-			{
-				UIManager.Instance.menuGameobjects.Add(GameMenuUI.Instance.game);
-				UIManager.Instance.menuGameobjects.Add(ShopUI.Instance.shopMenu);
-				UIManager.Instance.menuGameobjects.Add(RestartMenuUI.Instance.restartMenu);
-				UIManager.Instance.menuGameobjects.Add(PauseMenuUI.Instance.pauseMenu);
-				UIManager.Instance.menuGameobjects.Add(InventoryUI.Instance.inventoryMenu);
-			}
+			UIManager UIManager = UIManager.Instance;
+			UIManager.menuGameobjects[3] = GameMenuUI.Instance.game;
+			UIManager.menuGameobjects[4] = ShopUI.Instance.shopMenu;
+			UIManager.menuGameobjects[5] = RestartMenuUI.Instance.restartMenu;
+			UIManager.menuGameobjects[6] = PauseMenuUI.Instance.pauseMenu;
+			UIManager.menuGameobjects[7] = InventoryUI.Instance.inventoryMenu;
+			UIManager.InitializeInterfaces();
+			UIManager.navigationHistory.Clear();
+			UIManager.navigationHistory.Add(InterfaceElements.Game);
 
 			ShopUI.Instance.CloseShop();
 			player = GameObject.FindWithTag("Player");
@@ -257,6 +257,10 @@ public class GameManager : MonoBehaviour
 			didLoadPowerupManager = false;
 			SavesPanelUI.Instance.InstantiateSaveButtons();
 			Debug.Log("build index was 0");
+
+			UIManager.Instance.InitializeInterfaces();
+			UIManager.Instance.navigationHistory.Clear();
+			UIManager.Instance.navigationHistory.Add(InterfaceElements.Start);
 
 			SceneManager.sceneLoaded -= OnSceneLoaded;
 		}
