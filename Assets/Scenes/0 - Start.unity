@@ -3315,8 +3315,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df36cf79e30f09546a9748362b361154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGamePaused: 0
-  isInGame: 0
   menuGameobjects: []
   panelGameObjects: []
   interfaces: []
