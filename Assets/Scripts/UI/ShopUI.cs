@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -41,6 +42,8 @@ public class ShopUI : MonoBehaviour
 	[Header("Other")]
 	public TMP_Text exp;
 	public List<PowerupType> ownedPowerups;
+	public int numberOfGuns;
+	WeaponsDatabase weaponsDatabase;
 	public enum ButtonType
 	{
 		Gun,
@@ -50,9 +53,17 @@ public class ShopUI : MonoBehaviour
 	private void Start()
 	{
 		EmptyContent();
-		gunBtn.onClick.AddListener(EmptyContent);
-		powerupBtn.onClick.AddListener(EmptyContent);
-		upgradeBtn.onClick.AddListener(EmptyContent);
+		gunBtn.onClick.AddListener(() => {
+			OpenSection(ButtonType.Gun);
+		});
+		powerupBtn.onClick.AddListener(() => {
+			//OpenSection(ButtonType.);
+		});
+		upgradeBtn.onClick.AddListener(() => {
+			//OpenSection(ButtonType.);
+		});
+
+		numberOfGuns = Enum.GetNames(typeof(PrimaryType)).Length - 1 + Enum.GetNames(typeof(SecondaryType)).Length - 1;
 	}
 	private void Update()
 	{
@@ -67,6 +78,28 @@ public class ShopUI : MonoBehaviour
 				if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Inventory)) UIManager.Instance.CloseInterface(InterfaceElements.Inventory);
 				OpenShop();
 			}
+		}
+	}
+	public void OpenSection(ButtonType type)
+	{
+		EmptyContent();
+		switch (type)
+		{
+			case ButtonType.Gun:
+				//var i = 0;
+				//i += InventoryManager.Instance.ownedPrimaries.Count + InventoryManager.Instance.ownedSecondaries.Count;
+				//if (InventoryManager.Instance.ownedPrimaries[0].gunType == GunController.GunType.None) i--; // freaky way to check if the item in owned primaries is just a filler slot and has no weapon
+				
+				List<GameObject> allLevel1Guns = weaponsDatabase.FindAllGameObjectsByLevel(1);
+				foreach(var gun in allLevel1Guns)
+				{
+					InstantiateButton(gun.GetComponent<SlotData>().itemData);
+				}
+				break;
+			case ButtonType.Powerup:
+				break;
+			case ButtonType.Upgrade:
+				break;
 		}
 	}
 	public void OpenShop()
@@ -92,20 +125,26 @@ public class ShopUI : MonoBehaviour
 			Destroy(content.transform.GetChild(i).gameObject);
 		}
 	}
-	public void InstantiateButton(ButtonType buttonType)
+	public void InstantiateButton(ItemData itemData)
 	{
 		GameObject gameObject = new();
-		switch (buttonType)
+		switch (itemData.itemType)
 		{
-			case ButtonType.Gun:
+			case ItemDataType.Primary:
 				gameObject = gunPrefab;
+				gameObject.GetComponentInChildren<TMP_Text>().text = itemData.gunType.ToString();
 				break;
-			case ButtonType.Powerup:
+			case ItemDataType.Secondary:
 				gameObject = powerupPrefab;
+				gameObject.GetComponentInChildren<TMP_Text>().text = itemData.gunType.ToString();
 				break;
-			case ButtonType.Upgrade:
-				gameObject = upgradePrefab;
+			case ItemDataType.Powerup:
+				gameObject = powerupPrefab;
+				gameObject.GetComponentInChildren<TMP_Text>().text = itemData.powerupType.ToString();
 				break;
+			//case ButtonType.Upgrade:
+			//	gameObject = upgradePrefab;
+			//	break;
 		}
 		prefabObject = Instantiate(gameObject, content.transform);
 	}

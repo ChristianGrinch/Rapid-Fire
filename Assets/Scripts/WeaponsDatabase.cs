@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [CreateAssetMenu(fileName = "WeaponsDatabase", menuName = "Database/Weapons")]
 public class WeaponsDatabase : ScriptableObject
@@ -37,5 +38,28 @@ public class WeaponsDatabase : ScriptableObject
 		}
 		Debug.LogError("Unknown error occured (Location: FindGameObjectByLevel in WeaponsDatabase)");
 		return null;
+	}
+	public List<GameObject> FindAllGameObjects()
+	{
+		GameObject[] gameObjects = Resources.LoadAll<GameObject>("/Weapons");
+		return new List<GameObject>(gameObjects);
+	}
+	public List<GameObject> FindAllGameObjectsByLevel(int level)
+	{
+		List<GameObject> allGameObjects = FindAllGameObjects();
+		List<GameObject> selectedGameObjects = new();
+
+		foreach(var gameObject in allGameObjects)
+		{
+			string[] splitName = gameObject.name.Split(" ");
+			string lastPart = splitName[splitName.Length - 1];
+
+			if (lastPart == level.ToString())
+			{
+				selectedGameObjects.Add(gameObject);
+			}
+		}
+
+		return selectedGameObjects;
 	}
 }
