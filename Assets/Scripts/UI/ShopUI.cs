@@ -90,10 +90,20 @@ public class ShopUI : MonoBehaviour
 				//i += InventoryManager.Instance.ownedPrimaries.Count + InventoryManager.Instance.ownedSecondaries.Count;
 				//if (InventoryManager.Instance.ownedPrimaries[0].gunType == GunController.GunType.None) i--; // freaky way to check if the item in owned primaries is just a filler slot and has no weapon
 				
-				List<GameObject> allLevel1Guns = weaponsDatabase.FindAllGameObjectsByLevel(1);
-				foreach(var gun in allLevel1Guns)
+				List<GameObject> level1Guns = weaponsDatabase.FindAllGameObjectsByLevel(1);
+				List<GunData> gunDatas = new();
+				List<ItemData> itemDatas;
+
+				for(var i = 0; i < level1Guns.Count; i++)
 				{
-					InstantiateButton(gun.GetComponent<SlotData>().itemData);
+					gunDatas.Add(level1Guns[i].GetComponent<GunData>());
+				}
+
+				itemDatas = WeaponsDatabase.ConvertGunDataToItemData(gunDatas);
+
+				for(var i = 0; i < level1Guns.Count; i++)
+				{
+					InstantiateButton(itemDatas[i]);
 				}
 				break;
 			case ButtonType.Powerup:

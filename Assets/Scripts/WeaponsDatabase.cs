@@ -62,4 +62,17 @@ public class WeaponsDatabase : ScriptableObject
 
 		return selectedGameObjects;
 	}
+	public static List<ItemData> ConvertGunDataToItemData(List<GunData> gunDatas)
+	{
+		List<ItemData> itemDatas = new();
+		var i = 0;
+		foreach(var gunData in gunDatas)
+		{
+			itemDatas.Add(new ItemData()
+			{
+				
+			});
+		}
+		return itemDatas;
+	}
 }
