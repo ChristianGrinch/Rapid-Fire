@@ -226,6 +226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 803303769305591802}
   - component: {fileID: 5500183879063353666}
+  - component: {fileID: -3695490381074761428}
   m_Layer: 6
   m_Name: Pistol Level 2
   m_TagString: Untagged
@@ -265,6 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunStats:
     gameObject: {fileID: 4304305774032219228}
+    cost: 0
     level: 2
     levelCap: 3
     damage: 12
@@ -274,6 +276,29 @@ MonoBehaviour:
     reloadDuration: 2
     accuracy: 70
     bulletSpeed: 1
+--- !u!114 &-3695490381074761428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4304305774032219228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54a321e6c016944783ed48447bd57b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData:
+    itemType: 2
+    primaryType: 0
+    secondaryType: 1
+    powerupType: 0
+    armorType: 0
+    ammo: 0
+    isWeaponAutomatic: 0
+    gameObject: {fileID: 4304305774032219228}
+    gunType: 1
+  powerupCounts: 000000000000000000000000
 --- !u!1 &7107525580803583370
 GameObject:
   m_ObjectHideFlags: 0

@@ -43,6 +43,8 @@ public class ShopUI : MonoBehaviour
 	public TMP_Text exp;
 	public List<PowerupType> ownedPowerups;
 	public int numberOfGuns;
+
+	[SerializeField]
 	WeaponsDatabase weaponsDatabase;
 	public enum ButtonType
 	{
@@ -86,24 +88,17 @@ public class ShopUI : MonoBehaviour
 		switch (type)
 		{
 			case ButtonType.Gun:
-				//var i = 0;
-				//i += InventoryManager.Instance.ownedPrimaries.Count + InventoryManager.Instance.ownedSecondaries.Count;
-				//if (InventoryManager.Instance.ownedPrimaries[0].gunType == GunController.GunType.None) i--; // freaky way to check if the item in owned primaries is just a filler slot and has no weapon
-				
 				List<GameObject> level1Guns = weaponsDatabase.FindAllGameObjectsByLevel(1);
-				List<GunData> gunDatas = new();
-				List<ItemData> itemDatas;
+				List<SlotData> itemDatas = new();
 
 				for(var i = 0; i < level1Guns.Count; i++)
 				{
-					gunDatas.Add(level1Guns[i].GetComponent<GunData>());
+					itemDatas.Add(level1Guns[i].GetComponent<SlotData>());
 				}
 
-				itemDatas = WeaponsDatabase.ConvertGunDataToItemData(gunDatas);
-
 				for(var i = 0; i < level1Guns.Count; i++)
 				{
-					InstantiateButton(itemDatas[i]);
+					InstantiateButton(itemDatas[i].itemData);
 				}
 				break;
 			case ButtonType.Powerup:
@@ -145,7 +140,7 @@ public class ShopUI : MonoBehaviour
 				gameObject.GetComponentInChildren<TMP_Text>().text = itemData.gunType.ToString();
 				break;
 			case ItemDataType.Secondary:
-				gameObject = powerupPrefab;
+				gameObject = gunPrefab;
 				gameObject.GetComponentInChildren<TMP_Text>().text = itemData.gunType.ToString();
 				break;
 			case ItemDataType.Powerup:

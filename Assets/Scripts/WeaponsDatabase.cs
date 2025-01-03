@@ -41,7 +41,17 @@ public class WeaponsDatabase : ScriptableObject
 	}
 	public List<GameObject> FindAllGameObjects()
 	{
-		GameObject[] gameObjects = Resources.LoadAll<GameObject>("/Weapons");
+		GameObject[] gameObjects = Resources.LoadAll<GameObject>("Weapons");
+
+		if (gameObjects == null || gameObjects.Length == 0)
+		{
+			Debug.LogError("No GameObjects found in Weapons folder.");
+		}
+		else
+		{
+			Debug.Log($"Found {gameObjects.Length} GameObjects in Weapons folder.");
+		}
+
 		return new List<GameObject>(gameObjects);
 	}
 	public List<GameObject> FindAllGameObjectsByLevel(int level)
@@ -62,17 +72,16 @@ public class WeaponsDatabase : ScriptableObject
 
 		return selectedGameObjects;
 	}
-	public static List<ItemData> ConvertGunDataToItemData(List<GunData> gunDatas)
-	{
-		List<ItemData> itemDatas = new();
-		var i = 0;
-		foreach(var gunData in gunDatas)
-		{
-			itemDatas.Add(new ItemData()
-			{
-				
-			});
-		}
-		return itemDatas;
-	}
+	//public static List<ItemData> ConvertGunDataToItemData(List<GunData> gunDatas)
+	//{
+	//	List<ItemData> itemDatas = new();
+	//	var i = 0;
+	//	foreach(var gunData in gunDatas)
+	//	{
+	//		itemDatas.Add(new ItemData());
+	//		itemDatas[i].itemType = e;
+	//		i++;
+	//	}
+	//	return itemDatas;
+	//}
 }

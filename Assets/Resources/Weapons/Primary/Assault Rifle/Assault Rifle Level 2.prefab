@@ -259,6 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7518541843657554081}
   - component: {fileID: -4908913716451273607}
+  - component: {fileID: 480897116800982698}
   m_Layer: 6
   m_Name: Assault Rifle Level 2
   m_TagString: Untagged
@@ -310,6 +311,29 @@ MonoBehaviour:
     reloadDuration: 2.2
     accuracy: 75
     bulletSpeed: 1.5
+--- !u!114 &480897116800982698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5871927113381067353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54a321e6c016944783ed48447bd57b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData:
+    itemType: 1
+    primaryType: 1
+    secondaryType: 0
+    powerupType: 0
+    armorType: 0
+    ammo: 0
+    isWeaponAutomatic: 1
+    gameObject: {fileID: 5871927113381067353}
+    gunType: 2
+  powerupCounts: 000000000000000000000000
 --- !u!1 &6654459780193822924
 GameObject:
   m_ObjectHideFlags: 0

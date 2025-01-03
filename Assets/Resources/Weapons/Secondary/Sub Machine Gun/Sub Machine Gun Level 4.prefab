@@ -334,6 +334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 195997975366849086}
   - component: {fileID: 8491567034666297113}
+  - component: {fileID: 1894877973570053489}
   m_Layer: 6
   m_Name: Sub Machine Gun Level 4
   m_TagString: Untagged
@@ -383,3 +384,26 @@ MonoBehaviour:
     reloadDuration: 1.7
     accuracy: 70
     bulletSpeed: 1.4
+--- !u!114 &1894877973570053489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6308436524376144763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e54a321e6c016944783ed48447bd57b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData:
+    itemType: 2
+    primaryType: 0
+    secondaryType: 2
+    powerupType: 0
+    armorType: 0
+    ammo: 0
+    isWeaponAutomatic: 1
+    gameObject: {fileID: 6308436524376144763}
+    gunType: 3
+  powerupCounts: 000000000000000000000000

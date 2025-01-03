@@ -5039,6 +5039,8 @@ MonoBehaviour:
   contentLayoutGroup: {fileID: 427057950}
   exp: {fileID: 1053080239}
   ownedPowerups: 
+  numberOfGuns: 0
+  weaponsDatabase: {fileID: 11400000, guid: 84bc446c9068430489b0f028189600df, type: 2}
 --- !u!114 &522063744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5067,7 +5069,6 @@ MonoBehaviour:
   assaultRifleRT: {fileID: 8400000, guid: a014d465f551ca14b8116742d6f44a93, type: 2}
   subMachineGunRT: {fileID: 8400000, guid: 93da5cde6bf90c3448c320035f686982, type: 2}
   speedPowerupRT: {fileID: 8400000, guid: 1a3f1566b4173d84785335244654ae27, type: 2}
-  isInventoryOpen: 0
   invPlayerCamera: {fileID: 192767396}
 --- !u!114 &522063745
 MonoBehaviour:
