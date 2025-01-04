@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -59,10 +60,10 @@ public class ShopUI : MonoBehaviour
 			OpenSection(ButtonType.Gun);
 		});
 		powerupBtn.onClick.AddListener(() => {
-			//OpenSection(ButtonType.);
+			OpenSection(ButtonType.Powerup);
 		});
 		upgradeBtn.onClick.AddListener(() => {
-			//OpenSection(ButtonType.);
+			//OpenSection(ButtonType.Upgrade);
 		});
 
 		numberOfGuns = Enum.GetNames(typeof(PrimaryType)).Length - 1 + Enum.GetNames(typeof(SecondaryType)).Length - 1;
@@ -102,6 +103,21 @@ public class ShopUI : MonoBehaviour
 				}
 				break;
 			case ButtonType.Powerup:
+				InstantiateButton(new ItemData()
+				{
+					itemType = ItemDataType.Powerup,
+					powerupType = PowerupType.Ammo
+				});
+				InstantiateButton(new ItemData()
+				{
+					itemType = ItemDataType.Powerup,
+					powerupType = PowerupType.Health
+				});
+				InstantiateButton(new ItemData()
+				{
+					itemType = ItemDataType.Powerup,
+					powerupType = PowerupType.Speed
+				});
 				break;
 			case ButtonType.Upgrade:
 				break;
@@ -137,11 +153,17 @@ public class ShopUI : MonoBehaviour
 		{
 			case ItemDataType.Primary:
 				gameObject = gunPrefab;
-				gameObject.GetComponentInChildren<TMP_Text>().text = itemData.gunType.ToString();
+
+				string text = itemData.gunType.ToString();
+				text = Regex.Replace(text, "(?<!^)([A-Z])", " $1"); // no idea what this means but thanks stack overflow. all i know is (?<!^) avoids the first letter 
+				gameObject.GetComponentInChildren<TMP_Text>().text = text;
 				break;
 			case ItemDataType.Secondary:
 				gameObject = gunPrefab;
-				gameObject.GetComponentInChildren<TMP_Text>().text = itemData.gunType.ToString();
+
+				text = itemData.gunType.ToString();
+				text = Regex.Replace(text, "(?<!^)([A-Z])", " $1");
+				gameObject.GetComponentInChildren<TMP_Text>().text = text;
 				break;
 			case ItemDataType.Powerup:
 				gameObject = powerupPrefab;
