@@ -26,6 +26,10 @@ public class ShopUI : MonoBehaviour
 	public GameObject gunPrefab;
 	public GameObject powerupPrefab;
 	public GameObject upgradePrefab;
+	[Header("Buy Panel")]
+	public GameObject buyPanelPrefab;
+	public Image buyPanelImage;
+	public TMP_Text buyPanelText;
 	[Header("Header")]
 	public GameObject header;
 	public HorizontalLayoutGroup headerLayoutGroup;
@@ -45,8 +49,7 @@ public class ShopUI : MonoBehaviour
 	public List<PowerupType> ownedPowerups;
 	public int numberOfGuns;
 
-	[SerializeField]
-	WeaponsDatabase weaponsDatabase;
+	[SerializeField] private WeaponsDatabase weaponsDatabase;
 	public enum ButtonType
 	{
 		Gun,
@@ -148,7 +151,7 @@ public class ShopUI : MonoBehaviour
 	}
 	public void InstantiateButton(ItemData itemData)
 	{
-		GameObject gameObject = new();
+		GameObject gameObject = null;
 		switch (itemData.itemType)
 		{
 			case ItemDataType.Primary:
@@ -174,5 +177,14 @@ public class ShopUI : MonoBehaviour
 			//	break;
 		}
 		prefabObject = Instantiate(gameObject, content.transform);
+		prefabObject.GetComponent<Button>().onClick.AddListener(OpenBuyPanel);
+	}
+
+	private void OpenBuyPanel()
+	{
+		GameObject buyPanel = Instantiate(buyPanelPrefab, content.transform.parent);
+		GameObject panel = buyPanel.transform.GetChild(0).gameObject;
+		buyPanelImage = panel.GetComponentInChildren<Image>();
+		buyPanelText = panel.GetComponentInChildren<TMP_Text>();
 	}
 }

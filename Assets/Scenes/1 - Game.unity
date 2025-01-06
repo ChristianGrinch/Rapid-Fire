@@ -5030,6 +5030,9 @@ MonoBehaviour:
   gunPrefab: {fileID: 8651541900150130329, guid: 0b5a4e2cdfad3bb43a65585cce8763d7, type: 3}
   powerupPrefab: {fileID: 8254956965026195304, guid: 8f26d9e385d582f4f99a93b62318d701, type: 3}
   upgradePrefab: {fileID: 3511649111989650335, guid: bbade53cbf6461a4bb69fad056a98006, type: 3}
+  buyPanelPrefab: {fileID: 306884359090745041, guid: 202225f1b63e98642b7339bcaae58dea, type: 3}
+  buyPanelImage: {fileID: 0}
+  buyPanelText: {fileID: 0}
   header: {fileID: 1179652248}
   headerLayoutGroup: {fileID: 1179652250}
   gunBtn: {fileID: 442284745}
@@ -12246,7 +12249,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 183.74998, y: -100}
+  m_AnchoredPosition: {x: 183.75, y: -100}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1464251891
@@ -17837,6 +17840,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 427057949}
     m_Modifications:
+    - target: {fileID: 911645383577350186, guid: 0b5a4e2cdfad3bb43a65585cce8763d7, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 1547221630488212193, guid: 0b5a4e2cdfad3bb43a65585cce8763d7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
