@@ -93,40 +93,36 @@ public class ShopUI : MonoBehaviour
 		{
 			case ButtonType.Gun:
 				List<GameObject> level1Guns = weaponsDatabase.FindAllGameObjectsByLevel(1);
-				List<SlotData> itemDatas = new();
-				List<GunData> gunDatas = new();
-
+				
 				for(var i = 0; i < level1Guns.Count; i++)
 				{
-					itemDatas.Add(level1Guns[i].GetComponent<SlotData>());
-					gunDatas.Add(level1Guns[i].GetComponent<GunData>());
-				}
-
-				for(var i = 0; i < level1Guns.Count; i++)
-				{
-					InstantiateButton(itemDatas[i].itemData, gunDatas[i].gunStats);
+					InstantiateButton(level1Guns[i]);
 				}
 				break;
 			case ButtonType.Powerup:
-				InstantiateButton(new ItemData()
-				{
-					itemType = ItemDataType.Powerup,
-					powerupType = PowerupType.Ammo
-				}, new GunStats());
-				InstantiateButton(new ItemData()
-				{
-					itemType = ItemDataType.Powerup,
-					powerupType = PowerupType.Health
-				}, new GunStats());
-				InstantiateButton(new ItemData()
-				{
-					itemType = ItemDataType.Powerup,
-					powerupType = PowerupType.Speed
-				}, new GunStats());
+				InstantiateButton(CreateItemObject(ItemDataType.Powerup, PowerupType.Ammo));
+				
+				InstantiateButton(CreateItemObject(ItemDataType.Powerup, PowerupType.Health));
+				
+				InstantiateButton(CreateItemObject(ItemDataType.Powerup, PowerupType.Speed));
 				break;
 			case ButtonType.Upgrade:
 				break;
 		}
+	}
+	private GameObject CreateItemObject(ItemDataType itemType, PowerupType powerupType)
+	{
+		GameObject itemObject = new GameObject("Shop Powerup Object");
+		
+		SlotData slotData = itemObject.AddComponent<SlotData>();
+		
+		slotData.itemData = new ItemData
+		{
+			itemType = itemType,
+			powerupType = powerupType
+		};
+
+		return itemObject;
 	}
 	public void OpenShop()
 	{
@@ -135,8 +131,21 @@ public class ShopUI : MonoBehaviour
 		GameManager.Instance.PauseGame();
 		EmptyContent();
 	}
-	public void BuyItem()
+	public void BuyItem(int cost, GameObject itemToBuy)
 	{
+		int playerExp = PlayerController.Instance.exp;
+		if (playerExp <= 0 || playerExp - cost < 0) return;
+		PlayerController.Instance.exp -= cost;
+		
+		ItemData itemData = itemToBuy.GetComponent<SlotData>().itemData;
+		if (itemData.itemType == ItemDataType.Primary)
+		{
+			InventoryManager.Instance.ownedPrimaries.Add(itemData);
+		}
+		else
+		{
+			InventoryManager.Instance.ownedSecondaries.Add(itemData);
+		}
 		exp.text = $"EXP: {PlayerController.Instance.exp}";
 	}
 	public void CloseShop()
@@ -151,39 +160,44 @@ public class ShopUI : MonoBehaviour
 			Destroy(content.transform.GetChild(i).gameObject);
 		}
 	}
-	public void InstantiateButton(ItemData itemData, GunStats gunStats)
+	public void InstantiateButton(GameObject obj)
 	{
-		GameObject obj = null;
+		ItemData itemData = obj.GetComponent<SlotData>().itemData;
+		GunStats gunStats = obj.GetComponent<GunData>().gunStats;
+		GameObject buttonToInstantiate = null;
 		switch (itemData.itemType)
 		{
 			case ItemDataType.Primary:
-				obj = gunPrefab;
+				buttonToInstantiate = gunPrefab;
 
 				string text = itemData.gunType.ToString();
 				text = Regex.Replace(text, "(?<!^)([A-Z])", " $1"); // no idea what this means but thanks stack overflow. all i know is (?<!^) avoids the first letter 
-				obj.GetComponentInChildren<TMP_Text>().text = text;
+				buttonToInstantiate.GetComponentInChildren<TMP_Text>().text = text;
 				break;
 			case ItemDataType.Secondary:
-				obj = gunPrefab;
+				buttonToInstantiate = gunPrefab;
 
 				text = itemData.gunType.ToString();
 				text = Regex.Replace(text, "(?<!^)([A-Z])", " $1");
-				obj.GetComponentInChildren<TMP_Text>().text = text;
+				buttonToInstantiate.GetComponentInChildren<TMP_Text>().text = text;
 				break;
 			case ItemDataType.Powerup:
-				obj = powerupPrefab;
-				obj.GetComponentInChildren<TMP_Text>().text = itemData.powerupType.ToString();
+				buttonToInstantiate = powerupPrefab;
+				buttonToInstantiate.GetComponentInChildren<TMP_Text>().text = itemData.powerupType.ToString();
 				break;
 			//case ButtonType.Upgrade:
 			//	gameObject = upgradePrefab;
 			//	break;
 		}
-		prefabObject = Instantiate(obj, content.transform);
-		prefabObject.GetComponent<Button>().onClick.AddListener(() => OpenBuyPanel(itemData, gunStats)); // the passed "obj" is NOT the gun gameobject so OpenBuyPanel breaks.
+		prefabObject = Instantiate(buttonToInstantiate, content.transform);
+		prefabObject.GetComponent<Button>().onClick.AddListener(() => OpenBuyPanel(obj)); // the passed "obj" is NOT the gun gameobject so OpenBuyPanel breaks. edit: jk itworks maybe
 	}
 
-	private void OpenBuyPanel(ItemData itemData, GunStats gunStats)
+	private void OpenBuyPanel(GameObject obj)
 	{
+		ItemData itemData = obj.GetComponent<SlotData>().itemData;
+		GunStats gunStats = obj.GetComponent<GunData>().gunStats;
+		
 		GameObject buyPanel = Instantiate(buyPanelPrefab, content.transform.parent);
 		GameObject panel = buyPanel.transform.GetChild(0).gameObject;
 		Button buyBtn = panel.transform.Find("Buy").gameObject.GetComponent<Button>();
@@ -191,13 +205,13 @@ public class ShopUI : MonoBehaviour
 		
 		buyPanelImage = panel.GetComponentInChildren<Image>();
 		buyPanelText = panel.transform.Find("Text (TMP)").GetComponent<TMP_Text>();
-		
-		buyBtn.onClick.AddListener(BuyItem);
-		cancelBtn.onClick.AddListener(() => Destroy(buyPanel));
 
 		string gun = itemData.primaryType != PrimaryType.None ? itemData.primaryType.ToString() : itemData.secondaryType.ToString();
 		gun = Regex.Replace(gun, "(?<!^)([A-Z])", " $1");
-		string price = gunStats.cost.ToString();
+		int price = gunStats.cost;
 		buyPanelText.text = $" Would you like to buy {gun} for {price}?";
+		
+		buyBtn.onClick.AddListener(() => BuyItem(price, obj));
+		cancelBtn.onClick.AddListener(() => Destroy(buyPanel));
 	}
 }
