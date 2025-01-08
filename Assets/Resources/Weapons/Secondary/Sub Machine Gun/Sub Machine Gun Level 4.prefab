@@ -374,7 +374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunStats:
     gameObject: {fileID: 6308436524376144763}
-    cost: 0
+    cost: 600
     level: 4
     levelCap: 5
     damage: 11

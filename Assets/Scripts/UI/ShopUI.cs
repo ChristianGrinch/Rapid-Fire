@@ -195,7 +195,7 @@ public class ShopUI : MonoBehaviour
 		buyBtn.onClick.AddListener(BuyItem);
 		cancelBtn.onClick.AddListener(() => Destroy(buyPanel));
 
-		string gun = itemData.primaryType.ToString();
+		string gun = itemData.primaryType != PrimaryType.None ? itemData.primaryType.ToString() : itemData.secondaryType.ToString();
 		gun = Regex.Replace(gun, "(?<!^)([A-Z])", " $1");
 		string price = gunStats.cost.ToString();
 		buyPanelText.text = $" Would you like to buy {gun} for {price}?";
