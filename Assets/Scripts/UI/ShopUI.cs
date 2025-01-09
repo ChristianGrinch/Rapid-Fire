@@ -187,12 +187,35 @@ public class ShopUI : MonoBehaviour
 				buttonToInstantiate = powerupPrefab;
 				buttonToInstantiate.GetComponentInChildren<TMP_Text>().text = itemData.powerupType.ToString();
 				break;
-			//case ButtonType.Upgrade:
-			//	gameObject = upgradePrefab;
-			//	break;
 		}
 		prefabObject = Instantiate(buttonToInstantiate, content.transform);
-		prefabObject.GetComponent<Button>().onClick.AddListener(() => OpenBuyPanel(obj)); // the passed "obj" is NOT the gun gameobject so OpenBuyPanel breaks. edit: jk itworks maybe
+		prefabObject.GetComponent<Button>().onClick.AddListener(() =>
+		{
+			if (itemData.itemType == ItemDataType.Primary)
+			{
+				foreach (var primary in InventoryManager.Instance.ownedPrimaries)
+				{	
+					if (itemData.primaryType == primary.primaryType)
+					{
+						// Item is owned, no need to open the buy panel
+						return;
+					}
+				}
+				// Item is not found in ownedPrimaries, open the buy panel
+				OpenBuyPanel(obj);
+			}
+			else
+			{
+				foreach (var secondary in InventoryManager.Instance.ownedSecondaries)
+				{
+					if (itemData.secondaryType == secondary.secondaryType)
+					{
+						return;
+					};
+				}
+				OpenBuyPanel(obj);
+			}
+		});
 	}
 
 	private void OpenBuyPanel(GameObject obj)
@@ -212,8 +235,12 @@ public class ShopUI : MonoBehaviour
 		gun = Regex.Replace(gun, "(?<!^)([A-Z])", " $1");
 		int price = gunStats.cost;
 		buyPanelText.text = $" Would you like to buy {gun} for {price}?";
-		
-		buyBtn.onClick.AddListener(() => BuyItem(price, obj));
+
+		buyBtn.onClick.AddListener(() =>
+		{
+			BuyItem(price, obj);
+			Destroy(buyPanel);
+		}); 
 		cancelBtn.onClick.AddListener(() => Destroy(buyPanel));
 	}
 }
