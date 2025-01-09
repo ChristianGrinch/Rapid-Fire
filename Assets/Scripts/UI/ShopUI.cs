@@ -134,12 +134,14 @@ public class ShopUI : MonoBehaviour
 	public void BuyItem(int cost, GameObject itemToBuy)
 	{
 		int playerExp = PlayerController.Instance.exp;
-		if (playerExp <= 0 || playerExp - cost < 0) return;
+		if (playerExp - cost < 0) return;
 		PlayerController.Instance.exp -= cost;
 		
 		ItemData itemData = itemToBuy.GetComponent<SlotData>().itemData;
 		if (itemData.itemType == ItemDataType.Primary)
 		{
+			if (InventoryManager.Instance.ownedPrimaries[0].primaryType == PrimaryType.None)
+				InventoryManager.Instance.ownedPrimaries.Clear();
 			InventoryManager.Instance.ownedPrimaries.Add(itemData);
 		}
 		else

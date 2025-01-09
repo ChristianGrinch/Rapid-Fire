@@ -329,7 +329,7 @@ MonoBehaviour:
     secondaryType: 0
     powerupType: 0
     armorType: 0
-    ammo: 0
+    ammo: 30
     isWeaponAutomatic: 1
     gameObject: {fileID: 5871927113381067353}
     gunType: 2
