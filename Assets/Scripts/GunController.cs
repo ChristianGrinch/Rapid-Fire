@@ -190,7 +190,14 @@ public class GunController : MonoBehaviour
 
 	void Shoot(float yRotation)
 	{
-		float accuracy = currentGunData.gameObject.GetComponent<GunData>().gunStats.accuracy;
+		GunData gunData = currentGunData.gameObject.GetComponent<GunData>();
+		float accuracy = gunData.gunStats.accuracy;
+		float spread = gunData.gunStats.spread;
+
+		float maxAngle = Random.Range(-spread, spread);
+		float actualOffset = maxAngle * (100f - accuracy) / 100; // 10 * (100f - 80) / 100 Results in a 2 degree variance
+		yRotation += actualOffset;
+		
 		Vector3 spawnPosition = player.transform.TransformPoint(offset);
 		GameObject instantiatedBullet = Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
 		instantiatedBullet.transform.parent = bulletParent.transform; // Sets parent

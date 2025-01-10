@@ -311,6 +311,7 @@ MonoBehaviour:
     reloadDuration: 2.3
     accuracy: 70
     bulletSpeed: 1.5
+    spread: 10
 --- !u!114 &-6424638556816282449
 MonoBehaviour:
   m_ObjectHideFlags: 0

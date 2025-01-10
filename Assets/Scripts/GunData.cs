@@ -24,4 +24,5 @@ public class GunStats
 	public float reloadDuration;
 	public int accuracy; // Higher is better. 100% accuracy means always perfect shots. (0-100)
 	public float bulletSpeed;
+	public float spread = 10;
 }
