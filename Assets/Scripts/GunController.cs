@@ -46,7 +46,7 @@ public class GunController : MonoBehaviour
 		{
 			if (Input.GetKeyDown(KeyCode.Alpha1)) ChangeCurrentGun(0);
 			if (Input.GetKeyDown(KeyCode.Alpha2)) ChangeCurrentGun(1);
-			ShootGun();
+			if (Input.GetMouseButton(0)) ShootGun();
 		}
 	}
 	void ChangeCurrentGun(int index)
@@ -57,7 +57,7 @@ public class GunController : MonoBehaviour
 		// If no weapon of the corresponding index is selected, return
 		if (InventoryManager.Instance.selectedGuns[index].gameObject == null) return;
 
-		// If the new weapon to equip is different, destory the existing one
+		// If the new weapon to equip is different, destroy the existing one
 		if (instantiatedWeapon != null && instantiatedWeapon != InventoryManager.Instance.selectedGuns[index].gameObject)
 			Destroy(instantiatedWeapon);
 
@@ -81,29 +81,31 @@ public class GunController : MonoBehaviour
 		{
 			case true:
 				{
-					if (instantiatedPrimary == null) return;
-					if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(ItemDataType.Primary))
+					//Debug.Log("Weapon is automatic.");
+					//if (instantiatedPrimary == null) return;
+					if (Input.GetMouseButton(0) && Time.time >= nextFireTime && TryUseAmmo(currentGunData.itemType))
 					{
 						audioData.clip = audioClip;
 						audioData.Play();
 
-						SetBulletStats(shootBullet, ItemDataType.Primary);
-						InstantiateBullet(yRotation);
+						SetBulletStats(shootBullet, currentGunData.itemType);
+						Shoot(yRotation);
 
-						nextFireTime = Time.time + InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats.firerate;  // Reset next fire time
+						nextFireTime = Time.time + currentGunData.gameObject.GetComponent<GunData>().gunStats.firerate;  // Reset next fire time
 					}
 					break;
 				}
 			case false:
 				{
-					if (instantiatedSecondary == null) return;
+					//Debug.Log("Weapon is not automatic.");
+					//if (instantiatedSecondary == null) return;
 					if (Input.GetMouseButtonDown(0) && TryUseAmmo(ItemDataType.Secondary))
 					{
 						audioData.clip = audioClip;
 						audioData.Play();
 
 						SetBulletStats(shootBullet, ItemDataType.Secondary);
-						InstantiateBullet(yRotation);
+						Shoot(yRotation);
 					}
 					break;
 				}
@@ -186,8 +188,9 @@ public class GunController : MonoBehaviour
 		}
 	}
 
-	void InstantiateBullet(float yRotation)
+	void Shoot(float yRotation)
 	{
+		float accuracy = currentGunData.gameObject.GetComponent<GunData>().gunStats.accuracy;
 		Vector3 spawnPosition = player.transform.TransformPoint(offset);
 		GameObject instantiatedBullet = Instantiate(bullet, spawnPosition, Quaternion.Euler(90, yRotation, 0));
 		instantiatedBullet.transform.parent = bulletParent.transform; // Sets parent
