@@ -19,6 +19,7 @@ public class GunController : MonoBehaviour
 	private GameObject bulletParent;
 
 	public ItemData currentGunData;
+	public GunData gunData;
 	public int currentGunInt;
 	private float nextFireTime = 0f;
 
@@ -55,14 +56,15 @@ public class GunController : MonoBehaviour
 		GameObject otherWeapon = index == 0 ? instantiatedSecondary : instantiatedPrimary;
 		
 		// If no weapon of the corresponding index is selected, return
-		if (InventoryManager.Instance.selectedGuns[index].gameObject == null) return;
+		if (!InventoryManager.Instance.selectedGuns[index].gameObject) return;
 
 		// If the new weapon to equip is different, destroy the existing one
-		if (instantiatedWeapon != null && instantiatedWeapon != InventoryManager.Instance.selectedGuns[index].gameObject)
+		if (instantiatedWeapon && instantiatedWeapon != InventoryManager.Instance.selectedGuns[index].gameObject)
 			Destroy(instantiatedWeapon);
 
 		Destroy(otherWeapon);
 		currentGunData = InventoryManager.Instance.selectedGuns[index];
+		gunData = currentGunData.gameObject.GetComponent<GunData>();
 		currentGunInt = index;
 		
 		if (index == 0)
@@ -118,11 +120,11 @@ public class GunController : MonoBehaviour
 		switch (itemDataType)
 		{
 			case ItemDataType.Primary:
-				GunStats primaryData = InventoryManager.Instance.selectedGuns[0].gameObject.GetComponent<GunData>().gunStats;
+				GunStats primaryData = InventoryManager.Instance.primaryData;
 				shootBullet.UpdateStats(primaryData.damage, primaryData.range, primaryData.bulletSpeed);
 				return;
 			case ItemDataType.Secondary:
-				GunStats secondaryData = InventoryManager.Instance.selectedGuns[1].gameObject.GetComponent<GunData>().gunStats;
+				GunStats secondaryData = InventoryManager.Instance.secondaryData;
 				shootBullet.UpdateStats(secondaryData.damage, secondaryData.range, secondaryData.bulletSpeed);
 				return;
 		}
@@ -152,45 +154,45 @@ public class GunController : MonoBehaviour
 	{
 		// Make sure the inventory and shop are closed before shooting
 		if (UIManager.Instance.IsInterfaceOpen(InterfaceElements.Inventory) || UIManager.Instance.IsInterfaceOpen(InterfaceElements.Shop)) return false;
-		if (itemDataType == ItemDataType.Primary)
+		switch (itemDataType)
 		{
-			ItemData itemData = InventoryManager.Instance.selectedGuns[0];
-			int ammo = itemData.ammo;
-			if(ammo > 0)
+			case ItemDataType.Primary:
 			{
-				itemData.ammo--;
-				return true;
+				ItemData itemData = InventoryManager.Instance.selectedGuns[0];
+				int ammo = itemData.ammo;
+				if(ammo > 0)
+				{
+					itemData.ammo--;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
-			else
+			case ItemDataType.Secondary:
 			{
+				ItemData itemData = InventoryManager.Instance.selectedGuns[1];
+				int ammo = itemData.ammo;
+				if (ammo > 0)
+				{
+					itemData.ammo--;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			default:
+				// Return false incase the provided data type is NOT a weapon
+				Debug.LogError("Tried to use ammo on a non-weapon data type!");
 				return false;
-			}
-		}
-		else if (itemDataType == ItemDataType.Secondary)
-		{
-			ItemData itemData = InventoryManager.Instance.selectedGuns[1];
-			int ammo = itemData.ammo;
-			if (ammo > 0)
-			{
-				itemData.ammo--;
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			// Return false incase the provided data type is NOT a weapon
-			Debug.LogError("Tried to use ammo on a non-weapon data type!");
-			return false;
 		}
 	}
 
 	void Shoot(float yRotation)
 	{
-		GunData gunData = currentGunData.gameObject.GetComponent<GunData>();
 		float accuracy = gunData.gunStats.accuracy;
 		float spread = gunData.gunStats.spread;
 
