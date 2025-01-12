@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
 		isGamePaused = true;
 		UIManager.Instance.OpenInterface(InterfaceElements.Pause);
 		Time.timeScale = 0;
-	    PauseMenuUI.Instance.saveGame.GetComponentInChildren<TMP_Text>().text = $"Save current game ({currentSave})";
+	    PauseMenuUI.Instance.saveGameText.text = $"Save current game ({currentSave})";
 	}
 	public void ResumeGame()
 	{

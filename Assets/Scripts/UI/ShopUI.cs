@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using static SlotData;
 
@@ -28,16 +30,21 @@ public class ShopUI : MonoBehaviour
 	public GameObject upgradePrefab;
 	[Header("Buy Panel")]
 	public GameObject buyPanelPrefab;
-	public Image buyPanelImage;
+	public RawImage buyPanelImage;
 	public TMP_Text buyPanelText;
-	[Header("Header")]
+	[Header("Upgrade Panel")]
+	public GameObject upgradePanelPrefab;
+	public RawImage UPCurrentGunImage;
+	public RawImage UPUpgradedGunImage;
+	public TMP_Text upgradePanelCurrentStats;
+	public TMP_Text upgradePanelUpgradedStats;
+	[Header("Shop Header")]
 	public GameObject header;
 	public HorizontalLayoutGroup headerLayoutGroup;
-	[Header("Header Buttons")]
 	public Button gunBtn;
 	public Button powerupBtn;
 	public Button upgradeBtn;
-	[Header("Content")]
+	[Header("Shop Content")]
 	public GameObject content;
 	public GridLayoutGroup contentLayoutGroup;
 	[Header("Instantiated Prefab Objects")]
@@ -197,7 +204,7 @@ public class ShopUI : MonoBehaviour
 				{	
 					if (itemData.primaryType == primary.primaryType)
 					{
-						// Item is owned, no need to open the buy panel
+						OpenUpgradePanel(obj);
 						return;
 					}
 				}
@@ -210,6 +217,7 @@ public class ShopUI : MonoBehaviour
 				{
 					if (itemData.secondaryType == secondary.secondaryType)
 					{
+						OpenUpgradePanel(obj);
 						return;
 					};
 				}
@@ -228,7 +236,7 @@ public class ShopUI : MonoBehaviour
 		Button buyBtn = panel.transform.Find("Buy").gameObject.GetComponent<Button>();
 		Button cancelBtn = panel.transform.Find("Cancel").gameObject.GetComponent<Button>();
 		
-		buyPanelImage = panel.GetComponentInChildren<Image>();
+		buyPanelImage = panel.GetComponentInChildren<RawImage>();
 		buyPanelText = panel.transform.Find("Text (TMP)").GetComponent<TMP_Text>();
 
 		string gun = itemData.primaryType != PrimaryType.None ? itemData.primaryType.ToString() : itemData.secondaryType.ToString();
@@ -242,5 +250,80 @@ public class ShopUI : MonoBehaviour
 			Destroy(buyPanel);
 		}); 
 		cancelBtn.onClick.AddListener(() => Destroy(buyPanel));
+	}
+	private void OpenUpgradePanel(GameObject obj)
+	{
+		ItemData itemData = obj.GetComponent<SlotData>().itemData;
+		GunStats gunStats = obj.GetComponent<GunData>().gunStats;
+		
+		GameObject upgradePanel = Instantiate(upgradePanelPrefab, content.transform.parent);
+		GameObject panel = upgradePanel.transform.GetChild(0).gameObject;
+		Button upgradeBtn = panel.transform.Find("Upgrade").gameObject.GetComponent<Button>();
+		Button cancelBtn = panel.transform.Find("Cancel").gameObject.GetComponent<Button>();
+		
+		Transform currentGunStats = panel.transform.Find("Current Gun Stats");
+		Transform upgradedGunStats = panel.transform.Find("Upgraded Gun Stats");
+		
+		UPCurrentGunImage = currentGunStats.Find("Image").GetComponent<RawImage>();
+		UPUpgradedGunImage = upgradedGunStats.Find("Image").GetComponent<RawImage>();
+		upgradePanelCurrentStats = currentGunStats.Find("Stats").GetComponent<TMP_Text>();
+		upgradePanelUpgradedStats = upgradedGunStats.Find("Stats").GetComponent<TMP_Text>();
+		
+		SetCurrentGunStats(gunStats);
+		SetUpgradedGunStats(itemData, gunStats);
+
+		upgradeBtn.onClick.AddListener(() =>
+		{
+			UpgradeItem();
+			Destroy(upgradePanel);
+		});
+		cancelBtn.onClick.AddListener(() => Destroy(upgradePanel));
+	}
+	private void SetCurrentGunStats(GunStats gunStats)
+	{
+		string level = gunStats.level.ToString();
+		string damage = gunStats.damage.ToString();
+		string firerate = gunStats.firerate == -1 ? "N/A" : gunStats.firerate.ToString();
+		string ammoCapacity = gunStats.ammoCapacity.ToString();
+		string accuracy = gunStats.accuracy.ToString();
+		upgradePanelCurrentStats.text = $"Level: {level}\n" +
+		                                $"Damage: {damage}\n" +
+		                                $"Firerate: {firerate}\n" +
+		                                $"Ammo Capacity: {ammoCapacity}\n" + 
+		                                $"Accuracy: {accuracy}\n";
+	}
+	private void SetUpgradedGunStats(ItemData itemData, GunStats currentGunStats)
+	{
+		string path = "Weapons/";
+		if (itemData.primaryType == PrimaryType.None)
+		{
+			string name = itemData.secondaryType.ToString();
+			name = Regex.Replace(name, "(?<!^)([A-Z])", " $1");
+			path += itemData.itemType.ToString() + "/" +  name;
+		}
+		else
+		{
+			string name = itemData.primaryType.ToString();
+			name = Regex.Replace(name, "(?<!^)([A-Z])", " $1");
+			path += itemData.itemType.ToString() + "/" +  name;
+		}
+		GunStats upgradedGunStats = weaponsDatabase.FindGameObjectByLevel(currentGunStats.level + 1, path).GetComponent<GunData>().gunStats;
+		
+		string level = upgradedGunStats.level.ToString();
+		string damage = upgradedGunStats.damage.ToString();
+		string firerate = upgradedGunStats.firerate == -1 ? "N/A" : upgradedGunStats.firerate.ToString();
+		string ammoCapacity = upgradedGunStats.ammoCapacity.ToString();
+		string accuracy = upgradedGunStats.accuracy.ToString();
+		string cost = upgradedGunStats.cost.ToString();
+		upgradePanelUpgradedStats.text = $"Level: {level}\n" +
+		                                 $"Damage: {damage}\n" +
+		                                 $"Firerate: {firerate}\n" +
+		                                 $"Ammo Capacity: {ammoCapacity}\n" + 
+		                                 $"Accuracy: {accuracy}\n" +
+		                                 $"Cost: {cost}\n";
+	}
+	private void UpgradeItem()
+	{
+		throw new NotImplementedException();
 	}
 }

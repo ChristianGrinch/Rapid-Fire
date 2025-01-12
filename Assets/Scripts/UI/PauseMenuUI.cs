@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +27,8 @@ public class PauseMenuUI : MonoBehaviour
 	public Button returnToStart;
 	public Button saveGame;
 	public Button returnToGame;
+	[Header("Other")]
+	public TMP_Text saveGameText;
 
     private void Start()
     {

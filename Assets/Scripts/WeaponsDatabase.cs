@@ -51,13 +51,9 @@ public class WeaponsDatabase : ScriptableObject
 			{
 				return item;
 			}
-			else
-			{
-				Debug.LogError("Couldn't find an item by level!");
-				return null;
-			}
 		}
-		Debug.LogError("Unknown error occured (Location: FindGameObjectByLevel in WeaponsDatabase)");
+		Debug.LogError("Couldn't find an item by level!");
+		Debug.LogError($"Path: {path}, Level: {level}");
 		return null;
 	}
 	public List<GameObject> FindAllGameObjects()
