@@ -274,7 +274,7 @@ public class ShopUI : MonoBehaviour
 
 		upgradeBtn.onClick.AddListener(() =>
 		{
-			UpgradeItem();
+			UpgradeItem(obj, gunStats.cost);
 			Destroy(upgradePanel);
 		});
 		cancelBtn.onClick.AddListener(() => Destroy(upgradePanel));
@@ -322,8 +322,12 @@ public class ShopUI : MonoBehaviour
 		                                 $"Accuracy: {accuracy}\n" +
 		                                 $"Cost: {cost}\n";
 	}
-	private void UpgradeItem()
+	private void UpgradeItem(GameObject obj, int cost)
 	{
+		int playerExp = PlayerController.Instance.exp;
+		if (playerExp - cost < 0) return;
+		PlayerController.Instance.exp -= cost;
+		//InventoryManager.Instance.ownedPrimaries.Find()
 		throw new NotImplementedException();
 	}
 }
