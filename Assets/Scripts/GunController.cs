@@ -101,12 +101,12 @@ public class GunController : MonoBehaviour
 				{
 					//Debug.Log("Weapon is not automatic.");
 					//if (instantiatedSecondary == null) return;
-					if (Input.GetMouseButtonDown(0) && TryUseAmmo(ItemDataType.Secondary))
+					if (Input.GetMouseButtonDown(0) && TryUseAmmo(currentGunData.itemType))
 					{
 						audioData.clip = audioClip;
 						audioData.Play();
 
-						SetBulletStats(shootBullet, ItemDataType.Secondary);
+						SetBulletStats(shootBullet, currentGunData.itemType);
 						Shoot(yRotation);
 					}
 					break;

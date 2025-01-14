@@ -66,15 +66,16 @@ public class InventoryManager : MonoBehaviour
 				if(primary.primaryType == PrimaryType.AssaultRifle)
 				{
 					// Specify all of the data that will be assigned to the slot:
-					ItemData newItemData = new()
-					{
-						itemType = ItemDataType.Primary,
-						primaryType = PrimaryType.AssaultRifle,
-						gunType = GunType.AssaultRifle,
-						ammo = primary.ammo,
-						gameObject = weaponsDatabase.FindGameObjects("Weapons/Primary/Assault Rifle")[0],
-						isWeaponAutomatic = true
-					};
+					ItemData newItemData = primary;
+					// ItemData newItemData = new()
+					// {
+					// 	itemType = ItemDataType.Primary,
+					// 	primaryType = PrimaryType.AssaultRifle,
+					// 	gunType = GunType.AssaultRifle,
+					// 	ammo = primary.ammo,
+					// 	gameObject = weaponsDatabase.FindGameObjects("Weapons/Primary/Assault Rifle")[0],
+					// 	isWeaponAutomatic = true
+					// };
 
 					instantiatedSlot.GetComponent<Button>().onClick.AddListener(() => SetSlotData(newItemData));
 					ActivateSlotImage(InventoryUI.Instance.assaultRifleRT);
