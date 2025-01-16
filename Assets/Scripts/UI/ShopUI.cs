@@ -274,7 +274,7 @@ public class ShopUI : MonoBehaviour
 
 		upgradeBtn.onClick.AddListener(() =>
 		{
-			UpgradeItem(obj, gunStats.cost);
+			UpgradeItem(obj, itemData, gunStats);
 			Destroy(upgradePanel);
 		});
 		cancelBtn.onClick.AddListener(() => Destroy(upgradePanel));
@@ -294,20 +294,7 @@ public class ShopUI : MonoBehaviour
 	}
 	private void SetUpgradedGunStats(ItemData itemData, GunStats currentGunStats)
 	{
-		string path = "Weapons/";
-		if (itemData.primaryType == PrimaryType.None)
-		{
-			string name = itemData.secondaryType.ToString();
-			name = Regex.Replace(name, "(?<!^)([A-Z])", " $1");
-			path += itemData.itemType.ToString() + "/" +  name;
-		}
-		else
-		{
-			string name = itemData.primaryType.ToString();
-			name = Regex.Replace(name, "(?<!^)([A-Z])", " $1");
-			path += itemData.itemType.ToString() + "/" +  name;
-		}
-		GunStats upgradedGunStats = weaponsDatabase.FindGameObjectByLevel(currentGunStats.level + 1, path).GetComponent<GunData>().gunStats;
+		GunStats upgradedGunStats = weaponsDatabase.FindGameObjectByLevel(currentGunStats.level + 1, weaponsDatabase.ReturnPath(itemData)).GetComponent<GunData>().gunStats;
 		
 		string level = upgradedGunStats.level.ToString();
 		string damage = upgradedGunStats.damage.ToString();
@@ -322,12 +309,25 @@ public class ShopUI : MonoBehaviour
 		                                 $"Accuracy: {accuracy}\n" +
 		                                 $"Cost: {cost}\n";
 	}
-	private void UpgradeItem(GameObject obj, int cost)
+	private void UpgradeItem(GameObject obj, ItemData itemData, GunStats gunStats)
 	{
+		GameObject newItem = weaponsDatabase.FindGameObjectByLevel(gunStats.level + 1, weaponsDatabase.ReturnPath(itemData));
+		
 		int playerExp = PlayerController.Instance.exp;
-		if (playerExp - cost < 0) return;
-		PlayerController.Instance.exp -= cost;
+		if (playerExp - gunStats.cost < 0) return;
+		PlayerController.Instance.exp -= newItem.GetComponent<GunData>().gunStats.cost;
 		//InventoryManager.Instance.ownedPrimaries.Find()
-		throw new NotImplementedException();
+		if (itemData.itemType == ItemDataType.Primary)
+		{
+			foreach (var item in InventoryManager.Instance.ownedPrimaries)
+			{
+				if (item.gunType == itemData.gunType)
+				{
+					Debug.Log("ran");
+					itemData.gameObject = newItem;
+				}
+			}
+		}
+		exp.text = $"EXP: {PlayerController.Instance.exp}";
 	}
 }

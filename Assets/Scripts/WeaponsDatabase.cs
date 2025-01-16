@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using static UnityEditor.Progress;
 
@@ -141,5 +142,14 @@ public class WeaponsDatabase : ScriptableObject
 				throw new ArgumentException($"Invalid level: {level}", nameof(level));
 		}
 		Debug.Log($"Cache updated for level {level}");
+	}
+
+	public string ReturnPath(ItemData itemData)
+	{
+		string path = "Weapons/";
+		string name = itemData.gunType.ToString();
+		name = Regex.Replace(name, "(?<!^)([A-Z])", " $1");
+		path += itemData.itemType.ToString() + "/" +  name;
+		return path;
 	}
 }
